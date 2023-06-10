@@ -363,3 +363,6 @@ FodyWeavers.xsd
 
 # Local appsettings.
 **/appsettings.Development.json
+
+# Live Unit Testing configuration
+*.lutconfig
