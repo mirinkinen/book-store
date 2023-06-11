@@ -1,20 +1,25 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# The Purpose
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+The purpose of this application is to demonstrate architecture, communication patterns and coding patterns that are often used in distributed systems.
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+# Microservice architecture
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+The software uses microservice architecture with asynchronous communication pattern between the services.
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+# Smart Endpoints
+
+The public endpoints in services accept incoming requests from clients and return response in synchronously.
+
+Endpoints are implemented as RESTful OData services, which provides flexible queries and dynamic response models to the clients. OData also provides a standardized implementation of REST APIs for fast integration.
+
+The service endpoints supports the following features.
+
+## Flexible queries
+
+OData provides powerful query options with possibilities of filtering and joining data.
+
+## Dynamic viewmodels
+
+## Optimistic locking
+
+Updates to the system use optimistic locking to protect users from incorrect updates.
