@@ -7,15 +7,15 @@
     {
         public Guid Id { get; internal set; }
 
-        public DateTimeOffset Created { get; internal set; }
+        public DateTime Created { get; internal set; }
 
-        public DateTimeOffset Updated { get; internal set; }
+        public DateTime Updated { get; internal set; }
 
-        public DateTimeOffset? Deleted { get; internal set; }
+        public DateTime? Deleted { get; internal set; }
 
         protected Entity()
         {
-            var now = DateTimeOffset.UtcNow;
+            var now = DateTime.UtcNow;
             
             Id = Guid.NewGuid();
             Created = now;

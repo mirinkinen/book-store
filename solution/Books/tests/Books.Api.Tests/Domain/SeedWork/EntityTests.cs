@@ -29,9 +29,9 @@ namespace Books.Api.Tests.Domain.SeedWork
         [Fact]
         public void Entity_WhenCreated_HasUtcNowTimestamps()
         {
-            var before = DateTimeOffset.UtcNow;
+            var before = DateTime.UtcNow;
             var entity = (Entity)new Book("test", new DateTime(2020, 1, 1), Guid.NewGuid());
-            var after = DateTimeOffset.UtcNow;
+            var after = DateTime.UtcNow;
 
             entity.Created.Should().BeAfter(before).And.BeBefore(after);
             entity.Updated.Should().Be(entity.Created);
