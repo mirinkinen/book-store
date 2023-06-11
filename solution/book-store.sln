@@ -8,8 +8,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7801A4D9-54CF-43B4-B731-199A19B625DA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{EC8B366A-2968-43BF-86DF-241844445669}"
+	ProjectSection(SolutionItems) = preProject
+		Books\tests\.editorconfig = Books\tests\.editorconfig
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Api", "Books\src\Books.Api\Books.Api.csproj", "{93840517-71C7-46CD-B71B-ED68A8D53DFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Api", "Books\src\Books.Api\Books.Api.csproj", "{93840517-71C7-46CD-B71B-ED68A8D53DFA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FF831862-C44A-436A-A1E8-3F1C4976BD2B}"
 	ProjectSection(SolutionItems) = preProject
@@ -17,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Api.Tests", "Books\tests\Books.Api.Tests\Books.Api.Tests.csproj", "{64945855-5ACB-4A76-BAE7-9753A84C836C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Api.Tests", "Books\tests\Books.Api.Tests\Books.Api.Tests.csproj", "{64945855-5ACB-4A76-BAE7-9753A84C836C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

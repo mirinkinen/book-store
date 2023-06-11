@@ -15,9 +15,11 @@
 
         protected Entity()
         {
+            var now = DateTimeOffset.UtcNow;
+            
             Id = Guid.NewGuid();
-            Created = DateTimeOffset.UtcNow;
-            Updated = DateTimeOffset.UtcNow;
+            Created = now;
+            Updated = now;
         }
     }
 }
