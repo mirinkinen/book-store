@@ -8,11 +8,5 @@ public class AuthorEntityConfiguration : IEntityTypeConfiguration<Author>
 {
     public void Configure(EntityTypeBuilder<Author> builder)
     {
-        ArgumentNullException.ThrowIfNull(builder);
-
-        builder.HasData(
-            new Author("Stephen", "King"),
-            new Author("Dan", "Brown"),
-            new Author("J.K.", "Rowling"));
     }
 }

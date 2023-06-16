@@ -10,9 +10,10 @@ public class Author : Entity
 
     public DateTime Birthday { get; internal set; }
 
-    public Author(string firstname, string lastname)
+    public Author(string firstname, string lastname, DateTime birthday)
     {
         Firstname = firstname;
         Lastname = lastname;
+        Birthday = birthday;
     }
 }

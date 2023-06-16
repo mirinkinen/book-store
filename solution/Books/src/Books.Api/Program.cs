@@ -1,10 +1,13 @@
 using Books.Api.Infrastructure.Database;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace Books.Api;
 
 public static class Program
 {
+    private static SqliteConnection _connection;
+
     public static async Task Main(string[] args)
     {
         IEnumerable<string> strings = Enumerable.Empty<string>();
@@ -17,7 +20,7 @@ public static class Program
 
         var app = builder.Build();
 
-        await SeedData(app.Services);
+        await InitializeDatabase(app.Services);
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -32,7 +35,7 @@ public static class Program
 
         await app.RunAsync();
     }
-    
+
     private static void AddApiServices(WebApplicationBuilder builder)
     {
         // Add services to the container.
@@ -49,17 +52,22 @@ public static class Program
 
     private static void AddInfrastructureServices(WebApplicationBuilder builder)
     {
-        builder.Services.AddDbContextPool<BooksDbContext>(dbContextOptions =>
+        builder.Services.AddDbContext<BooksDbContext>(dbContextOptions =>
         {
-            dbContextOptions.UseSqlite("Data Source=:memory:;");
+            dbContextOptions.UseSqlite(_connection);
         });
     }
 
-    private static Task SeedData(IServiceProvider services)
+    private static async Task InitializeDatabase(IServiceProvider services)
     {
+        // Keep connection open or the in-memory database will be gone.
+        _connection = new SqliteConnection("datasource=:memory:");
+        await _connection.OpenAsync();
+
         using var scope = services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<BooksDbContext>();
-
-        return dbContext.Database.MigrateAsync();
+        await dbContext.Database.EnsureCreatedAsync();
+        await dbContext.Database.MigrateAsync();
+        await DataSeeder.SeedData(dbContext);
     }
 }
