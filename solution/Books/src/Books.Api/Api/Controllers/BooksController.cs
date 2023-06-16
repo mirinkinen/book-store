@@ -1,4 +1,5 @@
 ﻿using Books.Api.Domain.Books;
+using Books.Api.Infrastructure.Database;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Books.Api.Api.Controllers;
@@ -11,11 +12,8 @@ public class BooksController : ControllerBase
     { }
 
     [HttpGet]
-    public IEnumerable<Book> GetBooks()
+    public IEnumerable<Book> GetBooks([FromServices] BooksDbContext dbContext)
     {
-        return new List<Book> {
-            new Book("Hello world", DateTime.UtcNow, Guid.NewGuid()),
-            new Book("Hello world", DateTime.UtcNow, Guid.NewGuid())
-        };
+        return dbContext.Books.AsQueryable().OrderBy(b => b.Title);
     }
 }
