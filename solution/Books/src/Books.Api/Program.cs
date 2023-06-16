@@ -6,7 +6,7 @@ namespace Books.Api;
 
 public static class Program
 {
-    private static SqliteConnection _connection;
+    private static SqliteConnection? _connection;
 
     public static async Task Main(string[] args)
     {
@@ -54,7 +54,9 @@ public static class Program
     {
         builder.Services.AddDbContext<BooksDbContext>(dbContextOptions =>
         {
+#pragma warning disable CS8604 // Possible null reference argument.
             dbContextOptions.UseSqlite(_connection);
+#pragma warning restore CS8604 // Possible null reference argument.
         });
     }
 
