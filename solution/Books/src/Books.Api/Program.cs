@@ -1,8 +1,11 @@
+using Books.Api.Infrastructure.Database;
+using Microsoft.EntityFrameworkCore;
+
 namespace Books.Api;
 
 public static class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         IEnumerable<string> strings = Enumerable.Empty<string>();
 
@@ -10,8 +13,11 @@ public static class Program
 
         AddApiServices(builder);
         AddApplicationServices(builder);
+        AddInfrastructureServices(builder);
 
         var app = builder.Build();
+
+        await SeedData(app.Services);
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -24,9 +30,9 @@ public static class Program
         app.UseAuthorization();
         app.MapControllers();
 
-        app.Run();
+        await app.RunAsync();
     }
-
+    
     private static void AddApiServices(WebApplicationBuilder builder)
     {
         // Add services to the container.
@@ -39,5 +45,21 @@ public static class Program
     private static void AddApplicationServices(WebApplicationBuilder builder)
     {
         //builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<>());
+    }
+
+    private static void AddInfrastructureServices(WebApplicationBuilder builder)
+    {
+        builder.Services.AddDbContextPool<BooksDbContext>(dbContextOptions =>
+        {
+            dbContextOptions.UseSqlite("Data Source=:memory:;");
+        });
+    }
+
+    private static Task SeedData(IServiceProvider services)
+    {
+        using var scope = services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<BooksDbContext>();
+
+        return dbContext.Database.MigrateAsync();
     }
 }
