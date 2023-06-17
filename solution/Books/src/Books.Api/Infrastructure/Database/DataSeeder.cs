@@ -11,14 +11,18 @@ public static class DataSeeder
     {
         ArgumentNullException.ThrowIfNull(booksDbContext);
 
-        var stephen = new Author("Stephen", "King", new DateTime(1947, 9, 21));
-        var dan = new Author("Dan", "Brown", new DateTime(1964, 6, 22));
-        var jk = new Author("J.K.", "Rowling", new DateTime(1965, 7, 31));
+        var authors = new[] {
+            new Author("Stephen", "King", new DateTime(1947, 9, 21)),
+            new Author("Dan", "Brown", new DateTime(1964, 6, 22)),
+            new Author("J.K.", "Rowling", new DateTime(1965, 7, 31))
+        };
 
-        await booksDbContext.AddRangeAsync(stephen, dan, jk);
+        await booksDbContext.AddRangeAsync(authors);
         await booksDbContext.SaveChangesAsync();
-
-        var books = Enumerable.Range(1, 1000).Select(id => new Book($"Book #{id}", GetRandomPublishedDate(), stephen.Id));
+        
+        var books = Enumerable
+            .Range(1, 1000)
+            .Select(id => new Book($"Book #{id}", GetRandomPublishedDate(), GetRandomAuthor(authors).Id));
 
         await booksDbContext.AddRangeAsync(books);
         await booksDbContext.SaveChangesAsync();
@@ -27,5 +31,10 @@ public static class DataSeeder
     private static DateTime GetRandomPublishedDate()
     {
         return DateTime.UtcNow - TimeSpan.FromDays(_randomizer.Next(0, 10000));
+    }
+
+    private static Author GetRandomAuthor(Author[] authors)
+    {
+        return authors[_randomizer.Next(0, 3)];
     }
 }

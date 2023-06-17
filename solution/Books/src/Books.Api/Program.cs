@@ -55,15 +55,29 @@ public static class Program
     private static void BuildODataModel(WebApplicationBuilder builder)
     {
         var modelBuilder = new ODataConventionModelBuilder();
-        var bookEntityTypeConfiguration = modelBuilder.EntityType<Book>();
-        bookEntityTypeConfiguration.HasKey(book => book.Id);
-        bookEntityTypeConfiguration.Property(book => book.AuthorId);
-        bookEntityTypeConfiguration.Property(book => book.Created);
-        bookEntityTypeConfiguration.Property(book => book.DatePublished);
-        bookEntityTypeConfiguration.Property(book => book.Title);
-        bookEntityTypeConfiguration.Property(book => book.Updated);
 
-        modelBuilder.EntitySet<Book>("Books");
+        var authorEntity = modelBuilder.EntityType<Author>();
+        authorEntity.HasKey(book => book.Id);
+        authorEntity.Property(book => book.Birthday);
+        authorEntity.Property(book => book.Created);
+        authorEntity.Property(book => book.Firstname);
+        authorEntity.Property(book => book.Lastname);
+        authorEntity.Property(book => book.Updated);
+        var authorEntitySet = modelBuilder.EntitySet<Author>("Authors");
+
+        //authorEntity.ContainsMany(author => author.Books);
+
+
+        var bookEntity = modelBuilder.EntityType<Book>();
+        bookEntity.HasKey(book => book.Id);
+        bookEntity.Property(book => book.AuthorId);
+        bookEntity.Property(book => book.Created);
+        bookEntity.Property(book => book.DatePublished);
+        bookEntity.Property(book => book.Title);
+        bookEntity.Property(book => book.Updated);
+        var bookEntitySet = modelBuilder.EntitySet<Book>("Books");
+
+        //bookEntity.ContainsRequired(book => book.Author);
 
         builder.Services.AddControllers().AddOData(
             options => options

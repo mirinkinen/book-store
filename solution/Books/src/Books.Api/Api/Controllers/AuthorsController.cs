@@ -1,19 +1,24 @@
-﻿using Books.Api.Domain.Authors;
-using Books.Api.Infrastructure.Database;
-using Microsoft.AspNetCore.Mvc;
+﻿using Books.Api.Application.Requests.GetAuthors;
+using Books.Api.Domain.Authors;
+using MediatR;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace Books.Api.Api.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class AuthorsController : ControllerBase
+public class AuthorsController : ODataController
 {
-    public AuthorsController()
-    { }
+    private readonly IMediator _mediatr;
 
-    [HttpGet]
-    public IQueryable<Author> GetAuthors([FromServices] BooksDbContext dbContext)
+    public AuthorsController(IMediator mediatr)
     {
-        return dbContext.Authors.AsQueryable();
+        _mediatr = mediatr;
+    }
+
+    [EnableQuery]
+    public Task<IQueryable<Author>> Get()
+    {
+        var getAuthorsQuery = new GetAuthorsQuery();
+        return _mediatr.Send(getAuthorsQuery);
     }
 }

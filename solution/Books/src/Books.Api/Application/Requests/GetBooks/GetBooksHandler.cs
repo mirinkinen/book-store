@@ -8,11 +8,11 @@ public class GetBooksQuery : IRequest<IQueryable<Book>>
 {
 }
 
-public class GetBooksHandler : IRequestHandler<GetBooksQuery, IQueryable<Book>>
+public class GetAuthorsHandler : IRequestHandler<GetBooksQuery, IQueryable<Book>>
 {
     private readonly BooksDbContext _booksDbContext;
 
-    public GetBooksHandler(BooksDbContext booksDbContext)
+    public GetAuthorsHandler(BooksDbContext booksDbContext)
     {
         _booksDbContext = booksDbContext;
     }
