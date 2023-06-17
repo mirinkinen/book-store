@@ -4,11 +4,11 @@ using MediatR;
 
 namespace Books.Api.Application.Requests.GetBooks;
 
-public class GetBooksQuery : IStreamRequest<Book>
+public class GetBooksQuery : IRequest<IQueryable<Book>>
 {
 }
 
-public class GetBooksHandler : IStreamRequestHandler<GetBooksQuery, Book>
+public class GetBooksHandler : IRequestHandler<GetBooksQuery, IQueryable<Book>>
 {
     private readonly BooksDbContext _booksDbContext;
 
@@ -17,8 +17,9 @@ public class GetBooksHandler : IStreamRequestHandler<GetBooksQuery, Book>
         _booksDbContext = booksDbContext;
     }
 
-    public IAsyncEnumerable<Book> Handle(GetBooksQuery request, CancellationToken cancellationToken)
+    public Task<IQueryable<Book>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
     {
-        return _booksDbContext.Books.AsAsyncEnumerable();
+        return Task.FromResult(_booksDbContext.Books.AsQueryable());
     }
+
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.OData;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.ModelBuilder;
+using System.Reflection;
 
 namespace Books.Api;
 
@@ -78,7 +79,7 @@ public static class Program
 
     private static void AddApplicationServices(WebApplicationBuilder builder)
     {
-        //builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<>());
+        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
     }
 
     private static void AddInfrastructureServices(WebApplicationBuilder builder)

@@ -1,10 +1,13 @@
 ﻿using Books.Api.Domain.Authors;
 using Books.Api.Domain.Books;
+using System.Linq;
 
 namespace Books.Api.Infrastructure.Database;
 
 public static class DataSeeder
 {
+    private static readonly Random _randomizer = new(Guid.NewGuid().GetHashCode());
+
     public static async Task SeedData(BooksDbContext booksDbContext)
     {
         ArgumentNullException.ThrowIfNull(booksDbContext);
@@ -16,9 +19,14 @@ public static class DataSeeder
         await booksDbContext.AddRangeAsync(stephen, dan, jk);
         await booksDbContext.SaveChangesAsync();
 
-        var books = Enumerable.Range(1, 1000).Select(id => new Book($"Book #{id}", DateTime.UtcNow, stephen.Id));
+        var books = Enumerable.Range(1, 1000).Select(id => new Book($"Book #{id}", GetRandomPublishedDate(), stephen.Id));
 
         await booksDbContext.AddRangeAsync(books);
         await booksDbContext.SaveChangesAsync();
+    }
+
+    private static DateTime GetRandomPublishedDate()
+    {
+        return DateTime.UtcNow - TimeSpan.FromDays(_randomizer.Next(0, 10000));
     }
 }

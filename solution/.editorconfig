@@ -100,3 +100,4 @@ dotnet_naming_style.instance_field_style.required_prefix = _
 
 # Dotnet Diagnostic
 dotnet_diagnostic.CA2007.severity = silent
+dotnet_diagnostic.CA5394.severity = silent
