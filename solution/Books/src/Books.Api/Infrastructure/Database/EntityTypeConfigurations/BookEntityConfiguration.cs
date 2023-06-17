@@ -1,5 +1,4 @@
-﻿using Books.Api.Domain.Authors;
-using Books.Api.Domain.Books;
+﻿using Books.Api.Domain.Books;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
