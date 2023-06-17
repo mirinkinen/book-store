@@ -17,6 +17,11 @@ public static class DataSeeder
             new Author("J.K.", "Rowling", new DateTime(1965, 7, 31))
         };
 
+        // Set explicit IDs for easier testing.
+        authors[0].Id = Guid.Parse("8E6A9434-87F5-46B2-A6C3-522DC35D8EEF");
+        authors[1].Id = Guid.Parse("13E76BC5-BF2C-4FDB-BF42-8E0CA66EA7CE");
+        authors[2].Id = Guid.Parse("520B8C4F-72F1-4ECE-B1E2-8DD1DCA3476A");
+
         await booksDbContext.AddRangeAsync(authors);
         await booksDbContext.SaveChangesAsync();
         
