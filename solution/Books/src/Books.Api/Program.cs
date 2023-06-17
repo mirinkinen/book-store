@@ -37,7 +37,7 @@ public static class Program
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
-        
+
         await app.RunAsync();
     }
 
@@ -50,7 +50,6 @@ public static class Program
         builder.Services.AddSwaggerGen();
 
         BuildODataModel(builder);
-
     }
 
     private static void BuildODataModel(WebApplicationBuilder builder)

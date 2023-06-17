@@ -21,5 +21,4 @@ public class GetBooksHandler : IRequestHandler<GetBooksQuery, IQueryable<Book>>
     {
         return Task.FromResult(_booksDbContext.Books.AsQueryable());
     }
-
 }

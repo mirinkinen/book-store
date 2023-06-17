@@ -16,7 +16,7 @@
         protected Entity()
         {
             var now = DateTime.UtcNow;
-            
+
             Id = Guid.NewGuid();
             Created = now;
             Updated = now;

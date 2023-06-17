@@ -1,6 +1,5 @@
 ﻿using Books.Api.Domain.Authors;
 using Books.Api.Domain.Books;
-using System.Linq;
 
 namespace Books.Api.Infrastructure.Database;
 

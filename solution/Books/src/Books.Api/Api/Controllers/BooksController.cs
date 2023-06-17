@@ -1,6 +1,5 @@
 ﻿using Books.Api.Application.Requests.GetBooks;
 using Books.Api.Domain.Books;
-using Books.Api.Infrastructure.Database;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
