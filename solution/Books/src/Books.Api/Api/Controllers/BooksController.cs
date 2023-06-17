@@ -1,6 +1,8 @@
-﻿using Books.Api.Application.Requests.GetBooks;
+﻿using Books.Api.Application.Requests.GetBookById;
+using Books.Api.Application.Requests.GetBooks;
 using Books.Api.Domain.Books;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 
@@ -18,7 +20,21 @@ public class BooksController : ODataController
     [EnableQuery(PageSize = 20)]
     public Task<IQueryable<Book>> Get()
     {
-        var getBooksQuery = new GetBooksQuery();
-        return _mediatr.Send(getBooksQuery);
+        var query = new GetBooksQuery();
+        return _mediatr.Send(query);
+    }
+
+    [EnableQuery]
+    public async Task<IActionResult> Get([FromRoute] Guid key)
+    {
+        var query = new GetBookByIdQuery(key);
+        var book = await _mediatr.Send(query);
+
+        if (book == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(book);
     }
 }

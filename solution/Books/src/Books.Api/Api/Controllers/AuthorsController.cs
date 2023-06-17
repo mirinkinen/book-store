@@ -20,15 +20,15 @@ public class AuthorsController : ODataController
     [EnableQuery]
     public Task<IQueryable<Author>> Get()
     {
-        var getAuthorsQuery = new GetAuthorsQuery();
-        return _mediatr.Send(getAuthorsQuery);
+        var query = new GetAuthorsQuery();
+        return _mediatr.Send(query);
     }
 
     [EnableQuery]
     public async Task<IActionResult> Get([FromRoute] Guid key)
     {
-        var getAuthorByIdQuery = new GetAuthorByIdQuery(key);
-        var author = await _mediatr.Send(getAuthorByIdQuery);
+        var query = new GetAuthorByIdQuery(key);
+        var author = await _mediatr.Send(query);
 
         if (author == null)
         {

@@ -11,6 +11,9 @@ public class BookEntityConfiguration : IEntityTypeConfiguration<Book>
     {
         ArgumentNullException.ThrowIfNull(builder);
 
-        builder.HasOne<Author>().WithMany(author => author.Books).HasForeignKey(book => book.AuthorId);
+        builder
+            .HasOne(book => book.Author)
+            .WithMany(author => author.Books)
+            .HasForeignKey(book => book.AuthorId);
     }
 }

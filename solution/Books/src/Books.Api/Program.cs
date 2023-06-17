@@ -64,6 +64,7 @@ public static class Program
         authorEntity.Property(book => book.Firstname);
         authorEntity.Property(book => book.Lastname);
         authorEntity.Property(book => book.Updated);
+        authorEntity.ContainsMany(author => author.Books);
         var authorEntitySet = modelBuilder.EntitySet<Author>("Authors");
 
         var bookEntity = modelBuilder.EntityType<Book>();
@@ -73,6 +74,8 @@ public static class Program
         bookEntity.Property(book => book.DatePublished);
         bookEntity.Property(book => book.Title);
         bookEntity.Property(book => book.Updated);
+        bookEntity.ContainsRequired(book => book.Author);
+
         var bookEntitySet = modelBuilder.EntitySet<Book>("Books");
 
         builder.Services.AddControllers().AddOData(
