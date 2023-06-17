@@ -11,12 +11,15 @@ public class Author : Entity
 
     public DateTime Birthday { get; internal set; }
 
-    public List<Book> Books { get; internal set; } = new List<Book>();
+    public IList<Book> Books { get; internal set; } = new List<Book>();
 
-    public Author(string firstname, string lastname, DateTime birthday)
+    public Guid OrganizationId { get; internal set; }
+
+    public Author(string firstname, string lastname, DateTime birthday, Guid organizationId)
     {
         Firstname = firstname;
         Lastname = lastname;
         Birthday = birthday;
+        OrganizationId = organizationId;
     }
 }

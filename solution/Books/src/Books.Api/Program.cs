@@ -1,3 +1,4 @@
+using Books.Api.Application;
 using Books.Api.Domain.Authors;
 using Books.Api.Domain.Books;
 using Books.Api.Infrastructure.Database;
@@ -88,6 +89,8 @@ public static class Program
     private static void AddApplicationServices(WebApplicationBuilder builder)
     {
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        builder.Services.AddScoped<UserService>();
+        builder.Services.AddScoped<QueryAuthorizer>();
     }
 
     private static void AddInfrastructureServices(WebApplicationBuilder builder)

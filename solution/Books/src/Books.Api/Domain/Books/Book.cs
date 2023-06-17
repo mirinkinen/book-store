@@ -1,4 +1,5 @@
-﻿using Books.Api.Domain.SeedWork;
+﻿using Books.Api.Domain.Authors;
+using Books.Api.Domain.SeedWork;
 
 namespace Books.Api.Domain.Books
 {
@@ -7,6 +8,8 @@ namespace Books.Api.Domain.Books
         public string Title { get; internal set; }
 
         public DateTime DatePublished { get; internal set; }
+
+        public Author Author { get; internal set; }
 
         public Guid AuthorId { get; internal set; }
 

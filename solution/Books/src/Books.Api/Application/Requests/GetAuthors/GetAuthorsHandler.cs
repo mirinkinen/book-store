@@ -1,5 +1,4 @@
 using Books.Api.Domain.Authors;
-using Books.Api.Infrastructure.Database;
 using MediatR;
 
 namespace Books.Api.Application.Requests.GetAuthors;
@@ -8,17 +7,17 @@ public class GetAuthorsQuery : IRequest<IQueryable<Author>>
 {
 }
 
-public class GetAuthorByIdHandler : IRequestHandler<GetAuthorsQuery, IQueryable<Author>>
+public class GetAuthorsHandler : IRequestHandler<GetAuthorsQuery, IQueryable<Author>>
 {
-    private readonly BooksDbContext _booksDbContext;
+    private readonly QueryAuthorizer _queryAuthorizer;
 
-    public GetAuthorByIdHandler(BooksDbContext booksDbContext)
+    public GetAuthorsHandler(QueryAuthorizer queryAuthorizer)
     {
-        _booksDbContext = booksDbContext;
+        _queryAuthorizer = queryAuthorizer;
     }
 
     public Task<IQueryable<Author>> Handle(GetAuthorsQuery request, CancellationToken cancellationToken)
     {
-        return Task.FromResult(_booksDbContext.Authors.AsQueryable());
+        return Task.FromResult(_queryAuthorizer.GetAuthorizedEntities<Author>());
     }
 }

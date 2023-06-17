@@ -30,7 +30,7 @@ public class AuthorsController : ODataController
         var getAuthorByIdQuery = new GetAuthorByIdQuery(key);
         var author = await _mediatr.Send(getAuthorByIdQuery);
 
-        if(author == null)
+        if (author == null)
         {
             return NotFound();
         }
