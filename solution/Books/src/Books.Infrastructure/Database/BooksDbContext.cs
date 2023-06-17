@@ -1,8 +1,8 @@
-﻿using Books.Api.Domain.Authors;
-using Books.Api.Domain.Books;
+﻿using Books.Domain.Authors;
+using Books.Domain.Books;
 using Microsoft.EntityFrameworkCore;
 
-namespace Books.Api.Infrastructure.Database;
+namespace Books.Infrastructure.Database;
 
 public class BooksDbContext : DbContext
 {

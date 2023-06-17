@@ -1,8 +1,8 @@
-﻿using Books.Api.Domain.Books;
+﻿using Books.Domain.Books;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Books.Api.Infrastructure.Database.EntityConfigurations;
+namespace Books.Infrastructure.Database.EntityTypeConfigurations;
 
 public class BookEntityConfiguration : IEntityTypeConfiguration<Book>
 {

@@ -1,4 +1,4 @@
-﻿namespace Books.Api.Application;
+﻿namespace Books.Application;
 
 public class User
 {

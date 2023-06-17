@@ -1,6 +1,6 @@
-﻿using Books.Api.Application.Requests.GetAuthorById;
-using Books.Api.Application.Requests.GetAuthors;
-using Books.Api.Domain.Authors;
+﻿using Books.Application.Requests.GetAuthorById;
+using Books.Application.Requests.GetAuthors;
+using Books.Domain.Authors;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;

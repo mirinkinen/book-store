@@ -1,7 +1,7 @@
-﻿using Books.Api.Domain.Authors;
-using Books.Api.Domain.SeedWork;
+﻿using Books.Domain.Authors;
+using Books.Domain.SeedWork;
 
-namespace Books.Api.Domain.Books
+namespace Books.Domain.Books
 {
     public class Book : Entity
     {

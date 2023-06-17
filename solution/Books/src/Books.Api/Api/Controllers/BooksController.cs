@@ -1,6 +1,6 @@
-﻿using Books.Api.Application.Requests.GetBookById;
-using Books.Api.Application.Requests.GetBooks;
-using Books.Api.Domain.Books;
+﻿using Books.Application.Requests.GetBookById;
+using Books.Application.Requests.GetBooks;
+using Books.Domain.Books;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;

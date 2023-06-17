@@ -1,7 +1,8 @@
-using Books.Api.Application;
-using Books.Api.Domain.Authors;
-using Books.Api.Domain.Books;
-using Books.Api.Infrastructure.Database;
+using Books.Application;
+using Books.Application.Requests.GetBooks;
+using Books.Domain.Authors;
+using Books.Domain.Books;
+using Books.Infrastructure.Database;
 using Microsoft.AspNetCore.OData;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -91,9 +92,9 @@ public static class Program
 
     private static void AddApplicationServices(WebApplicationBuilder builder)
     {
-        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetBooksQuery>());
         builder.Services.AddScoped<UserService>();
-        builder.Services.AddScoped<QueryAuthorizer>();
+        builder.Services.AddScoped<IQueryAuthorizer, QueryAuthorizer>();
     }
 
     private static void AddInfrastructureServices(WebApplicationBuilder builder)

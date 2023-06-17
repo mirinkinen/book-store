@@ -1,8 +1,8 @@
-﻿using Books.Api.Application;
-using Books.Api.Domain.Authors;
-using Books.Api.Domain.Books;
+﻿using Books.Application;
+using Books.Domain.Authors;
+using Books.Domain.Books;
 
-namespace Books.Api.Infrastructure.Database;
+namespace Books.Infrastructure.Database;
 
 public static class DataSeeder
 {

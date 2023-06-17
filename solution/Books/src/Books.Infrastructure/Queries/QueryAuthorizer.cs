@@ -1,11 +1,11 @@
-﻿using Books.Api.Domain.Authors;
-using Books.Api.Domain.Books;
-using Books.Api.Domain.SeedWork;
-using Books.Api.Infrastructure.Database;
+﻿using Books.Domain.Authors;
+using Books.Domain.Books;
+using Books.Domain.SeedWork;
+using Books.Infrastructure.Database;
 
-namespace Books.Api.Application;
+namespace Books.Application;
 
-public class QueryAuthorizer
+public class QueryAuthorizer : IQueryAuthorizer
 {
     private readonly BooksDbContext _booksDbContext;
     private readonly UserService _userService;

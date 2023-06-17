@@ -1,16 +1,16 @@
-using Books.Api.Domain.Books;
+using Books.Domain.Books;
 using MediatR;
 using Microsoft.AspNetCore.OData.Results;
 
-namespace Books.Api.Application.Requests.GetBookById;
+namespace Books.Application.Requests.GetBookById;
 
 public record GetBookByIdQuery(Guid BookId) : IRequest<SingleResult<Book>>;
 
 public class GetBookByIdHandler : IRequestHandler<GetBookByIdQuery, SingleResult<Book>>
 {
-    private readonly QueryAuthorizer _queryAuthorizer;
+    private readonly IQueryAuthorizer _queryAuthorizer;
 
-    public GetBookByIdHandler(QueryAuthorizer queryAuthorizer)
+    public GetBookByIdHandler(IQueryAuthorizer queryAuthorizer)
     {
         _queryAuthorizer = queryAuthorizer;
     }

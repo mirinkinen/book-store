@@ -1,7 +1,7 @@
-using Books.Api.Domain.Authors;
+using Books.Domain.Authors;
 using MediatR;
 
-namespace Books.Api.Application.Requests.GetAuthors;
+namespace Books.Application.Requests.GetAuthors;
 
 public class GetAuthorsQuery : IRequest<IQueryable<Author>>
 {
@@ -9,9 +9,9 @@ public class GetAuthorsQuery : IRequest<IQueryable<Author>>
 
 public class GetAuthorsHandler : IRequestHandler<GetAuthorsQuery, IQueryable<Author>>
 {
-    private readonly QueryAuthorizer _queryAuthorizer;
+    private readonly IQueryAuthorizer _queryAuthorizer;
 
-    public GetAuthorsHandler(QueryAuthorizer queryAuthorizer)
+    public GetAuthorsHandler(IQueryAuthorizer queryAuthorizer)
     {
         _queryAuthorizer = queryAuthorizer;
     }

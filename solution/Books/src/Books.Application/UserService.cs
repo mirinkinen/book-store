@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Books.Api.Application;
+namespace Books.Application;
 
 public class UserService
 {

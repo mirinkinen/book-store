@@ -1,4 +1,4 @@
-﻿namespace Books.Api.Domain.SeedWork
+﻿namespace Books.Domain.SeedWork
 {
     /// <summary>
     /// Represents shared properties for all entities in this domain.

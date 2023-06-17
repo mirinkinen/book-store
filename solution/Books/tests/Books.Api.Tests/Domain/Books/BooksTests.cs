@@ -1,5 +1,5 @@
-using Books.Api.Domain.Books;
-using Books.Api.Domain.SeedWork;
+using Books.Domain.Books;
+using Books.Domain.SeedWork;
 using FluentAssertions;
 
 namespace Books.Api.Tests.Domain.Books;
