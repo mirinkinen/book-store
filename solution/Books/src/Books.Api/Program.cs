@@ -1,6 +1,10 @@
+using Books.Api.Domain.Authors;
+using Books.Api.Domain.Books;
 using Books.Api.Infrastructure.Database;
+using Microsoft.AspNetCore.OData;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OData.ModelBuilder;
 
 namespace Books.Api;
 
@@ -32,7 +36,7 @@ public static class Program
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
-
+        
         await app.RunAsync();
     }
 
@@ -43,6 +47,33 @@ public static class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        BuildODataModel(builder);
+
+    }
+
+    private static void BuildODataModel(WebApplicationBuilder builder)
+    {
+        var modelBuilder = new ODataConventionModelBuilder();
+        var bookEntityTypeConfiguration = modelBuilder.EntityType<Book>();
+        bookEntityTypeConfiguration.HasKey(book => book.Id);
+        bookEntityTypeConfiguration.Property(book => book.AuthorId);
+        bookEntityTypeConfiguration.Property(book => book.Created);
+        bookEntityTypeConfiguration.Property(book => book.DatePublished);
+        bookEntityTypeConfiguration.Property(book => book.Title);
+        bookEntityTypeConfiguration.Property(book => book.Updated);
+
+        modelBuilder.EntitySet<Book>("Books");
+
+        builder.Services.AddControllers().AddOData(
+            options => options
+            .Select()
+            .Filter()
+            .OrderBy()
+            .Expand()
+            .Count()
+            .SetMaxTop(100)
+            .AddRouteComponents("odata", modelBuilder.GetEdmModel()));
     }
 
     private static void AddApplicationServices(WebApplicationBuilder builder)
