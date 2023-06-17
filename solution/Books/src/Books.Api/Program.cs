@@ -1,20 +1,12 @@
-using Books.Application;
-using Books.Application.Requests.GetBooks;
 using Books.Domain.Authors;
 using Books.Domain.Books;
-using Books.Infrastructure.Database;
 using Microsoft.AspNetCore.OData;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OData.ModelBuilder;
-using System.Reflection;
 
 namespace Books.Api;
 
 public static class Program
 {
-    private static SqliteConnection? _connection;
-
     public static async Task Main(string[] args)
     {
         IEnumerable<string> strings = Enumerable.Empty<string>();
@@ -22,12 +14,12 @@ public static class Program
         var builder = WebApplication.CreateBuilder(args);
 
         AddApiServices(builder);
-        AddApplicationServices(builder);
-        AddInfrastructureServices(builder);
+        Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);
+        Infrastructure.ServiceRegistrar.RegisterInfrastructureServices(builder.Services);
 
         var app = builder.Build();
 
-        await InitializeDatabase(app.Services);
+        await Infrastructure.ServiceRegistrar.InitializeDatabase(app.Services);
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -88,35 +80,5 @@ public static class Program
             .Count()
             .SetMaxTop(100)
             .AddRouteComponents("odata", modelBuilder.GetEdmModel()));
-    }
-
-    private static void AddApplicationServices(WebApplicationBuilder builder)
-    {
-        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetBooksQuery>());
-        builder.Services.AddScoped<UserService>();
-        builder.Services.AddScoped<IQueryAuthorizer, QueryAuthorizer>();
-    }
-
-    private static void AddInfrastructureServices(WebApplicationBuilder builder)
-    {
-        builder.Services.AddDbContext<BooksDbContext>(dbContextOptions =>
-        {
-#pragma warning disable CS8604 // Possible null reference argument.
-            dbContextOptions.UseSqlite(_connection);
-#pragma warning restore CS8604 // Possible null reference argument.
-        });
-    }
-
-    private static async Task InitializeDatabase(IServiceProvider services)
-    {
-        // Keep connection open or the in-memory database will be gone.
-        _connection = new SqliteConnection("datasource=:memory:");
-        await _connection.OpenAsync();
-
-        using var scope = services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<BooksDbContext>();
-        await dbContext.Database.EnsureCreatedAsync();
-        await dbContext.Database.MigrateAsync();
-        await DataSeeder.SeedData(dbContext);
     }
 }
