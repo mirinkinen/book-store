@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Api.Tests", "Books\tests\Books.Api.Tests\Books.Api.Tests.csproj", "{64945855-5ACB-4A76-BAE7-9753A84C836C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Domain.Tests", "Books\tests\Books.Domain.Tests\Books.Domain.Tests.csproj", "{64945855-5ACB-4A76-BAE7-9753A84C836C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Application", "Books\src\Books.Application\Books.Application.csproj", "{879C694F-D100-4511-AB49-B064D625E8CE}"
 EndProject
