@@ -21,7 +21,7 @@ public class Program
 
         var app = builder.Build();
 
-        await Infrastructure.ServiceRegistrar.InitializeDatabase(app.Services);
+        await Infrastructure.ServiceRegistrar.InitializeServices(app.Services);
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())

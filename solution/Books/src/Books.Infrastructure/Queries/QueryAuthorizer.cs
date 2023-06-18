@@ -8,9 +8,9 @@ namespace Books.Application;
 public class QueryAuthorizer : IQueryAuthorizer
 {
     private readonly BooksDbContext _booksDbContext;
-    private readonly UserService _userService;
+    private readonly IUserService _userService;
 
-    public QueryAuthorizer(BooksDbContext booksDbContext, UserService userService)
+    public QueryAuthorizer(BooksDbContext booksDbContext, IUserService userService)
     {
         _booksDbContext = booksDbContext;
         _userService = userService;

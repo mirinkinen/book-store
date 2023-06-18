@@ -1,4 +1,5 @@
-﻿using Books.Application;
+﻿using Audit.Core;
+using Books.Application;
 using Books.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,17 @@ public static class ServiceRegistrar
 #pragma warning restore CS8604 // Possible null reference argument.
         });
 
+        services.AddScoped<IQueryAuthorizer, QueryAuthorizer>();
+    }
+
+    public static async Task InitializeServices(IServiceProvider services)
+    {
+        // Seed data before audit logging to prevent unnecessary logging.
+        using var scope = services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<BooksDbContext>();
+        await dbContext.Database.EnsureCreatedAsync();
+        await DataSeeder.SeedData(dbContext);
+
         // Enable audit logging for all entities.
         Audit.EntityFramework.Configuration
             .Setup()
@@ -24,17 +36,15 @@ public static class ServiceRegistrar
                 .IncludeEntityObjects()
                 .AuditEventType("{context}:{database}"));
 
+        // Audit log to file.
         Audit.Core.Configuration.Setup()
             .UseFileLogProvider(config => config.Directory("./audit"));
 
-        services.AddScoped<IQueryAuthorizer, QueryAuthorizer>();
-    }
-
-    public static async Task InitializeDatabase(IServiceProvider services)
-    {
-        using var scope = services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<BooksDbContext>();
-        await dbContext.Database.EnsureCreatedAsync();
-        await DataSeeder.SeedData(dbContext);
+        Audit.Core.Configuration.AddCustomAction(ActionType.OnScopeCreated, auditScope =>
+        {
+            using var scope = services.CreateScope();
+            var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+            auditScope.SetCustomField("UserId", userService.GetUser().Id);
+        });
     }
 }
