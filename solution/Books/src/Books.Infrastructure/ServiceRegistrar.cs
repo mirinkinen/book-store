@@ -17,14 +17,6 @@ public static class ServiceRegistrar
 #pragma warning restore CS8604 // Possible null reference argument.
         });
 
-        services.AddDbContext<AuditBooksDbContext>(dbContextOptions =>
-        {
-#pragma warning disable CS8604 // Possible null reference argument.
-            dbContextOptions.UseSqlServer("Data Source=(localdb)\\BookStore;Initial Catalog=BookStore;Integrated Security=True");
-
-#pragma warning restore CS8604 // Possible null reference argument.
-        });
-
         services.AddScoped<IQueryAuthorizer, QueryAuthorizer>();
     }
 
@@ -33,7 +25,6 @@ public static class ServiceRegistrar
         using var scope = services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<BooksDbContext>();
         await dbContext.Database.EnsureCreatedAsync();
-        await dbContext.Database.MigrateAsync();
         await DataSeeder.SeedData(dbContext);
     }
 }
