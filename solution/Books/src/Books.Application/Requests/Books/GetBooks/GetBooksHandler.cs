@@ -1,7 +1,7 @@
 using Books.Domain.Books;
 using MediatR;
 
-namespace Books.Application.Requests.GetBooks;
+namespace Books.Application.Requests.Books.GetBooks;
 
 public class GetBooksQuery : IRequest<IQueryable<Book>>
 {

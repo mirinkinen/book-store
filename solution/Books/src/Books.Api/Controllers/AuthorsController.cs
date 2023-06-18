@@ -1,12 +1,12 @@
-﻿using Books.Application.Requests.GetAuthorById;
-using Books.Application.Requests.GetAuthors;
+﻿using Books.Application.Requests.Authors.GetAuthorById;
+using Books.Application.Requests.Authors.GetAuthors;
 using Books.Domain.Authors;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 
-namespace Books.Api.Api.Controllers;
+namespace Books.Api.Controllers;
 
 public class AuthorsController : ODataController
 {

@@ -2,10 +2,12 @@ using Books.Domain.Authors;
 using Books.Domain.Books;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData.ModelBuilder;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Books.Api;
 
-public static class Program
+[SuppressMessage("Design", "CA1052:Static holder types should be Static or NotInheritable", Justification = "Must not be static for API tests.")]
+public class Program
 {
     public static async Task Main(string[] args)
     {

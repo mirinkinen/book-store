@@ -1,4 +1,4 @@
-﻿using Books.Application.Requests.GetBooks;
+﻿using Books.Application.Requests.Books.GetBooks;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Books.Application;

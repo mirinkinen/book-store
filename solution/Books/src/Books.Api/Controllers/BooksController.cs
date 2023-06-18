@@ -1,12 +1,12 @@
-﻿using Books.Application.Requests.GetBookById;
-using Books.Application.Requests.GetBooks;
+﻿using Books.Application.Requests.Books.GetBookById;
+using Books.Application.Requests.Books.GetBooks;
 using Books.Domain.Books;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 
-namespace Books.Api.Api.Controllers;
+namespace Books.Api.Controllers;
 
 public class BooksController : ODataController
 {

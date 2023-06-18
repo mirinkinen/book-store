@@ -2,7 +2,7 @@ using Books.Domain.Authors;
 using MediatR;
 using Microsoft.AspNetCore.OData.Results;
 
-namespace Books.Application.Requests.GetAuthorById;
+namespace Books.Application.Requests.Authors.GetAuthorById;
 
 public record GetAuthorByIdQuery(Guid AuthorId) : IRequest<SingleResult<Author>>;
 

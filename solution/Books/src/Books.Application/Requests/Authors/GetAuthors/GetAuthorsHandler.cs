@@ -1,7 +1,7 @@
 using Books.Domain.Authors;
 using MediatR;
 
-namespace Books.Application.Requests.GetAuthors;
+namespace Books.Application.Requests.Authors.GetAuthors;
 
 public class GetAuthorsQuery : IRequest<IQueryable<Author>>
 {

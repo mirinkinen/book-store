@@ -2,7 +2,7 @@ using Books.Domain.Books;
 using MediatR;
 using Microsoft.AspNetCore.OData.Results;
 
-namespace Books.Application.Requests.GetBookById;
+namespace Books.Application.Requests.Books.GetBookById;
 
 public record GetBookByIdQuery(Guid BookId) : IRequest<SingleResult<Book>>;
 
