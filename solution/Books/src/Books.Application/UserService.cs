@@ -1,13 +1,14 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿namespace Books.Application;
 
-namespace Books.Application;
-
-public class UserService
+public class UserService : IUserService
 {
-    [SuppressMessage("Design", "CA1024:Use properties where appropriate", Justification = "This is mock code")]
-    [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "This is mock code")]
     public User GetUser()
     {
-        return new();
+        var organizations = new[] {
+            Guid.Parse("5D8E6753-1479-408E-BB3D-CB3A02BE486C"),
+            Guid.Parse("284F633F-2D13-4F4D-8E37-1EE5C9F6B140")
+        };
+
+        return new User(Guid.Parse("893A5338-6BE9-4C95-831C-7F4A1816EA2B"), organizations);
     }
 }

@@ -15,9 +15,8 @@ public static class DataSeeder
         // If not already seeded.
         if (!booksDbContext.Authors.Any())
         {
-            var user = new User();
-            var authorizedOrganization1 = user.Organizations.First();
-            var authorizedOrganization2 = user.Organizations.Last();
+            var authorizedOrganization1 = Guid.Parse("5D8E6753-1479-408E-BB3D-CB3A02BE486C");
+            var authorizedOrganization2 = Guid.Parse("284F633F-2D13-4F4D-8E37-1EE5C9F6B140");
             var unauthorizedOrganization = Guid.Parse("A34B1695-DB25-4AFF-A717-3C47EC7E89F4");
 
             var authors = new[] {

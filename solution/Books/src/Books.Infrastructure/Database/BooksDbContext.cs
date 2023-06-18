@@ -14,8 +14,10 @@ public class BooksDbContext : DbContext
     {
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder builder)
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        builder.AddInterceptors(new AuditCommandInterceptor());
+        ArgumentNullException.ThrowIfNull(optionsBuilder);
+
+        optionsBuilder.AddInterceptors(new AuditCommandInterceptor());
     }
 }
