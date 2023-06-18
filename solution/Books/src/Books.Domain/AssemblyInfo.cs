@@ -1,3 +1,3 @@
 using System.Runtime.CompilerServices;
 
-[assembly:InternalsVisibleTo("Books.Infrastructure")]
+[assembly: InternalsVisibleTo("Books.Infrastructure")]

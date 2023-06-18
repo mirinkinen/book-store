@@ -1,5 +1,4 @@
-﻿using Books.Application;
-using Books.Domain.Authors;
+﻿using Books.Domain.Authors;
 using Books.Domain.Books;
 
 namespace Books.Infrastructure.Database;
