@@ -1,4 +1,5 @@
-﻿using Books.Application.Requests.Authors.GetAuthorById;
+﻿using Books.Application.Requests.Authors.AddAuthor;
+using Books.Application.Requests.Authors.GetAuthorById;
 using Books.Application.Requests.Authors.GetAuthors;
 using Books.Domain.Authors;
 using MediatR;
@@ -36,5 +37,10 @@ public class AuthorsController : ODataController
         }
 
         return Ok(author);
+    }
+
+    public Task<Author> Post([FromBody] AddAuthorCommand addAuthorCommand)
+    {
+        return _mediatr.Send(addAuthorCommand);
     }
 }

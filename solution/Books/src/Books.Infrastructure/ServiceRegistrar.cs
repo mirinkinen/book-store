@@ -1,7 +1,9 @@
 ﻿using Audit.Core;
 using Audit.EntityFramework;
 using Books.Application;
+using Books.Application.Requests.Authors.AddAuthor;
 using Books.Infrastructure.Database;
+using Books.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +23,7 @@ public static class ServiceRegistrar
         });
 
         services.AddScoped<IQueryAuthorizer, QueryAuthorizer>();
+        services.AddScoped<IAuthorRepository, AuthorRepository>();
     }
 
     public static async Task InitializeServices(IServiceProvider services)

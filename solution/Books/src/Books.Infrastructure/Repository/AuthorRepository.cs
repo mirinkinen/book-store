@@ -1,0 +1,25 @@
+﻿using Books.Application.Requests.Authors.AddAuthor;
+using Books.Domain.Authors;
+using Books.Infrastructure.Database;
+
+namespace Books.Infrastructure.Repository;
+
+internal class AuthorRepository : IAuthorRepository
+{
+    private readonly BooksDbContext _booksDbContext;
+
+    public AuthorRepository(BooksDbContext booksDbContext)
+    {
+        _booksDbContext = booksDbContext;
+    }
+
+    public void AddAuthor(Author author)
+    {
+        _booksDbContext.Add(author);
+    }
+
+    public Task<int> SaveChangesAsync()
+    {
+        return _booksDbContext.SaveChangesAsync();
+    }
+}
