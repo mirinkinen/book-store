@@ -17,18 +17,18 @@ public class BooksControllerTests : IClassFixture<WebApplicationFactory<Program>
     }
 
     [Fact]
-    public async Task Get_ShouldReturnsBooks()
+    public async Task Get_Top3_ShouldReturn3Books()
     {
         // Arrange
         var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
-        var response = await client.GetAsync("odata/books");
+        var response = await client.GetAsync("odata/books?$top=3");
 
         // Assert
         var odata = await response.Content.ReadFromJsonAsync<ODataResponse<Book>>();
         odata.Should().NotBeNull();
-        odata.Value.Should().NotBeEmpty();
+        odata.Value.Should().HaveCount(3);
     }
 }

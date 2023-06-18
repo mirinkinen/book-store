@@ -16,6 +16,15 @@ public static class ServiceRegistrar
         {
 #pragma warning disable CS8604 // Possible null reference argument.
             dbContextOptions.UseSqlite(_connection);
+
+#pragma warning restore CS8604 // Possible null reference argument.
+        });
+
+        services.AddDbContext<AuditBooksDbContext>(dbContextOptions =>
+        {
+#pragma warning disable CS8604 // Possible null reference argument.
+            dbContextOptions.UseSqlite(_connection);
+
 #pragma warning restore CS8604 // Possible null reference argument.
         });
 

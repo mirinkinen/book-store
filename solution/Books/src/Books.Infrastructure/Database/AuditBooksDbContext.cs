@@ -1,15 +1,16 @@
-﻿using Books.Domain.Authors;
+﻿using Audit.EntityFramework;
+using Books.Domain.Authors;
 using Books.Domain.Books;
 using Microsoft.EntityFrameworkCore;
 
 namespace Books.Infrastructure.Database;
 
-public class BooksDbContext : DbContext
+public class AuditBooksDbContext : AuditDbContext
 {
     public DbSet<Author> Authors { get; set; }
     public DbSet<Book> Books { get; set; }
 
-    public BooksDbContext(DbContextOptions<BooksDbContext> options) : base(options)
+    public AuditBooksDbContext(DbContextOptions<AuditBooksDbContext> options) : base(options)
     {
     }
 }
