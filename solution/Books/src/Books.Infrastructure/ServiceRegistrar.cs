@@ -17,6 +17,13 @@ public static class ServiceRegistrar
 #pragma warning restore CS8604 // Possible null reference argument.
         });
 
+        // Enable audit logging for all entities.
+        Audit.EntityFramework.Configuration
+            .Setup()
+            .ForContext<BooksDbContext>(config => config
+                .IncludeEntityObjects()
+                .AuditEventType("{context}:{database}"));
+
         services.AddScoped<IQueryAuthorizer, QueryAuthorizer>();
     }
 
