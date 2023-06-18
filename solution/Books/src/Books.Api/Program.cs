@@ -58,6 +58,7 @@ public class Program
         authorEntity.Property(book => book.Created);
         authorEntity.Property(book => book.Firstname);
         authorEntity.Property(book => book.Lastname);
+        authorEntity.Property(book => book.OrganizationId);
         authorEntity.Property(book => book.Updated);
         authorEntity.ContainsMany(author => author.Books);
         var authorEntitySet = modelBuilder.EntitySet<Author>("Authors");
