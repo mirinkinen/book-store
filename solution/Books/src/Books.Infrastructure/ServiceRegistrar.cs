@@ -1,7 +1,9 @@
 ﻿using Audit.Core;
+using Audit.EntityFramework;
 using Books.Application;
 using Books.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Books.Infrastructure;
@@ -27,8 +29,11 @@ public static class ServiceRegistrar
         using var scope = services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<BooksDbContext>();
         await dbContext.Database.EnsureCreatedAsync();
-        await DataSeeder.SeedData(dbContext);
+        await DataSeeder.SeedData(dbContext);        
+    }
 
+    public static void InitializeAuditLogging(IServiceProvider services)
+    {
         // Enable audit logging for all entities.
         Audit.EntityFramework.Configuration
             .Setup()

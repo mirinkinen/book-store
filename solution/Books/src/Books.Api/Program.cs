@@ -1,3 +1,4 @@
+using Books.Application.Settings;
 using Books.Domain.Authors;
 using Books.Domain.Books;
 using Microsoft.AspNetCore.OData;
@@ -21,6 +22,7 @@ public class Program
 
         var app = builder.Build();
 
+        InitializeAuditLogging(app);
         await Infrastructure.ServiceRegistrar.InitializeServices(app.Services);
 
         // Configure the HTTP request pipeline.
@@ -35,6 +37,20 @@ public class Program
         app.MapControllers();
 
         await app.RunAsync();
+    }
+
+    private static void InitializeAuditLogging(WebApplication app)
+    {
+        var auditOptions = new AuditOptions();
+        app.Configuration.GetSection(AuditOptions.Audit).Bind(auditOptions);
+        if (auditOptions.Enabled == true)
+        {
+            Infrastructure.ServiceRegistrar.InitializeAuditLogging(app.Services);
+        }
+        else
+        {
+            Audit.Core.Configuration.AuditDisabled = true;
+        }
     }
 
     private static void AddApiServices(WebApplicationBuilder builder)
