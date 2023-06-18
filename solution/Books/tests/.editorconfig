@@ -1,4 +1,10 @@
 [*.cs]
 
-# CA1707: Identifiers should not contain underscores
+# Identifiers should not contain underscores
 dotnet_diagnostic.CA1707.severity = none
+
+# Dereference of a possibly null reference.
+dotnet_diagnostic.CS8602.severity = none
+
+# Pass System.Uri objects instead of strings
+dotnet_diagnostic.CA2234.severity = none

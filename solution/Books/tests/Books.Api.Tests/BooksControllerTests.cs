@@ -1,9 +1,12 @@
+using Books.Domain.Books;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net.Http.Json;
-using System.Text.Json.Nodes;
 
 namespace Books.Api.Tests;
 
+[Trait("Category", "Books")]
+[Trait("Category", "API")]
 public class BooksControllerTests : IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly WebApplicationFactory<Program> _factory;
@@ -16,10 +19,16 @@ public class BooksControllerTests : IClassFixture<WebApplicationFactory<Program>
     [Fact]
     public async Task Get_ShouldReturnsBooks()
     {
+        // Arrange
         var client = _factory.CreateClient();
+        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
-        var response = await client.GetAsync("/odata/books");
+        // Act
+        var response = await client.GetAsync("odata/books");
 
-        var odata = await response.Content.ReadFromJsonAsync<JsonObject>();
+        // Assert
+        var odata = await response.Content.ReadFromJsonAsync<ODataResponse<Book>>();
+        odata.Should().NotBeNull();
+        odata.Value.Should().NotBeEmpty();
     }
 }
