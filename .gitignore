@@ -366,3 +366,6 @@ FodyWeavers.xsd
 
 # Live Unit Testing configuration
 *.lutconfig
+
+# Audit logging
+/solution/Books/src/Books.Api/audit

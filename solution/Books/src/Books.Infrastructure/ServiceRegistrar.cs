@@ -24,6 +24,9 @@ public static class ServiceRegistrar
                 .IncludeEntityObjects()
                 .AuditEventType("{context}:{database}"));
 
+        Audit.Core.Configuration.Setup()
+            .UseFileLogProvider(config => config.Directory("./audit"));
+
         services.AddScoped<IQueryAuthorizer, QueryAuthorizer>();
     }
 
