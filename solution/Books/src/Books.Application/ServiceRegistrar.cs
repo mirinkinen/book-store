@@ -10,7 +10,6 @@ public static class ServiceRegistrar
     public static void RegisterApplicationServices(IServiceCollection services)
     {
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetBooksQuery>());
-        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(AuditLoggingBehavior<,>));
 
         services.AddScoped<UserService>();
     }

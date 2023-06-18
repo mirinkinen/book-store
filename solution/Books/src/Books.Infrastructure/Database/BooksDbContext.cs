@@ -18,9 +18,7 @@ public class BooksDbContext : DbContext
     {
         ArgumentNullException.ThrowIfNull(optionsBuilder);
 
-        optionsBuilder.AddInterceptors(new AuditCommandInterceptor
-        {
-            ExcludeReaderEvents = true
-        });
+        optionsBuilder.EnableSensitiveDataLogging();
+        optionsBuilder.AddInterceptors(new AuditCommandInterceptor());
     }
 }
