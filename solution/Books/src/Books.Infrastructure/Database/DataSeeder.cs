@@ -26,10 +26,10 @@ public static class DataSeeder
         };
 
             // Set explicit IDs for easier testing.
-            authors[0].Id = Guid.Parse("8E6A9434-87F5-46B2-A6C3-522DC35D8EEF");
-            authors[1].Id = Guid.Parse("13E76BC5-BF2C-4FDB-BF42-8E0CA66EA7CE");
-            authors[2].Id = Guid.Parse("520B8C4F-72F1-4ECE-B1E2-8DD1DCA3476A");
-            authors[3].Id = Guid.Parse("1668C115-23B2-40EF-BACC-CFB79F6DC391");
+            authors[0].SetId(Guid.Parse("8E6A9434-87F5-46B2-A6C3-522DC35D8EEF"));
+            authors[1].SetId(Guid.Parse("13E76BC5-BF2C-4FDB-BF42-8E0CA66EA7CE"));
+            authors[2].SetId(Guid.Parse("520B8C4F-72F1-4ECE-B1E2-8DD1DCA3476A"));
+            authors[3].SetId(Guid.Parse("1668C115-23B2-40EF-BACC-CFB79F6DC391"));
 
             await booksDbContext.AddRangeAsync(authors);
             await booksDbContext.SaveChangesAsync();
@@ -48,6 +48,8 @@ public static class DataSeeder
             await booksDbContext.SaveChangesAsync();
         }
     }
+
+
 
     private static DateTime GetRandomPublishedDate()
     {

@@ -2,11 +2,11 @@ using Books.Domain.Books;
 using Books.Domain.SeedWork;
 using FluentAssertions;
 
-namespace Books.Api.Tests.Domain.Books;
+namespace Books.Domain.Tests.Books;
 
-[Trait("Category", "Books")]
+[Trait("Category", "Book")]
 [Trait("Category", "Unit")]
-public class EntityTests
+public class BookTests
 {
     [Fact]
     public void Book_WhenCreated_HasBasicInformation()

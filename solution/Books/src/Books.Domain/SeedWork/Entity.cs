@@ -5,13 +5,13 @@
     /// </summary>
     public abstract class Entity
     {
-        public Guid Id { get; internal set; }
+        public Guid Id { get; private set; }
 
-        public DateTime Created { get; internal set; }
+        public DateTime Created { get; private set; }
 
-        public DateTime Updated { get; internal set; }
+        public DateTime Updated { get; private set; }
 
-        public DateTime? Deleted { get; internal set; }
+        public DateTime? Deleted { get; private set; }
 
         protected Entity()
         {
