@@ -9,10 +9,12 @@ public record UpdateAuthorCommand(Guid AuthorId, string Firstname, string Lastna
 internal class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, Author?>
 {
     private readonly IAuthorRepository _authorRepository;
+    private readonly IUserService _userService;
 
-    public UpdateAuthorHandler(IAuthorRepository authorRepository)
+    public UpdateAuthorHandler(IAuthorRepository authorRepository, IUserService userService)
     {
         _authorRepository = authorRepository;
+        _userService = userService;
     }
 
     public async Task<Author?> Handle(UpdateAuthorCommand request, CancellationToken cancellationToken)
@@ -24,7 +26,8 @@ internal class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, Author
             return null;
         }
 
-        author.Update(request.Firstname, request.Lastname, request.Birthday);
+        var user = _userService.GetUser();
+        author.Update(request.Firstname, request.Lastname, request.Birthday, user.Id);
 
         await _authorRepository.SaveChangesAsync();
 

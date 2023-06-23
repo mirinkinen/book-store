@@ -12,9 +12,10 @@ public class Author : Entity
     public string LastName { get; private set; }
     public Guid OrganizationId { get; private set; }
 
-    public Author(string firstName, string lastName, DateTime birthday, Guid organizationId)
+    public Author(string firstName, string lastName, DateTime birthday, Guid organizationId, Guid modifiedBy)
+        : base(modifiedBy)
     {
-        Update(firstName, lastName, birthday);
+        Update(firstName, lastName, birthday, modifiedBy);
 
         if (organizationId == Guid.Empty)
         {
@@ -24,7 +25,7 @@ public class Author : Entity
         OrganizationId = organizationId;
     }
 
-    public void Update(string firstName, string lastName, DateTime birthday)
+    public void Update(string firstName, string lastName, DateTime birthday, Guid modifiedBy)
     {
         if (string.IsNullOrWhiteSpace(firstName))
         {
@@ -39,5 +40,6 @@ public class Author : Entity
         FirstName = firstName;
         LastName = lastName;
         Birthday = birthday;
+        ModifiedBy = modifiedBy;
     }
 }

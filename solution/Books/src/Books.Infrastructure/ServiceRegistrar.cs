@@ -33,7 +33,7 @@ public static class ServiceRegistrar
         // Seed data before audit logging to prevent unnecessary logging.
         using var scope = services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<BooksDbContext>();
-        await dbContext.Database.EnsureCreatedAsync();
+        await dbContext.Database.MigrateAsync();
         await DataSeeder.SeedData(dbContext);        
     }
 

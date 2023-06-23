@@ -11,15 +11,21 @@
 
         public DateTime Updated { get; private set; }
 
-        public DateTime? Deleted { get; private set; }
+        public Guid ModifiedBy { get; protected set; }
 
-        protected Entity()
+        protected Entity(Guid modifiedBy)
         {
+            if (modifiedBy == default)
+            {
+                throw new ArgumentException("ModifiedBy must not be empty.");
+            }
+
             var now = DateTime.UtcNow;
 
             Id = Guid.NewGuid();
             Created = now;
             Updated = now;
+            ModifiedBy = modifiedBy;
         }
     }
 }
