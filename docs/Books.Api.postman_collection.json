@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "532a2394-050d-4619-a8e6-ce2af04408e8",
+		"_postman_id": "9cf82d2b-4a3a-4327-bf75-d1dd0c7d8e81",
 		"name": "Books.Api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -18,7 +18,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/json;odata.metadata=minimal;odata.streaming=true"
+										"value": "application/json;odata.metadata=;odata.streaming=true"
 									}
 								],
 								"url": {
@@ -38,41 +38,36 @@
 									]
 								}
 							},
-							"response": [
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/odata/Books",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"odata",
-												"Books"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-										}
+							"response": []
+						},
+						{
+							"name": "books with 'and' in the title",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json;odata.metadata=;odata.streaming=true"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/odata/Books?$filter=contains(title,'and')",
+									"host": [
+										"{{baseUrl}}"
 									],
-									"cookie": [],
-									"body": "[\n  {\n    \"id\": \"urn:uuid:685c711a-49bf-50bf-8d55-2a6cba38ac9b\",\n    \"created\": \"1995-02-11T05:20:14.227Z\",\n    \"updated\": \"1995-01-18T03:41:53.196Z\",\n    \"deleted\": \"2021-11-15T09:04:36.219Z\",\n    \"title\": \"ut\",\n    \"datePublished\": \"1958-01-15T19:41:58.780Z\",\n    \"authorId\": \"urn:uuid:dc66dc94-20fb-7f1a-1d61-d38f0d270ae4\"\n  },\n  {\n    \"id\": \"1000d8e9-295f-c2bf-15a7-6bb4d241bef3\",\n    \"created\": \"2011-11-22T20:27:33.532Z\",\n    \"updated\": \"1976-07-08T01:03:41.138Z\",\n    \"deleted\": \"1953-08-01T22:43:05.990Z\",\n    \"title\": \"ea laborum ut\",\n    \"datePublished\": \"2006-01-11T04:34:24.668Z\",\n    \"authorId\": \"urn:uuid:2aee7850-440d-3f29-8381-13fe516dc1f5\"\n  }\n]"
+									"path": [
+										"odata",
+										"Books"
+									],
+									"query": [
+										{
+											"key": "$filter",
+											"value": "contains(title,'and')"
+										}
+									]
 								}
-							]
+							},
+							"response": []
 						},
 						{
 							"name": "book by ID",
@@ -85,51 +80,17 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/odata/Books(00aab3e3-9864-432b-a8a0-0bb33935932b)",
+									"raw": "{{baseUrl}}/odata/Books(A125C5BD-4F8E-4794-9C36-76E401FB4F24)",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"odata",
-										"Books(00aab3e3-9864-432b-a8a0-0bb33935932b)"
+										"Books(A125C5BD-4F8E-4794-9C36-76E401FB4F24)"
 									]
 								}
 							},
-							"response": [
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/odata/Books",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"odata",
-												"Books"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-										}
-									],
-									"cookie": [],
-									"body": "[\n  {\n    \"id\": \"urn:uuid:685c711a-49bf-50bf-8d55-2a6cba38ac9b\",\n    \"created\": \"1995-02-11T05:20:14.227Z\",\n    \"updated\": \"1995-01-18T03:41:53.196Z\",\n    \"deleted\": \"2021-11-15T09:04:36.219Z\",\n    \"title\": \"ut\",\n    \"datePublished\": \"1958-01-15T19:41:58.780Z\",\n    \"authorId\": \"urn:uuid:dc66dc94-20fb-7f1a-1d61-d38f0d270ae4\"\n  },\n  {\n    \"id\": \"1000d8e9-295f-c2bf-15a7-6bb4d241bef3\",\n    \"created\": \"2011-11-22T20:27:33.532Z\",\n    \"updated\": \"1976-07-08T01:03:41.138Z\",\n    \"deleted\": \"1953-08-01T22:43:05.990Z\",\n    \"title\": \"ea laborum ut\",\n    \"datePublished\": \"2006-01-11T04:34:24.668Z\",\n    \"authorId\": \"urn:uuid:2aee7850-440d-3f29-8381-13fe516dc1f5\"\n  }\n]"
-								}
-							]
+							"response": []
 						},
 						{
 							"name": "book by ID with author",
@@ -142,13 +103,13 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/odata/Books(00aab3e3-9864-432b-a8a0-0bb33935932b)?$expand=author",
+									"raw": "{{baseUrl}}/odata/Books(A125C5BD-4F8E-4794-9C36-76E401FB4F24)?$expand=author",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"odata",
-										"Books(00aab3e3-9864-432b-a8a0-0bb33935932b)"
+										"Books(A125C5BD-4F8E-4794-9C36-76E401FB4F24)"
 									],
 									"query": [
 										{
@@ -158,41 +119,7 @@
 									]
 								}
 							},
-							"response": [
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/odata/Books",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"odata",
-												"Books"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-										}
-									],
-									"cookie": [],
-									"body": "[\n  {\n    \"id\": \"urn:uuid:685c711a-49bf-50bf-8d55-2a6cba38ac9b\",\n    \"created\": \"1995-02-11T05:20:14.227Z\",\n    \"updated\": \"1995-01-18T03:41:53.196Z\",\n    \"deleted\": \"2021-11-15T09:04:36.219Z\",\n    \"title\": \"ut\",\n    \"datePublished\": \"1958-01-15T19:41:58.780Z\",\n    \"authorId\": \"urn:uuid:dc66dc94-20fb-7f1a-1d61-d38f0d270ae4\"\n  },\n  {\n    \"id\": \"1000d8e9-295f-c2bf-15a7-6bb4d241bef3\",\n    \"created\": \"2011-11-22T20:27:33.532Z\",\n    \"updated\": \"1976-07-08T01:03:41.138Z\",\n    \"deleted\": \"1953-08-01T22:43:05.990Z\",\n    \"title\": \"ea laborum ut\",\n    \"datePublished\": \"2006-01-11T04:34:24.668Z\",\n    \"authorId\": \"urn:uuid:2aee7850-440d-3f29-8381-13fe516dc1f5\"\n  }\n]"
-								}
-							]
+							"response": []
 						},
 						{
 							"name": "books with authors",
@@ -221,98 +148,7 @@
 									]
 								}
 							},
-							"response": [
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/odata/Books",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"odata",
-												"Books"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-										}
-									],
-									"cookie": [],
-									"body": "[\n  {\n    \"id\": \"urn:uuid:685c711a-49bf-50bf-8d55-2a6cba38ac9b\",\n    \"created\": \"1995-02-11T05:20:14.227Z\",\n    \"updated\": \"1995-01-18T03:41:53.196Z\",\n    \"deleted\": \"2021-11-15T09:04:36.219Z\",\n    \"title\": \"ut\",\n    \"datePublished\": \"1958-01-15T19:41:58.780Z\",\n    \"authorId\": \"urn:uuid:dc66dc94-20fb-7f1a-1d61-d38f0d270ae4\"\n  },\n  {\n    \"id\": \"1000d8e9-295f-c2bf-15a7-6bb4d241bef3\",\n    \"created\": \"2011-11-22T20:27:33.532Z\",\n    \"updated\": \"1976-07-08T01:03:41.138Z\",\n    \"deleted\": \"1953-08-01T22:43:05.990Z\",\n    \"title\": \"ea laborum ut\",\n    \"datePublished\": \"2006-01-11T04:34:24.668Z\",\n    \"authorId\": \"urn:uuid:2aee7850-440d-3f29-8381-13fe516dc1f5\"\n  }\n]"
-								}
-							]
-						},
-						{
-							"name": "books Copy",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/odata/Books",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"odata",
-										"Books"
-									]
-								}
-							},
-							"response": [
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/odata/Books",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"odata",
-												"Books"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-										}
-									],
-									"cookie": [],
-									"body": "[\n  {\n    \"id\": \"urn:uuid:685c711a-49bf-50bf-8d55-2a6cba38ac9b\",\n    \"created\": \"1995-02-11T05:20:14.227Z\",\n    \"updated\": \"1995-01-18T03:41:53.196Z\",\n    \"deleted\": \"2021-11-15T09:04:36.219Z\",\n    \"title\": \"ut\",\n    \"datePublished\": \"1958-01-15T19:41:58.780Z\",\n    \"authorId\": \"urn:uuid:dc66dc94-20fb-7f1a-1d61-d38f0d270ae4\"\n  },\n  {\n    \"id\": \"1000d8e9-295f-c2bf-15a7-6bb4d241bef3\",\n    \"created\": \"2011-11-22T20:27:33.532Z\",\n    \"updated\": \"1976-07-08T01:03:41.138Z\",\n    \"deleted\": \"1953-08-01T22:43:05.990Z\",\n    \"title\": \"ea laborum ut\",\n    \"datePublished\": \"2006-01-11T04:34:24.668Z\",\n    \"authorId\": \"urn:uuid:2aee7850-440d-3f29-8381-13fe516dc1f5\"\n  }\n]"
-								}
-							]
+							"response": []
 						},
 						{
 							"name": "book count",
@@ -336,41 +172,7 @@
 									]
 								}
 							},
-							"response": [
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/odata/Books",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"odata",
-												"Books"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-										}
-									],
-									"cookie": [],
-									"body": "[\n  {\n    \"id\": \"urn:uuid:685c711a-49bf-50bf-8d55-2a6cba38ac9b\",\n    \"created\": \"1995-02-11T05:20:14.227Z\",\n    \"updated\": \"1995-01-18T03:41:53.196Z\",\n    \"deleted\": \"2021-11-15T09:04:36.219Z\",\n    \"title\": \"ut\",\n    \"datePublished\": \"1958-01-15T19:41:58.780Z\",\n    \"authorId\": \"urn:uuid:dc66dc94-20fb-7f1a-1d61-d38f0d270ae4\"\n  },\n  {\n    \"id\": \"1000d8e9-295f-c2bf-15a7-6bb4d241bef3\",\n    \"created\": \"2011-11-22T20:27:33.532Z\",\n    \"updated\": \"1976-07-08T01:03:41.138Z\",\n    \"deleted\": \"1953-08-01T22:43:05.990Z\",\n    \"title\": \"ea laborum ut\",\n    \"datePublished\": \"2006-01-11T04:34:24.668Z\",\n    \"authorId\": \"urn:uuid:2aee7850-440d-3f29-8381-13fe516dc1f5\"\n  }\n]"
-								}
-							]
+							"response": []
 						},
 						{
 							"name": "recently published books",
@@ -399,41 +201,7 @@
 									]
 								}
 							},
-							"response": [
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/odata/Books",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"odata",
-												"Books"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-										}
-									],
-									"cookie": [],
-									"body": "[\n  {\n    \"id\": \"urn:uuid:685c711a-49bf-50bf-8d55-2a6cba38ac9b\",\n    \"created\": \"1995-02-11T05:20:14.227Z\",\n    \"updated\": \"1995-01-18T03:41:53.196Z\",\n    \"deleted\": \"2021-11-15T09:04:36.219Z\",\n    \"title\": \"ut\",\n    \"datePublished\": \"1958-01-15T19:41:58.780Z\",\n    \"authorId\": \"urn:uuid:dc66dc94-20fb-7f1a-1d61-d38f0d270ae4\"\n  },\n  {\n    \"id\": \"1000d8e9-295f-c2bf-15a7-6bb4d241bef3\",\n    \"created\": \"2011-11-22T20:27:33.532Z\",\n    \"updated\": \"1976-07-08T01:03:41.138Z\",\n    \"deleted\": \"1953-08-01T22:43:05.990Z\",\n    \"title\": \"ea laborum ut\",\n    \"datePublished\": \"2006-01-11T04:34:24.668Z\",\n    \"authorId\": \"urn:uuid:2aee7850-440d-3f29-8381-13fe516dc1f5\"\n  }\n]"
-								}
-							]
+							"response": []
 						},
 						{
 							"name": "only IDs and titles",
@@ -462,41 +230,7 @@
 									]
 								}
 							},
-							"response": [
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/odata/Books",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"odata",
-												"Books"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-										}
-									],
-									"cookie": [],
-									"body": "[\n  {\n    \"id\": \"urn:uuid:685c711a-49bf-50bf-8d55-2a6cba38ac9b\",\n    \"created\": \"1995-02-11T05:20:14.227Z\",\n    \"updated\": \"1995-01-18T03:41:53.196Z\",\n    \"deleted\": \"2021-11-15T09:04:36.219Z\",\n    \"title\": \"ut\",\n    \"datePublished\": \"1958-01-15T19:41:58.780Z\",\n    \"authorId\": \"urn:uuid:dc66dc94-20fb-7f1a-1d61-d38f0d270ae4\"\n  },\n  {\n    \"id\": \"1000d8e9-295f-c2bf-15a7-6bb4d241bef3\",\n    \"created\": \"2011-11-22T20:27:33.532Z\",\n    \"updated\": \"1976-07-08T01:03:41.138Z\",\n    \"deleted\": \"1953-08-01T22:43:05.990Z\",\n    \"title\": \"ea laborum ut\",\n    \"datePublished\": \"2006-01-11T04:34:24.668Z\",\n    \"authorId\": \"urn:uuid:2aee7850-440d-3f29-8381-13fe516dc1f5\"\n  }\n]"
-								}
-							]
+							"response": []
 						}
 					]
 				},
@@ -524,41 +258,7 @@
 									]
 								}
 							},
-							"response": [
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/odata/Authors",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"odata",
-												"Authors"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-										}
-									],
-									"cookie": [],
-									"body": "[\n  {\n    \"id\": \"611c0abc-886f-66c0-b5f3-86af67925ae0\",\n    \"created\": \"1971-10-17T22:58:52.160Z\",\n    \"updated\": \"2019-05-16T08:16:07.223Z\",\n    \"deleted\": \"2019-10-08T03:16:01.232Z\",\n    \"firstname\": \"id Ut\",\n    \"lastname\": \"aliquip\",\n    \"birthday\": \"1993-12-17T21:34:21.690Z\"\n  },\n  {\n    \"id\": \"urn:uuid:46169360-1da4-3779-45dd-f281bdaf6d63\",\n    \"created\": \"1983-05-18T08:31:39.762Z\",\n    \"updated\": \"1999-02-12T20:00:59.374Z\",\n    \"deleted\": \"2008-11-26T12:48:26.244Z\",\n    \"firstname\": \"labore sed\",\n    \"lastname\": \"dolor Lorem sint\",\n    \"birthday\": \"1996-06-20T20:09:28.034Z\"\n  }\n]"
-								}
-							]
+							"response": []
 						},
 						{
 							"name": "author by ID",
@@ -571,51 +271,17 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/odata/Authors(13e76bc5-bf2c-4fdb-bf42-8e0ca66ea7ce)",
+									"raw": "{{baseUrl}}/odata/Authors(8e6a9434-87f5-46b2-a6c3-522dc35d8eef)",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"odata",
-										"Authors(13e76bc5-bf2c-4fdb-bf42-8e0ca66ea7ce)"
+										"Authors(8e6a9434-87f5-46b2-a6c3-522dc35d8eef)"
 									]
 								}
 							},
-							"response": [
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/odata/Authors",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"odata",
-												"Authors"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-										}
-									],
-									"cookie": [],
-									"body": "[\n  {\n    \"id\": \"611c0abc-886f-66c0-b5f3-86af67925ae0\",\n    \"created\": \"1971-10-17T22:58:52.160Z\",\n    \"updated\": \"2019-05-16T08:16:07.223Z\",\n    \"deleted\": \"2019-10-08T03:16:01.232Z\",\n    \"firstname\": \"id Ut\",\n    \"lastname\": \"aliquip\",\n    \"birthday\": \"1993-12-17T21:34:21.690Z\"\n  },\n  {\n    \"id\": \"urn:uuid:46169360-1da4-3779-45dd-f281bdaf6d63\",\n    \"created\": \"1983-05-18T08:31:39.762Z\",\n    \"updated\": \"1999-02-12T20:00:59.374Z\",\n    \"deleted\": \"2008-11-26T12:48:26.244Z\",\n    \"firstname\": \"labore sed\",\n    \"lastname\": \"dolor Lorem sint\",\n    \"birthday\": \"1996-06-20T20:09:28.034Z\"\n  }\n]"
-								}
-							]
+							"response": []
 						},
 						{
 							"name": "authors with books",
@@ -644,41 +310,7 @@
 									]
 								}
 							},
-							"response": [
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/odata/Authors",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"odata",
-												"Authors"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-										}
-									],
-									"cookie": [],
-									"body": "[\n  {\n    \"id\": \"611c0abc-886f-66c0-b5f3-86af67925ae0\",\n    \"created\": \"1971-10-17T22:58:52.160Z\",\n    \"updated\": \"2019-05-16T08:16:07.223Z\",\n    \"deleted\": \"2019-10-08T03:16:01.232Z\",\n    \"firstname\": \"id Ut\",\n    \"lastname\": \"aliquip\",\n    \"birthday\": \"1993-12-17T21:34:21.690Z\"\n  },\n  {\n    \"id\": \"urn:uuid:46169360-1da4-3779-45dd-f281bdaf6d63\",\n    \"created\": \"1983-05-18T08:31:39.762Z\",\n    \"updated\": \"1999-02-12T20:00:59.374Z\",\n    \"deleted\": \"2008-11-26T12:48:26.244Z\",\n    \"firstname\": \"labore sed\",\n    \"lastname\": \"dolor Lorem sint\",\n    \"birthday\": \"1996-06-20T20:09:28.034Z\"\n  }\n]"
-								}
-							]
+							"response": []
 						},
 						{
 							"name": "authors with with book by ID",
@@ -691,7 +323,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/odata/Authors?$expand=Books($filter=id eq 00a6e86f-0ef7-4765-812a-4de47d318981)",
+									"raw": "{{baseUrl}}/odata/Authors?$expand=Books($filter=id eq A125C5BD-4F8E-4794-9C36-76E401FB4F24)",
 									"host": [
 										"{{baseUrl}}"
 									],
@@ -702,46 +334,12 @@
 									"query": [
 										{
 											"key": "$expand",
-											"value": "Books($filter=id eq 00a6e86f-0ef7-4765-812a-4de47d318981)"
+											"value": "Books($filter=id eq A125C5BD-4F8E-4794-9C36-76E401FB4F24)"
 										}
 									]
 								}
 							},
-							"response": [
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/odata/Authors",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"odata",
-												"Authors"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-										}
-									],
-									"cookie": [],
-									"body": "[\n  {\n    \"id\": \"611c0abc-886f-66c0-b5f3-86af67925ae0\",\n    \"created\": \"1971-10-17T22:58:52.160Z\",\n    \"updated\": \"2019-05-16T08:16:07.223Z\",\n    \"deleted\": \"2019-10-08T03:16:01.232Z\",\n    \"firstname\": \"id Ut\",\n    \"lastname\": \"aliquip\",\n    \"birthday\": \"1993-12-17T21:34:21.690Z\"\n  },\n  {\n    \"id\": \"urn:uuid:46169360-1da4-3779-45dd-f281bdaf6d63\",\n    \"created\": \"1983-05-18T08:31:39.762Z\",\n    \"updated\": \"1999-02-12T20:00:59.374Z\",\n    \"deleted\": \"2008-11-26T12:48:26.244Z\",\n    \"firstname\": \"labore sed\",\n    \"lastname\": \"dolor Lorem sint\",\n    \"birthday\": \"1996-06-20T20:09:28.034Z\"\n  }\n]"
-								}
-							]
+							"response": []
 						},
 						{
 							"name": "authors with book count",
@@ -774,41 +372,7 @@
 									]
 								}
 							},
-							"response": [
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/odata/Authors",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"odata",
-												"Authors"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-										}
-									],
-									"cookie": [],
-									"body": "[\n  {\n    \"id\": \"611c0abc-886f-66c0-b5f3-86af67925ae0\",\n    \"created\": \"1971-10-17T22:58:52.160Z\",\n    \"updated\": \"2019-05-16T08:16:07.223Z\",\n    \"deleted\": \"2019-10-08T03:16:01.232Z\",\n    \"firstname\": \"id Ut\",\n    \"lastname\": \"aliquip\",\n    \"birthday\": \"1993-12-17T21:34:21.690Z\"\n  },\n  {\n    \"id\": \"urn:uuid:46169360-1da4-3779-45dd-f281bdaf6d63\",\n    \"created\": \"1983-05-18T08:31:39.762Z\",\n    \"updated\": \"1999-02-12T20:00:59.374Z\",\n    \"deleted\": \"2008-11-26T12:48:26.244Z\",\n    \"firstname\": \"labore sed\",\n    \"lastname\": \"dolor Lorem sint\",\n    \"birthday\": \"1996-06-20T20:09:28.034Z\"\n  }\n]"
-								}
-							]
+							"response": []
 						},
 						{
 							"name": "author count",
@@ -832,42 +396,71 @@
 									]
 								}
 							},
-							"response": [
-								{
-									"name": "Success",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-											}
-										],
-										"url": {
-											"raw": "{{baseUrl}}/odata/Authors/$count",
-											"host": [
-												"{{baseUrl}}"
-											],
-											"path": [
-												"odata",
-												"Authors",
-												"$count"
-											]
+							"response": []
+						},
+						{
+							"name": "author",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"firstname\": \"string\",\r\n  \"lastname\": \"string\",\r\n  \"birthday\": \"2023-06-18T19:25:10.598Z\",\r\n  \"organizationId\": \"5D8E6753-1479-408E-BB3D-CB3A02BE486C\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
 										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Content-Type",
-											"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/odata/Authors?&$expand=Books($count=true;$top=0)",
+									"host": [
+										"{{baseUrl}}"
 									],
-									"cookie": [],
-									"body": "[\n  {\n    \"id\": \"611c0abc-886f-66c0-b5f3-86af67925ae0\",\n    \"created\": \"1971-10-17T22:58:52.160Z\",\n    \"updated\": \"2019-05-16T08:16:07.223Z\",\n    \"deleted\": \"2019-10-08T03:16:01.232Z\",\n    \"firstname\": \"id Ut\",\n    \"lastname\": \"aliquip\",\n    \"birthday\": \"1993-12-17T21:34:21.690Z\"\n  },\n  {\n    \"id\": \"urn:uuid:46169360-1da4-3779-45dd-f281bdaf6d63\",\n    \"created\": \"1983-05-18T08:31:39.762Z\",\n    \"updated\": \"1999-02-12T20:00:59.374Z\",\n    \"deleted\": \"2008-11-26T12:48:26.244Z\",\n    \"firstname\": \"labore sed\",\n    \"lastname\": \"dolor Lorem sint\",\n    \"birthday\": \"1996-06-20T20:09:28.034Z\"\n  }\n]"
+									"path": [
+										"odata",
+										"Authors"
+									],
+									"query": [
+										{
+											"key": null,
+											"value": null
+										},
+										{
+											"key": "$expand",
+											"value": "Books($count=true;$top=0)"
+										}
+									]
 								}
-							]
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"firstname\": \"string\",\r\n  \"lastname\": \"string\",\r\n  \"birthday\": \"2023-06-18T19:32:50.389Z\",\r\n  \"organizationId\": \"00000000-0000-0000-0000-000000000000\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/odata/Authors",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"odata",
+										"Authors"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
