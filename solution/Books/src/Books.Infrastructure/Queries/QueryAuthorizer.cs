@@ -1,9 +1,11 @@
-﻿using Books.Domain.Authors;
+﻿using Books.Application;
+using Books.Application.Services;
+using Books.Domain.Authors;
 using Books.Domain.Books;
 using Books.Domain.SeedWork;
 using Books.Infrastructure.Database;
 
-namespace Books.Application;
+namespace Books.Infrastructure.Queries;
 
 public class QueryAuthorizer : IQueryAuthorizer
 {

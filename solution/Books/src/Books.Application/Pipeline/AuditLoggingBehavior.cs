@@ -1,7 +1,7 @@
 ﻿using Audit.Core;
 using MediatR;
 
-namespace Books.Application.Behaviours;
+namespace Books.Application.Pipeline;
 
 internal class AuditLoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>

@@ -1,8 +1,10 @@
 ﻿using Audit.Core;
 using Audit.EntityFramework;
 using Books.Application;
-using Books.Application.Requests.Authors.AddAuthor;
+using Books.Application.Services;
+using Books.Domain.Authors;
 using Books.Infrastructure.Database;
+using Books.Infrastructure.Queries;
 using Books.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

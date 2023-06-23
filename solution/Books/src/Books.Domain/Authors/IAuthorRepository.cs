@@ -1,6 +1,4 @@
-﻿using Books.Domain.Authors;
-
-namespace Books.Application.Requests.Authors.AddAuthor;
+﻿namespace Books.Domain.Authors;
 
 public interface IAuthorRepository
 {

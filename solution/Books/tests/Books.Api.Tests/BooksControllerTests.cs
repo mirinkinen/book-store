@@ -7,11 +7,11 @@ namespace Books.Api.Tests;
 
 [Trait("Category", "Books")]
 [Trait("Category", "API")]
-public class BooksControllerTests : IClassFixture<WebApplicationFactory<Program>>
+public class BooksControllerTests : IClassFixture<ApiTestWebApplicationFactory<Program>>
 {
     private readonly WebApplicationFactory<Program> _factory;
 
-    public BooksControllerTests(WebApplicationFactory<Program> factory)
+    public BooksControllerTests(ApiTestWebApplicationFactory<Program> factory)
     {
         _factory = factory;
     }

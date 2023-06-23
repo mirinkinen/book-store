@@ -1,5 +1,4 @@
-﻿using Books.Application.Requests.Authors.AddAuthor;
-using Books.Domain.Authors;
+﻿using Books.Domain.Authors;
 using Books.Infrastructure.Database;
 
 namespace Books.Infrastructure.Repository;

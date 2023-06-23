@@ -1,6 +1,6 @@
 ﻿using Books.Domain.SeedWork;
 
-namespace Books.Application;
+namespace Books.Application.Services;
 
 public interface IQueryAuthorizer
 {

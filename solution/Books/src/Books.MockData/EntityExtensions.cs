@@ -1,7 +1,7 @@
 ﻿using Books.Domain.SeedWork;
 using System.Reflection;
 
-namespace Books.Infrastructure;
+namespace Books.MockData;
 
 internal static class EntityExtensions
 {

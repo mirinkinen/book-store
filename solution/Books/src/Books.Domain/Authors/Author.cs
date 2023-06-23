@@ -12,7 +12,7 @@ public class Author : Entity
 
     public DateTime Birthday { get; private set; }
 
-    public ReadOnlyCollection<Book> Books { get; private set; } = new List<Book>().AsReadOnly();
+    public IList<Book> Books { get; private set; } = new List<Book>();
 
     public Guid OrganizationId { get; private set; }
 
