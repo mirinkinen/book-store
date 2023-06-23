@@ -15,5 +15,7 @@ public class BookEntityConfiguration : IEntityTypeConfiguration<Book>
             .HasOne(book => book.Author)
             .WithMany(author => author.Books)
             .HasForeignKey(book => book.AuthorId);
+
+        builder.Property(e => e.Title).HasMaxLength(256);
     }
 }

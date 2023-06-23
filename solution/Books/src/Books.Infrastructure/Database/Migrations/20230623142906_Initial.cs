@@ -1,15 +1,14 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Books.Infrastructure.Migrations
+namespace Books.Infrastructure.Database.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
     {
         /// <inheritdoc />
-        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Generated code")]
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -28,13 +27,13 @@ namespace Books.Infrastructure.Migrations
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
                         .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
                         .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "AuthorsHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
                         .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
                         .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart"),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "AuthorsHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
@@ -70,7 +69,7 @@ namespace Books.Infrastructure.Migrations
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
                         .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
                         .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart"),
-                    Deleted = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "AuthorsHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
@@ -97,7 +96,7 @@ namespace Books.Infrastructure.Migrations
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
                         .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
                         .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Title = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "BooksHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
@@ -139,7 +138,7 @@ namespace Books.Infrastructure.Migrations
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
                         .Annotation("SqlServer:TemporalPeriodEndColumnName", "PeriodEnd")
                         .Annotation("SqlServer:TemporalPeriodStartColumnName", "PeriodStart"),
-                    Deleted = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "BooksHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
@@ -169,7 +168,6 @@ namespace Books.Infrastructure.Migrations
         }
 
         /// <inheritdoc />
-        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Generated code")]
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
