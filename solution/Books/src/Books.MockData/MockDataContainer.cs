@@ -40,8 +40,11 @@ public static class MockDataContainer
         var books = new List<Book>();
 
         // Add books with known IDs for easier testing.
+        var theShining = new Book("The Shining", new DateTime(1977, 1, 28), _stephenKingId);
+        theShining.SetId(Guid.Parse("A125C5BD-4F8E-4794-9C36-76E401FB4F24"));
+
         books.AddRange(new[] {
-            new Book("The Shining", new DateTime(1977,1,28), _stephenKingId),
+            theShining,
             new Book("The Green Mile", new DateTime(1996, 3, 28), _stephenKingId),
             new Book("End of Watch", new DateTime(2016, 6, 7), _stephenKingId),
 
