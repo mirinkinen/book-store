@@ -59,4 +59,18 @@ public partial class AuthorsController : ODataController
 
         return Updated(author);
     }
+
+    public async Task<IActionResult> Delete([FromRoute] Guid key)
+    {
+        var command = new DeleteAuthorCommand(key);
+
+        var author = await _mediatr.Send(command);
+
+        if (author == null)
+        {
+            return NotFound();
+        }
+
+        return NoContent();
+    }
 }

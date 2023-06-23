@@ -17,6 +17,11 @@ internal class AuthorRepository : IAuthorRepository
         _booksDbContext.Add(author);
     }
 
+    public void Delete(Author author)
+    {
+        _booksDbContext.Remove(author);
+    }
+
     public ValueTask<Author?> GetAuthorById(Guid authorId, CancellationToken cancellationToken)
     {
         return _booksDbContext.FindAsync<Author>(authorId, cancellationToken);
