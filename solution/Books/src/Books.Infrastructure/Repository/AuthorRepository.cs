@@ -17,6 +17,11 @@ internal class AuthorRepository : IAuthorRepository
         _booksDbContext.Add(author);
     }
 
+    public ValueTask<Author?> GetAuthorById(Guid authorId, CancellationToken cancellationToken)
+    {
+        return _booksDbContext.FindAsync<Author>(authorId, cancellationToken);
+    }
+
     public Task<int> SaveChangesAsync()
     {
         return _booksDbContext.SaveChangesAsync();

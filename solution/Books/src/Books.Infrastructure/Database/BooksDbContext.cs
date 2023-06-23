@@ -1,6 +1,7 @@
 ﻿using Audit.EntityFramework.Interceptors;
 using Books.Domain.Authors;
 using Books.Domain.Books;
+using Books.Infrastructure.Database.EntityTypeConfigurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Books.Infrastructure.Database;
@@ -20,5 +21,13 @@ public class BooksDbContext : DbContext
 
         optionsBuilder.EnableSensitiveDataLogging();
         optionsBuilder.AddInterceptors(new AuditCommandInterceptor());
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        ArgumentNullException.ThrowIfNull(modelBuilder);
+
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AuthorEntityConfiguration).Assembly);
     }
 }

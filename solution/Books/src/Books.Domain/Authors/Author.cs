@@ -1,22 +1,30 @@
 ﻿using Books.Domain.Books;
 using Books.Domain.SeedWork;
-using System.Collections.ObjectModel;
 
 namespace Books.Domain.Authors;
 
 public class Author : Entity
 {
+    public DateTime Birthday { get; private set; }
+    public IList<Book> Books { get; private set; } = new List<Book>();
     public string FirstName { get; private set; }
 
     public string LastName { get; private set; }
-
-    public DateTime Birthday { get; private set; }
-
-    public IList<Book> Books { get; private set; } = new List<Book>();
-
     public Guid OrganizationId { get; private set; }
 
     public Author(string firstName, string lastName, DateTime birthday, Guid organizationId)
+    {
+        Update(firstName, lastName, birthday);
+
+        if (organizationId == Guid.Empty)
+        {
+            throw new DomainRuleException("Empty organization ID not allowed.");
+        }
+
+        OrganizationId = organizationId;
+    }
+
+    public void Update(string firstName, string lastName, DateTime birthday)
     {
         if (string.IsNullOrWhiteSpace(firstName))
         {
@@ -28,14 +36,8 @@ public class Author : Entity
             throw new DomainRuleException($"'{nameof(lastName)}' cannot be null or whitespace.");
         }
 
-        if (organizationId == Guid.Empty)
-        {
-            throw new DomainRuleException("Empty organization ID not allowed.");
-        }
-
         FirstName = firstName;
         LastName = lastName;
         Birthday = birthday;
-        OrganizationId = organizationId;
     }
 }

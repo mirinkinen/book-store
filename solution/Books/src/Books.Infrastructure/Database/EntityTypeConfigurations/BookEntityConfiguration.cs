@@ -11,6 +11,7 @@ public class BookEntityConfiguration : IEntityTypeConfiguration<Book>
         ArgumentNullException.ThrowIfNull(builder);
 
         builder
+            .ToTable("Books", options => options.IsTemporal())
             .HasOne(book => book.Author)
             .WithMany(author => author.Books)
             .HasForeignKey(book => book.AuthorId);
