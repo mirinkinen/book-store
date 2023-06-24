@@ -1,19 +1,21 @@
 ﻿using Books.Infrastructure.Database;
+using MartinCostello.SqlLocalDb;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace Books.Api.Tests;
 
-public class ApiTestWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
+public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
 {
+    private static readonly string _instanceName = "BookStoreTest";
+    private static readonly SqlLocalDbApi _sqlLoccalDbApi = new();
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
 
-        builder.UseEnvironment("Development");
         base.ConfigureWebHost(builder);
 
         builder.ConfigureServices(services =>
@@ -22,18 +24,29 @@ public class ApiTestWebApplicationFactory<TProgram> : WebApplicationFactory<TPro
             var dbContextDescriptor = services.Single(d => d.ServiceType == typeof(DbContextOptions<BooksDbContext>));
             services.Remove(dbContextDescriptor);
 
+            StartTestDatabaseInstance();
+
+            var dbName = $"BookStoreTest_{Guid.NewGuid():N}";
+            var connectionString = $"Data Source=(localdb)\\{_instanceName};Initial Catalog={dbName};Integrated Security=True";
+
             services.AddDbContext<BooksDbContext>(dbContextOptions =>
             {
-                dbContextOptions.UseInMemoryDatabase("BookStoreTest");
+                dbContextOptions.UseSqlServer(connectionString);
             });
         });
     }
 
-    public Task InitializeDatabase()
+    private static void StartTestDatabaseInstance()
     {
-        using var scope = Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<BooksDbContext>();
+        lock (_sqlLoccalDbApi)
+        {
+            ISqlLocalDbInstanceInfo instance = _sqlLoccalDbApi.GetOrCreateInstance(_instanceName);
+            ISqlLocalDbInstanceManager manager = instance.Manage();
 
-        return DataSeeder.SeedData(dbContext);
+            if (!instance.IsRunning)
+            {
+                manager.Start();
+            }
+        }
     }
 }
