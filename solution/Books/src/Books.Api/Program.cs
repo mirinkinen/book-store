@@ -58,6 +58,7 @@ public class Program
         authorEntity.Property(book => book.LastName);
         authorEntity.Property(book => book.OrganizationId);
         authorEntity.Property(book => book.ModifiedAt);
+        authorEntity.Property(book => book.ModifiedBy);
         authorEntity.ContainsMany(author => author.Books);
         var authorEntitySet = modelBuilder.EntitySet<Author>("Authors");
 
@@ -68,6 +69,7 @@ public class Program
         bookEntity.Property(book => book.DatePublished);
         bookEntity.Property(book => book.Title);
         bookEntity.Property(book => book.ModifiedAt);
+        bookEntity.Property(book => book.ModifiedBy);
         bookEntity.ContainsRequired(book => book.Author);
 
         var bookEntitySet = modelBuilder.EntitySet<Book>("Books");

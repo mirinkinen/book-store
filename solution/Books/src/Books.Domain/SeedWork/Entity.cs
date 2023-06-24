@@ -20,11 +20,9 @@
                 throw new ArgumentException("ModifiedBy must not be empty.");
             }
 
-            var now = DateTime.UtcNow;
-
             Id = Guid.NewGuid();
-            CreatedAt = now;
-            ModifiedAt = now;
+            CreatedAt = DateTime.UtcNow;
+            ModifiedAt = CreatedAt;
             ModifiedBy = modifiedBy;
         }
     }
