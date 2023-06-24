@@ -28,12 +28,4 @@ public class ApiTestWebApplicationFactory<TProgram> : WebApplicationFactory<TPro
             });
         });
     }
-
-    public Task InitializeDatabase()
-    {
-        using var scope = Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<BooksDbContext>();
-
-        return DataSeeder.SeedData(dbContext);
-    }
 }
