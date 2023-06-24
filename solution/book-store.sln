@@ -30,13 +30,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Infrastructure", "Boo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.IntegrationTests", "Books\tests\Books.IntegrationTests\Books.IntegrationTests.csproj", "{74415934-E712-4241-A8C1-D74E72C7AF81}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.MockData", "Books\src\Books.MockData\Books.MockData.csproj", "{92F7ED52-B826-4D1A-A7EC-A9383ECD871A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.MockDataSeeder", "Books\tools\Books.MockDataSeeder\Books.MockDataSeeder.csproj", "{92F7ED52-B826-4D1A-A7EC-A9383ECD871A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Infrastructure.IntegrationTests", "Books\tests\Books.Infrastructure.IntegrationTests\Books.Infrastructure.IntegrationTests.csproj", "{7ABCE44A-1EE3-4820-BAD3-5F95628F4070}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Infrastructure.IntegrationTests", "Books\tests\Books.Infrastructure.IntegrationTests\Books.Infrastructure.IntegrationTests.csproj", "{7ABCE44A-1EE3-4820-BAD3-5F95628F4070}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Application.UnitTests", "Books\tests\Books.Application.UnitTests\Books.Application.UnitTests.csproj", "{913FBA20-82A8-49F9-8D22-D7FCDED9D09C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Application.UnitTests", "Books\tests\Books.Application.UnitTests\Books.Application.UnitTests.csproj", "{913FBA20-82A8-49F9-8D22-D7FCDED9D09C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Api.UnitTests", "Books\tests\Books.Api.UnitTests\Books.Api.UnitTests.csproj", "{56890B31-D76B-4C48-BEAD-1DA6BE1CDFD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Api.UnitTests", "Books\tests\Books.Api.UnitTests\Books.Api.UnitTests.csproj", "{56890B31-D76B-4C48-BEAD-1DA6BE1CDFD1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{AC7A8847-1363-41F7-B9CE-7EFE6D1C3B3B}"
+	ProjectSection(SolutionItems) = preProject
+		Books\tools\Drop-Database.cmd = Books\tools\Drop-Database.cmd
+		Books\tools\Seed-Mock-Data.cmd = Books\tools\Seed-Mock-Data.cmd
+		Books\tools\Update-Database.cmd = Books\tools\Update-Database.cmd
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,10 +104,11 @@ Global
 		{CFC72D68-D736-4F44-AA6D-ACE9A8782291} = {7801A4D9-54CF-43B4-B731-199A19B625DA}
 		{43E7F853-2DCC-4382-9611-FABF56B2A4F0} = {7801A4D9-54CF-43B4-B731-199A19B625DA}
 		{74415934-E712-4241-A8C1-D74E72C7AF81} = {EC8B366A-2968-43BF-86DF-241844445669}
-		{92F7ED52-B826-4D1A-A7EC-A9383ECD871A} = {7801A4D9-54CF-43B4-B731-199A19B625DA}
+		{92F7ED52-B826-4D1A-A7EC-A9383ECD871A} = {AC7A8847-1363-41F7-B9CE-7EFE6D1C3B3B}
 		{7ABCE44A-1EE3-4820-BAD3-5F95628F4070} = {EC8B366A-2968-43BF-86DF-241844445669}
 		{913FBA20-82A8-49F9-8D22-D7FCDED9D09C} = {EC8B366A-2968-43BF-86DF-241844445669}
 		{56890B31-D76B-4C48-BEAD-1DA6BE1CDFD1} = {EC8B366A-2968-43BF-86DF-241844445669}
+		{AC7A8847-1363-41F7-B9CE-7EFE6D1C3B3B} = {17908272-3BC4-4555-AF7C-B4C09AC86105}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2A7F10F0-64D8-490D-8D09-380016A23617}

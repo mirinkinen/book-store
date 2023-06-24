@@ -1,0 +1,1 @@
+dotnet ef database drop -s ..\src\Books.Api\ -p ..\src\Books.Infrastructure\

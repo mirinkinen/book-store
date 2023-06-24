@@ -14,7 +14,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Books.Application\Books.Application.csproj" />
     <ProjectReference Include="..\Books.Domain\Books.Domain.csproj" />
-    <ProjectReference Include="..\Books.MockData\Books.MockData.csproj" />
   </ItemGroup>
     
   <ItemGroup>

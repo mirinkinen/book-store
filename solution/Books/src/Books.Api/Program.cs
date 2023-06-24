@@ -23,7 +23,6 @@ public class Program
         var app = builder.Build();
 
         InitializeAuditLogging(app);
-        await Infrastructure.ServiceRegistrar.InitializeServices(app.Services);
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())

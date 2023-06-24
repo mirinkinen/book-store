@@ -6,7 +6,7 @@ using System.Net.Http.Json;
 namespace Books.Api.Tests;
 
 [Trait("Category", "Books")]
-[Trait("Category", "API")]
+[Trait("Category", "Integration")]
 public class BooksControllerTests : IClassFixture<ApiTestWebApplicationFactory<Program>>
 {
     private readonly WebApplicationFactory<Program> _factory;

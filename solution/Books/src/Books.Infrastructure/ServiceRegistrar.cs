@@ -28,15 +28,6 @@ public static class ServiceRegistrar
         services.AddScoped<IAuthorRepository, AuthorRepository>();
     }
 
-    public static async Task InitializeServices(IServiceProvider services)
-    {
-        // Seed data before audit logging to prevent unnecessary logging.
-        using var scope = services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<BooksDbContext>();
-        await dbContext.Database.MigrateAsync();
-        await DataSeeder.SeedData(dbContext);        
-    }
-
     public static void InitializeAuditLogging(IServiceProvider services)
     {
         // Enable audit logging for all entities.
