@@ -1,6 +1,8 @@
 using Books.Domain.Books;
+using Books.Infrastructure.Database;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Json;
 
 namespace Books.Api.Tests;
@@ -20,6 +22,14 @@ public class BooksControllerTests : IClassFixture<ApiTestWebApplicationFactory<P
     public async Task Get_Top3_ShouldReturn3Books()
     {
         // Arrange
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var scopedServices = scope.ServiceProvider;
+            var db = scopedServices.GetRequiredService<BooksDbContext>();
+
+            await DataSeeder.SeedData(db);
+        }
+
         var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
