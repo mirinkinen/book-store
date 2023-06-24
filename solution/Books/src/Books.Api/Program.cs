@@ -1,4 +1,3 @@
-using Books.Application.Settings;
 using Books.Domain.Authors;
 using Books.Domain.Books;
 using Microsoft.AspNetCore.OData;
@@ -22,8 +21,6 @@ public class Program
 
         var app = builder.Build();
 
-        InitializeAuditLogging(app);
-
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
@@ -36,20 +33,6 @@ public class Program
         app.MapControllers();
 
         await app.RunAsync();
-    }
-
-    private static void InitializeAuditLogging(WebApplication app)
-    {
-        var auditOptions = new AuditOptions();
-        app.Configuration.GetSection(AuditOptions.Audit).Bind(auditOptions);
-        if (auditOptions.Enabled == true)
-        {
-            Infrastructure.ServiceRegistrar.InitializeAuditLogging(app.Services);
-        }
-        else
-        {
-            Audit.Core.Configuration.AuditDisabled = true;
-        }
     }
 
     private static void AddApiServices(WebApplicationBuilder builder)
@@ -70,21 +53,21 @@ public class Program
         var authorEntity = modelBuilder.EntityType<Author>();
         authorEntity.HasKey(book => book.Id);
         authorEntity.Property(book => book.Birthday);
-        authorEntity.Property(book => book.Created);
+        authorEntity.Property(book => book.CreatedAt);
         authorEntity.Property(book => book.FirstName);
         authorEntity.Property(book => book.LastName);
         authorEntity.Property(book => book.OrganizationId);
-        authorEntity.Property(book => book.Updated);
+        authorEntity.Property(book => book.ModifiedAt);
         authorEntity.ContainsMany(author => author.Books);
         var authorEntitySet = modelBuilder.EntitySet<Author>("Authors");
 
         var bookEntity = modelBuilder.EntityType<Book>();
         bookEntity.HasKey(book => book.Id);
         bookEntity.Property(book => book.AuthorId);
-        bookEntity.Property(book => book.Created);
+        bookEntity.Property(book => book.CreatedAt);
         bookEntity.Property(book => book.DatePublished);
         bookEntity.Property(book => book.Title);
-        bookEntity.Property(book => book.Updated);
+        bookEntity.Property(book => book.ModifiedAt);
         bookEntity.ContainsRequired(book => book.Author);
 
         var bookEntitySet = modelBuilder.EntitySet<Book>("Books");

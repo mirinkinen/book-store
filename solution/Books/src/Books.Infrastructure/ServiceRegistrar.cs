@@ -1,13 +1,9 @@
-﻿using Audit.Core;
-using Audit.EntityFramework;
-using Books.Application;
-using Books.Application.Services;
+﻿using Books.Application.Services;
 using Books.Domain.Authors;
 using Books.Infrastructure.Database;
 using Books.Infrastructure.Queries;
 using Books.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Books.Infrastructure;
@@ -26,26 +22,5 @@ public static class ServiceRegistrar
 
         services.AddScoped<IQueryAuthorizer, QueryAuthorizer>();
         services.AddScoped<IAuthorRepository, AuthorRepository>();
-    }
-
-    public static void InitializeAuditLogging(IServiceProvider services)
-    {
-        // Enable audit logging for all entities.
-        Audit.EntityFramework.Configuration
-            .Setup()
-            .ForContext<BooksDbContext>(config => config
-                .IncludeEntityObjects()
-                .AuditEventType("{context}:{database}"));
-
-        // Audit log to file.
-        Audit.Core.Configuration.Setup()
-            .UseFileLogProvider(config => config.Directory("./audit"));
-
-        Audit.Core.Configuration.AddCustomAction(ActionType.OnScopeCreated, auditScope =>
-        {
-            using var scope = services.CreateScope();
-            var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
-            auditScope.SetCustomField("UserId", userService.GetUser().Id);
-        });
     }
 }

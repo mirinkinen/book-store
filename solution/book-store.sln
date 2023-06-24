@@ -41,7 +41,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{AC7A8847-1363-41F7-B9CE-7EFE6D1C3B3B}"
 	ProjectSection(SolutionItems) = preProject
 		Books\tools\Drop-Database.cmd = Books\tools\Drop-Database.cmd
-		Books\tools\Seed-Mock-Data.cmd = Books\tools\Seed-Mock-Data.cmd
+		Add-Migration.txt = Add-Migration.txt
 		Books\tools\Update-Database.cmd = Books\tools\Update-Database.cmd
 	EndProjectSection
 EndProject

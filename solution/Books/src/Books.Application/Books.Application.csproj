@@ -7,7 +7,6 @@
   </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Audit.NET" Version="21.0.1" />
         <PackageReference Include="MediatR" Version="12.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.2.0" />
     </ItemGroup>
@@ -15,5 +14,10 @@
     <ItemGroup>
     <ProjectReference Include="..\Books.Domain\Books.Domain.csproj" />
   </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Pipeline\" />
+      <Folder Include="Settings\" />
+    </ItemGroup>
 
 </Project>

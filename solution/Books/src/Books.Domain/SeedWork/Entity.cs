@@ -7,9 +7,9 @@
     {
         public Guid Id { get; private set; }
 
-        public DateTime Created { get; private set; }
+        public DateTime CreatedAt { get; private set; }
 
-        public DateTime Updated { get; private set; }
+        public DateTime ModifiedAt { get; private set; }
 
         public Guid ModifiedBy { get; protected set; }
 
@@ -23,8 +23,8 @@
             var now = DateTime.UtcNow;
 
             Id = Guid.NewGuid();
-            Created = now;
-            Updated = now;
+            CreatedAt = now;
+            ModifiedAt = now;
             ModifiedBy = modifiedBy;
         }
     }

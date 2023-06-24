@@ -1,0 +1,1 @@
+dotnet ef migrations add -c BooksDbContext -s ..\src\Books.Api\ -p ..\src\Books.Infrastructure\ -o Database\Migrations\ <MigrationName>

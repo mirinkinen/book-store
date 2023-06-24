@@ -35,8 +35,8 @@ public class EntityTests
         var entity = (Entity)new Book("test", new DateTime(2020, 1, 1), Guid.NewGuid(), modifiedBy);
         var after = DateTime.UtcNow;
 
-        entity.Created.Should().BeAfter(before).And.BeBefore(after);
-        entity.Updated.Should().Be(entity.Created);
+        entity.CreatedAt.Should().BeAfter(before).And.BeBefore(after);
+        entity.ModifiedAt.Should().Be(entity.CreatedAt);
         entity.ModifiedBy.Should().Be(modifiedBy);
     }
 }
