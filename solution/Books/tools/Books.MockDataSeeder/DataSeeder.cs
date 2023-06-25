@@ -4,7 +4,7 @@ namespace Books.Infrastructure.Database;
 
 public static class DataSeeder
 {
-    public static async Task SeedData(BooksDbContext booksDbContext)
+    public static async Task SeedDataAsync(BooksDbContext booksDbContext)
     {
         ArgumentNullException.ThrowIfNull(booksDbContext);
 

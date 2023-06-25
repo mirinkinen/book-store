@@ -1,25 +1,38 @@
 ﻿using Books.Api.Tests;
+using Books.Infrastructure.Database;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Books.IntegrationTests;
 
-public class DatabaseTest : IDisposable, IAsyncLifetime
+public class DatabaseTest : IAsyncLifetime
 {
     protected ApiTestWebApplicationFactory Factory { get; private set; } = new();
 
-    public void Dispose()
+    public async Task DisposeAsync()
     {
-        Factory?.Dispose();
+        await DeleteDatabase();
     }
 
-    public Task DisposeAsync()
+    public async Task InitializeAsync()
     {
-        TestDataSeeder.DropTestDatabse(Factory);
-
-        return Task.CompletedTask;
+        await CreateAndSeedDatabase();
     }
 
-    public Task InitializeAsync()
+    private async Task CreateAndSeedDatabase()
     {
-        return TestDataSeeder.SeedTestData(Factory);
+        using var scope = Factory.Services.CreateScope();
+        var scopedServices = scope.ServiceProvider;
+        var dbContext = scopedServices.GetRequiredService<BooksDbContext>();
+        await dbContext.Database.EnsureCreatedAsync();
+
+        await DataSeeder.SeedDataAsync(dbContext);
+    }
+
+    private async Task DeleteDatabase()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var scopedServices = scope.ServiceProvider;
+        var dbContext = scopedServices.GetRequiredService<BooksDbContext>();
+        await dbContext.Database.EnsureDeletedAsync();
     }
 }

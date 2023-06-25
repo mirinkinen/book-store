@@ -38,6 +38,7 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
 
     private static void StartTestDatabaseInstance()
     {
+        // Prevent multiple threads from creating the database.
         lock (_sqlLoccalDbApi)
         {
             ISqlLocalDbInstanceInfo instance = _sqlLoccalDbApi.GetOrCreateInstance(_instanceName);

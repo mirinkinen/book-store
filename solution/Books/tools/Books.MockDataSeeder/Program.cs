@@ -26,6 +26,6 @@ internal class Program
 
         // Use the DbContext in your application
         using var dbContext = serviceProvider.GetRequiredService<BooksDbContext>();
-        await DataSeeder.SeedData(dbContext);
+        await DataSeeder.SeedDataAsync(dbContext);
     }
 }
