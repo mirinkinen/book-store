@@ -7,11 +7,13 @@ using Books.Domain.Authors;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Books.Api.Authors;
 
+[ODataRouteComponent("v1")]
 public partial class AuthorsController : ODataController
 {
     private readonly IMediator _mediatr;

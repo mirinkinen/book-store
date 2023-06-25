@@ -22,12 +22,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/odata/Books?$top=3",
+									"raw": "{{baseUrl}}/v1/Books?$top=3",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"odata",
+										"v1",
 										"Books"
 									],
 									"query": [
@@ -51,12 +51,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/odata/Books?$filter=contains(title,'and')",
+									"raw": "{{baseUrl}}/v1/Books?$filter=contains(title,'and')",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"odata",
+										"v1",
 										"Books"
 									],
 									"query": [
@@ -80,12 +80,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/odata/Books(A125C5BD-4F8E-4794-9C36-76E401FB4F24)",
+									"raw": "{{baseUrl}}/v1/Books(A125C5BD-4F8E-4794-9C36-76E401FB4F24)",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"odata",
+										"v1",
 										"Books(A125C5BD-4F8E-4794-9C36-76E401FB4F24)"
 									]
 								}
@@ -103,12 +103,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/odata/Books(A125C5BD-4F8E-4794-9C36-76E401FB4F24)?$expand=author",
+									"raw": "{{baseUrl}}/v1/Books(A125C5BD-4F8E-4794-9C36-76E401FB4F24)?$expand=author",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"odata",
+										"v1",
 										"Books(A125C5BD-4F8E-4794-9C36-76E401FB4F24)"
 									],
 									"query": [
@@ -132,12 +132,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/odata/Books?$expand=author",
+									"raw": "{{baseUrl}}/v1/Books?$expand=author",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"odata",
+										"v1",
 										"Books"
 									],
 									"query": [
@@ -161,12 +161,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/odata/Books/$count",
+									"raw": "{{baseUrl}}/v1/Books/$count",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"odata",
+										"v1",
 										"Books",
 										"$count"
 									]
@@ -185,12 +185,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/odata/Books?$filter=DatePublished gt 2023-05-01",
+									"raw": "{{baseUrl}}/v1/Books?$filter=DatePublished gt 2023-05-01",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"odata",
+										"v1",
 										"Books"
 									],
 									"query": [
@@ -214,12 +214,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/odata/Books?$select=id,title",
+									"raw": "{{baseUrl}}/v1/Books?$select=id,title",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"odata",
+										"v1",
 										"Books"
 									],
 									"query": [
@@ -248,13 +248,19 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/odata/Authors",
+									"raw": "{{baseUrl}}/v1/Authors?$top=2",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"odata",
+										"v1",
 										"Authors"
+									],
+									"query": [
+										{
+											"key": "$top",
+											"value": "2"
+										}
 									]
 								}
 							},
@@ -271,12 +277,76 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/odata/Authors(8e6a9434-87f5-46b2-a6c3-522dc35d8eef)",
+									"raw": "{{baseUrl}}/v1/Authors(8e6a9434-87f5-46b2-a6c3-522dc35d8eef)",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"odata",
+										"v1",
+										"Authors(8e6a9434-87f5-46b2-a6c3-522dc35d8eef)"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "author by by ID",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json;odata.metadata=minimal;odata.streaming=true"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Birthday\": \"1947-09-21T00:00:00+03:00\",\r\n    \"FirstName\": \"Stephen\",\r\n    \"LastName\": \"Queen\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/Authors(8e6a9434-87f5-46b2-a6c3-522dc35d8eef)",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"Authors(8e6a9434-87f5-46b2-a6c3-522dc35d8eef)"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "author by ID",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json;odata.metadata=minimal;odata.streaming=true"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Birthday\": \"1947-09-21T00:00:00+03:00\",\r\n    \"FirstName\": \"Stephen\",\r\n    \"LastName\": \"Queen\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/Authors(8e6a9434-87f5-46b2-a6c3-522dc35d8eef)",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
 										"Authors(8e6a9434-87f5-46b2-a6c3-522dc35d8eef)"
 									]
 								}
@@ -294,12 +364,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/odata/Authors?$expand=Books",
+									"raw": "{{baseUrl}}/v1/Authors?$expand=Books",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"odata",
+										"v1",
 										"Authors"
 									],
 									"query": [
@@ -323,12 +393,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/odata/Authors?$expand=Books($filter=id eq A125C5BD-4F8E-4794-9C36-76E401FB4F24)",
+									"raw": "{{baseUrl}}/v1/Authors?$expand=Books($filter=id eq A125C5BD-4F8E-4794-9C36-76E401FB4F24)",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"odata",
+										"v1",
 										"Authors"
 									],
 									"query": [
@@ -352,12 +422,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/odata/Authors?&$expand=Books($count=true;$top=0)",
+									"raw": "{{baseUrl}}/v1/Authors?&$expand=Books($count=true;$top=0)",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"odata",
+										"v1",
 										"Authors"
 									],
 									"query": [
@@ -385,12 +455,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/odata/Authors/$count",
+									"raw": "{{baseUrl}}/v1/Authors/$count",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"odata",
+										"v1",
 										"Authors",
 										"$count"
 									]
@@ -413,12 +483,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/odata/Authors?&$expand=Books($count=true;$top=0)",
+									"raw": "{{baseUrl}}/v1/Authors?&$expand=Books($count=true;$top=0)",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"odata",
+										"v1",
 										"Authors"
 									],
 									"query": [
@@ -434,38 +504,11 @@
 								}
 							},
 							"response": []
-						},
-						{
-							"name": "New Request",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"firstname\": \"string\",\r\n  \"lastname\": \"string\",\r\n  \"birthday\": \"2023-06-18T19:32:50.389Z\",\r\n  \"organizationId\": \"00000000-0000-0000-0000-000000000000\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/odata/Authors",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"odata",
-										"Authors"
-									]
-								}
-							},
-							"response": []
 						}
 					]
 				},
 				{
-					"name": "odata/",
+					"name": "v1",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -475,12 +518,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/odata",
+							"raw": "{{baseUrl}}/v1",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"odata"
+								"v1"
 							]
 						}
 					},
@@ -520,7 +563,7 @@
 					]
 				},
 				{
-					"name": "odata/$metadata",
+					"name": "v1/$metadata",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -530,12 +573,12 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/odata/$metadata",
+							"raw": "{{baseUrl}}/v1/$metadata",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"odata",
+								"v1",
 								"$metadata"
 							]
 						}

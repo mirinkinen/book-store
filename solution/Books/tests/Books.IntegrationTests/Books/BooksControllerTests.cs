@@ -15,7 +15,7 @@ public class BooksControllerTests : DatabaseTest
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=nonep");
 
         // Act
-        var response = await client.GetAsync("odata/books?$top=3");
+        var response = await client.GetAsync("v1/books?$top=3");
 
         // Assert
         var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
@@ -31,7 +31,7 @@ public class BooksControllerTests : DatabaseTest
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
-        var response = await client.GetAsync("odata/books?$top=3&$select=id,title,createdat");
+        var response = await client.GetAsync("v1/books?$top=3&$select=id,title,createdat");
 
         // Assert
         var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
@@ -58,7 +58,7 @@ public class BooksControllerTests : DatabaseTest
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
-        var response = await client.GetAsync("odata/books?$filter=contains(title,'and')");
+        var response = await client.GetAsync("v1/books?$filter=contains(title,'and')");
 
         // Assert
         var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
@@ -78,7 +78,7 @@ public class BooksControllerTests : DatabaseTest
         var bookId = Guid.Parse("A125C5BD-4F8E-4794-9C36-76E401FB4F24");
 
         // Act
-        var response = await client.GetAsync($"odata/books({bookId})");
+        var response = await client.GetAsync($"v1/books({bookId})");
 
         // Assert
         var book = await response.Content.ReadFromJsonAsync<BookViewmodel>();
@@ -95,7 +95,7 @@ public class BooksControllerTests : DatabaseTest
         var bookId = Guid.Parse("A125C5BD-4F8E-4794-9C36-76E401FB4F24");
 
         // Act
-        var response = await client.GetAsync($"odata/books?$top=20&orderby=title");
+        var response = await client.GetAsync($"v1/books?$top=20&orderby=title");
 
         // Assert
         var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
@@ -115,7 +115,7 @@ public class BooksControllerTests : DatabaseTest
         var bookId = Guid.Parse("A125C5BD-4F8E-4794-9C36-76E401FB4F24");
 
         // Act
-        var response = await client.GetAsync($"odata/books?$top=20&orderby=title desc");
+        var response = await client.GetAsync($"v1/books?$top=20&orderby=title desc");
 
         // Assert
         var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
@@ -134,7 +134,7 @@ public class BooksControllerTests : DatabaseTest
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
-        var response = await client.GetAsync($"odata/books/$count");
+        var response = await client.GetAsync($"v1/books/$count");
 
         // Assert
         var count = await response.Content.ReadFromJsonAsync<int>();
@@ -149,7 +149,7 @@ public class BooksControllerTests : DatabaseTest
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
-        var response = await client.GetAsync($"odata/books?$top=1&$expand=author");
+        var response = await client.GetAsync($"v1/books?$top=1&$expand=author");
 
         // Assert
         var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
@@ -172,7 +172,7 @@ public class BooksControllerTests : DatabaseTest
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
-        var response = await client.GetAsync($"odata/books");
+        var response = await client.GetAsync($"v1/books");
 
         // Assert
         var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
@@ -190,7 +190,7 @@ public class BooksControllerTests : DatabaseTest
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
-        var response = await client.GetAsync($"odata/books?$top=21");
+        var response = await client.GetAsync($"v1/books?$top=21");
 
         // Assert
         //var content = await response.Content.ReadAsStringAsync();

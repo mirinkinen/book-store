@@ -4,10 +4,12 @@ using Books.Domain.Books;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace Books.Api.Controllers;
 
+[ODataRouteComponent("v1")]
 public class BooksController : ODataController
 {
     private readonly IMediator _mediatr;

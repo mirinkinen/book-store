@@ -15,7 +15,7 @@ public class AuthorsControllerTests : DatabaseTest
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
-        var response = await client.GetAsync("odata/authors?$top=3");
+        var response = await client.GetAsync("v1/authors?$top=3");
 
         // Assert
         var odata = await response.Content.ReadFromJsonAsync<ValueResponse<AuthorViewmodel>>();
@@ -31,7 +31,7 @@ public class AuthorsControllerTests : DatabaseTest
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
-        var response = await client.GetAsync("odata/authors?$top=3&$select=id,firstname,lastname");
+        var response = await client.GetAsync("v1/authors?$top=3&$select=id,firstname,lastname");
 
         // Assert
         var odata = await response.Content.ReadFromJsonAsync<ValueResponse<AuthorViewmodel>>();
@@ -58,7 +58,7 @@ public class AuthorsControllerTests : DatabaseTest
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
-        var response = await client.GetAsync("odata/authors?$filter=contains(firstname,'n')");
+        var response = await client.GetAsync("v1/authors?$filter=contains(firstname,'n')");
 
         // Assert
         var odata = await response.Content.ReadFromJsonAsync<ValueResponse<AuthorViewmodel>>();
@@ -78,7 +78,7 @@ public class AuthorsControllerTests : DatabaseTest
         var authorId = Guid.Parse("8E6A9434-87F5-46B2-A6C3-522DC35D8EEF");
 
         // Act
-        var response = await client.GetAsync($"odata/authors({authorId})");
+        var response = await client.GetAsync($"v1/authors({authorId})");
 
         // Assert
         var author = await response.Content.ReadFromJsonAsync<AuthorViewmodel>();
@@ -95,7 +95,7 @@ public class AuthorsControllerTests : DatabaseTest
         var authorId = Guid.Parse("A125C5BD-4F8E-4794-9C36-76E401FB4F24");
 
         // Act
-        var response = await client.GetAsync($"odata/authors?$top=20&orderby=firstname");
+        var response = await client.GetAsync($"v1/authors?$top=20&orderby=firstname");
 
         // Assert
         var odata = await response.Content.ReadFromJsonAsync<ValueResponse<AuthorViewmodel>>();
@@ -115,7 +115,7 @@ public class AuthorsControllerTests : DatabaseTest
         var authorId = Guid.Parse("A125C5BD-4F8E-4794-9C36-76E401FB4F24");
 
         // Act
-        var response = await client.GetAsync($"odata/authors?$top=20&orderby=firstname desc");
+        var response = await client.GetAsync($"v1/authors?$top=20&orderby=firstname desc");
 
         // Assert
         var odata = await response.Content.ReadFromJsonAsync<ValueResponse<AuthorViewmodel>>();
@@ -134,7 +134,7 @@ public class AuthorsControllerTests : DatabaseTest
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
-        var response = await client.GetAsync($"odata/authors/$count");
+        var response = await client.GetAsync($"v1/authors/$count");
 
         // Assert
         var count = await response.Content.ReadFromJsonAsync<int>();
@@ -149,7 +149,7 @@ public class AuthorsControllerTests : DatabaseTest
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
-        var response = await client.GetAsync($"odata/authors?$top=1&$expand=books");
+        var response = await client.GetAsync($"v1/authors?$top=1&$expand=books");
 
         // Assert
         var odata = await response.Content.ReadFromJsonAsync<ValueResponse<AuthorViewmodel>>();
@@ -172,7 +172,7 @@ public class AuthorsControllerTests : DatabaseTest
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
-        var response = await client.GetAsync($"odata/authors");
+        var response = await client.GetAsync($"v1/authors");
 
         // Assert
         var odata = await response.Content.ReadFromJsonAsync<ValueResponse<AuthorViewmodel>>();
@@ -190,7 +190,7 @@ public class AuthorsControllerTests : DatabaseTest
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
-        var response = await client.GetAsync($"odata/authors?$top=21");
+        var response = await client.GetAsync($"v1/authors?$top=21");
 
         // Assert
         //var content = await response.Content.ReadAsStringAsync();
