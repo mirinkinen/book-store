@@ -1,5 +1,6 @@
 using Books.Api.Tests;
 using FluentAssertions;
+using Microsoft.OData;
 using System.Net.Http.Json;
 
 namespace Books.IntegrationTests.Books;
@@ -140,5 +141,28 @@ public class BooksControllerTests : DatabaseTest
         // Assert
         var count = await response.Content.ReadFromJsonAsync<int>();
         count.Should().NotBe(0);
+    }
+
+    [Fact]
+    public async Task Get_ExpandAuthors_ReturnsBooksWithAuthors()
+    {
+        // Arrange
+        var client = Factory.CreateClient();
+        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
+
+        // Act
+        var response = await client.GetAsync($"odata/books?$top=1&$expand=author");
+
+        // Assert
+        var odata = await response.Content.ReadFromJsonAsync<ODataResponse<BookViewmodel>>();
+        odata.Should().NotBeNull();
+
+        var books = odata.Value;
+        books.Should().NotBeEmpty();
+        var book = books.First();
+        
+        book.Should().NotBeNull();
+        book.Author.Should().NotBeNull();
+        book.Author.Id.Should().NotBeNull();
     }
 }
