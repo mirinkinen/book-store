@@ -1,13 +1,12 @@
 using Books.Application.Services;
 using Books.Domain.Books;
 using MediatR;
-using Microsoft.AspNetCore.OData.Results;
 
 namespace Books.Application.Requests.Books.GetBookById;
 
-public record GetBookByIdQuery(Guid BookId) : IRequest<SingleResult<Book>>;
+public record GetBookByIdQuery(Guid BookId) : IRequest<IQueryable<Book>>;
 
-public class GetBookByIdHandler : IRequestHandler<GetBookByIdQuery, SingleResult<Book>>
+public class GetBookByIdHandler : IRequestHandler<GetBookByIdQuery, IQueryable<Book>>
 {
     private readonly IQueryAuthorizer _queryAuthorizer;
 
@@ -16,13 +15,10 @@ public class GetBookByIdHandler : IRequestHandler<GetBookByIdQuery, SingleResult
         _queryAuthorizer = queryAuthorizer;
     }
 
-    public Task<SingleResult<Book>> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
+    public Task<IQueryable<Book>> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var query = _queryAuthorizer.GetAuthorizedEntities<Book>()
-            .Where(a => a.Id == request.BookId);
-
-        return Task.FromResult(SingleResult.Create(query));
+        return Task.FromResult(_queryAuthorizer.GetAuthorizedEntities<Book>().Where(a => a.Id == request.BookId));
     }
 }

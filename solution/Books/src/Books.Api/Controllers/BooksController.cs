@@ -4,6 +4,7 @@ using Books.Domain.Books;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 
@@ -30,13 +31,8 @@ public class BooksController : ODataController
     public async Task<IActionResult> Get([FromRoute] Guid key)
     {
         var query = new GetBookByIdQuery(key);
-        var book = await _mediatr.Send(query);
+        var bookQuery = await _mediatr.Send(query);
 
-        if (book == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(book);
+        return Ok(SingleResult.Create(bookQuery));
     }
 }

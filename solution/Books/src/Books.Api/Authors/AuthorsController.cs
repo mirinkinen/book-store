@@ -7,6 +7,7 @@ using Books.Domain.Authors;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using System.Diagnostics.CodeAnalysis;
@@ -34,14 +35,9 @@ public partial class AuthorsController : ODataController
     public async Task<IActionResult> Get([FromRoute] Guid key)
     {
         var query = new GetAuthorByIdQuery(key);
-        var author = await _mediatr.Send(query);
+        var authorQuery = await _mediatr.Send(query);
 
-        if (author == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(author);
+        return Ok(SingleResult.Create(authorQuery));
     }
 
     public Task<Author> Post([FromBody] AddAuthorCommand addAuthorCommand)

@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.OData.Results;
 
 namespace Books.Application.Requests.Authors.GetAuthorById;
 
-public record GetAuthorByIdQuery(Guid AuthorId) : IRequest<SingleResult<Author>>;
+public record GetAuthorByIdQuery(Guid AuthorId) : IRequest<IQueryable<Author>>;
 
-public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, SingleResult<Author>>
+public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, IQueryable<Author>>
 {
     private readonly IQueryAuthorizer _queryAuthorizer;
 
@@ -16,12 +16,10 @@ public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, SingleRe
         _queryAuthorizer = queryAuthorizer;
     }
 
-    public Task<SingleResult<Author>> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
+    public Task<IQueryable<Author>> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var query = _queryAuthorizer.GetAuthorizedEntities<Author>().Where(a => a.Id == request.AuthorId);
-
-        return Task.FromResult(SingleResult.Create(query));
+        return Task.FromResult(_queryAuthorizer.GetAuthorizedEntities<Author>().Where(a => a.Id == request.AuthorId));
     }
 }
