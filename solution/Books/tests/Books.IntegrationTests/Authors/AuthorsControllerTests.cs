@@ -1,26 +1,25 @@
-using Books.Domain.Books;
-using Books.IntegrationTests;
+using Books.Api.Tests;
 using FluentAssertions;
 using System.Net.Http.Json;
 
-namespace Books.Api.Tests;
+namespace Books.IntegrationTests.Authors;
 
-[Trait("Category", "Books")]
+[Trait("Category", "Authors")]
 [Trait("Category", "Integration")]
-public class BooksControllerTests : DatabaseTest
+public class AuthorsControllerTests : DatabaseTest
 {
     [Fact]
-    public async Task Get_Top3_ShouldReturn3Books()
+    public async Task Get_Top3_ShouldReturn3Authors()
     {
         // Arrange
         var client = Factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
-        var response = await client.GetAsync("odata/books?$top=3");
+        var response = await client.GetAsync("odata/authors?$top=3");
 
         // Assert
-        var odata = await response.Content.ReadFromJsonAsync<ODataResponse<Book>>();
+        var odata = await response.Content.ReadFromJsonAsync<ODataResponse<AuthorViewmodel>>();
         odata.Should().NotBeNull();
         odata.Value.Should().HaveCount(3);
     }
