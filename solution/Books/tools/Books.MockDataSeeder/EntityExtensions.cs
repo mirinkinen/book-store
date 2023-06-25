@@ -5,7 +5,7 @@ namespace Books.MockData;
 
 internal static class EntityExtensions
 {
-    public static Entity SetId(this Entity entity, Guid id)
+    public static TEntity SetId<TEntity>(this TEntity entity, Guid id) where TEntity : Entity
     {
         var type = entity.GetType().BaseType;
         var idBackingFieldName = $"<{nameof(entity.Id)}>k__BackingField";
