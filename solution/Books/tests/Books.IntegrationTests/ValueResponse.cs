@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Books.Api.Tests;
+namespace Books.IntegrationTests;
 
 [SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "This is used in tests.")]
 internal class ValueResponse<TValue>

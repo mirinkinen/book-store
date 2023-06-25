@@ -1,11 +1,12 @@
-﻿using Books.Infrastructure.Database;
+﻿using Books.Api;
+using Books.Infrastructure.Database;
 using MartinCostello.SqlLocalDb;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Books.Api.Tests;
+namespace Books.IntegrationTests;
 
 public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
 {

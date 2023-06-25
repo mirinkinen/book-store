@@ -1,5 +1,4 @@
-﻿using Books.Api.Tests;
-using Books.Infrastructure.Database;
+﻿using Books.Infrastructure.Database;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Books.IntegrationTests;

@@ -1,4 +1,3 @@
-using Books.Api.Tests;
 using FluentAssertions;
 using System.Net.Http.Json;
 
