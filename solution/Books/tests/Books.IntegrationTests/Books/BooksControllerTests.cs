@@ -50,4 +50,23 @@ public class BooksControllerTests : DatabaseTest
         // Unselected fields should be null.
         book.DatePublished.Should().BeNull();
     }
+
+    [Fact]
+    public async Task Get_FilterByTitle_ShouldReturnFilteredBooks()
+    {
+        // Arrange
+        var client = Factory.CreateClient();
+        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
+
+        // Act
+        var response = await client.GetAsync("odata/books?$filter=contains(title,'and')");
+
+        // Assert
+        var odata = await response.Content.ReadFromJsonAsync<ODataResponse<BookViewmodel>>();
+        odata.Should().NotBeNull();
+        var books = odata.Value;
+        books.Should().NotBeEmpty();
+
+        books.Should().OnlyContain(book => book.Title.Contains("and"));
+    }
 }
