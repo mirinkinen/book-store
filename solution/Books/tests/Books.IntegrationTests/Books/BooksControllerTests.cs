@@ -86,4 +86,44 @@ public class BooksControllerTests : DatabaseTest
         book.Should().NotBeNull();
         book.Id.Should().Be(bookId);
     }
+
+    [Fact]
+    public async Task Get_OrderByTitleAscending_ReturnsBooksOrderedByTitle()
+    {
+        // Arrange
+        var client = Factory.CreateClient();
+        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
+        var bookId = Guid.Parse("A125C5BD-4F8E-4794-9C36-76E401FB4F24");
+
+        // Act
+        var response = await client.GetAsync($"odata/books?$top=20&orderby=title");
+
+        // Assert
+        var odata = await response.Content.ReadFromJsonAsync<ODataResponse<BookViewmodel>>();
+        odata.Should().NotBeNull();
+
+        var books = odata.Value;
+        books.Should().NotBeEmpty();
+        books.Should().BeInAscendingOrder(book => book.Title);
+    }
+
+    [Fact]
+    public async Task Get_OrderByTitleDescending_ReturnsBooksOrderedByTitle()
+    {
+        // Arrange
+        var client = Factory.CreateClient();
+        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
+        var bookId = Guid.Parse("A125C5BD-4F8E-4794-9C36-76E401FB4F24");
+
+        // Act
+        var response = await client.GetAsync($"odata/books?$top=20&orderby=title desc");
+
+        // Assert
+        var odata = await response.Content.ReadFromJsonAsync<ODataResponse<BookViewmodel>>();
+        odata.Should().NotBeNull();
+
+        var books = odata.Value;
+        books.Should().NotBeEmpty();
+        books.Should().BeInDescendingOrder(book => book.Title);
+    }
 }
