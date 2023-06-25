@@ -6,7 +6,7 @@ namespace Books.Domain.Authors;
 public class Author : Entity
 {
     public DateTime Birthday { get; private set; }
-    public IList<Book> Books { get; private set; } = new List<Book>();
+    public IReadOnlyList<Book> Books { get; private set; } = new List<Book>();
     public string FirstName { get; private set; }
 
     public string LastName { get; private set; }
