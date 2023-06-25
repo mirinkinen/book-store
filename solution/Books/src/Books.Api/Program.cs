@@ -81,7 +81,7 @@ public class Program
             .Filter()
             .OrderBy()
             .Select()
-            .SetMaxTop(100)
+            .SetMaxTop(20)
             .AddRouteComponents("odata", modelBuilder.GetEdmModel()));
     }
 }

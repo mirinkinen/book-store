@@ -9,7 +9,7 @@ namespace Books.Api.Tests;
 
 public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
 {
-    private static readonly string _instanceName = "BookStoreTest";
+    private const string _instanceName = "BookStoreTest";
     private static readonly SqlLocalDbApi _sqlLoccalDbApi = new();
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)

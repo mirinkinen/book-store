@@ -19,7 +19,7 @@ public class AuthorsControllerTests : DatabaseTest
         var response = await client.GetAsync("odata/authors?$top=3");
 
         // Assert
-        var odata = await response.Content.ReadFromJsonAsync<ODataResponse<AuthorViewmodel>>();
+        var odata = await response.Content.ReadFromJsonAsync<ValueResponse<AuthorViewmodel>>();
         odata.Should().NotBeNull();
         odata.Value.Should().HaveCount(3);
     }

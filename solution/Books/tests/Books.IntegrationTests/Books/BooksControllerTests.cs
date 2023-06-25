@@ -1,6 +1,5 @@
 using Books.Api.Tests;
 using FluentAssertions;
-using Microsoft.OData;
 using System.Net.Http.Json;
 
 namespace Books.IntegrationTests.Books;
@@ -20,7 +19,7 @@ public class BooksControllerTests : DatabaseTest
         var response = await client.GetAsync("odata/books?$top=3");
 
         // Assert
-        var odata = await response.Content.ReadFromJsonAsync<ODataResponse<BookViewmodel>>();
+        var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
         odata.Should().NotBeNull();
         odata.Value.Should().HaveCount(3);
     }
@@ -36,7 +35,7 @@ public class BooksControllerTests : DatabaseTest
         var response = await client.GetAsync("odata/books?$top=3&$select=id,title,createdat");
 
         // Assert
-        var odata = await response.Content.ReadFromJsonAsync<ODataResponse<BookViewmodel>>();
+        var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
         odata.Should().NotBeNull();
         var books = odata.Value;
         books.Should().HaveCount(3);
@@ -63,7 +62,7 @@ public class BooksControllerTests : DatabaseTest
         var response = await client.GetAsync("odata/books?$filter=contains(title,'and')");
 
         // Assert
-        var odata = await response.Content.ReadFromJsonAsync<ODataResponse<BookViewmodel>>();
+        var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
         odata.Should().NotBeNull();
         var books = odata.Value;
         books.Should().NotBeEmpty();
@@ -100,7 +99,7 @@ public class BooksControllerTests : DatabaseTest
         var response = await client.GetAsync($"odata/books?$top=20&orderby=title");
 
         // Assert
-        var odata = await response.Content.ReadFromJsonAsync<ODataResponse<BookViewmodel>>();
+        var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
         odata.Should().NotBeNull();
 
         var books = odata.Value;
@@ -120,7 +119,7 @@ public class BooksControllerTests : DatabaseTest
         var response = await client.GetAsync($"odata/books?$top=20&orderby=title desc");
 
         // Assert
-        var odata = await response.Content.ReadFromJsonAsync<ODataResponse<BookViewmodel>>();
+        var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
         odata.Should().NotBeNull();
 
         var books = odata.Value;
@@ -154,15 +153,50 @@ public class BooksControllerTests : DatabaseTest
         var response = await client.GetAsync($"odata/books?$top=1&$expand=author");
 
         // Assert
-        var odata = await response.Content.ReadFromJsonAsync<ODataResponse<BookViewmodel>>();
+        var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
         odata.Should().NotBeNull();
 
         var books = odata.Value;
         books.Should().NotBeEmpty();
         var book = books.First();
-        
+
         book.Should().NotBeNull();
         book.Author.Should().NotBeNull();
         book.Author.Id.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task Get_Returns20Books()
+    {
+        // Arrange
+        var client = Factory.CreateClient();
+        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
+
+        // Act
+        var response = await client.GetAsync($"odata/books");
+
+        // Assert
+        var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
+        odata.Should().NotBeNull();
+
+        var books = odata.Value;
+        books.Should().HaveCount(20);
+    }
+
+    [Fact]
+    public async Task Get_Top21_Fails()
+    {
+        // Arrange
+        var client = Factory.CreateClient();
+        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
+
+        // Act
+        var response = await client.GetAsync($"odata/books?$top=21");
+
+        // Assert
+        //var content = await response.Content.ReadAsStringAsync();
+        var error = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+        error.Should().NotBeNull();
+        error.Error.Message.Should().Contain("The limit of '20' for Top query has been exceeded");
     }
 }
