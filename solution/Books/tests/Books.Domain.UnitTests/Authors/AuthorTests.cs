@@ -2,7 +2,7 @@
 using Books.Domain.SeedWork;
 using FluentAssertions;
 
-namespace Books.Domain.Tests.Authors;
+namespace Books.Domain.UnitTests.Authors;
 
 [Trait("Category", "Author")]
 [Trait("Category", "Unit")]

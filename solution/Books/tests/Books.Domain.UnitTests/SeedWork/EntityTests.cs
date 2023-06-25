@@ -2,7 +2,7 @@ using Books.Domain.Books;
 using Books.Domain.SeedWork;
 using FluentAssertions;
 
-namespace Books.Domain.Tests.SeedWork;
+namespace Books.Domain.UnitTests.SeedWork;
 
 [Trait("Category", "SeedWork")]
 [Trait("Category", "Unit")]

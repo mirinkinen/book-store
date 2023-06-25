@@ -1,6 +1,6 @@
-﻿using Books.MockData;
+﻿using Books.Infrastructure.Database;
 
-namespace Books.Infrastructure.Database;
+namespace Books.MockDataSeeder;
 
 public static class DataSeeder
 {

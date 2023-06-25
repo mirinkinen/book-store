@@ -1,7 +1,7 @@
 ﻿using Books.Domain.Authors;
 using Books.Domain.Books;
 
-namespace Books.MockData;
+namespace Books.MockDataSeeder;
 
 public static class MockDataContainer
 {

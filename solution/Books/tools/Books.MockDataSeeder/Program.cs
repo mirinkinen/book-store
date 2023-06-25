@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 
-namespace DatabaseSeeder;
+namespace Books.MockDataSeeder;
 
 internal class Program
 {

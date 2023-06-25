@@ -1,7 +1,7 @@
 ﻿using Books.Domain.Authors;
 using MediatR;
 
-namespace Books.Application.Requests.Authors.AddAuthor;
+namespace Books.Application.Requests.Authors.UpdateAuthor;
 
 public record UpdateAuthorCommand(Guid AuthorId, string Firstname, string Lastname, DateTime Birthday)
     : IRequest<Author?>;

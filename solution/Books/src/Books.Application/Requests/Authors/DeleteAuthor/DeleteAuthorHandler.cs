@@ -1,7 +1,7 @@
 ﻿using Books.Domain.Authors;
 using MediatR;
 
-namespace Books.Application.Requests.Authors.AddAuthor;
+namespace Books.Application.Requests.Authors.DeleteAuthor;
 
 public record DeleteAuthorCommand(Guid AuthorId) : IRequest<Author?>;
 

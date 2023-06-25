@@ -1,6 +1,8 @@
 ﻿using Books.Application.Requests.Authors.AddAuthor;
+using Books.Application.Requests.Authors.DeleteAuthor;
 using Books.Application.Requests.Authors.GetAuthorById;
 using Books.Application.Requests.Authors.GetAuthors;
+using Books.Application.Requests.Authors.UpdateAuthor;
 using Books.Domain.Authors;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +10,7 @@ using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Books.Api.Controllers;
+namespace Books.Api.Authors;
 
 public partial class AuthorsController : ODataController
 {
