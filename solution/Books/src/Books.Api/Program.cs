@@ -76,11 +76,11 @@ public class Program
 
         builder.Services.AddControllers().AddOData(
             options => options
-            .Select()
+            .Count()
+            .Expand()
             .Filter()
             .OrderBy()
-            .Expand()
-            .Count()
+            .Select()
             .SetMaxTop(100)
             .AddRouteComponents("odata", modelBuilder.GetEdmModel()));
     }

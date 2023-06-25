@@ -126,4 +126,19 @@ public class BooksControllerTests : DatabaseTest
         books.Should().NotBeEmpty();
         books.Should().BeInDescendingOrder(book => book.Title);
     }
+
+    [Fact]
+    public async Task Get_Count_ReturnsCount()
+    {
+        // Arrange
+        var client = Factory.CreateClient();
+        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
+
+        // Act
+        var response = await client.GetAsync($"odata/books/$count");
+
+        // Assert
+        var count = await response.Content.ReadFromJsonAsync<int>();
+        count.Should().NotBe(0);
+    }
 }
