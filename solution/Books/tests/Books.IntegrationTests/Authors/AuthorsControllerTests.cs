@@ -3,8 +3,7 @@ using System.Net.Http.Json;
 
 namespace Books.IntegrationTests.Authors;
 
-[Trait("Category", "Authors")]
-[Trait("Category", "Integration")]
+[Trait("Category", "Author")]
 public class AuthorsControllerTests : DatabaseTest
 {
     [Fact]

@@ -5,7 +5,6 @@ using FluentAssertions;
 namespace Books.Domain.UnitTests.SeedWork;
 
 [Trait("Category", "SeedWork")]
-[Trait("Category", "Unit")]
 public class EntityTests
 {
     [Fact]

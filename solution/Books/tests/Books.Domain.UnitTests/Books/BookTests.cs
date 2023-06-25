@@ -5,7 +5,6 @@ using FluentAssertions;
 namespace Books.Domain.UnitTests.Books;
 
 [Trait("Category", "Book")]
-[Trait("Category", "Unit")]
 public class BookTests
 {
     [Fact]
