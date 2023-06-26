@@ -1,7 +1,6 @@
 ﻿using Books.Domain.SeedWork;
 using Microsoft.AspNetCore.OData.Query;
 using System.Diagnostics;
-using System.Reflection;
 
 namespace Books.Api.Controllers;
 
@@ -32,7 +31,7 @@ public class LogIdEnableQueryAttribute : EnableQueryAttribute
 
                 Guid? id = GetIdValue(container);
 
-                if(id == null)
+                if (id == null)
                 {
                     break;
                 }
@@ -49,28 +48,42 @@ public class LogIdEnableQueryAttribute : EnableQueryAttribute
 
     private Guid? GetIdValue(object container)
     {
-        while (true)
+        var containerType = container.GetType();
+
+        if (TryGetIdPropertyValue(container, out Guid id))
         {
-            var containerType = container.GetType();
-            PropertyInfo nameProperty = containerType.GetProperty("Name");
-            var name = nameProperty.GetValue(container);
-
-            if (name != "Id")
-            {
-                var nextMethod = containerType.GetMethod("get_Next0");
-
-                if (nextMethod == null)
-                {
-                    return null;
-                }
-
-                container = nextMethod.Invoke(container, null);
-                continue;
-            }
-
-            var valueProperty = containerType.GetProperty("Value");
-
-            return (Guid)valueProperty.GetValue(container);
+            return id;
         }
+
+        var getNextMethods = containerType.GetMethods().Where(m => m.Name.StartsWith("get_Next"));
+
+        foreach (var getNextMethod in getNextMethods)
+        {
+            var methodReturnValue = getNextMethod.Invoke(container, null);
+
+            if (TryGetIdPropertyValue(methodReturnValue, out id))
+            {
+                return id;
+            }
+        }
+
+        return null;
+    }
+
+    public bool TryGetIdPropertyValue(object container, out Guid id)
+    {
+        var containerType = container.GetType();
+        var nameProperty = containerType.GetProperty("Name");
+        var namePropertyValue = nameProperty.GetValue(container);
+
+        if (namePropertyValue == "Id")
+        {
+            var valueProperty = containerType.GetProperty("Value");
+            id = (Guid)valueProperty.GetValue(container);
+            return true;
+        }
+
+        id = Guid.Empty;
+        return false;
     }
 }
