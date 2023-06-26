@@ -1,4 +1,9 @@
+using Books.Application.Services;
+using Books.Domain.Books;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using System.Net.Http.Json;
 
 namespace Books.IntegrationTests.Books;
@@ -6,10 +11,21 @@ namespace Books.IntegrationTests.Books;
 [Trait("Category", "Book")]
 public class BooksControllerTests : DatabaseTest
 {
+    private Mock<IEntityAuditor> _entityAuditorMock = new();
+
+    public BooksControllerTests()
+    {
+        Factory.ConfigureServices = (IServiceCollection services) =>
+        {
+            services.AddSingleton<IEntityAuditor>(sp => _entityAuditorMock.Object);
+        };
+    }
+
     [Fact]
     public async Task Get_Top3_ShouldReturn3Books()
     {
         // Arrange
+
         var client = Factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=nonep");
 
@@ -20,6 +36,9 @@ public class BooksControllerTests : DatabaseTest
         var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
         odata.Should().NotBeNull();
         odata.Value.Should().HaveCount(3);
+
+        // Verify that 3 IDs are audit logged.
+        _entityAuditorMock.Verify(m => m.AddId(typeof(Book), It.IsAny<Guid>()), Times.Exactly(3));
     }
 
     [Fact]

@@ -1,18 +1,16 @@
 ﻿namespace Books.Application.Services;
 
+public record TypeId(Type type, Guid Id);
+
 public class EntityAuditor : IEntityAuditor, IDisposable
 {
-    private IList<(Type, Guid)> _entityIds = new List<(Type, Guid)>();
+    private List<TypeId> _entityIds = new();
+    public IReadOnlyList<TypeId> EntityIds => _entityIds.AsReadOnly();
     private bool _disposedValue;
-
-    public EntityAuditor()
-    {
-
-    }
 
     public void AddId(Type type, Guid id)
     {
-        _entityIds.Add(new(type, id));
+        _entityIds.Add(new TypeId(type, id));
     }
 
     public Task WriteAuditMessage()

@@ -13,6 +13,8 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
     private const string _instanceName = "BookStoreTest";
     private static readonly SqlLocalDbApi _sqlLoccalDbApi = new();
 
+    public Action<IServiceCollection> ConfigureServices { get; set; }
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -34,6 +36,8 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
             {
                 dbContextOptions.UseSqlServer(connectionString);
             });
+
+            ConfigureServices?.Invoke(services);
         });
     }
 
