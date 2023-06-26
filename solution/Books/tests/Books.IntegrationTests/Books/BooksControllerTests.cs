@@ -3,7 +3,6 @@ using Books.Domain.Books;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
 using System.Net.Http.Json;
 
 namespace Books.IntegrationTests.Books;
@@ -11,13 +10,13 @@ namespace Books.IntegrationTests.Books;
 [Trait("Category", "Book")]
 public class BooksControllerTests : DatabaseTest
 {
-    private Mock<IEntityAuditor> _entityAuditorMock = new();
+    private IEntityAuditor _entityAuditor = new EntityAuditor();
 
     public BooksControllerTests()
     {
         Factory.ConfigureServices = (IServiceCollection services) =>
         {
-            services.AddSingleton<IEntityAuditor>(sp => _entityAuditorMock.Object);
+            services.AddSingleton<IEntityAuditor>(sp => _entityAuditor);
         };
     }
 
@@ -38,7 +37,12 @@ public class BooksControllerTests : DatabaseTest
         odata.Value.Should().HaveCount(3);
 
         // Verify that 3 IDs are audit logged.
-        _entityAuditorMock.Verify(m => m.AddId(typeof(Book), It.IsAny<Guid>()), Times.Exactly(3));
+        _entityAuditor.EntityIds.Should().HaveCount(3);
+        _entityAuditor.EntityIds.Should().OnlyContain(t => t.Type == typeof(Book));
+#pragma warning disable CS8629 // Nullable value type may be null.
+        var ids = odata.Value.Where(b => b.Id.HasValue).Select(b => b.Id.Value);
+#pragma warning restore CS8629 // Nullable value type may be null.
+        _entityAuditor.EntityIds.Select(t => t.Id).Should().ContainInConsecutiveOrder(ids);
     }
 
     [Fact]

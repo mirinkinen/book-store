@@ -1,6 +1,6 @@
 ﻿namespace Books.Application.Services;
 
-public record TypeId(Type type, Guid Id);
+public record TypeId(Type Type, Guid Id);
 
 public class EntityAuditor : IEntityAuditor, IDisposable
 {
