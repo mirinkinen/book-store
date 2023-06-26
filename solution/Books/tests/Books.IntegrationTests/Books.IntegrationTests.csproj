@@ -31,8 +31,5 @@
     <ProjectReference Include="..\..\tools\Books.MockDataSeeder\Books.MockDataSeeder.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Mocks\" />
-  </ItemGroup>
 
 </Project>
