@@ -1,5 +1,4 @@
-﻿using Books.Domain.Authors;
-using Books.IntegrationTests.Authors;
+﻿using Books.IntegrationTests.Authors;
 
 namespace Books.IntegrationTests.Books;
 

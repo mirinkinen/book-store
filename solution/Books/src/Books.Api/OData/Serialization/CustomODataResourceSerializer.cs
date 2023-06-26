@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.OData.Formatter;
+﻿using Books.Application.Services;
+using Books.Domain.SeedWork;
+using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.OData;
 using Microsoft.OData.Edm;
@@ -8,8 +10,11 @@ namespace Books.Api.OData.Serialization;
 
 public class CustomODataResourceSerializer : ODataResourceSerializer
 {
-    public CustomODataResourceSerializer(IODataSerializerProvider serializerProvider) : base(serializerProvider)
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public CustomODataResourceSerializer(IODataSerializerProvider serializerProvider, IHttpContextAccessor httpContextAccessor) : base(serializerProvider)
     {
+        _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
     }
 
     public override void AppendDynamicProperties(ODataResource resource, SelectExpandNode selectExpandNode, ResourceContext resourceContext)
@@ -99,6 +104,12 @@ public class CustomODataResourceSerializer : ODataResourceSerializer
 
     public override Task WriteObjectInlineAsync(object graph, IEdmTypeReference expectedType, ODataWriter writer, ODataSerializerContext writeContext)
     {
+        if (graph is Entity entity)
+        {
+            var auditor = _httpContextAccessor.HttpContext?.RequestServices.GetRequiredService<IEntityAuditor>();
+            auditor?.AddId(graph.GetType(), entity.Id);
+        }
+
         return base.WriteObjectInlineAsync(graph, expectedType, writer, writeContext);
     }
 }

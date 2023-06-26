@@ -1,5 +1,5 @@
 ﻿using Books.Application.Requests.Books.GetBooks;
-using Microsoft.AspNetCore.OData.Formatter.Serialization;
+using Books.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Books.Application;
@@ -11,5 +11,6 @@ public static class ServiceRegistrar
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetBooksQuery>());
 
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IEntityAuditor, EntityAuditor>();
     }
 }

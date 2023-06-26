@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents shared properties for all entities in this domain.
     /// </summary>
-    public abstract class Entity : IIdentifiable
+    public abstract class Entity
     {
         public Guid Id { get; private set; }
 

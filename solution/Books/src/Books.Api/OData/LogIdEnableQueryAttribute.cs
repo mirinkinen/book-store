@@ -4,17 +4,17 @@ using System.Diagnostics;
 
 namespace Books.Api.OData;
 
-public class LogIdEnableQueryAttribute : EnableQueryAttribute
+public sealed class LogIdEnableQueryAttribute : EnableQueryAttribute
 {
     public override IQueryable ApplyQuery(IQueryable queryable, ODataQueryOptions queryOptions)
     {
         var appliedQuery = base.ApplyQuery(queryable, queryOptions);
         var ids = new List<Guid>();
 
-        if (appliedQuery is IQueryable<IIdentifiable> identifiableQuery)
+        if (appliedQuery is IQueryable<Entity> entityQuery)
         {
-            var identifiables = identifiableQuery.Cast<IIdentifiable>().ToList();
-            ids.AddRange(identifiables.Select(i => i.Id));
+            var entities = entityQuery.Cast<Entity>().ToList();
+            ids.AddRange(entities.Select(i => i.Id));
         }
         else if (appliedQuery is IQueryable<object> objectQuery)
         {
@@ -46,7 +46,7 @@ public class LogIdEnableQueryAttribute : EnableQueryAttribute
         return appliedQuery;
     }
 
-    private Guid? GetIdValue(object container)
+    private static Guid? GetIdValue(object container)
     {
         var containerType = container.GetType();
 
@@ -55,11 +55,16 @@ public class LogIdEnableQueryAttribute : EnableQueryAttribute
             return id;
         }
 
-        var getNextMethods = containerType.GetMethods().Where(m => m.Name.StartsWith("get_Next"));
+        var getNextMethods = containerType.GetMethods().Where(m => m.Name.StartsWith("get_Next", StringComparison.Ordinal));
 
         foreach (var getNextMethod in getNextMethods)
         {
             var methodReturnValue = getNextMethod.Invoke(container, null);
+
+            if (methodReturnValue == null)
+            {
+                return null;
+            }
 
             if (TryGetIdPropertyValue(methodReturnValue, out id))
             {
@@ -70,20 +75,30 @@ public class LogIdEnableQueryAttribute : EnableQueryAttribute
         return null;
     }
 
-    public bool TryGetIdPropertyValue(object container, out Guid id)
+    private static bool TryGetIdPropertyValue(object container, out Guid id)
     {
+        id = Guid.Empty;
         var containerType = container.GetType();
         var nameProperty = containerType.GetProperty("Name");
-        var namePropertyValue = nameProperty.GetValue(container);
+        var namePropertyValue = nameProperty?.GetValue(container) as string;
 
-        if (namePropertyValue == "Id")
+        if (namePropertyValue?.Equals("Id", StringComparison.Ordinal) == true)
         {
             var valueProperty = containerType.GetProperty("Value");
-            id = (Guid)valueProperty.GetValue(container);
-            return true;
+
+            if (valueProperty == null)
+            {
+                return false;
+            }
+
+            var value = valueProperty.GetValue(container);
+            if (value is Guid guid)
+            {
+                id = guid;
+                return true;
+            }
         }
 
-        id = Guid.Empty;
         return false;
     }
 }
