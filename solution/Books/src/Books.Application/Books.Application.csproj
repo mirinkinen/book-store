@@ -6,6 +6,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Pipeline\**" />
+    <Compile Remove="Settings\**" />
+    <EmbeddedResource Remove="Pipeline\**" />
+    <EmbeddedResource Remove="Settings\**" />
+    <None Remove="Pipeline\**" />
+    <None Remove="Settings\**" />
+  </ItemGroup>
+
     <ItemGroup>
         <PackageReference Include="MediatR" Version="12.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.2.0" />
@@ -14,10 +23,5 @@
     <ItemGroup>
     <ProjectReference Include="..\Books.Domain\Books.Domain.csproj" />
   </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Pipeline\" />
-      <Folder Include="Settings\" />
-    </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace Books.Application;
+﻿namespace Books.Application.Services;
 
 public class UserService : IUserService
 {
