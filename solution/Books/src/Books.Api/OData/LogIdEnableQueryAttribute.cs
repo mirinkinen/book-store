@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.OData.Query;
 using System.Diagnostics;
 
-namespace Books.Api.Controllers;
+namespace Books.Api.OData;
 
 public class LogIdEnableQueryAttribute : EnableQueryAttribute
 {

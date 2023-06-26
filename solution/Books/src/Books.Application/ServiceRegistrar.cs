@@ -1,4 +1,5 @@
 ﻿using Books.Application.Requests.Books.GetBooks;
+using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Books.Application;

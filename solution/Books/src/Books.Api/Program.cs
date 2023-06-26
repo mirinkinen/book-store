@@ -1,6 +1,8 @@
+using Books.Api.OData.Serialization;
 using Books.Domain.Authors;
 using Books.Domain.Books;
 using Microsoft.AspNetCore.OData;
+using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.OData.ModelBuilder;
 using System.Diagnostics.CodeAnalysis;
 
@@ -43,10 +45,10 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        BuildODataModel(builder);
+        AddOData(builder);
     }
 
-    private static void BuildODataModel(WebApplicationBuilder builder)
+    private static void AddOData(WebApplicationBuilder builder)
     {
         var modelBuilder = new ODataConventionModelBuilder();
 
@@ -82,6 +84,19 @@ public class Program
             .OrderBy()
             .Select()
             .SetMaxTop(20)
-            .AddRouteComponents("v1", modelBuilder.GetEdmModel()));
+            .AddRouteComponents("v1", modelBuilder.GetEdmModel(), services =>
+            {
+                services.AddSingleton<ODataCollectionSerializer, CustomODataCollectionSerializer>();
+                services.AddSingleton<ODataDeltaResourceSetSerializer, CustomODataDeltaResourceSetSerializer>();
+                services.AddSingleton<ODataEntityReferenceLinkSerializer, CustomODataEntityReferenceLinkSerializer>();
+                services.AddSingleton<ODataEntityReferenceLinksSerializer, CustomODataEntityReferenceLinksSerializer>();
+                services.AddSingleton<ODataEnumSerializer, CustomODataEnumSerializer>();
+                services.AddSingleton<ODataErrorSerializer, CustomODataErrorSerializer>();
+                services.AddSingleton<ODataMetadataSerializer, CustomODataMetadataSerializer>();
+                services.AddSingleton<ODataPrimitiveSerializer, CustomODataPrimitiveSerializer>();
+                services.AddSingleton<ODataRawValueSerializer, CustomODataRawValueSerializer>();
+                services.AddSingleton<ODataResourceSerializer, CustomODataResourceSerializer>();
+                services.AddSingleton<ODataServiceDocumentSerializer, CustomODataServiceDocumentSerializer>();
+            }));
     }
 }

@@ -1,4 +1,5 @@
-﻿using Books.Application.Requests.Books.GetBookById;
+﻿using Books.Api.OData;
+using Books.Application.Requests.Books.GetBookById;
 using Books.Application.Requests.Books.GetBooks;
 using Books.Domain.Books;
 using MediatR;
