@@ -1,11 +1,20 @@
+using Books.Application.Auditing;
 using Books.Application.Services;
 using Books.Domain.Books;
 using MediatR;
 
 namespace Books.Application.Requests.Books.GetBooks;
 
-public class GetBooksQuery : IRequest<IQueryable<Book>>
+public record GetBooksQuery : IAuditRequest<IQueryable<Book>>
 {
+    public OperationType OperationType => OperationType.Read;
+
+    public User Actor { get; }
+
+    public GetBooksQuery(User actor)
+    {
+        Actor = actor;
+    }
 }
 
 public class GetBooksHandler : IRequestHandler<GetBooksQuery, IQueryable<Book>>

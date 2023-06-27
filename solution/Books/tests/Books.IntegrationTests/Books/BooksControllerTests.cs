@@ -1,5 +1,4 @@
-using Books.Application.Services;
-using Books.Domain.Books;
+using Books.Application.Auditing;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,13 +9,13 @@ namespace Books.IntegrationTests.Books;
 [Trait("Category", "Book")]
 public class BooksControllerTests : DatabaseTest
 {
-    private IEntityAuditor _entityAuditor = new EntityAuditor();
+    private IAuditContext _auditContext = new AuditContext();
 
     public BooksControllerTests()
     {
         Factory.ConfigureServices = (IServiceCollection services) =>
         {
-            services.AddSingleton<IEntityAuditor>(sp => _entityAuditor);
+            services.AddScoped<IAuditContext>(sp => _auditContext);
         };
     }
 
@@ -37,10 +36,11 @@ public class BooksControllerTests : DatabaseTest
         odata.Value.Should().HaveCount(3);
 
         // Verify that 3 IDs are audit logged.
-        _entityAuditor.EntityIds.Should().HaveCount(3);
-        _entityAuditor.EntityIds.Should().OnlyContain(t => t.Type == typeof(Book).FullName);
+        _auditContext.Resources.Should().HaveCount(3);
+        _auditContext.Resources.Should().OnlyContain(r => r.Type == ResourceType.Book);
         var ids = odata.Value.Where(b => b.Id.HasValue).Select(b => b.Id.Value);
-        _entityAuditor.EntityIds.Select(t => t.Id).Should().ContainInConsecutiveOrder(ids);
+        _auditContext.Resources.Select(t => t.Id).Should().ContainInConsecutiveOrder(ids);
+        _auditContext.OperationType.Should().Be(OperationType.Read);
     }
 
     [Fact]

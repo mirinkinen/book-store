@@ -1,5 +1,6 @@
 ﻿using Books.Api;
 using Books.Infrastructure.Database;
+using Books.IntegrationTests.Fakes;
 using MartinCostello.SqlLocalDb;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -36,6 +37,8 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
             {
                 dbContextOptions.UseSqlServer(connectionString);
             });
+
+            services.AddScoped<FakeUserService>();
 
             ConfigureServices?.Invoke(services);
         });

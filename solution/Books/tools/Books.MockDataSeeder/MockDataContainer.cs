@@ -8,6 +8,9 @@ public static class MockDataContainer
     private static readonly Guid _systemUserId = Guid.Parse("11111111-1111-1111-1111-111111111111");
 
     private static readonly Random _randomizer = new(Guid.NewGuid().GetHashCode());
+    public static Guid AuthorizedOrganization1 => Guid.Parse("5D8E6753-1479-408E-BB3D-CB3A02BE486C");
+    public static Guid AuthorizedOrganization2 => Guid.Parse("284F633F-2D13-4F4D-8E37-1EE5C9F6B140");
+
     public static Guid StephenKingId { get; } = Guid.Parse("8E6A9434-87F5-46B2-A6C3-522DC35D8EEF");
     public static Guid DanBrownId { get; } = Guid.Parse("13E76BC5-BF2C-4FDB-BF42-8E0CA66EA7CE");
     public static Guid JkRowlingId { get; } = Guid.Parse("520B8C4F-72F1-4ECE-B1E2-8DD1DCA3476A");
@@ -16,15 +19,13 @@ public static class MockDataContainer
 
     public static IEnumerable<Author> GetAuthors()
     {
-        var authorizedOrganization1 = Guid.Parse("5D8E6753-1479-408E-BB3D-CB3A02BE486C");
-        var authorizedOrganization2 = Guid.Parse("284F633F-2D13-4F4D-8E37-1EE5C9F6B140");
         var unauthorizedOrganization = Guid.Parse("A34B1695-DB25-4AFF-A717-3C47EC7E89F4");
 
         var authors = new Author[] {
-            new Author("Stephen", "King", new DateTime(1947, 9, 21), authorizedOrganization1, _systemUserId).SetId(StephenKingId),
-            new Author("Dan", "Brown", new DateTime(1964, 6, 22), authorizedOrganization1, _systemUserId).SetId(DanBrownId),
-            new Author("J.K.", "Rowling", new DateTime(1965, 7, 31), authorizedOrganization2, _systemUserId).SetId(JkRowlingId),
-            new Author("William", "Shakespeare", new DateTime(1564, 4, 15), authorizedOrganization2, _systemUserId).SetId(WilliamShakeSpeareId),
+            new Author("Stephen", "King", new DateTime(1947, 9, 21), AuthorizedOrganization1, _systemUserId).SetId(StephenKingId),
+            new Author("Dan", "Brown", new DateTime(1964, 6, 22), AuthorizedOrganization1, _systemUserId).SetId(DanBrownId),
+            new Author("J.K.", "Rowling", new DateTime(1965, 7, 31), AuthorizedOrganization2, _systemUserId).SetId(JkRowlingId),
+            new Author("William", "Shakespeare", new DateTime(1564, 4, 15), AuthorizedOrganization2, _systemUserId).SetId(WilliamShakeSpeareId),
             new Author("Ernest.", "Hemingway", new DateTime(1899, 7, 21), unauthorizedOrganization, _systemUserId).SetId(ErnestHemingwayId)
         };
 

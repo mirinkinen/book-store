@@ -1,6 +1,6 @@
-﻿using Books.Api.OData;
-using Books.Application.Requests.Books.GetBookById;
+﻿using Books.Application.Requests.Books.GetBookById;
 using Books.Application.Requests.Books.GetBooks;
+using Books.Application.Services;
 using Books.Domain.Books;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -15,16 +15,18 @@ namespace Books.Api.Controllers;
 public class BooksController : ODataController
 {
     private readonly IMediator _mediatr;
+    private readonly IUserService _userService;
 
-    public BooksController(IMediator mediatr)
+    public BooksController(IMediator mediatr, IUserService userService)
     {
         _mediatr = mediatr;
+        _userService = userService;
     }
 
     [EnableQuery(PageSize = 20)]
     public Task<IQueryable<Book>> Get()
     {
-        var query = new GetBooksQuery();
+        var query = new GetBooksQuery(_userService.GetUser());
         return _mediatr.Send(query);
     }
 

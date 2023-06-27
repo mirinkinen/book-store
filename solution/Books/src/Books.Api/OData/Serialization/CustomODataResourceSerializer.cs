@@ -1,4 +1,4 @@
-﻿using Books.Application.Services;
+﻿using Books.Application.Auditing;
 using Books.Domain.SeedWork;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
@@ -107,9 +107,9 @@ public class CustomODataResourceSerializer : ODataResourceSerializer
     {
         if (graph is IEdmStructuredObject structuredObject)
         {
-            if (structuredObject.TryGetPropertyValue(nameof(Entity.Id), out var id))
+            if (structuredObject.TryGetPropertyValue(nameof(Entity.Id), out var id) && id is Guid guid)
             {
-                LogId(expectedType, id);
+                LogId(expectedType, guid);
             }
         }
         else if (graph is Entity entity)
@@ -120,14 +120,21 @@ public class CustomODataResourceSerializer : ODataResourceSerializer
         return base.WriteObjectInlineAsync(graph, expectedType, writer, writeContext);
     }
 
-    private void LogId(IEdmTypeReference expectedType, object id)
+    private void LogId(IEdmTypeReference expectedType, Guid id)
     {
-        var entityAuditor = _httpContextAccessor.HttpContext?.RequestServices.GetRequiredService<IEntityAuditor>();
+        var auditContext = _httpContextAccessor.HttpContext?.RequestServices.GetRequiredService<IAuditContext>();
         var type = expectedType?.Definition.ToString();
 
-        if (entityAuditor != null && type != null)
+        if (auditContext != null && type != null)
         {
-            entityAuditor.AddId(type, (Guid)id);
+            var typeName = type.Split('.').Last();
+            if (typeName != null && Enum.TryParse(typeName, true, out ResourceType resourceType) && Enum.IsDefined(resourceType))
+            {
+                auditContext.AddResource(resourceType, id);
+                return;
+            }
+
+            throw new ArgumentException($"Entity type {typeName} cannot be mapped into ResourceType.");
         }
     }
 }
