@@ -38,10 +38,8 @@ public class BooksControllerTests : DatabaseTest
 
         // Verify that 3 IDs are audit logged.
         _entityAuditor.EntityIds.Should().HaveCount(3);
-        _entityAuditor.EntityIds.Should().OnlyContain(t => t.Type == typeof(Book));
-#pragma warning disable CS8629 // Nullable value type may be null.
+        _entityAuditor.EntityIds.Should().OnlyContain(t => t.Type == typeof(Book).FullName);
         var ids = odata.Value.Where(b => b.Id.HasValue).Select(b => b.Id.Value);
-#pragma warning restore CS8629 // Nullable value type may be null.
         _entityAuditor.EntityIds.Select(t => t.Id).Should().ContainInConsecutiveOrder(ids);
     }
 

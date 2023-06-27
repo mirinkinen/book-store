@@ -11,11 +11,6 @@ public class CustomODataDeltaResourceSetSerializer : ODataDeltaResourceSetSerial
     {
     }
 
-    public override Task WriteDeltaDeletedLinkAsync(object value, ODataWriter writer, ODataSerializerContext writeContext)
-    {
-        return base.WriteDeltaDeletedLinkAsync(value, writer, writeContext);
-    }
-
     public override ODataDeltaResourceSet CreateODataDeltaResourceSet(IEnumerable feedInstance, IEdmCollectionTypeReference feedType, ODataSerializerContext writeContext)
     {
         return base.CreateODataDeltaResourceSet(feedInstance, feedType, writeContext);
@@ -24,6 +19,11 @@ public class CustomODataDeltaResourceSetSerializer : ODataDeltaResourceSetSerial
     public override ODataValue CreateODataValue(object graph, IEdmTypeReference expectedType, ODataSerializerContext writeContext)
     {
         return base.CreateODataValue(graph, expectedType, writeContext);
+    }
+
+    public override Task WriteDeltaDeletedLinkAsync(object value, ODataWriter writer, ODataSerializerContext writeContext)
+    {
+        return base.WriteDeltaDeletedLinkAsync(value, writer, writeContext);
     }
 
     public override Task WriteDeltaDeletedResourceAsync(object value, ODataWriter writer, ODataSerializerContext writeContext)

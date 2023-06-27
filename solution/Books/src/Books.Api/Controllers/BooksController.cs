@@ -21,7 +21,7 @@ public class BooksController : ODataController
         _mediatr = mediatr;
     }
 
-    [LogIdEnableQuery(PageSize = 20)]
+    [EnableQuery(PageSize = 20)]
     public Task<IQueryable<Book>> Get()
     {
         var query = new GetBooksQuery();
