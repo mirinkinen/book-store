@@ -1,3 +1,4 @@
+using Books.Api.Auditing;
 using Books.Api.OData.Serialization;
 using Books.Domain.Authors;
 using Books.Domain.Books;
@@ -32,6 +33,7 @@ public class Program
 
         app.UseHttpsRedirection();
         app.UseAuthorization();
+        app.UseAuditLogging();
         app.MapControllers();
 
         await app.RunAsync();
@@ -44,8 +46,9 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-
         builder.Services.AddHttpContextAccessor();
+
+        builder.Services.Configure<AuditOptions>(builder.Configuration.GetSection(AuditOptions.Audit));
 
         AddOData(builder);
     }
@@ -88,18 +91,7 @@ public class Program
             .SetMaxTop(20)
             .AddRouteComponents("v1", modelBuilder.GetEdmModel(), services =>
             {
-                // Add serializers as singletons, since they have no state.
-                services.AddSingleton<ODataCollectionSerializer, CustomODataCollectionSerializer>();
-                services.AddSingleton<ODataDeltaResourceSetSerializer, CustomODataDeltaResourceSetSerializer>();
-                services.AddSingleton<ODataEntityReferenceLinkSerializer, CustomODataEntityReferenceLinkSerializer>();
-                services.AddSingleton<ODataEntityReferenceLinksSerializer, CustomODataEntityReferenceLinksSerializer>();
-                services.AddSingleton<ODataEnumSerializer, CustomODataEnumSerializer>();
-                services.AddSingleton<ODataErrorSerializer, CustomODataErrorSerializer>();
-                services.AddSingleton<ODataMetadataSerializer, CustomODataMetadataSerializer>();
-                services.AddSingleton<ODataPrimitiveSerializer, CustomODataPrimitiveSerializer>();
-                services.AddSingleton<ODataRawValueSerializer, CustomODataRawValueSerializer>();
                 services.AddSingleton<ODataResourceSerializer, CustomODataResourceSerializer>();
-                services.AddSingleton<ODataServiceDocumentSerializer, CustomODataServiceDocumentSerializer>();
 
                 services.AddHttpContextAccessor();
             }));
