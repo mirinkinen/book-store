@@ -2,6 +2,7 @@
 using Books.Domain.SeedWork;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
+using Microsoft.AspNetCore.OData.Formatter.Value;
 using Microsoft.OData;
 using Microsoft.OData.Edm;
 using Microsoft.OData.UriParser;
@@ -79,21 +80,6 @@ public class CustomODataResourceSerializer : ODataResourceSerializer
 
     public override ODataProperty CreateStructuralProperty(IEdmStructuralProperty structuralProperty, ResourceContext resourceContext)
     {
-        if (resourceContext != null && resourceContext.EdmObject.TryGetPropertyValue(nameof(Entity.Id), out object id))
-        {
-            var entityAuditor = _httpContextAccessor.HttpContext?.RequestServices.GetRequiredService<IEntityAuditor>();
-            if (entityAuditor != null)
-            {
-                var type = resourceContext.EdmObject.GetEdmType();
-                if (type != null && type.Definition != null)
-                {
-#pragma warning disable CS8604 // Possible null reference argument.
-                    entityAuditor.AddId(type.Definition.ToString(), (Guid)id);
-#pragma warning restore CS8604 // Possible null reference argument.
-                }
-            }
-        }
-
         return base.CreateStructuralProperty(structuralProperty, resourceContext);
     }
 
@@ -119,6 +105,29 @@ public class CustomODataResourceSerializer : ODataResourceSerializer
 
     public override Task WriteObjectInlineAsync(object graph, IEdmTypeReference expectedType, ODataWriter writer, ODataSerializerContext writeContext)
     {
+        if (graph is IEdmStructuredObject structuredObject)
+        {
+            if (structuredObject.TryGetPropertyValue(nameof(Entity.Id), out var id))
+            {
+                LogId(expectedType, id);
+            }
+        }
+        else if (graph is Entity entity)
+        {
+            LogId(expectedType, entity.Id);
+        }
+
         return base.WriteObjectInlineAsync(graph, expectedType, writer, writeContext);
+    }
+
+    private void LogId(IEdmTypeReference expectedType, object id)
+    {
+        var entityAuditor = _httpContextAccessor.HttpContext?.RequestServices.GetRequiredService<IEntityAuditor>();
+        var type = expectedType?.Definition.ToString();
+
+        if (entityAuditor != null && type != null)
+        {
+            entityAuditor.AddId(type, (Guid)id);
+        }
     }
 }

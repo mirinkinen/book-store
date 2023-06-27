@@ -88,17 +88,18 @@ public class Program
             .SetMaxTop(20)
             .AddRouteComponents("v1", modelBuilder.GetEdmModel(), services =>
             {
-                services.AddScoped<ODataCollectionSerializer, CustomODataCollectionSerializer>();
-                services.AddScoped<ODataDeltaResourceSetSerializer, CustomODataDeltaResourceSetSerializer>();
-                services.AddScoped<ODataEntityReferenceLinkSerializer, CustomODataEntityReferenceLinkSerializer>();
-                services.AddScoped<ODataEntityReferenceLinksSerializer, CustomODataEntityReferenceLinksSerializer>();
-                services.AddScoped<ODataEnumSerializer, CustomODataEnumSerializer>();
-                services.AddScoped<ODataErrorSerializer, CustomODataErrorSerializer>();
-                services.AddScoped<ODataMetadataSerializer, CustomODataMetadataSerializer>();
-                services.AddScoped<ODataPrimitiveSerializer, CustomODataPrimitiveSerializer>();
-                services.AddScoped<ODataRawValueSerializer, CustomODataRawValueSerializer>();
-                services.AddScoped<ODataResourceSerializer, CustomODataResourceSerializer>();
-                services.AddScoped<ODataServiceDocumentSerializer, CustomODataServiceDocumentSerializer>();
+                // Add serializers as singletons, since they have no state.
+                services.AddSingleton<ODataCollectionSerializer, CustomODataCollectionSerializer>();
+                services.AddSingleton<ODataDeltaResourceSetSerializer, CustomODataDeltaResourceSetSerializer>();
+                services.AddSingleton<ODataEntityReferenceLinkSerializer, CustomODataEntityReferenceLinkSerializer>();
+                services.AddSingleton<ODataEntityReferenceLinksSerializer, CustomODataEntityReferenceLinksSerializer>();
+                services.AddSingleton<ODataEnumSerializer, CustomODataEnumSerializer>();
+                services.AddSingleton<ODataErrorSerializer, CustomODataErrorSerializer>();
+                services.AddSingleton<ODataMetadataSerializer, CustomODataMetadataSerializer>();
+                services.AddSingleton<ODataPrimitiveSerializer, CustomODataPrimitiveSerializer>();
+                services.AddSingleton<ODataRawValueSerializer, CustomODataRawValueSerializer>();
+                services.AddSingleton<ODataResourceSerializer, CustomODataResourceSerializer>();
+                services.AddSingleton<ODataServiceDocumentSerializer, CustomODataServiceDocumentSerializer>();
 
                 services.AddHttpContextAccessor();
             }));
