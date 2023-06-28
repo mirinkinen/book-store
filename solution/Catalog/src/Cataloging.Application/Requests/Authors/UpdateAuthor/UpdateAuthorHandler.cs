@@ -35,8 +35,7 @@ internal class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, Author
             return null;
         }
 
-        var user = _userService.GetUser();
-        author.Update(request.Firstname, request.Lastname, request.Birthday, user.Id);
+        author.Update(request.Firstname, request.Lastname, request.Birthday);
 
         await _authorRepository.SaveChangesAsync();
 

@@ -10,18 +10,15 @@ public record AddAuthorCommand(string Firstname, string Lastname, DateTime Birth
 internal class AddAuthorHandler : IRequestHandler<AddAuthorCommand, Author>
 {
     private readonly IAuthorRepository _authorRepository;
-    private readonly IUserService _userService;
 
-    public AddAuthorHandler(IAuthorRepository authorRepository, IUserService userService)
+    public AddAuthorHandler(IAuthorRepository authorRepository)
     {
         _authorRepository = authorRepository;
-        _userService = userService;
     }
 
     public async Task<Author> Handle(AddAuthorCommand request, CancellationToken cancellationToken)
     {
-        var user = _userService.GetUser();
-        var author = new Author(request.Firstname, request.Lastname, request.Birthday, request.OrganizationId, user.Id);
+        var author = new Author(request.Firstname, request.Lastname, request.Birthday, request.OrganizationId);
 
         _authorRepository.AddAuthor(author);
         await _authorRepository.SaveChangesAsync();

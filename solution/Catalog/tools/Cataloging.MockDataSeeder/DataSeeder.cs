@@ -4,25 +4,25 @@ namespace Cataloging.MockDataSeeder;
 
 public static class DataSeeder
 {
-    public static async Task SeedDataAsync(CatalogDbContext booksDbContext)
+    public static async Task SeedDataAsync(CatalogDbContext catalogDbContext)
     {
-        ArgumentNullException.ThrowIfNull(booksDbContext);
+        ArgumentNullException.ThrowIfNull(catalogDbContext);
 
         var authors = MockDataContainer.GetAuthors();
 
         // If not already seeded.
-        if (!booksDbContext.Authors.Any())
+        if (!catalogDbContext.Authors.Any())
         {
-            await booksDbContext.AddRangeAsync(authors);
-            await booksDbContext.SaveChangesAsync();
+            await catalogDbContext.AddRangeAsync(authors);
+            await catalogDbContext.SaveChangesAsync();
         };
 
         // If not already seeded.
-        if (!booksDbContext.Books.Any())
+        if (!catalogDbContext.Books.Any())
         {
             var books = MockDataContainer.GetBooks(authors);
-            await booksDbContext.AddRangeAsync(books);
-            await booksDbContext.SaveChangesAsync();
+            await catalogDbContext.AddRangeAsync(books);
+            await catalogDbContext.SaveChangesAsync();
         }
     }
 }

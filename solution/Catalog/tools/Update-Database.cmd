@@ -1,1 +1,1 @@
-dotnet ef database update -s ..\src\Books.Api\ -p ..\src\Books.Infrastructure\
+dotnet ef database update -s ..\src\Cataloging.Api\ -p ..\src\Cataloging.Infrastructure\

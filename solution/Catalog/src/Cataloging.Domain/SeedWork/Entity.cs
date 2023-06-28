@@ -11,19 +11,16 @@
 
         public DateTime ModifiedAt { get; private set; }
 
-        public Guid ModifiedBy { get; protected set; }
+        /// <summary>
+        /// ModifiedBy is managed at infra layer to keep domain logic cleaner.
+        /// </summary>
+        public Guid ModifiedBy { get; internal set; }
 
-        protected Entity(Guid modifiedBy)
+        protected Entity()
         {
-            if (modifiedBy == default)
-            {
-                throw new ArgumentException("ModifiedBy must not be empty.");
-            }
-
             Id = Guid.NewGuid();
             CreatedAt = DateTime.UtcNow;
             ModifiedAt = CreatedAt;
-            ModifiedBy = modifiedBy;
         }
     }
 }

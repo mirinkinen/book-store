@@ -1,1 +1,1 @@
-dotnet ef database drop -s ..\src\Books.Api\ -p ..\src\Books.Infrastructure\
+dotnet ef database drop -s ..\src\Cataloging.Api\ -p ..\src\Cataloging.Infrastructure\

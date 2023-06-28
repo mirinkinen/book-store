@@ -292,8 +292,10 @@ public class AuthorIntegrationTests : IntegrationTest
         // Act
         var response = await client.PutAsync($"v1/authors({authorId})", json);
 
-        // Assert
+        // Assert request
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+
+        var user = new FakeUserService().GetUser();
 
         // Assert that data is updated.
         using var scope = Factory.Services.CreateScope();
@@ -302,9 +304,9 @@ public class AuthorIntegrationTests : IntegrationTest
         author.FirstName.Should().Be(newFirstName);
         author.LastName.Should().Be(newLastName);
         author.Birthday.Should().Be(newBirthday);
+        author.ModifiedBy.Should().Be(user.Id);
 
         // Assert audit context.
-        var user = new FakeUserService().GetUser();
         _auditContext.Should().NotBeNull();
         _auditContext.ActorId.Should().Be(user.Id);
         _auditContext.OperationType.Should().Be(OperationType.Update);

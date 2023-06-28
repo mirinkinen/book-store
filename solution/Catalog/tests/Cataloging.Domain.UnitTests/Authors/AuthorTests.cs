@@ -10,13 +10,12 @@ public class AuthorTests
     [Fact]
     public void Author_WhenCreated_HasBasicInformation()
     {
-        var userId = Guid.NewGuid();
         var firstName = "First name";
         var lastName = "Last name";
         var birthday = DateTime.UtcNow;
         var organizationId = Guid.NewGuid();
 
-        var author = new Author(firstName, lastName, birthday, organizationId, userId);
+        var author = new Author(firstName, lastName, birthday, organizationId);
 
         author.FirstName.Should().Be(firstName);
         author.LastName.Should().Be(lastName);
@@ -35,7 +34,7 @@ public class AuthorTests
         var birthday = DateTime.UtcNow;
         var organizationId = Guid.NewGuid();
 
-        var constructor = () => new Author(firstName, lastName, birthday, organizationId, userId);
+        var constructor = () => new Author(firstName, lastName, birthday, organizationId);
 
         constructor.Should().Throw<DomainRuleException>();
     }
@@ -51,7 +50,7 @@ public class AuthorTests
         var birthday = DateTime.UtcNow;
         var organizationId = Guid.NewGuid();
 
-        var constructor = () => new Author(firstName, lastName, birthday, organizationId, userId);
+        var constructor = () => new Author(firstName, lastName, birthday, organizationId);
 
         constructor.Should().Throw<DomainRuleException>();
     }
@@ -64,7 +63,7 @@ public class AuthorTests
         var lastName = "Last name";
         var birthday = DateTime.UtcNow;
 
-        var constructor = () => new Author(firstName, lastName, birthday, Guid.Empty, userId);
+        var constructor = () => new Author(firstName, lastName, birthday, Guid.Empty);
 
         constructor.Should().Throw<DomainRuleException>();
     }
