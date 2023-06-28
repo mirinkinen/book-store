@@ -4,10 +4,10 @@ using System.Net.Http.Json;
 namespace Books.IntegrationTests.Authors;
 
 [Trait("Category", "Author")]
-public class AuthorsControllerTests : DatabaseTest
+public class AuthorIntegrationTests : IntegrationTest
 {
     [Fact]
-    public async Task Get_Top3_ShouldReturn3Authors()
+    public async Task Get_Top3_Returns3Authors()
     {
         // Arrange
         var client = Factory.CreateClient();
@@ -23,7 +23,7 @@ public class AuthorsControllerTests : DatabaseTest
     }
 
     [Fact]
-    public async Task Get_Select3Properties_ShouldReturn3Properties()
+    public async Task Get_Select3Properties_Returns3Properties()
     {
         // Arrange
         var client = Factory.CreateClient();
@@ -50,7 +50,7 @@ public class AuthorsControllerTests : DatabaseTest
     }
 
     [Fact]
-    public async Task Get_FilterByTitle_ShouldReturnFilteredAuthors()
+    public async Task Get_FilterByFirstName_ReturnsFilteredAuthors()
     {
         // Arrange
         var client = Factory.CreateClient();
@@ -69,7 +69,7 @@ public class AuthorsControllerTests : DatabaseTest
     }
 
     [Fact]
-    public async Task Get_AuthorById_ReturnsAuthorById()
+    public async Task Get_AuthorById_ReturnsAuthor()
     {
         // Arrange
         var client = Factory.CreateClient();
@@ -86,7 +86,24 @@ public class AuthorsControllerTests : DatabaseTest
     }
 
     [Fact]
-    public async Task Get_OrderByTitleAscending_ReturnsAuthorsOrderedByTitle()
+    public async Task Get_AuthorWithBooks_ReturnsAuthorAndBooks()
+    {
+        // Arrange
+        var client = Factory.CreateClient();
+        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
+        var authorId = Guid.Parse("8E6A9434-87F5-46B2-A6C3-522DC35D8EEF");
+
+        // Act
+        var response = await client.GetAsync($"v1/authors({authorId})");
+
+        // Assert
+        var author = await response.Content.ReadFromJsonAsync<AuthorViewmodel>();
+        author.Should().NotBeNull();
+        author.Id.Should().Be(authorId);
+    }
+
+    [Fact]
+    public async Task Get_OrderByTitleAscending_ReturnsOrderedAuthors()
     {
         // Arrange
         var client = Factory.CreateClient();
@@ -106,7 +123,7 @@ public class AuthorsControllerTests : DatabaseTest
     }
 
     [Fact]
-    public async Task Get_OrderByTitleDescending_ReturnsAuthorsOrderedByTitle()
+    public async Task Get_OrderByTitleDescending_ReturnsOrderedAuthors()
     {
         // Arrange
         var client = Factory.CreateClient();
@@ -141,7 +158,7 @@ public class AuthorsControllerTests : DatabaseTest
     }
 
     [Fact]
-    public async Task Get_ExpandAuthors_ReturnsAuthorsWithBooks()
+    public async Task Get_AuthorsWithBooks_ReturnsAuthorsWithBooks()
     {
         // Arrange
         var client = Factory.CreateClient();
@@ -164,7 +181,7 @@ public class AuthorsControllerTests : DatabaseTest
     }
 
     [Fact]
-    public async Task Get_Returns20Authors()
+    public async Task Get_WithoutParameters_ReturnsOnePageOfAuthors()
     {
         // Arrange
         var client = Factory.CreateClient();
@@ -182,7 +199,7 @@ public class AuthorsControllerTests : DatabaseTest
     }
 
     [Fact]
-    public async Task Get_Top21_Fails()
+    public async Task Get_TopTooBig_Fails()
     {
         // Arrange
         var client = Factory.CreateClient();

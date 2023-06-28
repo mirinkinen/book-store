@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Books.IntegrationTests;
 
-public class DatabaseTest : IAsyncLifetime
+public class IntegrationTest : IAsyncLifetime
 {
     protected ApiTestWebApplicationFactory Factory { get; private set; } = new();
 

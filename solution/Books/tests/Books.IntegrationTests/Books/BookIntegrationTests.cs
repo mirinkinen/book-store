@@ -7,11 +7,11 @@ using System.Net.Http.Json;
 namespace Books.IntegrationTests.Books;
 
 [Trait("Category", "Book")]
-public class BooksControllerTests : DatabaseTest
+public class BookIntegrationTests : IntegrationTest
 {
     private IAuditContext _auditContext = new AuditContext();
 
-    public BooksControllerTests()
+    public BookIntegrationTests()
     {
         Factory.ConfigureServices = (IServiceCollection services) =>
         {
@@ -20,7 +20,7 @@ public class BooksControllerTests : DatabaseTest
     }
 
     [Fact]
-    public async Task Get_Top3_ShouldReturn3Books()
+    public async Task Get_Top3_Returns3Books()
     {
         // Arrange
 
@@ -44,7 +44,7 @@ public class BooksControllerTests : DatabaseTest
     }
 
     [Fact]
-    public async Task Get_Select3Properties_ShouldReturn3Properties()
+    public async Task Get_Select3Properties_Returns3Properties()
     {
         // Arrange
         var client = Factory.CreateClient();
@@ -71,7 +71,7 @@ public class BooksControllerTests : DatabaseTest
     }
 
     [Fact]
-    public async Task Get_FilterByTitle_ShouldReturnFilteredBooks()
+    public async Task Get_FilterByTitle_ReturnsFilteredBooks()
     {
         // Arrange
         var client = Factory.CreateClient();
@@ -90,7 +90,7 @@ public class BooksControllerTests : DatabaseTest
     }
 
     [Fact]
-    public async Task Get_BookById_ReturnsBookById()
+    public async Task Get_BookById_ReturnsBook()
     {
         // Arrange
         var client = Factory.CreateClient();
@@ -107,7 +107,7 @@ public class BooksControllerTests : DatabaseTest
     }
 
     [Fact]
-    public async Task Get_OrderByTitleAscending_ReturnsBooksOrderedByTitle()
+    public async Task Get_OrderByTitleAscending_ReturnsOrderedBooks()
     {
         // Arrange
         var client = Factory.CreateClient();
@@ -127,7 +127,7 @@ public class BooksControllerTests : DatabaseTest
     }
 
     [Fact]
-    public async Task Get_OrderByTitleDescending_ReturnsBooksOrderedByTitle()
+    public async Task Get_OrderByTitleDescending_ReturnsOrderedBooks()
     {
         // Arrange
         var client = Factory.CreateClient();
@@ -162,7 +162,7 @@ public class BooksControllerTests : DatabaseTest
     }
 
     [Fact]
-    public async Task Get_ExpandAuthors_ReturnsBooksWithAuthors()
+    public async Task Get_BooksWithAuthors_ReturnsBooksWithAuthors()
     {
         // Arrange
         var client = Factory.CreateClient();
@@ -185,7 +185,7 @@ public class BooksControllerTests : DatabaseTest
     }
 
     [Fact]
-    public async Task Get_Returns20Books()
+    public async Task Get_WihtoutParameters_ReturnsOnePageOfBooks()
     {
         // Arrange
         var client = Factory.CreateClient();
