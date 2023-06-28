@@ -27,7 +27,7 @@ public partial class AuthorsController : ODataController
         _userService = userService;
     }
 
-    [EnableQuery]
+    [EnableQuery(PageSize = 20)]
     public Task<IQueryable<Author>> Get()
     {
         var query = new GetAuthorsQuery(_userService.GetUser());
