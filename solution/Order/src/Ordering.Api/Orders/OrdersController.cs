@@ -1,41 +1,41 @@
-﻿using Cataloging.Application.Requests.Books.GetBookById;
-using Cataloging.Application.Requests.Books.GetBooks;
-using Cataloging.Domain.Books;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Ordering.Application.Requests.GetOrderById;
+using Ordering.Application.Requests.GetOrders;
+using Ordering.Domain.Orders;
 using Shared.Application.Authentication;
 
-namespace Cataloging.Api.Books;
+namespace Ordering.Api.Orders;
 
 [ODataRouteComponent("v1")]
-public class BooksController : ODataController
+public partial class OrdersController : ODataController
 {
     private readonly IMediator _mediatr;
     private readonly IUserService _userService;
 
-    public BooksController(IMediator mediatr, IUserService userService)
+    public OrdersController(IMediator mediatr, IUserService userService)
     {
         _mediatr = mediatr;
         _userService = userService;
     }
 
     [EnableQuery(PageSize = 20)]
-    public Task<IQueryable<Book>> Get()
+    public Task<IQueryable<Order>> Get()
     {
-        var query = new GetBooksQuery(_userService.GetUser());
+        var query = new GetOrdersQuery(_userService.GetUser());
         return _mediatr.Send(query);
     }
 
     [EnableQuery]
     public async Task<IActionResult> Get([FromRoute] Guid key)
     {
-        var query = new GetBookByIdQuery(key);
-        var bookQuery = await _mediatr.Send(query);
+        var query = new GetOrderByIdQuery(key, _userService.GetUser());
+        var OrderQuery = await _mediatr.Send(query);
 
-        return Ok(SingleResult.Create(bookQuery));
+        return Ok(SingleResult.Create(OrderQuery));
     }
 }

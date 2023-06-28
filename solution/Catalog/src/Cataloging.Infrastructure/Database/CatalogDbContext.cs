@@ -1,9 +1,9 @@
-﻿using Cataloging.Application.Services;
-using Cataloging.Domain.Authors;
+﻿using Cataloging.Domain.Authors;
 using Cataloging.Domain.Books;
 using Cataloging.Domain.SeedWork;
 using Cataloging.Infrastructure.Database.EntityTypeConfigurations;
 using Microsoft.EntityFrameworkCore;
+using Shared.Application.Authentication;
 
 namespace Cataloging.Infrastructure.Database;
 
@@ -28,7 +28,7 @@ public class CatalogDbContext : DbContext
     {
         var entities = ChangeTracker
             .Entries<Entity>()
-            .Where(e => e.State == EntityState.Added || e.State == EntityState.Deleted ||  e.State == EntityState.Modified);
+            .Where(e => e.State == EntityState.Added || e.State == EntityState.Deleted || e.State == EntityState.Modified);
         var user = _userService.GetUser();
 
         foreach (var entityEntry in entities)

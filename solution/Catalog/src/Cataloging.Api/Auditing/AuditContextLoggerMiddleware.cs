@@ -1,5 +1,5 @@
-﻿using Cataloging.Application.Auditing;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
+using Shared.Application.Auditing;
 using System.Diagnostics;
 
 namespace Cataloging.Api.Auditing;

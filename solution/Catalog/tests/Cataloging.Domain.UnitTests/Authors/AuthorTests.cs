@@ -1,6 +1,7 @@
 ﻿using Cataloging.Domain.Authors;
 using Cataloging.Domain.SeedWork;
 using FluentAssertions;
+using Shared.Domain;
 
 namespace Cataloging.Domain.UnitTests.Authors;
 

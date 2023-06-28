@@ -1,8 +1,9 @@
 ﻿using MediatR;
+using Shared.Application.Authentication;
 
-namespace Cataloging.Application.Auditing;
+namespace Shared.Application.Auditing;
 
-internal interface IAuditableCommand<TResponse> : IRequest<TResponse>
+public interface IAuditableCommand<TResponse> : IRequest<TResponse>
 {
     User Actor { get; }
 

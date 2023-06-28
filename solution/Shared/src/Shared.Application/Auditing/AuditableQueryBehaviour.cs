@@ -1,8 +1,9 @@
 ﻿using MediatR;
+using System.Diagnostics.CodeAnalysis;
 
-namespace Cataloging.Application.Auditing;
+namespace Shared.Application.Auditing;
 
-internal class AuditableQueryBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
+public class AuditableQueryBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {
     private readonly IAuditContext _auditContext;
 
@@ -11,6 +12,7 @@ internal class AuditableQueryBehaviour<TRequest, TResponse> : IPipelineBehavior<
         _auditContext = auditContext;
     }
 
+    [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "MediatR guarantees non-null delegates")]
     public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         if (request is not IAuditableQuery<TResponse> auditableQuery)

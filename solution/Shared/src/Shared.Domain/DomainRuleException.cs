@@ -1,4 +1,4 @@
-﻿namespace Cataloging.Domain.SeedWork;
+﻿namespace Shared.Domain;
 
 public class DomainRuleException : Exception
 {

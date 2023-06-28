@@ -1,7 +1,7 @@
-using Cataloging.Application.Auditing;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Application.Auditing;
 using System.Net.Http.Json;
 
 namespace Cataloging.IntegrationTests.Books;

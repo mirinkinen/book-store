@@ -1,5 +1,4 @@
-﻿using Cataloging.Application;
-using Cataloging.Application.Services;
+﻿using Shared.Application.Authentication;
 
 namespace Cataloging.MockDataSeeder;
 

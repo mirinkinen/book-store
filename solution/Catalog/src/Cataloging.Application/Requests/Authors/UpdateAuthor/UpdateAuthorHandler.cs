@@ -1,7 +1,7 @@
-﻿using Cataloging.Application.Auditing;
-using Cataloging.Application.Services;
-using Cataloging.Domain.Authors;
+﻿using Cataloging.Domain.Authors;
 using MediatR;
+using Shared.Application.Auditing;
+using Shared.Application.Authentication;
 
 namespace Cataloging.Application.Requests.Authors.UpdateAuthor;
 
@@ -16,14 +16,10 @@ public record UpdateAuthorCommand(Guid ResourceId, string Firstname, string Last
 internal class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, Author?>
 {
     private readonly IAuthorRepository _authorRepository;
-    private readonly IUserService _userService;
-    private readonly IAuditContext _auditContext;
 
-    public UpdateAuthorHandler(IAuthorRepository authorRepository, IUserService userService, IAuditContext auditContext)
+    public UpdateAuthorHandler(IAuthorRepository authorRepository)
     {
         _authorRepository = authorRepository;
-        _userService = userService;
-        _auditContext = auditContext;
     }
 
     public async Task<Author?> Handle(UpdateAuthorCommand request, CancellationToken cancellationToken)

@@ -1,5 +1,4 @@
 ﻿using Cataloging.Api;
-using Cataloging.Application.Services;
 using Cataloging.Infrastructure.Database;
 using Cataloging.IntegrationTests.Fakes;
 using MartinCostello.SqlLocalDb;
@@ -7,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Application.Authentication;
 
 namespace Cataloging.IntegrationTests;
 

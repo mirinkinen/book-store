@@ -1,4 +1,4 @@
-﻿namespace Cataloging.Application.Services;
+﻿namespace Shared.Application.Authentication;
 
 public class UserService : IUserService
 {

@@ -1,6 +1,5 @@
-﻿using Cataloging.Application;
-using Cataloging.Application.Services;
-using Cataloging.MockDataSeeder;
+﻿using Cataloging.MockDataSeeder;
+using Shared.Application.Authentication;
 
 namespace Cataloging.IntegrationTests.Fakes;
 

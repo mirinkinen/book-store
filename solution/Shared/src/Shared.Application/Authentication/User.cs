@@ -1,4 +1,4 @@
-﻿namespace Cataloging.Application;
+﻿namespace Shared.Application.Authentication;
 
 public class User
 {

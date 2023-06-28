@@ -1,9 +1,9 @@
 using Cataloging.Api.Authors;
-using Cataloging.Application.Auditing;
 using Cataloging.Infrastructure.Database;
 using Cataloging.IntegrationTests.Fakes;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Application.Auditing;
 using System.Net;
 using System.Net.Http.Json;
 

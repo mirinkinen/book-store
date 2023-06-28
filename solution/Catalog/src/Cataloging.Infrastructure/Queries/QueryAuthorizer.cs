@@ -3,6 +3,7 @@ using Cataloging.Domain.Authors;
 using Cataloging.Domain.Books;
 using Cataloging.Domain.SeedWork;
 using Cataloging.Infrastructure.Database;
+using Shared.Application.Authentication;
 
 namespace Cataloging.Infrastructure.Queries;
 

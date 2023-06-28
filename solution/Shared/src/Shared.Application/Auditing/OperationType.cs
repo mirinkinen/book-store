@@ -1,4 +1,4 @@
-﻿namespace Cataloging.Application.Auditing;
+﻿namespace Shared.Application.Auditing;
 
 public enum OperationType
 {

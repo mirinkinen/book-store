@@ -3,7 +3,6 @@ using Cataloging.Application.Requests.Authors.DeleteAuthor;
 using Cataloging.Application.Requests.Authors.GetAuthorById;
 using Cataloging.Application.Requests.Authors.GetAuthors;
 using Cataloging.Application.Requests.Authors.UpdateAuthor;
-using Cataloging.Application.Services;
 using Cataloging.Domain.Authors;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +10,7 @@ using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Shared.Application.Authentication;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Api.Authors;

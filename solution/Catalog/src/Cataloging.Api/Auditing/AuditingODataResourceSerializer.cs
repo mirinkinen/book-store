@@ -1,9 +1,9 @@
-﻿using Cataloging.Application.Auditing;
-using Cataloging.Domain.SeedWork;
+﻿using Cataloging.Domain.SeedWork;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.AspNetCore.OData.Formatter.Value;
 using Microsoft.OData;
 using Microsoft.OData.Edm;
+using Shared.Application.Auditing;
 
 namespace Cataloging.Api.Auditing;
 

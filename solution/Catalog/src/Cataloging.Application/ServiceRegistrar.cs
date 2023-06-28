@@ -1,8 +1,8 @@
-﻿using Cataloging.Application.Auditing;
-using Cataloging.Application.Requests.Books.GetBooks;
-using Cataloging.Application.Services;
+﻿using Cataloging.Application.Requests.Books.GetBooks;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Application.Auditing;
+using Shared.Application.Authentication;
 
 namespace Cataloging.Application;
 
