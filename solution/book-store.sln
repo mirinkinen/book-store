@@ -48,6 +48,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{AC7A8847
 		Catalog\tools\Update-Database.cmd = Catalog\tools\Update-Database.cmd
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Inventory", "Inventory", "{6CF13A43-506E-4EAB-A829-EE14CE9A3BA6}"
+	ProjectSection(SolutionItems) = preProject
+		Inventory\README.md = Inventory\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Order", "Order", "{2D28F504-1C4C-4E9A-A9A1-6D22220D1D2F}"
+	ProjectSection(SolutionItems) = preProject
+		Order\README.md = Order\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "User", "User", "{897449E4-1E31-4836-94CA-82A41F6BC857}"
+	ProjectSection(SolutionItems) = preProject
+		User\README.md = User\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
