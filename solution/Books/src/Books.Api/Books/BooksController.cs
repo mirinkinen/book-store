@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 
-namespace Books.Api.Controllers;
+namespace Books.Api.Books;
 
 [ODataRouteComponent("v1")]
 public class BooksController : ODataController

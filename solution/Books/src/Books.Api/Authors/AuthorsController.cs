@@ -51,7 +51,7 @@ public partial class AuthorsController : ODataController
     [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Dto is never null.")]
     public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] UpdateAuthorCommandDto dto)
     {
-        var command = new UpdateAuthorCommand(key, dto.Firstname, dto.Lastname, dto.Birthday);
+        var command = new UpdateAuthorCommand(key, dto.Firstname, dto.Lastname, dto.Birthday, _userService.GetUser());
 
         var author = await _mediatr.Send(command);
 

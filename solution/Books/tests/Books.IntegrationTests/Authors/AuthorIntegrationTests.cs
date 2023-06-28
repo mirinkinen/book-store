@@ -1,6 +1,10 @@
+using Books.Api.Authors;
 using Books.Application.Auditing;
+using Books.Infrastructure.Database;
+using Books.IntegrationTests.Fakes;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net;
 using System.Net.Http.Json;
 
 namespace Books.IntegrationTests.Authors;
@@ -270,5 +274,44 @@ public class AuthorIntegrationTests : IntegrationTest
         var error = await response.Content.ReadFromJsonAsync<ErrorResponse>();
         error.Should().NotBeNull();
         error.Error.Message.Should().Contain("The limit of '20' for Top query has been exceeded");
+    }
+
+    [Fact]
+    public async Task Put_ValidAuthor_UpdatesAuthor()
+    {
+        // Arrange
+        var client = Factory.CreateClient();
+        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
+
+        var authorId = "8e6a9434-87f5-46b2-a6c3-522dc35d8eef";
+        var newFirstName = "TestFirstName";
+        var newLastName = "TestLastName";
+        var newBirthday = DateTime.UtcNow - TimeSpan.FromDays(30 * 365);
+        using var json = JsonContent.Create(new UpdateAuthorCommandDto(newFirstName, newLastName, newBirthday));
+
+        // Act
+        var response = await client.PutAsync($"v1/authors({authorId})", json);
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+
+        // Assert that data is updated.
+        using var scope = Factory.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<BooksDbContext>();
+        var author = await dbContext.Authors.FindAsync(Guid.Parse(authorId));
+        author.FirstName.Should().Be(newFirstName);
+        author.LastName.Should().Be(newLastName);
+        author.Birthday.Should().Be(newBirthday);
+
+        // Assert audit context.
+        var user = new FakeUserService().GetUser();
+        _auditContext.Should().NotBeNull();
+        _auditContext.ActorId.Should().Be(user.Id);
+        _auditContext.OperationType.Should().Be(OperationType.Update);
+        _auditContext.Resources.Should().HaveCount(1);
+        _auditContext.Success.Should().BeTrue();
+        var authorResource = _auditContext.Resources.First();
+        authorResource.Type.Should().Be(ResourceType.Author);
+        authorResource.Id.Should().Be(Guid.Parse(authorId));
     }
 }

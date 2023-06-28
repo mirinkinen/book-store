@@ -1,4 +1,5 @@
 ﻿using Books.Api;
+using Books.Application.Services;
 using Books.Infrastructure.Database;
 using Books.IntegrationTests.Fakes;
 using MartinCostello.SqlLocalDb;
@@ -24,23 +25,31 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
 
         builder.ConfigureServices(services =>
         {
-            // Remove the real database connection
-            var dbContextDescriptor = services.Single(d => d.ServiceType == typeof(DbContextOptions<BooksDbContext>));
-            services.Remove(dbContextDescriptor);
+            // Remove the real database dependency with test instance.
+            ReplaceDatabase(services);
 
-            StartTestDatabaseInstance();
-
-            var dbName = $"BookStoreTest_{Guid.NewGuid():N}";
-            var connectionString = $"Data Source=(localdb)\\{_instanceName};Initial Catalog={dbName};Integrated Security=True";
-
-            services.AddDbContext<BooksDbContext>(dbContextOptions =>
-            {
-                dbContextOptions.UseSqlServer(connectionString);
-            });
-
-            services.AddScoped<FakeUserService>();
+            // Replace IUserService.
+            var userServiceDescriptor = services.Single(d => d.ImplementationType == typeof(UserService));
+            services.Remove(userServiceDescriptor);
+            services.AddScoped<IUserService, FakeUserService>();
 
             ConfigureServices?.Invoke(services);
+        });
+    }
+
+    private static void ReplaceDatabase(IServiceCollection services)
+    {
+        var dbContextDescriptor = services.Single(d => d.ServiceType == typeof(DbContextOptions<BooksDbContext>));
+        services.Remove(dbContextDescriptor);
+
+        StartTestDatabaseInstance();
+
+        var dbName = $"BookStoreTest_{Guid.NewGuid():N}";
+        var connectionString = $"Data Source=(localdb)\\{_instanceName};Initial Catalog={dbName};Integrated Security=True";
+
+        services.AddDbContext<BooksDbContext>(dbContextOptions =>
+        {
+            dbContextOptions.UseSqlServer(connectionString);
         });
     }
 
