@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog", "Catalog", "{17908272-3BC4-4555-AF7C-B4C09AC86105}"
+	ProjectSection(SolutionItems) = preProject
+		Catalog\README.md = Catalog\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7801A4D9-54CF-43B4-B731-199A19B625DA}"
 EndProject
