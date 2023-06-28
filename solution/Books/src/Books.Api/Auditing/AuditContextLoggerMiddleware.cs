@@ -37,6 +37,7 @@ public class AuditContextLoggerMiddleware
 
         Debug.WriteLine($"Success: {auditContext.Success}");
         Debug.WriteLine($"User: {auditContext.ActorId}");
+        Debug.WriteLine($"Operation: {auditContext.OperationType}");
         foreach (var resource in auditContext.Resources)
         {
             Debug.WriteLine($"{resource.Type}: {resource.Id}");
