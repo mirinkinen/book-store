@@ -73,9 +73,10 @@ public class Program
         bookEntity.Property(book => book.AuthorId);
         bookEntity.Property(book => book.CreatedAt);
         bookEntity.Property(book => book.DatePublished);
-        bookEntity.Property(book => book.Title);
         bookEntity.Property(book => book.ModifiedAt);
         bookEntity.Property(book => book.ModifiedBy);
+        bookEntity.Property(book => book.Price);
+        bookEntity.Property(book => book.Title);
         bookEntity.ContainsRequired(book => book.Author);
 
         var bookEntitySet = modelBuilder.EntitySet<Book>("Books");

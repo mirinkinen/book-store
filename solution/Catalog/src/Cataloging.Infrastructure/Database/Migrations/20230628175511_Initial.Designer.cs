@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cataloging.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(CatalogDbContext))]
-    [Migration("20230628150737_Initial")]
+    [Migration("20230628175511_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -112,6 +112,9 @@ namespace Cataloging.Infrastructure.Database.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2")
                         .HasColumnName("PeriodStart");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Title")
                         .IsRequired()

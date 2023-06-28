@@ -13,11 +13,14 @@ namespace Cataloging.Domain.Books
 
         public Guid AuthorId { get; private set; }
 
-        public Book(string title, DateTime datePublished, Guid authorId)
+        public decimal Price { get; private set; }
+
+        public Book(Guid authorId, string title, DateTime datePublished, decimal price)
         {
+            AuthorId = authorId;
             Title = title;
             DatePublished = datePublished;
-            AuthorId = authorId;
+            Price = price;
         }
     }
 }
