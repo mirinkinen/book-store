@@ -13,8 +13,7 @@ namespace Cataloging.Domain.Books
 
         public Guid AuthorId { get; private set; }
 
-        public Book(string title, DateTime datePublished, Guid authorId, Guid modifiedBy)
-            : base(modifiedBy)
+        public Book(string title, DateTime datePublished, Guid authorId)
         {
             Title = title;
             DatePublished = datePublished;

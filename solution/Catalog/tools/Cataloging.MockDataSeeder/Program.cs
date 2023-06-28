@@ -1,4 +1,5 @@
-﻿using Cataloging.Infrastructure.Database;
+﻿using Cataloging.Application.Services;
+using Cataloging.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
@@ -20,9 +21,11 @@ internal class Program
             return;
         }
 
-        var serviceProvider = new ServiceCollection()
-          .AddDbContext<CatalogDbContext>(options => options.UseSqlServer(connectionString))
-          .BuildServiceProvider();
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddDbContext<CatalogDbContext>(options => options.UseSqlServer(connectionString));
+        serviceCollection.AddScoped<IUserService, SystemUserService>();
+
+        var serviceProvider = serviceCollection.BuildServiceProvider();
 
         // Use the DbContext in your application
         using var dbContext = serviceProvider.GetRequiredService<CatalogDbContext>();

@@ -5,30 +5,30 @@ namespace Cataloging.Infrastructure.Repository;
 
 internal class AuthorRepository : IAuthorRepository
 {
-    private readonly CatalogDbContext _booksDbContext;
+    private readonly CatalogDbContext _catalogDbContext;
 
-    public AuthorRepository(CatalogDbContext booksDbContext)
+    public AuthorRepository(CatalogDbContext catalogDbContext)
     {
-        _booksDbContext = booksDbContext;
+        _catalogDbContext = catalogDbContext;
     }
 
     public void AddAuthor(Author author)
     {
-        _booksDbContext.Add(author);
+        _catalogDbContext.Add(author);
     }
 
     public void Delete(Author author)
     {
-        _booksDbContext.Remove(author);
+        _catalogDbContext.Remove(author);
     }
 
     public ValueTask<Author?> GetAuthorById(Guid authorId, CancellationToken cancellationToken)
     {
-        return _booksDbContext.FindAsync<Author>(authorId, cancellationToken);
+        return _catalogDbContext.FindAsync<Author>(authorId, cancellationToken);
     }
 
     public Task<int> SaveChangesAsync()
     {
-        return _booksDbContext.SaveChangesAsync();
+        return _catalogDbContext.SaveChangesAsync();
     }
 }
