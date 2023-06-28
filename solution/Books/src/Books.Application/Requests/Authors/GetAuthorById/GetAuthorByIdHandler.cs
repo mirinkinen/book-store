@@ -5,10 +5,7 @@ using MediatR;
 
 namespace Books.Application.Requests.Authors.GetAuthorById;
 
-public record GetAuthorByIdQuery(Guid AuthorId, User Actor) : IAuditRequest<IQueryable<Author>>
-{
-    public OperationType OperationType => OperationType.Read;
-}
+public record GetAuthorByIdQuery(Guid AuthorId, User Actor) : IAuditableQuery<IQueryable<Author>>;
 
 public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, IQueryable<Author>>
 {

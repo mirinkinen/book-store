@@ -2,27 +2,28 @@
 
 namespace Books.Application.Auditing;
 
-internal class AuditBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
+internal class AuditableCommandBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {
     private readonly IAuditContext _auditContext;
 
-    public AuditBehaviour(IAuditContext auditContext)
+    public AuditableCommandBehaviour(IAuditContext auditContext)
     {
         _auditContext = auditContext;
     }
 
     public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        if (request is not IAuditRequest<TResponse> auditRequest)
+        if (request is not IAuditableCommand<TResponse> auditableCommand)
         {
             return next();
         }
 
         try
         {
-            _auditContext.ActorId = auditRequest.Actor.Id;
-            _auditContext.OperationType = auditRequest.OperationType;
+            _auditContext.ActorId = auditableCommand.Actor.Id;
+            _auditContext.OperationType = auditableCommand.OperationType;
             _auditContext.Timestamp = DateTime.UtcNow;
+            _auditContext.AddResource(auditableCommand.ResourceType, auditableCommand.ResourceId);
 
             var response = next();
 

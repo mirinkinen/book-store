@@ -14,5 +14,5 @@ public interface IAuditContext
 
     DateTime Timestamp { get; set; }
 
-    void AddResource(ResourceType resourceType, Guid Id);
+    void AddResource(ResourceType resourceType, Guid resourceId);
 }

@@ -15,8 +15,8 @@ public class AuditContext : IAuditContext
 
     public DateTime Timestamp { get; set; }
 
-    public void AddResource(ResourceType resourceType, Guid Id)
+    public void AddResource(ResourceType type, Guid id)
     {
-        _resources.Add(new AuditResource(resourceType, Id));
+        _resources.Add(new AuditResource(type, id));
     }
 }

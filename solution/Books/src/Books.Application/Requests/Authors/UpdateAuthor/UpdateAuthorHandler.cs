@@ -5,10 +5,12 @@ using MediatR;
 
 namespace Books.Application.Requests.Authors.UpdateAuthor;
 
-public record UpdateAuthorCommand(Guid AuthorId, string Firstname, string Lastname, DateTime Birthday, User Actor)
-    : IAuditRequest<Author?>
+public record UpdateAuthorCommand(Guid ResourceId, string Firstname, string Lastname, DateTime Birthday, User Actor)
+    : IAuditableCommand<Author?>
 {
     public OperationType OperationType => OperationType.Update;
+
+    public ResourceType ResourceType => ResourceType.Author;
 }
 
 internal class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, Author?>
@@ -26,7 +28,7 @@ internal class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, Author
 
     public async Task<Author?> Handle(UpdateAuthorCommand request, CancellationToken cancellationToken)
     {
-        var author = await _authorRepository.GetAuthorById(request.AuthorId, cancellationToken);
+        var author = await _authorRepository.GetAuthorById(request.ResourceId, cancellationToken);
 
         if (author == null)
         {
@@ -35,8 +37,6 @@ internal class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, Author
 
         var user = _userService.GetUser();
         author.Update(request.Firstname, request.Lastname, request.Birthday, user.Id);
-
-        _auditContext.AddResource(ResourceType.Author, request.AuthorId);
 
         await _authorRepository.SaveChangesAsync();
 
