@@ -1,10 +1,14 @@
+using Books.Application.Auditing;
 using Books.Application.Services;
 using Books.Domain.Authors;
 using MediatR;
 
 namespace Books.Application.Requests.Authors.GetAuthorById;
 
-public record GetAuthorByIdQuery(Guid AuthorId) : IRequest<IQueryable<Author>>;
+public record GetAuthorByIdQuery(Guid AuthorId, User Actor) : IAuditRequest<IQueryable<Author>>
+{
+    public OperationType OperationType => OperationType.Read;
+}
 
 public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, IQueryable<Author>>
 {

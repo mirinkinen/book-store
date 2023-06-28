@@ -5,16 +5,9 @@ using MediatR;
 
 namespace Books.Application.Requests.Books.GetBooks;
 
-public record GetBooksQuery : IAuditRequest<IQueryable<Book>>
+public record GetBooksQuery(User Actor) : IAuditRequest<IQueryable<Book>>
 {
     public OperationType OperationType => OperationType.Read;
-
-    public User Actor { get; }
-
-    public GetBooksQuery(User actor)
-    {
-        Actor = actor;
-    }
 }
 
 public class GetBooksHandler : IRequestHandler<GetBooksQuery, IQueryable<Book>>

@@ -1,4 +1,6 @@
+using Books.Application.Auditing;
 using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Json;
 
 namespace Books.IntegrationTests.Authors;
@@ -6,6 +8,16 @@ namespace Books.IntegrationTests.Authors;
 [Trait("Category", "Author")]
 public class AuthorIntegrationTests : IntegrationTest
 {
+    private IAuditContext _auditContext = new AuditContext();
+
+    public AuthorIntegrationTests()
+    {
+        Factory.ConfigureServices = (IServiceCollection services) =>
+        {
+            services.AddScoped<IAuditContext>(sp => _auditContext);
+        };
+    }
+
     [Fact]
     public async Task Get_Top3_Returns3Authors()
     {
@@ -20,6 +32,11 @@ public class AuthorIntegrationTests : IntegrationTest
         var odata = await response.Content.ReadFromJsonAsync<ValueResponse<AuthorViewmodel>>();
         odata.Should().NotBeNull();
         odata.Value.Should().HaveCount(3);
+
+        // Verify audit logging.
+        _auditContext.OperationType.Should().Be(OperationType.Read);
+        _auditContext.Resources.Should().HaveCount(3);
+        _auditContext.Resources.Should().OnlyContain(ar => ar.Type == ResourceType.Author && ar.Id != Guid.Empty);
     }
 
     [Fact]
@@ -83,6 +100,12 @@ public class AuthorIntegrationTests : IntegrationTest
         var author = await response.Content.ReadFromJsonAsync<AuthorViewmodel>();
         author.Should().NotBeNull();
         author.Id.Should().Be(authorId);
+
+        // Verify audit logging.
+        _auditContext.Resources.Should().HaveCount(1);
+        var auditResource = _auditContext.Resources.First();
+        auditResource.Id.Should().Be(author.Id.Value);
+        _auditContext.OperationType.Should().Be(OperationType.Read);
     }
 
     [Fact]
@@ -178,6 +201,40 @@ public class AuthorIntegrationTests : IntegrationTest
         author.Should().NotBeNull();
         author.Books.Should().NotBeNull();
         author.Books.Should().NotBeEmpty();
+    }
+
+    [Fact]
+    public async Task Get_AuthorWithBooks_ReturnsAuthorWithBooks()
+    {
+        // Arrange
+        var client = Factory.CreateClient();
+        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
+
+        // Act
+        var response = await client.GetAsync($"v1/Authors?$filter=id eq 8e6a9434-87f5-46b2-a6c3-522dc35d8eef&$expand=books($top=3)");
+
+        // Assert
+        var odata = await response.Content.ReadFromJsonAsync<ValueResponse<AuthorViewmodel>>();
+        odata.Should().NotBeNull();
+
+        var authors = odata.Value;
+        authors.Should().HaveCount(1);
+        authors.Should().NotBeEmpty();
+        var author = authors.First();
+
+        author.Should().NotBeNull();
+
+        author.Books.Should().NotBeNull();
+        author.Books.Should().HaveCount(3);
+
+        // Verify audit logging.
+        _auditContext.OperationType.Should().Be(OperationType.Read);
+        _auditContext.Resources.Should().HaveCount(4);
+        var authorResource = _auditContext.Resources.First(ar => ar.Type == ResourceType.Author);
+        authorResource.Id.Should().Be(author.Id.Value);
+
+        var bookResources = _auditContext.Resources.Where(ar => ar.Type == ResourceType.Book);
+        bookResources.Should().HaveCount(3);
     }
 
     [Fact]

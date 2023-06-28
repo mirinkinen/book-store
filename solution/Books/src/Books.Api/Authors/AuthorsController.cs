@@ -3,6 +3,7 @@ using Books.Application.Requests.Authors.DeleteAuthor;
 using Books.Application.Requests.Authors.GetAuthorById;
 using Books.Application.Requests.Authors.GetAuthors;
 using Books.Application.Requests.Authors.UpdateAuthor;
+using Books.Application.Services;
 using Books.Domain.Authors;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,23 +19,25 @@ namespace Books.Api.Authors;
 public partial class AuthorsController : ODataController
 {
     private readonly IMediator _mediatr;
+    private readonly IUserService _userService;
 
-    public AuthorsController(IMediator mediatr)
+    public AuthorsController(IMediator mediatr, IUserService userService)
     {
         _mediatr = mediatr;
+        _userService = userService;
     }
 
     [EnableQuery]
     public Task<IQueryable<Author>> Get()
     {
-        var query = new GetAuthorsQuery();
+        var query = new GetAuthorsQuery(_userService.GetUser());
         return _mediatr.Send(query);
     }
 
     [EnableQuery]
     public async Task<IActionResult> Get([FromRoute] Guid key)
     {
-        var query = new GetAuthorByIdQuery(key);
+        var query = new GetAuthorByIdQuery(key, _userService.GetUser());
         var authorQuery = await _mediatr.Send(query);
 
         return Ok(SingleResult.Create(authorQuery));
