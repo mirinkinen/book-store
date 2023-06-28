@@ -1,5 +1,4 @@
 using Books.Api.Auditing;
-using Books.Api.OData.Serialization;
 using Books.Domain.Authors;
 using Books.Domain.Books;
 using Microsoft.AspNetCore.OData;
@@ -91,7 +90,7 @@ public class Program
             .SetMaxTop(20)
             .AddRouteComponents("v1", modelBuilder.GetEdmModel(), services =>
             {
-                services.AddSingleton<ODataResourceSerializer, CustomODataResourceSerializer>();
+                services.AddSingleton<ODataResourceSerializer, AuditingODataResourceSerializer>();
 
                 services.AddHttpContextAccessor();
             }));

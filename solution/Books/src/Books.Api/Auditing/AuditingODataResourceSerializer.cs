@@ -5,13 +5,13 @@ using Microsoft.AspNetCore.OData.Formatter.Value;
 using Microsoft.OData;
 using Microsoft.OData.Edm;
 
-namespace Books.Api.OData.Serialization;
+namespace Books.Api.Auditing;
 
-public class CustomODataResourceSerializer : ODataResourceSerializer
+public class AuditingODataResourceSerializer : ODataResourceSerializer
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public CustomODataResourceSerializer(IODataSerializerProvider serializerProvider, IHttpContextAccessor httpContextAccessor)
+    public AuditingODataResourceSerializer(IODataSerializerProvider serializerProvider, IHttpContextAccessor httpContextAccessor)
         : base(serializerProvider)
     {
         _httpContextAccessor = httpContextAccessor;
