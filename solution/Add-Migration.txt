@@ -1,1 +1,3 @@
-dotnet ef migrations add -c BooksDbContext -s ..\src\Books.Api\ -p ..\src\Books.Infrastructure\ -o Database\Migrations\ <MigrationName>
+Run this command in the tools directory in order the relative paths to work. Change the <MigrationName> before running.
+
+dotnet ef migrations add -c CatalogingDbContext -s ..\src\Cataloging.Api\ -p ..\src\Cataloging.Infrastructure\ -o Database\Migrations\ <MigrationName>

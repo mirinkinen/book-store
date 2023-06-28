@@ -3,16 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Books", "Books", "{17908272-3BC4-4555-AF7C-B4C09AC86105}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog", "Catalog", "{17908272-3BC4-4555-AF7C-B4C09AC86105}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7801A4D9-54CF-43B4-B731-199A19B625DA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{EC8B366A-2968-43BF-86DF-241844445669}"
 	ProjectSection(SolutionItems) = preProject
-		Books\tests\.editorconfig = Books\tests\.editorconfig
+		Catalog\tests\.editorconfig = Catalog\tests\.editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Api", "Books\src\Books.Api\Books.Api.csproj", "{93840517-71C7-46CD-B71B-ED68A8D53DFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cataloging.Api", "Catalog\src\Cataloging.Api\Cataloging.Api.csproj", "{93840517-71C7-46CD-B71B-ED68A8D53DFA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FF831862-C44A-436A-A1E8-3F1C4976BD2B}"
 	ProjectSection(SolutionItems) = preProject
@@ -20,29 +20,29 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Domain.UnitTests", "Books\tests\Books.Domain.UnitTests\Books.Domain.UnitTests.csproj", "{64945855-5ACB-4A76-BAE7-9753A84C836C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cataloging.Domain.UnitTests", "Catalog\tests\Cataloging.Domain.UnitTests\Cataloging.Domain.UnitTests.csproj", "{64945855-5ACB-4A76-BAE7-9753A84C836C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Application", "Books\src\Books.Application\Books.Application.csproj", "{879C694F-D100-4511-AB49-B064D625E8CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cataloging.Application", "Catalog\src\Cataloging.Application\Cataloging.Application.csproj", "{879C694F-D100-4511-AB49-B064D625E8CE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Domain", "Books\src\Books.Domain\Books.Domain.csproj", "{CFC72D68-D736-4F44-AA6D-ACE9A8782291}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cataloging.Domain", "Catalog\src\Cataloging.Domain\Cataloging.Domain.csproj", "{CFC72D68-D736-4F44-AA6D-ACE9A8782291}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Infrastructure", "Books\src\Books.Infrastructure\Books.Infrastructure.csproj", "{43E7F853-2DCC-4382-9611-FABF56B2A4F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cataloging.Infrastructure", "Catalog\src\Cataloging.Infrastructure\Cataloging.Infrastructure.csproj", "{43E7F853-2DCC-4382-9611-FABF56B2A4F0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.IntegrationTests", "Books\tests\Books.IntegrationTests\Books.IntegrationTests.csproj", "{74415934-E712-4241-A8C1-D74E72C7AF81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cataloging.IntegrationTests", "Catalog\tests\Cataloging.IntegrationTests\Cataloging.IntegrationTests.csproj", "{74415934-E712-4241-A8C1-D74E72C7AF81}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.MockDataSeeder", "Books\tools\Books.MockDataSeeder\Books.MockDataSeeder.csproj", "{92F7ED52-B826-4D1A-A7EC-A9383ECD871A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cataloging.MockDataSeeder", "Catalog\tools\Cataloging.MockDataSeeder\Cataloging.MockDataSeeder.csproj", "{92F7ED52-B826-4D1A-A7EC-A9383ECD871A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Infrastructure.IntegrationTests", "Books\tests\Books.Infrastructure.IntegrationTests\Books.Infrastructure.IntegrationTests.csproj", "{7ABCE44A-1EE3-4820-BAD3-5F95628F4070}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cataloging.Infrastructure.IntegrationTests", "Catalog\tests\Cataloging.Infrastructure.IntegrationTests\Cataloging.Infrastructure.IntegrationTests.csproj", "{7ABCE44A-1EE3-4820-BAD3-5F95628F4070}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Application.UnitTests", "Books\tests\Books.Application.UnitTests\Books.Application.UnitTests.csproj", "{913FBA20-82A8-49F9-8D22-D7FCDED9D09C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cataloging.Application.UnitTests", "Catalog\tests\Cataloging.Application.UnitTests\Cataloging.Application.UnitTests.csproj", "{913FBA20-82A8-49F9-8D22-D7FCDED9D09C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Api.UnitTests", "Books\tests\Books.Api.UnitTests\Books.Api.UnitTests.csproj", "{56890B31-D76B-4C48-BEAD-1DA6BE1CDFD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cataloging.Api.UnitTests", "Catalog\tests\Cataloging.Api.UnitTests\Cataloging.Api.UnitTests.csproj", "{56890B31-D76B-4C48-BEAD-1DA6BE1CDFD1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{AC7A8847-1363-41F7-B9CE-7EFE6D1C3B3B}"
 	ProjectSection(SolutionItems) = preProject
-		Books\tools\Drop-Database.cmd = Books\tools\Drop-Database.cmd
 		Add-Migration.txt = Add-Migration.txt
-		Books\tools\Update-Database.cmd = Books\tools\Update-Database.cmd
+		Catalog\tools\Drop-Database.cmd = Catalog\tools\Drop-Database.cmd
+		Catalog\tools\Update-Database.cmd = Catalog\tools\Update-Database.cmd
 	EndProjectSection
 EndProject
 Global
