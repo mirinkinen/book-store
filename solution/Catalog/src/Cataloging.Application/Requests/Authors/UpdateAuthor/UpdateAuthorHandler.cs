@@ -1,19 +1,18 @@
 ﻿using Cataloging.Domain.Authors;
-using MediatR;
 using Shared.Application.Auditing;
 using Shared.Application.Authentication;
 
 namespace Cataloging.Application.Requests.Authors.UpdateAuthor;
 
 public record UpdateAuthorCommand(Guid ResourceId, string Firstname, string Lastname, DateTime Birthday, User Actor)
-    : IAuditableCommand<Author?>
+    : IAuditableCommand
 {
     public OperationType OperationType => OperationType.Update;
 
     public ResourceType ResourceType => ResourceType.Author;
 }
 
-internal class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, Author?>
+public class UpdateAuthorHandler
 {
     private readonly IAuthorRepository _authorRepository;
 

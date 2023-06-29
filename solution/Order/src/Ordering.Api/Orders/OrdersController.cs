@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
@@ -8,18 +7,19 @@ using Ordering.Application.Requests.GetOrderById;
 using Ordering.Application.Requests.GetOrders;
 using Ordering.Domain.Orders;
 using Shared.Application.Authentication;
+using Wolverine;
 
 namespace Ordering.Api.Orders;
 
 [ODataRouteComponent("v1")]
 public partial class OrdersController : ODataController
 {
-    private readonly IMediator _mediatr;
+    private readonly IMessageBus _bus;
     private readonly IUserService _userService;
 
-    public OrdersController(IMediator mediatr, IUserService userService)
+    public OrdersController(IMessageBus bus, IUserService userService)
     {
-        _mediatr = mediatr;
+        _bus = bus;
         _userService = userService;
     }
 
@@ -27,14 +27,14 @@ public partial class OrdersController : ODataController
     public Task<IQueryable<Order>> Get()
     {
         var query = new GetOrdersQuery(_userService.GetUser());
-        return _mediatr.Send(query);
+        return _bus.InvokeAsync<IQueryable<Order>>(query);
     }
 
     [EnableQuery]
     public async Task<IActionResult> Get([FromRoute] Guid key)
     {
         var query = new GetOrderByIdQuery(key, _userService.GetUser());
-        var OrderQuery = await _mediatr.Send(query);
+        var OrderQuery = await _bus.InvokeAsync<IQueryable<Order>>(query);
 
         return Ok(SingleResult.Create(OrderQuery));
     }

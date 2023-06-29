@@ -1,11 +1,10 @@
 ﻿using Cataloging.Domain.Authors;
-using MediatR;
 
 namespace Cataloging.Application.Requests.Authors.DeleteAuthor;
 
-public record DeleteAuthorCommand(Guid AuthorId) : IRequest<Author?>;
+public record DeleteAuthorCommand(Guid AuthorId);
 
-internal class DeleteAuthorHandler : IRequestHandler<DeleteAuthorCommand, Author?>
+internal class DeleteAuthorHandler
 {
     private readonly IAuthorRepository _authorRepository;
 

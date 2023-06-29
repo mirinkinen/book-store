@@ -1,14 +1,14 @@
 using Cataloging.Application.Services;
 using Cataloging.Domain.Authors;
-using MediatR;
+using Shared.Application;
 using Shared.Application.Auditing;
 using Shared.Application.Authentication;
 
 namespace Cataloging.Application.Requests.Authors.GetAuthorById;
 
-public record GetAuthorByIdQuery(Guid AuthorId, User Actor) : IAuditableQuery<IQueryable<Author>>;
+public record GetAuthorByIdQuery(Guid AuthorId, User Actor) : IAuditableQuery;
 
-public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, IQueryable<Author>>
+public class GetAuthorByIdHandler
 {
     private readonly IQueryAuthorizer _queryAuthorizer;
 
@@ -17,10 +17,10 @@ public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, IQueryab
         _queryAuthorizer = queryAuthorizer;
     }
 
-    public Task<IQueryable<Author>> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
+    public QueryableResponse<Author> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        return Task.FromResult(_queryAuthorizer.GetAuthorizedEntities<Author>().Where(a => a.Id == request.AuthorId));
+        return new QueryableResponse<Author>(_queryAuthorizer.GetAuthorizedEntities<Author>().Where(a => a.Id == request.AuthorId));
     }
 }

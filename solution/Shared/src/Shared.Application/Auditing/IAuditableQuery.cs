@@ -1,9 +1,8 @@
-﻿using MediatR;
-using Shared.Application.Authentication;
+﻿using Shared.Application.Authentication;
 
 namespace Shared.Application.Auditing;
 
-public interface IAuditableQuery<TResponse> : IRequest<TResponse>
+public interface IAuditableQuery
 {
     User Actor { get; }
 

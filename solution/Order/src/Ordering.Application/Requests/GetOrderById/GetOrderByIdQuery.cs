@@ -1,13 +1,12 @@
-using MediatR;
 using Ordering.Application.Services;
 using Ordering.Domain.Orders;
 using Shared.Application.Authentication;
 
 namespace Ordering.Application.Requests.GetOrderById;
 
-public record GetOrderByIdQuery(Guid OrderId, User Actor) : IRequest<IQueryable<Order>>;
+public record GetOrderByIdQuery(Guid OrderId, User Actor);
 
-public class GetOrderByIdHandler : IRequestHandler<GetOrderByIdQuery, IQueryable<Order>>
+public class GetOrderByIdHandler
 {
     private readonly IQueryAuthorizer _queryAuthorizer;
 

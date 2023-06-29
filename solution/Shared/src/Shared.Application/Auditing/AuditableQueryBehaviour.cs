@@ -1,42 +1,23 @@
-﻿using MediatR;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using Wolverine;
 
 namespace Shared.Application.Auditing;
 
-public class AuditableQueryBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
+[SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Envelope is never null.")]
+public static class AuditableQueryMiddleware
 {
-    private readonly IAuditContext _auditContext;
-
-    public AuditableQueryBehaviour(IAuditContext auditContext)
+    public static void Before(Envelope envelope, IAuditContext auditContext)
     {
-        _auditContext = auditContext;
+        if (envelope.Message is IAuditableQuery auditableQuery)
+        {
+            auditContext.Timestamp = DateTime.UtcNow;
+            auditContext.ActorId = auditableQuery.Actor.Id;
+            auditContext.OperationType = auditableQuery.OperationType;
+        }
     }
 
-    [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "MediatR guarantees non-null delegates")]
-    public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public static void After(IAuditContext auditContext)
     {
-        if (request is not IAuditableQuery<TResponse> auditableQuery)
-        {
-            return next();
-        }
-
-        try
-        {
-            _auditContext.ActorId = auditableQuery.Actor.Id;
-            _auditContext.OperationType = auditableQuery.OperationType;
-            _auditContext.Timestamp = DateTime.UtcNow;
-            // Queried resources are not known at this point. They are set later when OData query is serialized.
-
-            var response = next();
-
-            _auditContext.Success = true;
-
-            return response;
-        }
-        catch
-        {
-            _auditContext.Success = false;
-            throw;
-        }
+        auditContext.Success = true;
     }
 }

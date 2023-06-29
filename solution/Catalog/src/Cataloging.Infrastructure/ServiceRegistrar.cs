@@ -12,13 +12,15 @@ public static class ServiceRegistrar
 {
     public static void RegisterInfrastructureServices(IServiceCollection services)
     {
-        services.AddDbContext<CatalogDbContext>(dbContextOptions =>
-        {
-#pragma warning disable CS8604 // Possible null reference argument.
-            dbContextOptions.UseSqlServer("Data Source=(localdb)\\BookStore;Initial Catalog=BookStore;Integrated Security=True");
+        services.AddDbContext<CatalogDbContext>(
+            dbContextOptions =>
+            {
+    #pragma warning disable CS8604 // Possible null reference argument.
+                dbContextOptions.UseSqlServer("Data Source=(localdb)\\BookStore;Initial Catalog=BookStore;Integrated Security=True");            
 
-#pragma warning restore CS8604 // Possible null reference argument.
-        });
+    #pragma warning restore CS8604 // Possible null reference argument.
+            }, 
+            ServiceLifetime.Singleton);
 
         services.AddScoped<IQueryAuthorizer, QueryAuthorizer>();
         services.AddScoped<IAuthorRepository, AuthorRepository>();

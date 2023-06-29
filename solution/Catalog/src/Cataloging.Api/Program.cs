@@ -1,10 +1,13 @@
 using Cataloging.Api.Auditing;
+using Cataloging.Application.Requests.Books.GetBooks;
 using Cataloging.Domain.Authors;
 using Cataloging.Domain.Books;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.OData.ModelBuilder;
+using Shared.Application.Auditing;
 using System.Diagnostics.CodeAnalysis;
+using Wolverine;
 
 namespace Cataloging.Api;
 
@@ -16,6 +19,14 @@ public class Program
         IEnumerable<string> strings = Enumerable.Empty<string>();
 
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Host.UseWolverine(opts =>
+        {
+            opts.ApplicationAssembly = typeof(GetBooksHandler).Assembly;
+            opts.Policies.AddMiddleware(typeof(AuditableQueryMiddleware), filter => typeof(IAuditableQuery).IsAssignableFrom(filter.MessageType));
+            opts.Policies.AddMiddleware(typeof(AuditableCommandMiddleware), filter => typeof(IAuditableCommand).IsAssignableFrom(filter.MessageType));
+            opts.Policies.LogMessageStarting(LogLevel.Debug);
+        });
 
         AddApiServices(builder);
         Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);

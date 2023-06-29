@@ -50,7 +50,7 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
         services.AddDbContext<CatalogDbContext>(dbContextOptions =>
         {
             dbContextOptions.UseSqlServer(connectionString);
-        });
+        }, ServiceLifetime.Singleton);
     }
 
     private static void StartTestDatabaseInstance()
