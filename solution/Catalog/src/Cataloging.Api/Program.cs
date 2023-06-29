@@ -20,14 +20,6 @@ public class Program
 
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Host.UseWolverine(opts =>
-        {
-            opts.ApplicationAssembly = typeof(GetBooksHandler).Assembly;
-            opts.Policies.AddMiddleware(typeof(AuditableQueryMiddleware), filter => typeof(IAuditableQuery).IsAssignableFrom(filter.MessageType));
-            opts.Policies.AddMiddleware(typeof(AuditableCommandMiddleware), filter => typeof(IAuditableCommand).IsAssignableFrom(filter.MessageType));
-            opts.Policies.LogMessageStarting(LogLevel.Debug);
-        });
-
         AddApiServices(builder);
         Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);
         Infrastructure.ServiceRegistrar.RegisterInfrastructureServices(builder.Services);
@@ -51,6 +43,14 @@ public class Program
 
     private static void AddApiServices(WebApplicationBuilder builder)
     {
+        builder.Host.UseWolverine(opts =>
+        {
+            opts.Discovery.IncludeAssembly(typeof(GetBooksHandler).Assembly);
+            opts.Policies.AddMiddleware(typeof(AuditableQueryMiddleware), filter => typeof(IAuditableQuery).IsAssignableFrom(filter.MessageType));
+            opts.Policies.AddMiddleware(typeof(AuditableCommandMiddleware), filter => typeof(IAuditableCommand).IsAssignableFrom(filter.MessageType));
+            opts.Policies.LogMessageStarting(LogLevel.Debug);
+        });
+
         // Add services to the container.
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
