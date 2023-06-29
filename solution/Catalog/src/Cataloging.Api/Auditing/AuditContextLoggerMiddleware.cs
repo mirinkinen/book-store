@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
 using Shared.Application.Auditing;
-using System.Diagnostics;
 
 namespace Cataloging.Api.Auditing;
 
@@ -9,12 +8,15 @@ public class AuditContextLoggerMiddleware
     private readonly RequestDelegate _next;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IOptions<AuditOptions> _auditOptions;
+    private readonly ILogger<AuditContextLoggerMiddleware> _logger;
 
-    public AuditContextLoggerMiddleware(RequestDelegate next, IHttpContextAccessor httpContextAccessor, IOptions<AuditOptions> auditOptions)
+    public AuditContextLoggerMiddleware(RequestDelegate next, IHttpContextAccessor httpContextAccessor, IOptions<AuditOptions> auditOptions,
+        ILogger<AuditContextLoggerMiddleware> logger)
     {
         _next = next;
         _httpContextAccessor = httpContextAccessor;
         _auditOptions = auditOptions;
+        _logger = logger;
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -32,18 +34,18 @@ public class AuditContextLoggerMiddleware
             return;
         }
 
-        Debug.WriteLine(string.Empty);
-        Debug.WriteLine(new string('-', 30));
+        _logger.LogDebug(string.Empty);
+        _logger.LogDebug(new string('-', 30));
+        _logger.LogDebug($"Success: {auditContext.Success}");
+        _logger.LogDebug($"User: {auditContext.ActorId}");
+        _logger.LogDebug($"Operation: {auditContext.OperationType}");
 
-        Debug.WriteLine($"Success: {auditContext.Success}");
-        Debug.WriteLine($"User: {auditContext.ActorId}");
-        Debug.WriteLine($"Operation: {auditContext.OperationType}");
         foreach (var resource in auditContext.Resources)
         {
-            Debug.WriteLine($"{resource.Type}: {resource.Id}");
+            _logger.LogDebug($"{resource.Type}: {resource.Id}");
         }
 
-        Debug.WriteLine(new string('-', 30));
-        Debug.WriteLine(string.Empty);
+        _logger.LogDebug(new string('-', 30));
+        _logger.LogDebug(string.Empty);
     }
 }

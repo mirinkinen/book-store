@@ -1,12 +1,20 @@
 ﻿using Cataloging.Infrastructure.Database;
 using Cataloging.MockDataSeeder;
 using Microsoft.Extensions.DependencyInjection;
+using Xunit.Abstractions;
 
 namespace Cataloging.IntegrationTests;
 
 public class IntegrationTest : IAsyncLifetime
 {
     protected ApiTestWebApplicationFactory Factory { get; private set; } = new();
+
+    protected ITestOutputHelper Output { get; }
+
+    public IntegrationTest(ITestOutputHelper output)
+    {
+        Output = output;
+    }
 
     public async Task DisposeAsync()
     {
