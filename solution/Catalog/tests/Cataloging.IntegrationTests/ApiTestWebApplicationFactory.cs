@@ -4,6 +4,7 @@ using Cataloging.IntegrationTests.Fakes;
 using MartinCostello.SqlLocalDb;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Application.Authentication;
@@ -14,6 +15,7 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
 {
     private const string _instanceName = "BookStoreTest";
     private static readonly SqlLocalDbApi _sqlLoccalDbApi = new();
+    private static bool _databaseStarted;
 
     public Action<IServiceCollection> ConfigureServices { get; set; }
 
@@ -58,6 +60,14 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
         // Prevent multiple threads from creating the database.
         lock (_sqlLoccalDbApi)
         {
+            // Do this only once.
+            if (_databaseStarted)
+            {
+                return;
+            }
+
+            _databaseStarted = true;
+
             ISqlLocalDbInstanceInfo instance = _sqlLoccalDbApi.GetOrCreateInstance(_instanceName);
             ISqlLocalDbInstanceManager manager = instance.Manage();
 
@@ -65,6 +75,36 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
             {
                 manager.Start();
             }
+
+            DropLeftoverDatabases(instance);
+        }
+    }
+
+    private static void DropLeftoverDatabases(ISqlLocalDbInstanceInfo instance)
+    {
+        using var connection = instance.CreateConnection();
+        connection.Open();
+        connection.ChangeDatabase("master");
+        using var getDatabasesCommand = new SqlCommand("SELECT * FROM sys.databases WHERE name LIKE 'BookStoreTest%'", connection);
+        var reader = getDatabasesCommand.ExecuteReader();
+        var databases = new List<string>();
+
+        while (reader.Read())
+        {
+            databases.Add(reader.GetString(0));
+        }
+
+        reader.Close();
+
+        foreach (var database in databases)
+        {
+            try
+            {
+                using var dropCommand = new SqlCommand($"DROP DATABASE {database}", connection);
+                dropCommand.ExecuteNonQuery();
+            }
+            // Don't care about failures.
+            catch { }
         }
     }
 }
