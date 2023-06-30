@@ -8,6 +8,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Application.Authentication;
+using System.Data.Common;
 
 namespace Cataloging.IntegrationTests;
 
@@ -41,10 +42,12 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
 
     private static void ReplaceDatabase(IServiceCollection services)
     {
+        StartTestDatabaseInstance();
+
         var dbContextDescriptor = services.Single(d => d.ServiceType == typeof(DbContextOptions<CatalogDbContext>));
         services.Remove(dbContextDescriptor);
-
-        StartTestDatabaseInstance();
+        var dbContext = services.Single(d => d.ServiceType == typeof(CatalogDbContext));
+        services.Remove(dbContext);
 
         var dbName = $"BookStoreTest_{Guid.NewGuid():N}";
         var connectionString = $"Data Source=(localdb)\\{_instanceName};Initial Catalog={dbName};Integrated Security=True";
