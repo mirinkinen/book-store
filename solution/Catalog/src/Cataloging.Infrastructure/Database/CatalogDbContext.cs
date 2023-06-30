@@ -19,16 +19,6 @@ public class CatalogDbContext : DbContext
         _userService = userService;
     }
 
-    public override void Dispose()
-    {
-        base.Dispose();
-    }
-
-    public override ValueTask DisposeAsync()
-    {
-        return base.DisposeAsync();
-    }
-
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
     {
         throw new NotImplementedException("Use SaveChangesAsync");

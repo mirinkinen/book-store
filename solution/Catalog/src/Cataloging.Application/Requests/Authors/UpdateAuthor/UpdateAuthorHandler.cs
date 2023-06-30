@@ -1,6 +1,7 @@
 ﻿using Cataloging.Domain.Authors;
 using Shared.Application.Auditing;
 using Shared.Application.Authentication;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Application.Requests.Authors.UpdateAuthor;
 
@@ -21,6 +22,7 @@ public class UpdateAuthorHandler
         _authorRepository = authorRepository;
     }
 
+    [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Never null")]
     public async Task<Author?> Handle(UpdateAuthorCommand request, CancellationToken cancellationToken)
     {
         var author = await _authorRepository.GetAuthorById(request.ResourceId, cancellationToken);
