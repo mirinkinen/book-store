@@ -19,8 +19,7 @@ public static class ServiceRegistrar
                 dbContextOptions.UseSqlServer("Data Source=(localdb)\\BookStore;Initial Catalog=BookStore;Integrated Security=True");            
 
     #pragma warning restore CS8604 // Possible null reference argument.
-            }, 
-            ServiceLifetime.Singleton);
+            });
 
         services.AddScoped<IQueryAuthorizer, QueryAuthorizer>();
         services.AddScoped<IAuthorRepository, AuthorRepository>();
