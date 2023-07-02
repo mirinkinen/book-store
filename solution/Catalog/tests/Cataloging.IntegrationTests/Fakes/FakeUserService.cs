@@ -1,5 +1,5 @@
 ﻿using Cataloging.MockDataSeeder;
-using Shared.Application.Authentication;
+using Common.Application.Authentication;
 
 namespace Cataloging.IntegrationTests.Fakes;
 

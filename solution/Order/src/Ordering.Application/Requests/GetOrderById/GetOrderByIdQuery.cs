@@ -1,6 +1,6 @@
 using Ordering.Application.Services;
 using Ordering.Domain.Orders;
-using Shared.Application.Authentication;
+using Common.Application.Authentication;
 
 namespace Ordering.Application.Requests.GetOrderById;
 
@@ -15,7 +15,7 @@ public class GetOrderByIdHandler
         _queryAuthorizer = queryAuthorizer;
     }
 
-    public Task<IQueryable<Order>> Handle(GetOrderByIdQuery request, CancellationToken cancellationToken)
+    public Task<IQueryable<Order>> Handle(GetOrderByIdQuery request)
     {
         ArgumentNullException.ThrowIfNull(request);
 

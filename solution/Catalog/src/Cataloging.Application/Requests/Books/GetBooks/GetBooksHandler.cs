@@ -1,8 +1,8 @@
 using Cataloging.Application.Services;
 using Cataloging.Domain.Books;
 using MediatR;
-using Shared.Application.Auditing;
-using Shared.Application.Authentication;
+using Common.Application.Auditing;
+using Common.Application.Authentication;
 
 namespace Cataloging.Application.Requests.Books.GetBooks;
 

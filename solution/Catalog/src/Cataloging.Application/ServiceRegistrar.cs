@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Shared.Application.Auditing;
-using Shared.Application.Authentication;
+using Common.Application.Auditing;
+using Common.Application.Authentication;
 
 namespace Cataloging.Application;
 

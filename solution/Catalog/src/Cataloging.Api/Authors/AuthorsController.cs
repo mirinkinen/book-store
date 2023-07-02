@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using Shared.Application.Authentication;
+using Common.Application.Authentication;
 using System.Diagnostics.CodeAnalysis;
 using Wolverine;
 

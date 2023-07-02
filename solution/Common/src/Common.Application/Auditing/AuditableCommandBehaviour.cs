@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Shared.Application.Auditing;
+namespace Common.Application.Auditing;
 
 public class AuditableCommandBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {

@@ -1,4 +1,4 @@
-﻿namespace Shared.Application.Authentication;
+﻿namespace Common.Application.Authentication;
 
 public class UserService : IUserService
 {

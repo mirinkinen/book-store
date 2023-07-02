@@ -1,4 +1,4 @@
-﻿using Shared.Application.Authentication;
+﻿using Common.Application.Authentication;
 
 namespace Cataloging.MockDataSeeder;
 

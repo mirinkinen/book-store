@@ -1,7 +1,7 @@
 ﻿using Cataloging.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.Application.Authentication;
+using Common.Application.Authentication;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.MockDataSeeder;

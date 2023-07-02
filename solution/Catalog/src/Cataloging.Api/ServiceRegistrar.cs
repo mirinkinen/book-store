@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.OData.ModelBuilder;
-using Shared.Application.Auditing;
+using Common.Application.Auditing;
 using Wolverine;
 
 namespace Cataloging.Api;

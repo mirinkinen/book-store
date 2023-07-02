@@ -1,7 +1,7 @@
 using Ordering.Application.Services;
 using Ordering.Domain.Orders;
-using Shared.Application.Auditing;
-using Shared.Application.Authentication;
+using Common.Application.Auditing;
+using Common.Application.Authentication;
 
 namespace Ordering.Application.Requests.GetOrders;
 
@@ -16,7 +16,7 @@ public class GetOrdersHandler
         _queryAuthorizer = queryAuthorizer;
     }
 
-    public Task<IQueryable<Order>> Handle(GetOrdersQuery request, CancellationToken cancellationToken)
+    public Task<IQueryable<Order>> Handle(GetOrdersQuery request)
     {
         return Task.FromResult(_queryAuthorizer.GetAuthorizedEntities<Order>());
     }

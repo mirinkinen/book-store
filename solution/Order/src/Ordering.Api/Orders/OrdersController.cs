@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Ordering.Application.Requests.GetOrderById;
 using Ordering.Application.Requests.GetOrders;
 using Ordering.Domain.Orders;
-using Shared.Application.Authentication;
+using Common.Application.Authentication;
 using Wolverine;
 
 namespace Ordering.Api.Orders;

@@ -1,4 +1,4 @@
-﻿namespace Shared.Application;
+﻿namespace Common.Application;
 
 /// <summary>
 /// Wrapper data structure to contain IEnumerable ja IQueryable objects.

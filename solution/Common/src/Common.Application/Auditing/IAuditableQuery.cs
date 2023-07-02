@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using Shared.Application.Authentication;
+using Common.Application.Authentication;
 
-namespace Shared.Application.Auditing;
+namespace Common.Application.Auditing;
 
 public interface IAuditableQuery
 {

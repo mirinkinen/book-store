@@ -67,23 +67,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4917EE9A-62F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{A70C4BC4-8BF0-44D4-ADFF-458161BB6063}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.Api", "Order\src\Ordering.Api\Ordering.Api.csproj", "{D20E3F0C-96FB-4F1F-9464-2AB58C69877A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.Api", "Order\src\Ordering.Api\Ordering.Api.csproj", "{D20E3F0C-96FB-4F1F-9464-2AB58C69877A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.Application", "Order\src\Ordering.Application\Ordering.Application.csproj", "{94C78A65-FF15-470F-8A82-83F9748014D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.Application", "Order\src\Ordering.Application\Ordering.Application.csproj", "{94C78A65-FF15-470F-8A82-83F9748014D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.Domain", "Order\src\Ordering.Domain\Ordering.Domain.csproj", "{E408B013-2DF9-4969-BB25-52E5A42C2C65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.Domain", "Order\src\Ordering.Domain\Ordering.Domain.csproj", "{E408B013-2DF9-4969-BB25-52E5A42C2C65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.Infrastructure", "Order\src\Ordering.Infrastructure\Ordering.Infrastructure.csproj", "{30C5371D-88FB-467E-8893-B5731EF6CC78}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.Infrastructure", "Order\src\Ordering.Infrastructure\Ordering.Infrastructure.csproj", "{30C5371D-88FB-467E-8893-B5731EF6CC78}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{542694A3-CDE3-4010-A050-3F67E0F89242}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{542694A3-CDE3-4010-A050-3F67E0F89242}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3EB05445-5BEB-457B-B088-6EEFBFFAE4C1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{371356E1-63A9-44CD-9905-759B09717A1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Application", "Shared\src\Shared.Application\Shared.Application.csproj", "{3A7886F9-F009-42F0-B6DC-60F73420EFB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Application", "Common\src\Common.Application\Common.Application.csproj", "{3A7886F9-F009-42F0-B6DC-60F73420EFB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Domain", "Shared\src\Shared.Domain\Shared.Domain.csproj", "{FB01D03B-2280-4E56-B84C-66521058E1EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Domain", "Common\src\Common.Domain\Common.Domain.csproj", "{FB01D03B-2280-4E56-B84C-66521058E1EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

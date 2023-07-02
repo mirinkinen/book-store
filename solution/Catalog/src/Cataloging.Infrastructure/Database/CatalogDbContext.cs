@@ -3,7 +3,7 @@ using Cataloging.Domain.Books;
 using Cataloging.Domain.SeedWork;
 using Cataloging.Infrastructure.Database.EntityTypeConfigurations;
 using Microsoft.EntityFrameworkCore;
-using Shared.Application.Authentication;
+using Common.Application.Authentication;
 
 namespace Cataloging.Infrastructure.Database;
 

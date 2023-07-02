@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.OData.Formatter.Value;
 using Microsoft.Extensions.Options;
 using Microsoft.OData;
 using Microsoft.OData.Edm;
-using Shared.Application.Auditing;
+using Common.Application.Auditing;
 
 namespace Cataloging.Api.Auditing;
 

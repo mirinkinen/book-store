@@ -1,6 +1,6 @@
 ﻿using Cataloging.Domain.Books;
 using Cataloging.Domain.SeedWork;
-using Shared.Domain;
+using Common.Domain;
 
 namespace Cataloging.Domain.Authors;
 

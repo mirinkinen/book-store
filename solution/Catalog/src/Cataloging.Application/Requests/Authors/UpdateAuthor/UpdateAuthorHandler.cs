@@ -1,6 +1,6 @@
 ﻿using Cataloging.Domain.Authors;
-using Shared.Application.Auditing;
-using Shared.Application.Authentication;
+using Common.Application.Auditing;
+using Common.Application.Authentication;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Application.Requests.Authors.UpdateAuthor;

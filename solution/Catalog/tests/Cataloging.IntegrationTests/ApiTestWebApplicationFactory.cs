@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.Application.Authentication;
+using Common.Application.Authentication;
 using System.Data.Common;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.IntegrationTests;
 
@@ -18,7 +19,7 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
     private static readonly SqlLocalDbApi _sqlLoccalDbApi = new();
     private static bool _databaseStarted;
 
-    public Action<IServiceCollection> ConfigureServices { get; set; }
+    public Action<IServiceCollection>? ConfigureServices { get; set; }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -83,6 +84,7 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
         }
     }
 
+    [SuppressMessage("Security", "CA2100:Review SQL queries for security vulnerabilities")]
     private static void DropLeftoverDatabases(ISqlLocalDbInstanceInfo instance)
     {
         using var connection = instance.CreateConnection();
@@ -101,6 +103,7 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
 
         foreach (var database in databases)
         {
+#pragma warning disable CA1031 // Do not catch general exception types
             try
             {
                 using var dropCommand = new SqlCommand($"DROP DATABASE {database}", connection);
@@ -108,6 +111,7 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
             }
             // Don't care about failures.
             catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
     }
 }

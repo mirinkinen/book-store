@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
-using Shared.Application.Auditing;
+using Common.Application.Auditing;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Api.Auditing;
