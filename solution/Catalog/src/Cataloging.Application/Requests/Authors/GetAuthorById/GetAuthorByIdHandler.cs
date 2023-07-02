@@ -3,6 +3,7 @@ using Cataloging.Domain.Authors;
 using MediatR;
 using Shared.Application.Auditing;
 using Shared.Application.Authentication;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Application.Requests.Authors.GetAuthorById;
 
@@ -19,8 +20,6 @@ public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, IQueryab
 
     public Task<IQueryable<Author>> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request);
-
-        return Task.FromResult(_queryAuthorizer.GetAuthorizedEntities<Author>().Where(a => a.Id == request.AuthorId));
+        return Task.FromResult(_queryAuthorizer.GetAuthorizedEntities<Author>(cancellationToken).Where(a => a.Id == request.AuthorId));
     }
 }

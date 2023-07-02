@@ -22,7 +22,7 @@ public class UpdateAuthorHandler
         _authorRepository = authorRepository;
     }
 
-    [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Never null")]
+    [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
     public async Task<Author?> Handle(UpdateAuthorCommand request, CancellationToken cancellationToken)
     {
         var author = await _authorRepository.GetAuthorById(request.ResourceId, cancellationToken);

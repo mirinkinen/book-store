@@ -1,4 +1,5 @@
 ﻿using Cataloging.Domain.Authors;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Application.Requests.Authors.AddAuthor;
 
@@ -13,6 +14,7 @@ public class AddAuthorHandler
         _authorRepository = authorRepository;
     }
 
+    [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
     public async Task<Author> Handle(AddAuthorCommand request, CancellationToken cancellationToken)
     {
         var author = new Author(request.Firstname, request.Lastname, request.Birthday, request.OrganizationId);

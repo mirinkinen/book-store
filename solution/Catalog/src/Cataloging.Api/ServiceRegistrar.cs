@@ -81,6 +81,8 @@ public static class ServiceRegistrar
             .SetMaxTop(20)
             .AddRouteComponents("v1", modelBuilder.GetEdmModel(), services =>
             {
+                // OData seems to have its own container.
+                // Register services here that are used in overridden OData implementations.
                 services.AddSingleton<ODataResourceSerializer, AuditingODataResourceSerializer>();
                 services.AddHttpContextAccessor();
                 services.Configure<AuditOptions>(builder.Configuration.GetSection(AuditOptions.Audit));

@@ -1,4 +1,5 @@
 ﻿using Cataloging.Domain.Authors;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Application.Requests.Authors.DeleteAuthor;
 
@@ -13,6 +14,7 @@ public class DeleteAuthorHandler
         _authorRepository = authorRepository;
     }
 
+    [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
     public async Task<Author?> Handle(DeleteAuthorCommand request, CancellationToken cancellationToken)
     {
         var author = await _authorRepository.GetAuthorById(request.AuthorId, cancellationToken);
