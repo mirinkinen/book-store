@@ -3,7 +3,7 @@ using Shared.Application.Authentication;
 
 namespace Cataloging.IntegrationTests.Fakes;
 
-internal class FakeUserService : IUserService
+public class FakeUserService : IUserService
 {
     public User GetUser()
     {

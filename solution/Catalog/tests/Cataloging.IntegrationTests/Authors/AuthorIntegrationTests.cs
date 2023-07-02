@@ -3,9 +3,11 @@ using Cataloging.Infrastructure.Database;
 using Cataloging.IntegrationTests.Fakes;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Shared.Application.Auditing;
 using System.Net;
 using System.Net.Http.Json;
+using Xunit.Abstractions;
 
 namespace Cataloging.IntegrationTests.Authors;
 
@@ -14,10 +16,11 @@ public class AuthorIntegrationTests : IntegrationTest
 {
     private IAuditContext _auditContext = new AuditContext();
 
-    public AuthorIntegrationTests()
+    public AuthorIntegrationTests(ITestOutputHelper output) : base(output)
     {
         Factory.ConfigureServices = (IServiceCollection services) =>
         {
+            services.AddLogging(builder => builder.AddXUnit(Output));
             services.AddScoped<IAuditContext>(sp => _auditContext);
         };
     }

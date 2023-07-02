@@ -1,8 +1,10 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Shared.Application.Auditing;
 using System.Net.Http.Json;
+using Xunit.Abstractions;
 
 namespace Cataloging.IntegrationTests.Books;
 
@@ -11,10 +13,11 @@ public class BookIntegrationTests : IntegrationTest
 {
     private IAuditContext _auditContext = new AuditContext();
 
-    public BookIntegrationTests()
+    public BookIntegrationTests(ITestOutputHelper output) : base(output)
     {
         Factory.ConfigureServices = (IServiceCollection services) =>
         {
+            services.AddLogging(builder => builder.AddXUnit(Output));
             services.AddScoped<IAuditContext>(sp => _auditContext);
         };
     }

@@ -1,19 +1,19 @@
 ﻿using Cataloging.Domain.Authors;
-using MediatR;
 using Shared.Application.Auditing;
 using Shared.Application.Authentication;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Application.Requests.Authors.UpdateAuthor;
 
 public record UpdateAuthorCommand(Guid ResourceId, string Firstname, string Lastname, DateTime Birthday, User Actor)
-    : IAuditableCommand<Author?>
+    : IAuditableCommand
 {
     public OperationType OperationType => OperationType.Update;
 
     public ResourceType ResourceType => ResourceType.Author;
 }
 
-internal class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, Author?>
+public class UpdateAuthorHandler
 {
     private readonly IAuthorRepository _authorRepository;
 
@@ -22,6 +22,7 @@ internal class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, Author
         _authorRepository = authorRepository;
     }
 
+    [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Never null")]
     public async Task<Author?> Handle(UpdateAuthorCommand request, CancellationToken cancellationToken)
     {
         var author = await _authorRepository.GetAuthorById(request.ResourceId, cancellationToken);

@@ -1,4 +1,3 @@
-using MediatR;
 using Ordering.Application.Services;
 using Ordering.Domain.Orders;
 using Shared.Application.Auditing;
@@ -6,9 +5,9 @@ using Shared.Application.Authentication;
 
 namespace Ordering.Application.Requests.GetOrders;
 
-public record GetOrdersQuery(User Actor) : IAuditableQuery<IQueryable<Order>>;
+public record GetOrdersQuery(User Actor) : IAuditableQuery;
 
-public class GetOrdersHandler : IRequestHandler<GetOrdersQuery, IQueryable<Order>>
+public class GetOrdersHandler
 {
     private readonly IQueryAuthorizer _queryAuthorizer;
 

@@ -1,13 +1,10 @@
-﻿using Cataloging.Application.Services;
-using Cataloging.Domain.Authors;
-using MediatR;
+﻿using Cataloging.Domain.Authors;
 
 namespace Cataloging.Application.Requests.Authors.AddAuthor;
 
-public record AddAuthorCommand(string Firstname, string Lastname, DateTime Birthday, Guid OrganizationId)
-    : IRequest<Author>;
+public record AddAuthorCommand(string Firstname, string Lastname, DateTime Birthday, Guid OrganizationId);
 
-internal class AddAuthorHandler : IRequestHandler<AddAuthorCommand, Author>
+public class AddAuthorHandler
 {
     private readonly IAuthorRepository _authorRepository;
 

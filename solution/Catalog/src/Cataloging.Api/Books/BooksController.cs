@@ -8,33 +8,33 @@ using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Shared.Application.Authentication;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Api.Books;
 
 [ODataRouteComponent("v1")]
+[SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
 public class BooksController : ODataController
 {
-    private readonly IMediator _mediatr;
     private readonly IUserService _userService;
 
-    public BooksController(IMediator mediatr, IUserService userService)
+    public BooksController(IUserService userService)
     {
-        _mediatr = mediatr;
         _userService = userService;
     }
 
     [EnableQuery(PageSize = 20)]
-    public Task<IQueryable<Book>> Get()
+    public Task<IQueryable<Book>> Get([FromServices] IMediator mediator)
     {
         var query = new GetBooksQuery(_userService.GetUser());
-        return _mediatr.Send(query);
+        return mediator.Send(query);
     }
 
     [EnableQuery]
-    public async Task<IActionResult> Get([FromRoute] Guid key)
+    public async Task<IActionResult> Get([FromRoute] Guid key, [FromServices] IMediator mediator)
     {
         var query = new GetBookByIdQuery(key);
-        var bookQuery = await _mediatr.Send(query);
+        var bookQuery = await mediator.Send(query);
 
         return Ok(SingleResult.Create(bookQuery));
     }
