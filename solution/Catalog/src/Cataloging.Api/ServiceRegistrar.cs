@@ -82,8 +82,8 @@ public static class ServiceRegistrar
             .AddRouteComponents("v1", modelBuilder.GetEdmModel(), services =>
             {
                 services.AddSingleton<ODataResourceSerializer, AuditingODataResourceSerializer>();
-
                 services.AddHttpContextAccessor();
+                services.Configure<AuditOptions>(builder.Configuration.GetSection(AuditOptions.Audit));
             }));
     }
 }

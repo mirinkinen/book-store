@@ -1,6 +1,7 @@
 ﻿using Cataloging.Domain.SeedWork;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.AspNetCore.OData.Formatter.Value;
+using Microsoft.Extensions.Options;
 using Microsoft.OData;
 using Microsoft.OData.Edm;
 using Shared.Application.Auditing;
@@ -10,25 +11,31 @@ namespace Cataloging.Api.Auditing;
 public class AuditingODataResourceSerializer : ODataResourceSerializer
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IOptions<AuditOptions> _auditOptions;
 
-    public AuditingODataResourceSerializer(IODataSerializerProvider serializerProvider, IHttpContextAccessor httpContextAccessor)
+    public AuditingODataResourceSerializer(IODataSerializerProvider serializerProvider, IHttpContextAccessor httpContextAccessor,
+        IOptions<AuditOptions> auditOptions)
         : base(serializerProvider)
     {
         _httpContextAccessor = httpContextAccessor;
+        _auditOptions = auditOptions;
     }
 
     public override Task WriteObjectInlineAsync(object graph, IEdmTypeReference expectedType, ODataWriter writer, ODataSerializerContext writeContext)
     {
-        if (graph is IEdmStructuredObject structuredObject)
+        if (_auditOptions.Value.Enabled)
         {
-            if (structuredObject.TryGetPropertyValue(nameof(Entity.Id), out var id) && id is Guid guid)
+            if (graph is IEdmStructuredObject structuredObject)
             {
-                LogId(expectedType, guid);
+                if (structuredObject.TryGetPropertyValue(nameof(Entity.Id), out var id) && id is Guid guid)
+                {
+                    LogId(expectedType, guid);
+                }
             }
-        }
-        else if (graph is Entity entity)
-        {
-            LogId(expectedType, entity.Id);
+            else if (graph is Entity entity)
+            {
+                LogId(expectedType, entity.Id);
+            }
         }
 
         return base.WriteObjectInlineAsync(graph, expectedType, writer, writeContext);
