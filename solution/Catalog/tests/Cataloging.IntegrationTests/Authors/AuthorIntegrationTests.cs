@@ -44,6 +44,7 @@ public class AuthorIntegrationTests : IntegrationTest
         _auditContext.OperationType.Should().Be(OperationType.Read);
         _auditContext.Resources.Should().HaveCount(3);
         _auditContext.Resources.Should().OnlyContain(ar => ar.Type == ResourceType.Author && ar.Id != Guid.Empty);
+        _auditContext.StatusCode.Should().Be(200);
     }
 
     [Fact]
@@ -113,6 +114,7 @@ public class AuthorIntegrationTests : IntegrationTest
         var auditResource = _auditContext.Resources.First();
         auditResource.Id.Should().Be(author.Id.Value);
         _auditContext.OperationType.Should().Be(OperationType.Read);
+        _auditContext.StatusCode.Should().Be(200);
     }
 
     [Fact]
@@ -237,6 +239,7 @@ public class AuthorIntegrationTests : IntegrationTest
         // Verify audit logging.
         _auditContext.OperationType.Should().Be(OperationType.Read);
         _auditContext.Resources.Should().HaveCount(4);
+        _auditContext.StatusCode.Should().Be(200);
         var authorResource = _auditContext.Resources.First(ar => ar.Type == ResourceType.Author);
         authorResource.Id.Should().Be(author.Id.Value);
 
@@ -314,6 +317,7 @@ public class AuthorIntegrationTests : IntegrationTest
         _auditContext.ActorId.Should().Be(user.Id);
         _auditContext.OperationType.Should().Be(OperationType.Update);
         _auditContext.Resources.Should().HaveCount(1);
+        _auditContext.StatusCode.Should().Be(200);
         _auditContext.Success.Should().BeTrue();
         var authorResource = _auditContext.Resources.First();
         authorResource.Type.Should().Be(ResourceType.Author);

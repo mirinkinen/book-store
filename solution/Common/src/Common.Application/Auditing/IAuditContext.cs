@@ -10,6 +10,8 @@ public interface IAuditContext
 
     ReadOnlyCollection<AuditResource> Resources { get; }
 
+    int StatusCode { get; set; }
+
     bool Success { get; set; }
 
     DateTime Timestamp { get; set; }

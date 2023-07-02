@@ -20,7 +20,7 @@ public static class ServiceRegistrar
 
     #pragma warning restore CS8604 // Possible null reference argument.
             }, 
-            ServiceLifetime.Singleton);
+            contextLifetime: ServiceLifetime.Scoped, optionsLifetime: ServiceLifetime.Singleton);
 
         services.AddScoped<IQueryAuthorizer, QueryAuthorizer>();
         services.AddScoped<IAuthorRepository, AuthorRepository>();

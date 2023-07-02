@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Common.Application.Auditing;
@@ -6,10 +7,12 @@ namespace Common.Application.Auditing;
 public class AuditableQueryBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {
     private readonly IAuditContext _auditContext;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public AuditableQueryBehaviour(IAuditContext auditContext)
+    public AuditableQueryBehaviour(IAuditContext auditContext, IHttpContextAccessor httpContextAccessor)
     {
         _auditContext = auditContext;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "MediatR guarantees non-null delegates")]
@@ -37,6 +40,10 @@ public class AuditableQueryBehaviour<TRequest, TResponse> : IPipelineBehavior<TR
         {
             _auditContext.Success = false;
             throw;
+        }
+        finally
+        {
+            _auditContext.StatusCode = _httpContextAccessor.HttpContext.Response.StatusCode;
         }
     }
 }
