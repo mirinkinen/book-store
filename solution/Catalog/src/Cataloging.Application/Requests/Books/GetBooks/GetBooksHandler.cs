@@ -1,14 +1,14 @@
 using Cataloging.Application.Services;
 using Cataloging.Domain.Books;
-using Shared.Application;
+using MediatR;
 using Shared.Application.Auditing;
 using Shared.Application.Authentication;
 
 namespace Cataloging.Application.Requests.Books.GetBooks;
 
-public record GetBooksQuery(User Actor) : IAuditableQuery;
+public record GetBooksQuery(User Actor) : IAuditableQuery<IQueryable<Book>>;
 
-public class GetBooksHandler
+public class GetBooksHandler : IRequestHandler<GetBooksQuery, IQueryable<Book>>
 {
     private readonly IQueryAuthorizer _queryAuthorizer;
 
@@ -17,8 +17,8 @@ public class GetBooksHandler
         _queryAuthorizer = queryAuthorizer;
     }
 
-    public QueryableResponse<Book> Handle(GetBooksQuery request, CancellationToken cancellationToken)
+    public Task<IQueryable<Book>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
     {
-        return new QueryableResponse<Book>(_queryAuthorizer.GetAuthorizedEntities<Book>());
+        return Task.FromResult(_queryAuthorizer.GetAuthorizedEntities<Book>());
     }
 }

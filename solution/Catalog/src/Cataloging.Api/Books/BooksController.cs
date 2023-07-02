@@ -1,43 +1,41 @@
 ﻿using Cataloging.Application.Requests.Books.GetBookById;
 using Cataloging.Application.Requests.Books.GetBooks;
 using Cataloging.Domain.Books;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using Shared.Application;
 using Shared.Application.Authentication;
-using Wolverine;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Api.Books;
 
 [ODataRouteComponent("v1")]
+[SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
 public class BooksController : ODataController
 {
-    private readonly IMessageBus _bus;
     private readonly IUserService _userService;
 
-    public BooksController(IMessageBus bus, IUserService userService)
+    public BooksController(IUserService userService)
     {
-        _bus = bus;
         _userService = userService;
     }
 
     [EnableQuery(PageSize = 20)]
-    public async Task<IQueryable<Book>> Get()
+    public Task<IQueryable<Book>> Get([FromServices] IMediator mediator)
     {
         var query = new GetBooksQuery(_userService.GetUser());
-        var data = await _bus.InvokeAsync<QueryableResponse<Book>>(query);
-        return data.Query;
+        return mediator.Send(query);
     }
 
     [EnableQuery]
-    public async Task<IActionResult> Get([FromRoute] Guid key)
+    public async Task<IActionResult> Get([FromRoute] Guid key, [FromServices] IMediator mediator)
     {
         var query = new GetBookByIdQuery(key);
-        var bookQuery = await _bus.InvokeAsync<QueryableResponse<Book>>(query);
+        var bookQuery = await mediator.Send(query);
 
-        return Ok(SingleResult.Create(bookQuery.Query));
+        return Ok(SingleResult.Create(bookQuery));
     }
 }

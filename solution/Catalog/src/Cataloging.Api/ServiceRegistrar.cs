@@ -1,6 +1,8 @@
 ﻿using Cataloging.Api.Auditing;
+using Cataloging.Application.Requests.Books.GetBooks;
 using Cataloging.Domain.Authors;
 using Cataloging.Domain.Books;
+using MediatR;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.OData.ModelBuilder;
@@ -13,6 +15,13 @@ public static class ServiceRegistrar
 {
     internal static void RegisterApiServices(WebApplicationBuilder builder)
     {
+        builder.Services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssemblyContaining<GetBooksQuery>();
+            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(AuditableQueryBehaviour<,>));
+            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(AuditableCommandBehaviour<,>));
+        });
+
         builder.Host.UseWolverine(opts =>
         {
             opts.ApplicationAssembly = typeof(Application.ServiceRegistrar).Assembly;

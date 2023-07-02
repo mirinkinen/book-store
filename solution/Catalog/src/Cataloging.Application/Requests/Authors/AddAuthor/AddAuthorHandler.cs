@@ -4,7 +4,7 @@ namespace Cataloging.Application.Requests.Authors.AddAuthor;
 
 public record AddAuthorCommand(string Firstname, string Lastname, DateTime Birthday, Guid OrganizationId);
 
-internal class AddAuthorHandler
+public class AddAuthorHandler
 {
     private readonly IAuthorRepository _authorRepository;
 

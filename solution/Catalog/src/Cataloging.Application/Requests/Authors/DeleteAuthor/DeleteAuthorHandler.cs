@@ -4,7 +4,7 @@ namespace Cataloging.Application.Requests.Authors.DeleteAuthor;
 
 public record DeleteAuthorCommand(Guid AuthorId);
 
-internal class DeleteAuthorHandler
+public class DeleteAuthorHandler
 {
     private readonly IAuthorRepository _authorRepository;
 

@@ -1,12 +1,12 @@
 using Cataloging.Application.Services;
 using Cataloging.Domain.Books;
-using Shared.Application;
+using MediatR;
 
 namespace Cataloging.Application.Requests.Books.GetBookById;
 
-public record GetBookByIdQuery(Guid BookId);
+public record GetBookByIdQuery(Guid BookId) : IRequest<IQueryable<Book>>;
 
-public class GetBookByIdHandler
+public class GetBookByIdHandler : IRequestHandler<GetBookByIdQuery, IQueryable<Book>>
 {
     private readonly IQueryAuthorizer _queryAuthorizer;
 
@@ -15,10 +15,10 @@ public class GetBookByIdHandler
         _queryAuthorizer = queryAuthorizer;
     }
 
-    public QueryableResponse<Book> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
+    public Task<IQueryable<Book>> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        return new QueryableResponse<Book>(_queryAuthorizer.GetAuthorizedEntities<Book>().Where(a => a.Id == request.BookId));
+        return Task.FromResult(_queryAuthorizer.GetAuthorizedEntities<Book>().Where(a => a.Id == request.BookId));
     }
 }
