@@ -6,12 +6,10 @@ namespace Common.Application.Auditing;
 
 public class AuditableQueryBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {
-    private readonly IAuditContext _auditContext;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public AuditableQueryBehaviour(IAuditContext auditContext, IHttpContextAccessor httpContextAccessor)
+    public AuditableQueryBehaviour(IHttpContextAccessor httpContextAccessor)
     {
-        _auditContext = auditContext;
         _httpContextAccessor = httpContextAccessor;
     }
 
@@ -23,27 +21,29 @@ public class AuditableQueryBehaviour<TRequest, TResponse> : IPipelineBehavior<TR
             return next();
         }
 
+        var auditContext = _httpContextAccessor.HttpContext.Features.Get<IAuditFeature>().AuditContext;
+
         try
         {
-            _auditContext.ActorId = auditableQuery.Actor.Id;
-            _auditContext.OperationType = auditableQuery.OperationType;
-            _auditContext.Timestamp = DateTime.UtcNow;
+            auditContext.ActorId = auditableQuery.Actor.Id;
+            auditContext.OperationType = auditableQuery.OperationType;
+            auditContext.Timestamp = DateTime.UtcNow;
             // Queried resources are not known at this point. They are set later when OData query is serialized.
 
             var response = next();
 
-            _auditContext.Success = true;
+            auditContext.Success = true;
 
             return response;
         }
         catch
         {
-            _auditContext.Success = false;
+            auditContext.Success = false;
             throw;
         }
         finally
         {
-            _auditContext.StatusCode = _httpContextAccessor.HttpContext.Response.StatusCode;
+            auditContext.StatusCode = _httpContextAccessor.HttpContext.Response.StatusCode;
         }
     }
 }

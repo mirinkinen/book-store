@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\src\Common.Api\Common.Api.csproj" />
     <ProjectReference Include="..\..\..\Common\src\Common.Application\Common.Application.csproj" />
     <ProjectReference Include="..\Cataloging.Application\Cataloging.Application.csproj" />
     <ProjectReference Include="..\Cataloging.Domain\Cataloging.Domain.csproj" />

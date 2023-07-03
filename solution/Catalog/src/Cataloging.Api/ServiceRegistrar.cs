@@ -1,7 +1,7 @@
-﻿using Cataloging.Api.Auditing;
-using Cataloging.Application.Requests.Books.GetBooks;
+﻿using Cataloging.Application.Requests.Books.GetBooks;
 using Cataloging.Domain.Authors;
 using Cataloging.Domain.Books;
+using Common.Api.Auditing;
 using Common.Application.Auditing;
 using MediatR;
 using Microsoft.AspNetCore.OData;
@@ -26,9 +26,9 @@ public static class ServiceRegistrar
         builder.Host.UseWolverine(opts =>
         {
             opts.Discovery.IncludeAssembly(typeof(GetBooksHandler).Assembly);
-            
+
             opts.Policies.AddMiddleware(
-                typeof(AuditableCommandMiddleware), 
+                typeof(AuditableCommandMiddleware),
                 filter => typeof(IAuditableCommand).IsAssignableFrom(filter.MessageType));
 
             opts.Policies.LogMessageStarting(LogLevel.Debug);

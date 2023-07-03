@@ -1,12 +1,13 @@
-﻿using Cataloging.Domain.SeedWork;
+﻿using Common.Application.Auditing;
+using Common.Domain;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.AspNetCore.OData.Formatter.Value;
 using Microsoft.Extensions.Options;
 using Microsoft.OData;
 using Microsoft.OData.Edm;
-using Common.Application.Auditing;
 
-namespace Cataloging.Api.Auditing;
+namespace Common.Api.Auditing;
 
 public class AuditingODataResourceSerializer : ODataResourceSerializer
 {
@@ -27,14 +28,14 @@ public class AuditingODataResourceSerializer : ODataResourceSerializer
         {
             if (graph is IEdmStructuredObject structuredObject)
             {
-                if (structuredObject.TryGetPropertyValue(nameof(Entity.Id), out var id) && id is Guid guid)
+                if (structuredObject.TryGetPropertyValue(nameof(IIdentifiable.Id), out var id) && id is Guid guid)
                 {
                     LogId(expectedType, guid);
                 }
             }
-            else if (graph is Entity entity)
+            else if (graph is IIdentifiable identifiable)
             {
-                LogId(expectedType, entity.Id);
+                LogId(expectedType, identifiable.Id);
             }
         }
 
@@ -43,7 +44,7 @@ public class AuditingODataResourceSerializer : ODataResourceSerializer
 
     private void LogId(IEdmTypeReference expectedType, Guid id)
     {
-        var auditContext = _httpContextAccessor.HttpContext?.RequestServices.GetRequiredService<IAuditContext>();
+        var auditContext = _httpContextAccessor.HttpContext?.Features.Get<IAuditFeature>().AuditContext;
         var type = expectedType?.Definition.ToString();
 
         if (auditContext != null && type != null)

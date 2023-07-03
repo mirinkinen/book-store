@@ -1,4 +1,7 @@
-﻿namespace Cataloging.Api.Auditing;
+﻿using Microsoft.AspNetCore.Builder;
+
+// Namespace must be "Microsoft.AspNetCore.Builder" for easier usage.
+namespace Common.Api.Auditing;
 
 public static class AuditContextLoggerMiddlewareExtensions
 {

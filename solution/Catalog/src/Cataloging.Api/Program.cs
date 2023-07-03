@@ -1,4 +1,4 @@
-using Cataloging.Api.Auditing;
+using Common.Api.Auditing;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Api;
