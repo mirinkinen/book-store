@@ -1,10 +1,11 @@
 using Cataloging.Api.Authors;
+using Cataloging.Application.Requests.Authors.AddAuthor;
 using Cataloging.Infrastructure.Database;
 using Cataloging.IntegrationTests.Fakes;
+using Common.Application.Auditing;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Common.Application.Auditing;
 using System.Net;
 using System.Net.Http.Json;
 using Xunit.Abstractions;
@@ -14,14 +15,14 @@ namespace Cataloging.IntegrationTests.Authors;
 [Trait("Category", "Author")]
 public class AuthorIntegrationTests : IntegrationTest
 {
-    private IAuditContext _auditContext = new AuditContext();
+    private readonly FakeAuditContextPublisher _auditContextPublisher = new();
 
     public AuthorIntegrationTests(ITestOutputHelper output) : base(output)
     {
         Factory.ConfigureServices = (IServiceCollection services) =>
         {
             services.AddLogging(builder => builder.AddXUnit(Output));
-            services.AddScoped<IAuditContext>(sp => _auditContext);
+            services.AddScoped<IAuditContextPublisher>(sp => _auditContextPublisher);
         };
     }
 
@@ -41,10 +42,11 @@ public class AuthorIntegrationTests : IntegrationTest
         odata.Value.Should().HaveCount(3);
 
         // Verify audit logging.
-        _auditContext.OperationType.Should().Be(OperationType.Read);
-        _auditContext.Resources.Should().HaveCount(3);
-        _auditContext.Resources.Should().OnlyContain(ar => ar.Type == ResourceType.Author && ar.Id != Guid.Empty);
-        _auditContext.StatusCode.Should().Be(200);
+        var auditContext = _auditContextPublisher.AuditContexts.Single();
+        auditContext.OperationType.Should().Be(OperationType.Read);
+        auditContext.Resources.Should().HaveCount(3);
+        auditContext.Resources.Should().OnlyContain(ar => ar.Type == ResourceType.Author && ar.Id != Guid.Empty);
+        auditContext.StatusCode.Should().Be(200);
     }
 
     [Fact]
@@ -110,11 +112,12 @@ public class AuthorIntegrationTests : IntegrationTest
         author.Id.Should().Be(authorId);
 
         // Verify audit logging.
-        _auditContext.Resources.Should().HaveCount(1);
-        var auditResource = _auditContext.Resources.First();
+        var auditContext = _auditContextPublisher.AuditContexts.Single();
+        auditContext.Resources.Should().HaveCount(1);
+        var auditResource = auditContext.Resources.First();
         auditResource.Id.Should().Be(author.Id.Value);
-        _auditContext.OperationType.Should().Be(OperationType.Read);
-        _auditContext.StatusCode.Should().Be(200);
+        auditContext.OperationType.Should().Be(OperationType.Read);
+        auditContext.StatusCode.Should().Be(200);
     }
 
     [Fact]
@@ -237,13 +240,14 @@ public class AuthorIntegrationTests : IntegrationTest
         author.Books.Should().HaveCount(3);
 
         // Verify audit logging.
-        _auditContext.OperationType.Should().Be(OperationType.Read);
-        _auditContext.Resources.Should().HaveCount(4);
-        _auditContext.StatusCode.Should().Be(200);
-        var authorResource = _auditContext.Resources.First(ar => ar.Type == ResourceType.Author);
+        var auditContext = _auditContextPublisher.AuditContexts.Single();
+        auditContext.OperationType.Should().Be(OperationType.Read);
+        auditContext.Resources.Should().HaveCount(4);
+        auditContext.StatusCode.Should().Be(200);
+        var authorResource = auditContext.Resources.First(ar => ar.Type == ResourceType.Author);
         authorResource.Id.Should().Be(author.Id.Value);
 
-        var bookResources = _auditContext.Resources.Where(ar => ar.Type == ResourceType.Book);
+        var bookResources = auditContext.Resources.Where(ar => ar.Type == ResourceType.Book);
         bookResources.Should().HaveCount(3);
     }
 
@@ -303,7 +307,7 @@ public class AuthorIntegrationTests : IntegrationTest
 
         var user = new FakeUserService().GetUser();
 
-        // Assert that data is updated.
+        // Assert that author is updated.
         using var scope = Factory.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
         var author = await dbContext.Authors.FindAsync(Guid.Parse(authorId));
@@ -313,14 +317,67 @@ public class AuthorIntegrationTests : IntegrationTest
         author.ModifiedBy.Should().Be(user.Id);
 
         // Assert audit context.
-        _auditContext.Should().NotBeNull();
-        _auditContext.ActorId.Should().Be(user.Id);
-        _auditContext.OperationType.Should().Be(OperationType.Update);
-        _auditContext.Resources.Should().HaveCount(1);
-        _auditContext.StatusCode.Should().Be(200);
-        _auditContext.Success.Should().BeTrue();
-        var authorResource = _auditContext.Resources.First();
+        var auditContext = _auditContextPublisher.AuditContexts.Single();
+        auditContext.Should().NotBeNull();
+        auditContext.ActorId.Should().Be(user.Id);
+        auditContext.OperationType.Should().Be(OperationType.Update);
+        auditContext.Resources.Should().HaveCount(1);
+        auditContext.StatusCode.Should().Be(200);
+         auditContext.Success.Should().BeTrue();
+        var authorResource = auditContext.Resources.First();
         authorResource.Type.Should().Be(ResourceType.Author);
         authorResource.Id.Should().Be(Guid.Parse(authorId));
+    }
+
+    [Fact]
+    public async Task Post_ValidAuthor_AddsAuthor()
+    {
+        // Arrange
+        var client = Factory.CreateClient();
+        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
+
+        var newFirstName = "TestFirstName";
+        var newLastName = "TestLastName";
+        var newBirthday = DateTime.UtcNow - TimeSpan.FromDays(30 * 365);
+        var organizationId = Guid.NewGuid();
+        var user = new FakeUserService().GetUser();
+        using var json = JsonContent.Create(new AddAuthorCommand(newFirstName, newLastName, newBirthday, organizationId, user));
+
+        // Act
+        var response = await client.PostAsync($"v1/authors", json);
+
+        // Assert request
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var authorViewmodel = await response.Content.ReadFromJsonAsync<AuthorViewmodel>();
+
+        // Assert that author is added.
+        using var scope = Factory.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
+        var authorDao = await dbContext.Authors.FindAsync(authorViewmodel.Id);
+        authorDao.Id.Should().NotBeEmpty();
+        authorDao.FirstName.Should().Be(newFirstName);
+        authorDao.LastName.Should().Be(newLastName);
+        authorDao.Birthday.Should().Be(newBirthday);
+        authorDao.ModifiedBy.Should().Be(user.Id);
+
+        authorViewmodel.Id.Should().Be(authorDao.Id);
+        authorViewmodel.FirstName.Should().Be(authorDao.FirstName);
+        authorViewmodel.LastName.Should().Be(authorDao.LastName);
+        //authorViewmodel.Birthday.Should().Be(authorDao.Birthday);
+        authorViewmodel.OrganizationId.Should().Be(authorDao.OrganizationId);
+        authorViewmodel.Books.Should().BeNull();
+
+        // Assert audit context.
+        var auditContext = _auditContextPublisher.AuditContexts.Single();
+        auditContext.Should().NotBeNull();
+        auditContext.ActorId.Should().Be(user.Id);
+        auditContext.OperationType.Should().Be(OperationType.Create);
+        auditContext.Resources.Should().HaveCount(1);
+        //auditContext.StatusCode.Should().Be(200);
+        auditContext.Success.Should().BeTrue();
+        var authorResource = auditContext.Resources.First();
+        authorResource.Type.Should().Be(ResourceType.Author);
+        authorResource.Id.Should().Be(authorDao.Id);
     }
 }
