@@ -26,10 +26,9 @@ public static class ServiceRegistrar
         builder.Host.UseWolverine(opts =>
         {
             opts.Discovery.IncludeAssembly(typeof(GetBooksHandler).Assembly);
+            opts.Discovery.IncludeAssembly(typeof(AuditContextLoggerHandler).Assembly);
 
-            opts.Policies.AddMiddleware(
-                typeof(AuditableCommandMiddleware),
-                filter => typeof(IAuditableCommand).IsAssignableFrom(filter.MessageType));
+            opts.Policies.AddMiddleware<AuditableCommandMiddleware>(filter => typeof(IAuditableCommand).IsAssignableFrom(filter.MessageType));
 
             opts.Policies.LogMessageStarting(LogLevel.Debug);
         });

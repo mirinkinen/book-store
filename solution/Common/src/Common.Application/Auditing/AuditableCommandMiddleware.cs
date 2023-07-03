@@ -33,9 +33,11 @@ public class AuditableCommandMiddleware
         auditContext.Success = true;
     }
 
-    public void Finally(IAuditContext auditContext)
+    public ValueTask Finally(IAuditContext auditContext, IMessageBus bus)
     {
         auditContext.StatusCode = _httpContextAccessor.HttpContext.Response.StatusCode;
         auditContext.Success = true;
+
+        return bus.SendAsync(auditContext);
     }
 }

@@ -3,7 +3,7 @@ using Cataloging.Infrastructure.Database;
 
 namespace Cataloging.Infrastructure.Repository;
 
-internal class AuthorRepository : IAuthorRepository
+public class AuthorRepository : IAuthorRepository
 {
     private readonly CatalogDbContext _catalogDbContext;
 
