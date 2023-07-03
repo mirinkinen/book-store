@@ -3,6 +3,7 @@ using Common.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.AspNetCore.OData.Formatter.Value;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.OData;
 using Microsoft.OData.Edm;
@@ -44,7 +45,7 @@ public class AuditingODataResourceSerializer : ODataResourceSerializer
 
     private void LogId(IEdmTypeReference expectedType, Guid id)
     {
-        var auditContext = _httpContextAccessor.HttpContext?.Features.Get<IAuditFeature>().AuditContext;
+        var auditContext = _httpContextAccessor.HttpContext?.RequestServices.GetRequiredService<IAuditContext>();
         var type = expectedType?.Definition.ToString();
 
         if (auditContext != null && type != null)

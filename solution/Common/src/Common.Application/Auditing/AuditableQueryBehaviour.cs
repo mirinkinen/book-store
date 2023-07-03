@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Common.Application.Auditing;
@@ -21,7 +22,7 @@ public class AuditableQueryBehaviour<TRequest, TResponse> : IPipelineBehavior<TR
             return next();
         }
 
-        var auditContext = _httpContextAccessor.HttpContext.Features.Get<IAuditFeature>().AuditContext;
+        var auditContext = _httpContextAccessor.HttpContext.RequestServices.GetRequiredService<IAuditContext>();
 
         try
         {

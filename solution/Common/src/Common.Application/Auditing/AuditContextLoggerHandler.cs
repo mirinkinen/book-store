@@ -1,22 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
-using System.Diagnostics.CodeAnalysis;
+﻿namespace Common.Application.Auditing;
 
-namespace Common.Application.Auditing;
-
-public class AuditContextLoggerHandler
+public static class AuditContextLoggerHandler
 {
-    [SuppressMessage("Performance", "CA1848:Use the LoggerMessage delegates")]
-    public static void Handle(AuditContext auditContext, ILogger<AuditContextLoggerHandler> logger)
+    public static Task Handle(AuditContext auditContext, IAuditContextPublisher publisher)
     {
-        logger.LogInformation("Persisting audit context");
+        ArgumentNullException.ThrowIfNull(publisher);
 
-        logger.LogInformation("Success: {Success}", auditContext.Success);
-        logger.LogInformation("User: {ActorId}", auditContext.ActorId);
-        logger.LogInformation("Operation: {OperationType}", auditContext.OperationType);
-
-        foreach (var resource in auditContext.Resources)
-        {
-            logger.LogInformation("Type: {Type}: Id: {Id}", resource.Type, resource.Id);
-        }
+        return publisher.PublishAuditContext(auditContext);
     }
 }

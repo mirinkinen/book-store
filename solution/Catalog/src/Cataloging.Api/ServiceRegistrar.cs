@@ -31,6 +31,8 @@ public static class ServiceRegistrar
             opts.Policies.AddMiddleware<AuditableCommandMiddleware>(filter => typeof(IAuditableCommand).IsAssignableFrom(filter.MessageType));
 
             opts.Policies.LogMessageStarting(LogLevel.Debug);
+
+            //opts.CodeGeneration.TypeLoadMode = JasperFx.CodeGeneration.TypeLoadMode.Auto;
         });
 
         // Add services to the container.
