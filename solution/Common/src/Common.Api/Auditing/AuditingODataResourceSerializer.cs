@@ -31,33 +31,32 @@ public class AuditingODataResourceSerializer : ODataResourceSerializer
             {
                 if (structuredObject.TryGetPropertyValue(nameof(IIdentifiable.Id), out var id) && id is Guid guid)
                 {
-                    LogId(expectedType, guid);
+                    AuditLogResourceId(expectedType, guid);
                 }
             }
             else if (graph is IIdentifiable identifiable)
             {
-                LogId(expectedType, identifiable.Id);
+                AuditLogResourceId(expectedType, identifiable.Id);
             }
         }
 
         return base.WriteObjectInlineAsync(graph, expectedType, writer, writeContext);
     }
 
-    private void LogId(IEdmTypeReference expectedType, Guid id)
+    private void AuditLogResourceId(IEdmTypeReference expectedType, Guid id)
     {
         var auditContext = _httpContextAccessor.HttpContext?.RequestServices.GetRequiredService<IAuditContext>();
-        var type = expectedType?.Definition.ToString();
+        var type = expectedType?.Definition?.ToString()?.Split('.').Last();
 
         if (auditContext != null && type != null)
         {
-            var typeName = type.Split('.').Last();
-            if (typeName != null && Enum.TryParse(typeName, true, out ResourceType resourceType) && Enum.IsDefined(resourceType))
+            if (Enum.TryParse(type, true, out ResourceType resourceType) && Enum.IsDefined(resourceType))
             {
                 auditContext.AddResource(resourceType, id);
                 return;
             }
 
-            throw new ArgumentException($"Entity type {typeName} cannot be mapped into ResourceType.");
+            throw new ArgumentException($"Entity type {type} cannot be mapped into ResourceType.");
         }
     }
 }

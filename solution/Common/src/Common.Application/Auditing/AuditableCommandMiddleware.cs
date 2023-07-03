@@ -17,7 +17,7 @@ public class AuditableCommandMiddleware
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public void Before(Envelope envelope, IAuditContext auditContext)
+    public static void Before(Envelope envelope, IAuditContext auditContext)
     {
         if (envelope.Message is IAuditableCommand auditableCommand)
         {
@@ -28,7 +28,7 @@ public class AuditableCommandMiddleware
         }
     }
 
-    public void After(IAuditContext auditContext)
+    public static void After(IAuditContext auditContext)
     {
         auditContext.Success = true;
     }

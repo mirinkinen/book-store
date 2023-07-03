@@ -10,9 +10,7 @@ public interface IAuditableQuery
     OperationType OperationType => OperationType.Read;
 }
 
-public interface IAuditableQuery<TResponse> : IRequest<TResponse>
+// Only for MediatR.
+public interface IAuditableQuery<TResponse> : IAuditableQuery, IRequest<TResponse>
 {
-    User Actor { get; }
-
-    OperationType OperationType => OperationType.Read;
 }
