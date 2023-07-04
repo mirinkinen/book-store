@@ -17,5 +17,6 @@ public class BookEntityConfiguration : IEntityTypeConfiguration<Book>
             .HasForeignKey(book => book.AuthorId);
 
         builder.Property(e => e.Title).HasMaxLength(256);
+        builder.Property(e => e.Price).HasPrecision(18, 2);
     }
 }
