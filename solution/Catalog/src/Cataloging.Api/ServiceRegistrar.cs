@@ -25,6 +25,8 @@ public static class ServiceRegistrar
 
             opts.Policies.LogMessageStarting(LogLevel.Debug);
 
+            Infrastructure.ServiceRegistrar.UseWolverine(opts);
+
             //opts.CodeGeneration.TypeLoadMode = JasperFx.CodeGeneration.TypeLoadMode.Auto;
         });
 

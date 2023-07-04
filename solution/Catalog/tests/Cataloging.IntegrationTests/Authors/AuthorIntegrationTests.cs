@@ -304,7 +304,7 @@ public class AuthorIntegrationTests : IntegrationTest
         var newFirstName = "TestFirstName";
         var newLastName = "TestLastName";
         var newBirthday = DateTime.UtcNow - TimeSpan.FromDays(30 * 365);
-        using var json = JsonContent.Create(new UpdateAuthorCommandDto(newFirstName, newLastName, newBirthday));
+        using var json = JsonContent.Create(new UpdateAuthorDto(newFirstName, newLastName, newBirthday));
 
         // Act
         var response = await client.PutAsync($"v1/authors({authorId})", json);
