@@ -1,4 +1,5 @@
 using Common.Api.Auditing;
+using Oakton;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Api;
@@ -30,6 +31,7 @@ public class Program
         app.UseAuditLogging();
         app.MapControllers();
 
+        await app.RunOaktonCommands(args);
         await app.RunAsync();
     }
 }
