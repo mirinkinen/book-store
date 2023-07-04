@@ -3,7 +3,6 @@ using Cataloging.Domain.Authors;
 using Cataloging.Domain.Books;
 using Common.Api.Auditing;
 using Common.Application.Auditing;
-using MediatR;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.OData.ModelBuilder;
@@ -15,20 +14,14 @@ public static class ServiceRegistrar
 {
     internal static void RegisterApiServices(WebApplicationBuilder builder)
     {
-        // All queries are handled by MediatR.
-        builder.Services.AddMediatR(cfg =>
-        {
-            cfg.RegisterServicesFromAssemblyContaining<GetBooksQuery>();
-            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(AuditableQueryBehaviour<,>));
-        });
-
         // All commands are handled by Wolverine.
         builder.Host.UseWolverine(opts =>
         {
             opts.Discovery.IncludeAssembly(typeof(GetBooksHandler).Assembly);
             opts.Discovery.IncludeAssembly(typeof(AuditContextLoggerHandler).Assembly);
 
-            opts.Policies.AddMiddleware<AuditableCommandMiddleware>(filter => typeof(IAuditableCommand).IsAssignableFrom(filter.MessageType));
+            opts.Policies.AddMiddleware(typeof(AuditableQueryMiddleware), filter => typeof(IAuditableQuery).IsAssignableFrom(filter.MessageType));
+            opts.Policies.AddMiddleware(typeof(AuditableCommandMiddleware), filter => typeof(IAuditableCommand).IsAssignableFrom(filter.MessageType));
 
             opts.Policies.LogMessageStarting(LogLevel.Debug);
 

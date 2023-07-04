@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using Wolverine;
 
 namespace Common.Application.Auditing;
@@ -8,15 +7,8 @@ namespace Common.Application.Auditing;
 /// Middleware for AuditableCommands. Executed by Wolverine.
 /// </summary>
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "Envelope is never null.")]
-public class AuditableCommandMiddleware
+public static class AuditableCommandMiddleware
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public AuditableCommandMiddleware(IHttpContextAccessor httpContextAccessor)
-    {
-        _httpContextAccessor = httpContextAccessor;
-    }
-
     public static void Before(Envelope envelope, IAuditContext auditContext)
     {
         if (envelope.Message is IAuditableCommand auditableCommand)
@@ -33,9 +25,8 @@ public class AuditableCommandMiddleware
         auditContext.Success = true;
     }
 
-    public ValueTask Finally(IAuditContext auditContext, IMessageBus bus)
+    public static ValueTask Finally(IAuditContext auditContext, IMessageBus bus)
     {
-        auditContext.StatusCode = _httpContextAccessor.HttpContext.Response.StatusCode;
         auditContext.Success = true;
 
         return bus.SendAsync(auditContext);

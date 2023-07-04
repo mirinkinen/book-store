@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Common.Application.Authentication;
+﻿using Common.Application.Authentication;
 
 namespace Common.Application.Auditing;
 
@@ -7,10 +6,7 @@ public interface IAuditableQuery
 {
     User Actor { get; }
 
-    OperationType OperationType => OperationType.Read;
-}
+    IAuditContext AuditContext { get; }
 
-// Only for MediatR.
-public interface IAuditableQuery<TResponse> : IAuditableQuery, IRequest<TResponse>
-{
+    OperationType OperationType => OperationType.Read;
 }

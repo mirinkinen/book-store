@@ -1,14 +1,17 @@
 ﻿using Cataloging.Application.Requests.Books.GetBookById;
 using Cataloging.Application.Requests.Books.GetBooks;
+using Cataloging.Application.Services;
 using Cataloging.Domain.Books;
-using MediatR;
+using Common.Application;
+using Common.Application.Auditing;
+using Common.Application.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using Common.Application.Authentication;
 using System.Diagnostics.CodeAnalysis;
+using Wolverine;
 
 namespace Cataloging.Api.Books;
 
@@ -24,18 +27,21 @@ public class BooksController : ODataController
     }
 
     [EnableQuery(PageSize = 20)]
-    public Task<IQueryable<Book>> Get([FromServices] IMediator mediator)
+    public async Task<IQueryable<Book>> Get([FromServices] IMessageBus bus, [FromServices] IQueryAuthorizer queryAuthorizer,
+        [FromServices] IAuditContext auditContext)
     {
-        var query = new GetBooksQuery(_userService.GetUser());
-        return mediator.Send(query);
+        var query = new GetBooksQuery(_userService.GetUser(), queryAuthorizer, auditContext);
+        var queryable = await bus.InvokeAsync<QueryableResponse<Book>>(query);
+
+        return queryable.Query;
     }
 
     [EnableQuery]
-    public async Task<IActionResult> Get([FromRoute] Guid key, [FromServices] IMediator mediator)
+    public async Task<IActionResult> Get([FromRoute] Guid key, [FromServices] IMessageBus bus, [FromServices] IQueryAuthorizer queryAuthorizer)
     {
-        var query = new GetBookByIdQuery(key);
-        var bookQuery = await mediator.Send(query);
+        var query = new GetBookByIdQuery(key, queryAuthorizer);
+        var queryable = await bus.InvokeAsync<QueryableResponse<Book>>(query);
 
-        return Ok(SingleResult.Create(bookQuery));
+        return Ok(SingleResult.Create(queryable.Query));
     }
 }

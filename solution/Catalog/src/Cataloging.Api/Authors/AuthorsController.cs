@@ -3,14 +3,16 @@ using Cataloging.Application.Requests.Authors.DeleteAuthor;
 using Cataloging.Application.Requests.Authors.GetAuthorById;
 using Cataloging.Application.Requests.Authors.GetAuthors;
 using Cataloging.Application.Requests.Authors.UpdateAuthor;
+using Cataloging.Application.Services;
 using Cataloging.Domain.Authors;
-using MediatR;
+using Common.Application;
+using Common.Application.Auditing;
+using Common.Application.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
-using Common.Application.Authentication;
 using System.Diagnostics.CodeAnalysis;
 using Wolverine;
 
@@ -28,19 +30,23 @@ public partial class AuthorsController : ODataController
     }
 
     [EnableQuery(PageSize = 20)]
-    public Task<IQueryable<Author>> Get([FromServices] IMediator mediator)
+    public async Task<IQueryable<Author>> Get([FromServices] IMessageBus bus, [FromServices] IQueryAuthorizer queryAuthorizer,
+        [FromServices] IAuditContext auditContext)
     {
-        var query = new GetAuthorsQuery(_userService.GetUser());
-        return mediator.Send(query);
+        var query = new GetAuthorsQuery(_userService.GetUser(), queryAuthorizer, auditContext);
+        var queryable = await bus.InvokeAsync<QueryableResponse<Author>>(query);
+
+        return queryable.Query;
     }
 
     [EnableQuery]
-    public async Task<IActionResult> Get([FromRoute] Guid key, [FromServices] IMediator mediator)
+    public async Task<IActionResult> Get([FromRoute] Guid key, [FromServices] IMessageBus bus, 
+        [FromServices] IQueryAuthorizer queryAuthorizer, [FromServices] IAuditContext auditContext)
     {
-        var query = new GetAuthorByIdQuery(key, _userService.GetUser());
-        var queryable = await mediator.Send(query);
+        var query = new GetAuthorByIdQuery(key, _userService.GetUser(), queryAuthorizer, auditContext);
+        var queryable = await bus.InvokeAsync<QueryableResponse<Author>>(query);
 
-        return Ok(SingleResult.Create(queryable));
+        return Ok(SingleResult.Create(queryable.Query));
     }
 
     public Task<Author> Post([FromBody] AddAuthorCommand addAuthorCommand, [FromServices] IMessageBus bus)

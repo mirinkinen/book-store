@@ -1,14 +1,13 @@
 ﻿using Cataloging.Api;
 using Cataloging.Infrastructure.Database;
 using Cataloging.IntegrationTests.Fakes;
+using Common.Application.Authentication;
 using MartinCostello.SqlLocalDb;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Common.Application.Authentication;
-using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.IntegrationTests;
@@ -20,6 +19,8 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
     private static bool _databaseStarted;
 
     public Action<IServiceCollection>? ConfigureServices { get; set; }
+
+    public IUserService UserService { get; } = new FakeUserService();
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -35,10 +36,39 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
             // Replace IUserService.
             var userServiceDescriptor = services.Single(d => d.ImplementationType == typeof(UserService));
             services.Remove(userServiceDescriptor);
-            services.AddScoped<IUserService, FakeUserService>();
+            services.AddScoped<IUserService>(sp => UserService);
 
             ConfigureServices?.Invoke(services);
         });
+    }
+
+    [SuppressMessage("Security", "CA2100:Review SQL queries for security vulnerabilities")]
+    private static void DropLeftoverDatabases(ISqlLocalDbInstanceInfo instance)
+    {
+        using var connection = instance.CreateConnection();
+        connection.Open();
+        connection.ChangeDatabase("master");
+        using var getDatabasesCommand = new SqlCommand("SELECT * FROM sys.databases WHERE name LIKE 'BookStoreTest%'", connection);
+        var reader = getDatabasesCommand.ExecuteReader();
+        var databases = new List<string>();
+
+        while (reader.Read())
+        {
+            databases.Add(reader.GetString(0));
+        }
+
+        reader.Close();
+
+        foreach (var database in databases)
+        {
+            try
+            {
+                using var dropCommand = new SqlCommand($"DROP DATABASE {database}", connection);
+                dropCommand.ExecuteNonQuery();
+            }
+            // SQLExceptions can happen if database files are not found. Don't care about those scenarios.
+            catch(SqlException) { }
+        }
     }
 
     private static void ReplaceDatabase(IServiceCollection services)
@@ -81,37 +111,6 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
             }
 
             DropLeftoverDatabases(instance);
-        }
-    }
-
-    [SuppressMessage("Security", "CA2100:Review SQL queries for security vulnerabilities")]
-    private static void DropLeftoverDatabases(ISqlLocalDbInstanceInfo instance)
-    {
-        using var connection = instance.CreateConnection();
-        connection.Open();
-        connection.ChangeDatabase("master");
-        using var getDatabasesCommand = new SqlCommand("SELECT * FROM sys.databases WHERE name LIKE 'BookStoreTest%'", connection);
-        var reader = getDatabasesCommand.ExecuteReader();
-        var databases = new List<string>();
-
-        while (reader.Read())
-        {
-            databases.Add(reader.GetString(0));
-        }
-
-        reader.Close();
-
-        foreach (var database in databases)
-        {
-#pragma warning disable CA1031 // Do not catch general exception types
-            try
-            {
-                using var dropCommand = new SqlCommand($"DROP DATABASE {database}", connection);
-                dropCommand.ExecuteNonQuery();
-            }
-            // Don't care about failures.
-            catch { }
-#pragma warning restore CA1031 // Do not catch general exception types
         }
     }
 }

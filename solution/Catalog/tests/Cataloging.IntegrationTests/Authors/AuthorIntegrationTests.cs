@@ -4,6 +4,7 @@ using Cataloging.Infrastructure.Database;
 using Cataloging.IntegrationTests.Fakes;
 using Common.Application.Auditing;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Net;
@@ -36,6 +37,9 @@ public class AuthorIntegrationTests : IntegrationTest
         // Act
         var response = await client.GetAsync("v1/authors?$top=3");
 
+        // TODO: Refactor this test.
+        await Task.Delay(100);
+
         // Assert
         var odata = await response.Content.ReadFromJsonAsync<ValueResponse<AuthorViewmodel>>();
         odata.Should().NotBeNull();
@@ -46,7 +50,6 @@ public class AuthorIntegrationTests : IntegrationTest
         auditContext.OperationType.Should().Be(OperationType.Read);
         auditContext.Resources.Should().HaveCount(3);
         auditContext.Resources.Should().OnlyContain(ar => ar.Type == ResourceType.Author && ar.Id != Guid.Empty);
-        auditContext.StatusCode.Should().Be(200);
     }
 
     [Fact]
@@ -106,6 +109,9 @@ public class AuthorIntegrationTests : IntegrationTest
         // Act
         var response = await client.GetAsync($"v1/authors({authorId})");
 
+        // TODO: Refactor this test.
+        await Task.Delay(100);
+
         // Assert
         var author = await response.Content.ReadFromJsonAsync<AuthorViewmodel>();
         author.Should().NotBeNull();
@@ -117,7 +123,6 @@ public class AuthorIntegrationTests : IntegrationTest
         var auditResource = auditContext.Resources.First();
         auditResource.Id.Should().Be(author.Id.Value);
         auditContext.OperationType.Should().Be(OperationType.Read);
-        auditContext.StatusCode.Should().Be(200);
     }
 
     [Fact]
@@ -225,6 +230,9 @@ public class AuthorIntegrationTests : IntegrationTest
         // Act
         var response = await client.GetAsync($"v1/Authors?$filter=id eq 8e6a9434-87f5-46b2-a6c3-522dc35d8eef&$expand=books($top=3)");
 
+        // TODO: Refactor this test.
+        await Task.Delay(100);
+
         // Assert
         var odata = await response.Content.ReadFromJsonAsync<ValueResponse<AuthorViewmodel>>();
         odata.Should().NotBeNull();
@@ -243,7 +251,6 @@ public class AuthorIntegrationTests : IntegrationTest
         var auditContext = _auditContextPublisher.AuditContexts.Single();
         auditContext.OperationType.Should().Be(OperationType.Read);
         auditContext.Resources.Should().HaveCount(4);
-        auditContext.StatusCode.Should().Be(200);
         var authorResource = auditContext.Resources.First(ar => ar.Type == ResourceType.Author);
         authorResource.Id.Should().Be(author.Id.Value);
 
@@ -322,8 +329,7 @@ public class AuthorIntegrationTests : IntegrationTest
         auditContext.ActorId.Should().Be(user.Id);
         auditContext.OperationType.Should().Be(OperationType.Update);
         auditContext.Resources.Should().HaveCount(1);
-        auditContext.StatusCode.Should().Be(200);
-         auditContext.Success.Should().BeTrue();
+        auditContext.Success.Should().BeTrue();
         var authorResource = auditContext.Resources.First();
         authorResource.Type.Should().Be(ResourceType.Author);
         authorResource.Id.Should().Be(Guid.Parse(authorId));

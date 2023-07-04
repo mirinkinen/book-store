@@ -1,5 +1,6 @@
 ﻿using Cataloging.Infrastructure.Database;
 using Cataloging.MockDataSeeder;
+using Common.Application.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit.Abstractions;
 
@@ -7,9 +8,11 @@ namespace Cataloging.IntegrationTests;
 
 public class IntegrationTest : IAsyncLifetime
 {
-    protected ApiTestWebApplicationFactory Factory { get; private set; } = new();
+    protected ApiTestWebApplicationFactory Factory { get; } = new();
 
     protected ITestOutputHelper Output { get; }
+
+    protected IUserService UserService => Factory.UserService;
 
     public IntegrationTest(ITestOutputHelper output)
     {

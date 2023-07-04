@@ -1,11 +1,10 @@
+using Common.Application.Authentication;
 using Ordering.Application.Services;
 using Ordering.Domain.Orders;
-using Common.Application.Auditing;
-using Common.Application.Authentication;
 
 namespace Ordering.Application.Requests.GetOrders;
 
-public record GetOrdersQuery(User Actor) : IAuditableQuery;
+public record GetOrdersQuery(User Actor);
 
 public class GetOrdersHandler
 {
