@@ -49,12 +49,15 @@ public partial class AuthorsController : ODataController
         return Ok(SingleResult.Create(queryable.Query));
     }
 
-    public Task<Author> Post([FromBody] AddAuthorCommand addAuthorCommand, [FromServices] IMessageBus bus)
+    public Task<Author> Post([FromBody] AddAuthorDto addAuthorDto, [FromServices] IMessageBus bus)
     {
-        return bus.InvokeAsync<Author>(addAuthorCommand);
+        var command = new AddAuthorCommand(addAuthorDto.Firstname, addAuthorDto.Lastname, addAuthorDto.Birthday,
+            addAuthorDto.OrganizationId, _userService.GetUser());
+
+        return bus.InvokeAsync<Author>(command);
     }
 
-    public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] UpdateAuthorCommandDto dto, [FromServices] IMessageBus bus)
+    public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] UpdateAuthorDto dto, [FromServices] IMessageBus bus)
     {
         var command = new UpdateAuthorCommand(key, dto.Firstname, dto.Lastname, dto.Birthday, _userService.GetUser());
 
