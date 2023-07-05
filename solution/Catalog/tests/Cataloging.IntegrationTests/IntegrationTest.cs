@@ -16,7 +16,6 @@ public class IntegrationTest : IAsyncLifetime
 
     public IntegrationTest(ITestOutputHelper output)
     {       
-        Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Testing");
         Output = output;
     }
 
