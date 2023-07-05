@@ -27,10 +27,9 @@ public class BooksController : ODataController
     }
 
     [EnableQuery(PageSize = 20)]
-    public async Task<IQueryable<Book>> Get([FromServices] IMessageBus bus, [FromServices] IQueryAuthorizer queryAuthorizer,
-        [FromServices] IAuditContext auditContext)
+    public async Task<IQueryable<Book>> Get([FromServices] IMessageBus bus, [FromServices] IQueryAuthorizer queryAuthorizer)
     {
-        var query = new GetBooksQuery(_userService.GetUser(), queryAuthorizer, auditContext);
+        var query = new GetBooksQuery(_userService.GetUser(), queryAuthorizer);
         var queryable = await bus.InvokeAsync<QueryableResponse<Book>>(query);
 
         return queryable.Query;

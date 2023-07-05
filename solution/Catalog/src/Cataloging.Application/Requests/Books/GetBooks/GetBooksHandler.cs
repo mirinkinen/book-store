@@ -1,12 +1,11 @@
 using Cataloging.Application.Services;
 using Cataloging.Domain.Books;
 using Common.Application;
-using Common.Application.Auditing;
 using Common.Application.Authentication;
 
 namespace Cataloging.Application.Requests.Books.GetBooks;
 
-public record GetBooksQuery(User Actor, IQueryAuthorizer QueryAuthorizer, IAuditContext AuditContext) : IAuditableQuery;
+public record GetBooksQuery(User Actor, IQueryAuthorizer QueryAuthorizer);
 
 public static class GetBooksHandler
 {

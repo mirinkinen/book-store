@@ -1,3 +1,3 @@
 ﻿namespace Cataloging.Application.Requests.Authors.AddAuthor;
 
-public record AuthorAdded(Guid ActorId, Guid AuthorId, DateTime Birthday, string FirstName, string LastName, Guid OrganizationId);
+public record AuthorAdded(Guid ActorId);

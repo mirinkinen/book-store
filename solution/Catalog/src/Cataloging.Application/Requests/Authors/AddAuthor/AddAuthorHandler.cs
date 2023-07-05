@@ -1,4 +1,5 @@
 ﻿using Cataloging.Domain.Authors;
+using Common.Application.Auditing;
 using Common.Application.Authentication;
 using System.Diagnostics.CodeAnalysis;
 using Wolverine;
@@ -12,24 +13,22 @@ public record AddAuthorCommand(string Firstname, string Lastname, DateTime Birth
 public class AddAuthorHandler
 {
     private readonly IAuthorRepository _authorRepository;
-    private readonly IMessageBus _messageContext;
 
-    public AddAuthorHandler(IAuthorRepository authorRepository, IMessageContext messageContext)
+    public AddAuthorHandler(IAuthorRepository authorRepository)
     {
         _authorRepository = authorRepository;
-        _messageContext = messageContext;
     }
 
     [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
-    public async Task<(Author, AuthorAdded)> Handle(AddAuthorCommand request)
+    public async IAsyncEnumerable<object> Handle(AddAuthorCommand request)
     {
         var author = new Author(request.Firstname, request.Lastname, request.Birthday, request.OrganizationId);
 
         _authorRepository.AddAuthor(author);
         await _authorRepository.SaveChangesAsync();
 
-        var authorAddedEvent = new AuthorAdded(request.Actor.Id, author.Id, author.Birthday, author.FirstName, author.LastName, author.OrganizationId);
-
-        return (author, authorAddedEvent);
+        yield return author;
+        yield return new AuthorAdded(request.Actor.Id);
+        yield return new AuditLogEvent(request.Actor.Id, OperationType.Create, new[] { new AuditLogResource(author.Id, "Author")});
     }
 }

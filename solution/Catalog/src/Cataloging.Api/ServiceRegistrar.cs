@@ -1,4 +1,5 @@
-﻿using Cataloging.Application.Requests.Books.GetBooks;
+﻿using Cataloging.Application.Requests.Authors;
+using Cataloging.Application.Requests.Books.GetBooks;
 using Cataloging.Domain.Authors;
 using Cataloging.Domain.Books;
 using Common.Api.Auditing;
@@ -18,11 +19,9 @@ public static class ServiceRegistrar
         builder.Host.UseWolverine(opts =>
         {
             opts.Discovery.IncludeAssembly(typeof(GetBooksHandler).Assembly);
-            opts.Discovery.IncludeAssembly(typeof(AuditContextLoggerHandler).Assembly);
+            opts.Discovery.IncludeAssembly(typeof(AuditLogEventHandler).Assembly);
 
-            opts.Policies.AddMiddleware(typeof(AuditableQueryMiddleware), filter => typeof(IAuditableQuery).IsAssignableFrom(filter.MessageType));
-            opts.Policies.AddMiddleware(typeof(AuditableCommandMiddleware), filter => typeof(IAuditableCommand).IsAssignableFrom(filter.MessageType));
-
+            opts.Policies.ForMessagesOfType<IAuthorCommand>().AddMiddleware(typeof(LoadAuthorMiddleware));
             opts.Policies.LogMessageStarting(LogLevel.Debug);
 
             Infrastructure.ServiceRegistrar.UseWolverine(opts);

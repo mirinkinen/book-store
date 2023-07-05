@@ -6,7 +6,6 @@ using Cataloging.Application.Requests.Authors.UpdateAuthor;
 using Cataloging.Application.Services;
 using Cataloging.Domain.Authors;
 using Common.Application;
-using Common.Application.Auditing;
 using Common.Application.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -30,20 +29,19 @@ public partial class AuthorsController : ODataController
     }
 
     [EnableQuery(PageSize = 20)]
-    public async Task<IQueryable<Author>> Get([FromServices] IMessageBus bus, [FromServices] IQueryAuthorizer queryAuthorizer,
-        [FromServices] IAuditContext auditContext)
+    public async Task<IQueryable<Author>> Get([FromServices] IMessageBus bus, [FromServices] IQueryAuthorizer queryAuthorizer)
     {
-        var query = new GetAuthorsQuery(_userService.GetUser(), queryAuthorizer, auditContext);
+        var query = new GetAuthorsQuery(_userService.GetUser(), queryAuthorizer);
         var queryable = await bus.InvokeAsync<QueryableResponse<Author>>(query);
 
         return queryable.Query;
     }
 
     [EnableQuery]
-    public async Task<IActionResult> Get([FromRoute] Guid key, [FromServices] IMessageBus bus, 
-        [FromServices] IQueryAuthorizer queryAuthorizer, [FromServices] IAuditContext auditContext)
+    public async Task<IActionResult> Get([FromRoute] Guid key, [FromServices] IMessageBus bus,
+        [FromServices] IQueryAuthorizer queryAuthorizer)
     {
-        var query = new GetAuthorByIdQuery(key, _userService.GetUser(), queryAuthorizer, auditContext);
+        var query = new GetAuthorByIdQuery(key, _userService.GetUser(), queryAuthorizer);
         var queryable = await bus.InvokeAsync<QueryableResponse<Author>>(query);
 
         return Ok(SingleResult.Create(queryable.Query));
@@ -73,9 +71,9 @@ public partial class AuthorsController : ODataController
 
     public async Task<IActionResult> Delete([FromRoute] Guid key, [FromServices] IMessageBus bus)
     {
-        var command = new DeleteAuthorCommand(key);
+        var command = new DeleteAuthorCommand(key, _userService.GetUser());
 
-        var author = await bus.InvokeAsync<Author>(command);
+        var author = await bus.InvokeAsync<Author?>(command);
 
         if (author == null)
         {

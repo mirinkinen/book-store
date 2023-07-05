@@ -45,18 +45,19 @@ public class AuditingODataResourceSerializer : ODataResourceSerializer
 
     private void AuditLogResourceId(IEdmTypeReference expectedType, Guid id)
     {
-        var auditContext = _httpContextAccessor.HttpContext?.RequestServices.GetRequiredService<IAuditContext>();
-        var type = expectedType?.Definition?.ToString()?.Split('.').Last();
+        var auditContext = _httpContextAccessor.HttpContext?.RequestServices.GetRequiredService<AuditContext>();
 
-        if (auditContext != null && type != null)
+        if (auditContext == null)
         {
-            if (Enum.TryParse(type, true, out ResourceType resourceType) && Enum.IsDefined(resourceType))
-            {
-                auditContext.AddResource(resourceType, id);
-                return;
-            }
+            throw new InvalidOperationException("AuditContext not found as required service.");
+        }
 
+        var type = expectedType?.Definition?.ToString()?.Split('.').Last();
+        if (type == null)
+        {
             throw new ArgumentException($"Entity type {type} cannot be mapped into ResourceType.");
         }
+
+        auditContext.AddResource(id, type);
     }
 }

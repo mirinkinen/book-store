@@ -1,9 +1,11 @@
 ﻿using Cataloging.Domain.Authors;
+using Common.Application.Auditing;
+using Common.Application.Authentication;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Application.Requests.Authors.DeleteAuthor;
 
-public record DeleteAuthorCommand(Guid AuthorId);
+public record DeleteAuthorCommand(Guid AuthorId, User Actor) : IAuthorCommand;
 
 public class DeleteAuthorHandler
 {
@@ -15,18 +17,13 @@ public class DeleteAuthorHandler
     }
 
     [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
-    public async Task<Author?> Handle(DeleteAuthorCommand request, CancellationToken cancellationToken)
+    public async IAsyncEnumerable<object> Handle(DeleteAuthorCommand request, Author author)
     {
-        var author = await _authorRepository.GetAuthorById(request.AuthorId, cancellationToken);
-
-        if (author == null)
-        {
-            return null;
-        }
-
         _authorRepository.Delete(author);
         await _authorRepository.SaveChangesAsync();
 
-        return author;
+        yield return author;
+        yield return new AuthorDeleted(author.Id);
+        yield return new AuditLogEvent(request.Actor.Id, OperationType.Delete, new[] { new AuditLogResource(author.Id, "Author") });
     }
 }

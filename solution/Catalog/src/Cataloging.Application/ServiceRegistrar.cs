@@ -12,7 +12,6 @@ public static class ServiceRegistrar
         services.AddScoped<IUserService, UserService>();
 
         // Audit.
-        services.AddScoped<IAuditContext, AuditContext>();
-        services.AddSingleton<IAuditContextPublisher, AuditContextPublisher>();
+        services.AddScoped<AuditContext>();
     }
 }

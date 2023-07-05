@@ -5,13 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Application.Requests.Authors.UpdateAuthor;
 
-public record UpdateAuthorCommand(Guid ResourceId, string Firstname, string Lastname, DateTime Birthday, User Actor)
-    : IAuditableCommand
-{
-    public OperationType OperationType => OperationType.Update;
-
-    public ResourceType ResourceType => ResourceType.Author;
-}
+public record UpdateAuthorCommand(Guid AuthorId, string Firstname, string Lastname, DateTime Birthday, User Actor) : IAuthorCommand;
 
 public class UpdateAuthorHandler
 {
@@ -23,19 +17,14 @@ public class UpdateAuthorHandler
     }
 
     [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
-    public async Task<Author?> Handle(UpdateAuthorCommand request, CancellationToken cancellationToken)
+    public async IAsyncEnumerable<object> Handle(UpdateAuthorCommand request, Author author)
     {
-        var author = await _authorRepository.GetAuthorById(request.ResourceId, cancellationToken);
-
-        if (author == null)
-        {
-            return null;
-        }
-
         author.Update(request.Firstname, request.Lastname, request.Birthday);
 
         await _authorRepository.SaveChangesAsync();
 
-        return author;
+        yield return author;
+        yield return new AuthorUpdated(author.Id);
+        yield return new AuditLogEvent(request.Actor.Id, OperationType.Update, new[] { new AuditLogResource(author.Id, "Author") });
     }
 }
