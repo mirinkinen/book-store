@@ -21,15 +21,15 @@ public class AddAuthorHandler
     }
 
     [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
-    public async Task<Author> Handle(AddAuthorCommand request)
+    public async Task<(Author, AuthorAdded)> Handle(AddAuthorCommand request)
     {
         var author = new Author(request.Firstname, request.Lastname, request.Birthday, request.OrganizationId);
 
         _authorRepository.AddAuthor(author);
+        await _authorRepository.SaveChangesAsync();
 
         var authorAddedEvent = new AuthorAdded(request.Actor.Id, author.Id, author.Birthday, author.FirstName, author.LastName, author.OrganizationId);
-        await _messageContext.SendAsync(authorAddedEvent);
 
-        return author;
+        return (author, authorAddedEvent);
     }
 }

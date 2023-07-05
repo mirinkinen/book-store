@@ -1,12 +1,10 @@
 ﻿using Cataloging.Api;
-using Cataloging.Infrastructure.Database;
 using Cataloging.IntegrationTests.Fakes;
 using Common.Application.Authentication;
 using MartinCostello.SqlLocalDb;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 
@@ -26,13 +24,12 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
     {
         ArgumentNullException.ThrowIfNull(builder);
 
+        StartTestDatabaseInstance();
+
         base.ConfigureWebHost(builder);
 
         builder.ConfigureServices(services =>
         {
-            // Remove the real database dependency with test instance.
-            ReplaceDatabase(services);
-
             // Replace IUserService.
             var userServiceDescriptor = services.Single(d => d.ImplementationType == typeof(UserService));
             services.Remove(userServiceDescriptor);
@@ -67,26 +64,8 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
                 dropCommand.ExecuteNonQuery();
             }
             // SQLExceptions can happen if database files are not found. Don't care about those scenarios.
-            catch(SqlException) { }
+            catch (SqlException) { }
         }
-    }
-
-    private static void ReplaceDatabase(IServiceCollection services)
-    {
-        StartTestDatabaseInstance();
-
-        var dbContextDescriptor = services.Single(d => d.ServiceType == typeof(DbContextOptions<CatalogDbContext>));
-        services.Remove(dbContextDescriptor);
-        var dbContext = services.Single(d => d.ServiceType == typeof(CatalogDbContext));
-        services.Remove(dbContext);
-
-        var dbName = $"BookStoreTest_{Guid.NewGuid():N}";
-        var connectionString = $"Data Source=(localdb)\\{_instanceName};Initial Catalog={dbName};Integrated Security=True";
-
-        services.AddDbContext<CatalogDbContext>(dbContextOptions =>
-        {
-            dbContextOptions.UseSqlServer(connectionString);
-        }, contextLifetime: ServiceLifetime.Scoped, optionsLifetime: ServiceLifetime.Singleton);
     }
 
     private static void StartTestDatabaseInstance()

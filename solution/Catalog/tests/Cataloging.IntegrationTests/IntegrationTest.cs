@@ -15,7 +15,8 @@ public class IntegrationTest : IAsyncLifetime
     protected IUserService UserService => Factory.UserService;
 
     public IntegrationTest(ITestOutputHelper output)
-    {
+    {       
+        Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Testing");
         Output = output;
     }
 

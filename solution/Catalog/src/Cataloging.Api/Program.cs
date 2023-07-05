@@ -13,9 +13,18 @@ public class Program
 
         var builder = WebApplication.CreateBuilder(args);
 
+        var connectionString = builder.Configuration.GetConnectionString("CatalogConnectionString");
+        if (builder.Environment.IsEnvironment("Testing"))
+        {
+            var dbName = $"BookStoreTest_{Guid.NewGuid():N}";
+            connectionString = $"Data Source=(localdb)\\BookStore;Initial Catalog={dbName};Integrated Security=True";
+        }
+
+        ArgumentNullException.ThrowIfNull(connectionString);
+
         Api.ServiceRegistrar.RegisterApiServices(builder);
         Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);
-        Infrastructure.ServiceRegistrar.RegisterInfrastructureServices(builder.Services);
+        Infrastructure.ServiceRegistrar.RegisterInfrastructureServices(builder.Services, connectionString);
 
         var app = builder.Build();
 
