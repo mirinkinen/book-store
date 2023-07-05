@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.IntegrationTests;
@@ -19,6 +20,13 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
     public Action<IServiceCollection>? ConfigureServices { get; set; }
 
     public IUserService UserService { get; } = new FakeUserService();
+    public IHost Host { get; private set; }
+
+    protected override IHost CreateHost(IHostBuilder builder)
+    {
+        Host = base.CreateHost(builder);
+        return Host;
+    }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {

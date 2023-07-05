@@ -46,10 +46,8 @@ public class AuthorIntegrationTests : IntegrationTest
         odata.Value.Should().HaveCount(3);
 
         // Verify audit logging.
-        //var auditContext = _auditContextPublisher.AuditContexts.Single();
-        //auditContext.OperationType.Should().Be(OperationType.Read);
-        //auditContext.Resources.Should().HaveCount(3);
-        //auditContext.Resources.Should().OnlyContain(ar => ar.Type == ResourceType.Author && ar.Id != Guid.Empty);
+        _auditContext.Resources.Should().HaveCount(3);
+        _auditContext.Resources.Should().OnlyContain(alr => alr.ResourceType == "Author" && alr.ResourceId != Guid.Empty);
     }
 
     [Fact]
@@ -118,11 +116,9 @@ public class AuthorIntegrationTests : IntegrationTest
         author.Id.Should().Be(authorId);
 
         // Verify audit logging.
-        //var auditContext = _auditContextPublisher.AuditContexts.Single();
-        //auditContext.Resources.Should().HaveCount(1);
-        //var auditResource = auditContext.Resources.First();
-        //auditResource.Id.Should().Be(author.Id.Value);
-        //auditContext.OperationType.Should().Be(OperationType.Read);
+        _auditContext.Resources.Should().HaveCount(1);
+        var auditResource = _auditContext.Resources.First();
+        auditResource.ResourceId.Should().Be(author.Id.Value);
     }
 
     [Fact]
@@ -248,14 +244,12 @@ public class AuthorIntegrationTests : IntegrationTest
         author.Books.Should().HaveCount(3);
 
         // Verify audit logging.
-        //var auditContext = _auditContextPublisher.AuditContexts.Single();
-        //auditContext.OperationType.Should().Be(OperationType.Read);
-        //auditContext.Resources.Should().HaveCount(4);
-        //var authorResource = auditContext.Resources.First(ar => ar.Type == ResourceType.Author);
-        //authorResource.Id.Should().Be(author.Id.Value);
+        _auditContext.Resources.Should().HaveCount(4);
+        var authorResource = _auditContext.Resources.First(ar => ar.ResourceType == "Author");
+        authorResource.ResourceId.Should().Be(author.Id.Value);
 
-        //var bookResources = auditContext.Resources.Where(ar => ar.Type == ResourceType.Book);
-        //bookResources.Should().HaveCount(3);
+        var bookResources = _auditContext.Resources.Where(ar => ar.ResourceType == "Book");
+        bookResources.Should().HaveCount(3);
     }
 
     [Fact]
