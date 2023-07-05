@@ -25,6 +25,7 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
         ArgumentNullException.ThrowIfNull(builder);
 
         StartTestDatabaseInstance();
+        OverrideAppSettings(builder);
 
         base.ConfigureWebHost(builder);
 
@@ -37,6 +38,13 @@ public class ApiTestWebApplicationFactory : WebApplicationFactory<Program>
 
             ConfigureServices?.Invoke(services);
         });
+    }
+
+    private static void OverrideAppSettings(IWebHostBuilder builder)
+    {
+        var dbName = $"BookStoreTest_{Guid.NewGuid():N}";
+        var connectionString = $"Data Source=(localdb)\\BookStore;Initial Catalog={dbName};Integrated Security=True";
+        builder.UseSetting("ConnectionStrings:CatalogConnectionString", connectionString);
     }
 
     [SuppressMessage("Security", "CA2100:Review SQL queries for security vulnerabilities")]
