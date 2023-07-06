@@ -1,4 +1,3 @@
-
 using System.Diagnostics.CodeAnalysis;
 
 namespace Ordering.Api;
@@ -29,7 +28,6 @@ public class Program
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
-
 
         app.MapControllers();
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Common.Application.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
@@ -6,7 +7,6 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Ordering.Application.Requests.GetOrderById;
 using Ordering.Application.Requests.GetOrders;
 using Ordering.Domain.Orders;
-using Common.Application.Authentication;
 using Wolverine;
 
 namespace Ordering.Api.Orders;

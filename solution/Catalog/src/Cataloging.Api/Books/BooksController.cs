@@ -3,7 +3,6 @@ using Cataloging.Application.Requests.Books.GetBooks;
 using Cataloging.Application.Services;
 using Cataloging.Domain.Books;
 using Common.Application;
-using Common.Application.Auditing;
 using Common.Application.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;

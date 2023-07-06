@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Hosting;
 using Wolverine;
 
-namespace Cataloging.IntegrationTests;
+namespace Cataloging.IntegrationTests.Wolverine;
 
 public class WolverineValidationFactory : WebApplicationFactory<Program>
 {

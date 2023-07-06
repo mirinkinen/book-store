@@ -1,8 +1,8 @@
+using Common.Application.Auditing;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Common.Application.Auditing;
 using System.Net.Http.Json;
 using Xunit.Abstractions;
 

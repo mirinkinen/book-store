@@ -2,7 +2,6 @@
 using Common.Application.Auditing;
 using Common.Application.Authentication;
 using System.Diagnostics.CodeAnalysis;
-using Wolverine;
 using Wolverine.Attributes;
 
 namespace Cataloging.Application.Requests.Authors.AddAuthor;
@@ -29,6 +28,6 @@ public class AddAuthorHandler
 
         yield return author;
         yield return new AuthorAdded(request.Actor.Id);
-        yield return new AuditLogEvent(request.Actor.Id, OperationType.Create, new[] { new AuditLogResource(author.Id, "Author")});
+        yield return new AuditLogEvent(request.Actor.Id, OperationType.Create, new[] { new AuditLogResource(author.Id, "Author") });
     }
 }

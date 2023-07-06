@@ -1,6 +1,6 @@
+using Common.Application.Authentication;
 using Ordering.Application.Services;
 using Ordering.Domain.Orders;
-using Common.Application.Authentication;
 
 namespace Ordering.Application.Requests.GetOrderById;
 
