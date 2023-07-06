@@ -13,30 +13,26 @@ namespace Cataloging.Infrastructure;
 
 public static class ServiceRegistrar
 {
-    
-    private const string _wolverineDbSchema = "wolverine";
-
     public static void RegisterInfrastructureServices(IServiceCollection services, string connectionString)
     {
-        services.AddDbContext<CatalogDbContext>(dbContextOptions =>
+        services.AddDbContextWithWolverineIntegration<CatalogDbContext>(dbContextOptions =>
             {
                 dbContextOptions.UseSqlServer(connectionString);
-            },
-            contextLifetime: ServiceLifetime.Scoped, optionsLifetime: ServiceLifetime.Singleton);
+            });
 
         services.AddScoped<IQueryAuthorizer, QueryAuthorizer>();
         services.AddScoped<IAuthorRepository, AuthorRepository>();
     }
 
-    public static void UseWolverine(WolverineOptions opts)
+    public static void UseWolverine(WolverineOptions opts, string connectionString)
     {
         // Setting up Sql Server-backed message storage
         // This requires a reference to Wolverine.SqlServer
-        //opts.PersistMessagesWithSqlServer(ConnectionString, _wolverineDbSchema);
+        opts.PersistMessagesWithSqlServer(connectionString);
 
         // Enrolling all local queues into the
         // durable inbox/outbox processing
-        //opts.Policies.UseDurableLocalQueues();
+        opts.Policies.UseDurableLocalQueues();
 
         // Add the auto transaction middleware attachment policy
         // If enabled, handlers don't need [AutoApplyTransactions] attribute.

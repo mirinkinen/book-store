@@ -17,7 +17,7 @@ public class Program
         
         ArgumentNullException.ThrowIfNull(connectionString);
 
-        Api.ServiceRegistrar.RegisterApiServices(builder);
+        Api.ServiceRegistrar.RegisterApiServices(builder, connectionString);
         Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);
         Infrastructure.ServiceRegistrar.RegisterInfrastructureServices(builder.Services, connectionString);
 

@@ -13,7 +13,7 @@ namespace Cataloging.Api;
 
 public static class ServiceRegistrar
 {
-    internal static void RegisterApiServices(WebApplicationBuilder builder)
+    internal static void RegisterApiServices(WebApplicationBuilder builder, string connectionString)
     {
         // All commands are handled by Wolverine.
         builder.Host.UseWolverine(opts =>
@@ -24,7 +24,7 @@ public static class ServiceRegistrar
             opts.Policies.ForMessagesOfType<IAuthorCommand>().AddMiddleware(typeof(LoadAuthorMiddleware));
             opts.Policies.LogMessageStarting(LogLevel.Debug);
 
-            Infrastructure.ServiceRegistrar.UseWolverine(opts);
+            Infrastructure.ServiceRegistrar.UseWolverine(opts, connectionString);
 
             //opts.CodeGeneration.TypeLoadMode = JasperFx.CodeGeneration.TypeLoadMode.Auto;
         });
