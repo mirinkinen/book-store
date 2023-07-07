@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Oakton;
 
 namespace Cataloging.IntegrationTests.Wolverine;
 
+[Trait("Category", "Wolverine")]
 public class WolverineTests
 {
     public WolverineTests()
