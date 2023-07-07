@@ -369,3 +369,6 @@ FodyWeavers.xsd
 
 # Audit logging
 /solution/Books/src/Books.Api/audit
+
+# JetBrains Rider
+.idea

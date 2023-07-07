@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Cataloging.Api.Authors;
 using Cataloging.Application.Requests.Authors.AddAuthor;
 using Cataloging.Infrastructure.Database;
@@ -14,15 +15,17 @@ using Xunit.Abstractions;
 namespace Cataloging.IntegrationTests.Authors;
 
 [Trait("Category", "Author")]
-public class AuthorIntegrationTests : IntegrationTest
+public class AuthorIntegrationTests : IAsyncDisposable
 {
+    private readonly IntegrationWebApplicationFactory _factory;
     private readonly AuditContext _auditContext = new();
 
-    public AuthorIntegrationTests(ITestOutputHelper output) : base(output)
+    public AuthorIntegrationTests(ITestOutputHelper output)
     {
-        Factory.ConfigureServices = (IServiceCollection services) =>
+        _factory = new IntegrationWebApplicationFactory();
+        _factory.ConfigureServices = (services) =>
         {
-            services.AddLogging(builder => builder.AddXUnit(Output));
+            services.AddLogging(builder => builder.AddXUnit(output));
             services.AddScoped<AuditContext>(sp => _auditContext);
         };
     }
@@ -31,7 +34,7 @@ public class AuthorIntegrationTests : IntegrationTest
     public async Task Get_Top3_Returns3Authors()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
@@ -54,7 +57,7 @@ public class AuthorIntegrationTests : IntegrationTest
     public async Task Get_Select3Properties_Returns3Properties()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
@@ -81,7 +84,7 @@ public class AuthorIntegrationTests : IntegrationTest
     public async Task Get_FilterByFirstName_ReturnsFilteredAuthors()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
@@ -100,7 +103,7 @@ public class AuthorIntegrationTests : IntegrationTest
     public async Task Get_AuthorById_ReturnsAuthor()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
         var authorId = Guid.Parse("8E6A9434-87F5-46B2-A6C3-522DC35D8EEF");
 
@@ -125,7 +128,7 @@ public class AuthorIntegrationTests : IntegrationTest
     public async Task Get_AuthorWithBooks_ReturnsAuthorAndBooks()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
         var authorId = Guid.Parse("8E6A9434-87F5-46B2-A6C3-522DC35D8EEF");
 
@@ -142,7 +145,7 @@ public class AuthorIntegrationTests : IntegrationTest
     public async Task Get_OrderByTitleAscending_ReturnsOrderedAuthors()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
         var authorId = Guid.Parse("A125C5BD-4F8E-4794-9C36-76E401FB4F24");
 
@@ -162,7 +165,7 @@ public class AuthorIntegrationTests : IntegrationTest
     public async Task Get_OrderByTitleDescending_ReturnsOrderedAuthors()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
         var authorId = Guid.Parse("A125C5BD-4F8E-4794-9C36-76E401FB4F24");
 
@@ -182,7 +185,7 @@ public class AuthorIntegrationTests : IntegrationTest
     public async Task Get_Count_ReturnsCount()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
@@ -197,7 +200,7 @@ public class AuthorIntegrationTests : IntegrationTest
     public async Task Get_AuthorsWithBooks_ReturnsAuthorsWithBooks()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
@@ -220,7 +223,7 @@ public class AuthorIntegrationTests : IntegrationTest
     public async Task Get_AuthorWithBooks_ReturnsAuthorWithBooks()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
@@ -256,7 +259,7 @@ public class AuthorIntegrationTests : IntegrationTest
     public async Task Get_WithoutParameters_ReturnsOnePageOfAuthors()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
@@ -274,7 +277,7 @@ public class AuthorIntegrationTests : IntegrationTest
     public async Task Get_TopTooBig_Fails()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
@@ -291,7 +294,7 @@ public class AuthorIntegrationTests : IntegrationTest
     public async Task Put_ValidAuthor_UpdatesAuthor()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         var authorId = "8e6a9434-87f5-46b2-a6c3-522dc35d8eef";
@@ -309,7 +312,7 @@ public class AuthorIntegrationTests : IntegrationTest
         var user = new FakeUserService().GetUser();
 
         // Assert that author is updated.
-        using var scope = Factory.Services.CreateScope();
+        using var scope = _factory.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
         var author = await dbContext.Authors.FindAsync(Guid.Parse(authorId));
         author.FirstName.Should().Be(newFirstName);
@@ -333,7 +336,7 @@ public class AuthorIntegrationTests : IntegrationTest
     public async Task Post_ValidAuthor_AddsAuthor()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         var newFirstName = "TestFirstName";
@@ -352,7 +355,7 @@ public class AuthorIntegrationTests : IntegrationTest
         var authorViewmodel = await response.Content.ReadFromJsonAsync<AuthorViewmodel>();
 
         // Assert that author is added.
-        using var scope = Factory.Services.CreateScope();
+        using var scope = _factory.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
         var authorDao = await dbContext.Authors.FindAsync(authorViewmodel.Id);
         authorDao.Id.Should().NotBeEmpty();
@@ -379,5 +382,11 @@ public class AuthorIntegrationTests : IntegrationTest
         //var authorResource = auditContext.Resources.First();
         //authorResource.Type.Should().Be(ResourceType.Author);
         //authorResource.Id.Should().Be(authorDao.Id);
+    }
+
+    [SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize")]
+    public ValueTask DisposeAsync()
+    {
+        return _factory.DisposeAsync();
     }
 }

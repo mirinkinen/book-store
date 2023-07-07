@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Common.Application.Auditing;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -9,15 +10,17 @@ using Xunit.Abstractions;
 namespace Cataloging.IntegrationTests.Books;
 
 [Trait("Category", "Book")]
-public class BookIntegrationTests : IntegrationTest
+public class BookIntegrationTests : IAsyncDisposable
 {
     private readonly AuditContext _auditContext = new();
+    private readonly IntegrationWebApplicationFactory _factory;
 
-    public BookIntegrationTests(ITestOutputHelper output) : base(output)
+    public BookIntegrationTests(ITestOutputHelper output)
     {
-        Factory.ConfigureServices = (IServiceCollection services) =>
+        _factory = new IntegrationWebApplicationFactory();
+        _factory.ConfigureServices = (services) =>
         {
-            services.AddLogging(builder => builder.AddXUnit(Output));
+            services.AddLogging(builder => builder.AddXUnit(output));
             services.AddScoped<AuditContext>(sp => _auditContext);
         };
     }
@@ -27,7 +30,7 @@ public class BookIntegrationTests : IntegrationTest
     {
         // Arrange
 
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=nonep");
 
         // Act
@@ -50,7 +53,7 @@ public class BookIntegrationTests : IntegrationTest
     public async Task Get_Select3Properties_Returns3Properties()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
@@ -77,7 +80,7 @@ public class BookIntegrationTests : IntegrationTest
     public async Task Get_FilterByTitle_ReturnsFilteredBooks()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
@@ -96,7 +99,7 @@ public class BookIntegrationTests : IntegrationTest
     public async Task Get_BookById_ReturnsBook()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
         var bookId = Guid.Parse("A125C5BD-4F8E-4794-9C36-76E401FB4F24");
 
@@ -113,7 +116,7 @@ public class BookIntegrationTests : IntegrationTest
     public async Task Get_OrderByTitleAscending_ReturnsOrderedBooks()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
         var bookId = Guid.Parse("A125C5BD-4F8E-4794-9C36-76E401FB4F24");
 
@@ -133,7 +136,7 @@ public class BookIntegrationTests : IntegrationTest
     public async Task Get_OrderByTitleDescending_ReturnsOrderedBooks()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
         var bookId = Guid.Parse("A125C5BD-4F8E-4794-9C36-76E401FB4F24");
 
@@ -153,7 +156,7 @@ public class BookIntegrationTests : IntegrationTest
     public async Task Get_Count_ReturnsCount()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
@@ -168,7 +171,7 @@ public class BookIntegrationTests : IntegrationTest
     public async Task Get_BooksWithAuthors_ReturnsBooksWithAuthors()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
@@ -191,7 +194,7 @@ public class BookIntegrationTests : IntegrationTest
     public async Task Get_WihtoutParameters_ReturnsOnePageOfBooks()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
@@ -209,7 +212,7 @@ public class BookIntegrationTests : IntegrationTest
     public async Task Get_Top21_Fails()
     {
         // Arrange
-        var client = Factory.CreateClient();
+        var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
@@ -220,5 +223,11 @@ public class BookIntegrationTests : IntegrationTest
         var error = await response.Content.ReadFromJsonAsync<ErrorResponse>();
         error.Should().NotBeNull();
         error.Error.Message.Should().Contain("The limit of '20' for Top query has been exceeded");
+    }
+    
+    [SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize")]
+    public ValueTask DisposeAsync()
+    {
+        return _factory.DisposeAsync();
     }
 }
