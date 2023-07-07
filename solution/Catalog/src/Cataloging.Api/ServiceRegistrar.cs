@@ -7,6 +7,7 @@ using Common.Application.Auditing;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.OData.ModelBuilder;
+using Oakton;
 using Wolverine;
 
 namespace Cataloging.Api;
@@ -15,6 +16,8 @@ public static class ServiceRegistrar
 {
     internal static void RegisterApiServices(WebApplicationBuilder builder, string connectionString)
     {
+        builder.Host.ApplyOaktonExtensions();
+
         // All commands are handled by Wolverine.
         builder.Host.UseWolverine(opts =>
         {
@@ -28,6 +31,7 @@ public static class ServiceRegistrar
 
             //opts.CodeGeneration.TypeLoadMode = JasperFx.CodeGeneration.TypeLoadMode.Auto;
         });
+
 
         // Add services to the container.
         builder.Services.AddControllers();
@@ -72,19 +76,19 @@ public static class ServiceRegistrar
 
         builder.Services.AddControllers().AddOData(
             options => options
-            .Count()
-            .Expand()
-            .Filter()
-            .OrderBy()
-            .Select()
-            .SetMaxTop(20)
-            .AddRouteComponents("v1", modelBuilder.GetEdmModel(), services =>
-            {
-                // OData seems to have its own container.
-                // Register services here that are used in overridden OData implementations.
-                services.AddSingleton<ODataResourceSerializer, AuditingODataResourceSerializer>();
-                services.AddHttpContextAccessor();
-                services.Configure<AuditOptions>(builder.Configuration.GetSection(AuditOptions.Audit));
-            }));
+                .Count()
+                .Expand()
+                .Filter()
+                .OrderBy()
+                .Select()
+                .SetMaxTop(20)
+                .AddRouteComponents("v1", modelBuilder.GetEdmModel(), services =>
+                {
+                    // OData seems to have its own container.
+                    // Register services here that are used in overridden OData implementations.
+                    services.AddSingleton<ODataResourceSerializer, AuditingODataResourceSerializer>();
+                    services.AddHttpContextAccessor();
+                    services.Configure<AuditOptions>(builder.Configuration.GetSection(AuditOptions.Audit));
+                }));
     }
 }
