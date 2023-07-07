@@ -17,14 +17,14 @@ public class WolverineTests
     {
         OaktonEnvironment.AutoStartHost = true;
 
-        var factory = new WebApplicationFactory<Program>();
+        using var factory = new WebApplicationFactory<Program>();
         using var httpClient = factory.CreateClient();
     }
 
     [Fact]
     public void ValidateWolverineConfiguration()
     {
-        var factory = new WolverineValidationFactory();
+        using var factory = new WolverineValidationFactory();
         using var httpClient = factory.CreateClient();
     }
 }
