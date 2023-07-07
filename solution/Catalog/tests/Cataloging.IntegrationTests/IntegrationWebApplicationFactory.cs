@@ -11,7 +11,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace Cataloging.IntegrationTests;
 
-public class IntegrationWebApplicationFactory : WebApplicationFactory<Program>
+internal class IntegrationWebApplicationFactory : WebApplicationFactory<Program>
 {
     public Action<IServiceCollection>? ConfigureServices { get; set; }
 

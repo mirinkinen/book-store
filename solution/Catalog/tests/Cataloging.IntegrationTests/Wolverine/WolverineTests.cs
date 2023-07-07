@@ -1,13 +1,28 @@
-﻿namespace Cataloging.IntegrationTests.Wolverine;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
+using Oakton;
+
+namespace Cataloging.IntegrationTests.Wolverine;
 
 public class WolverineTests
 {
-    [Fact(Skip = "Does not work atm")]
-    [Trait("Category", "Wolverine")]
-    public void WolverineConfigurationIsValid()
+    public WolverineTests()
     {
-        using var factory = new WolverineValidationFactory();
-        // Starts application just to execute the AssertWolverineConfigurationIsValid method.
-        using var client = factory.CreateClient();
+        OaktonEnvironment.AutoStartHost = true;
+    }
+
+    [Fact]
+    public void StartAndStop()
+    {
+        OaktonEnvironment.AutoStartHost = true;
+
+        var factory = new WebApplicationFactory<Program>();
+        using var httpClient = factory.CreateClient();
+    }
+
+    [Fact]
+    public void ValidateWolverineConfiguration()
+    {
+        var factory = new WolverineValidationFactory();
+        using var httpClient = factory.CreateClient();
     }
 }

@@ -5,7 +5,7 @@ using Wolverine;
 
 namespace Cataloging.IntegrationTests.Wolverine;
 
-public class WolverineValidationFactory : WebApplicationFactory<Program>
+internal class WolverineValidationFactory : WebApplicationFactory<Program>
 {
     protected override IHost CreateHost(IHostBuilder builder)
     {

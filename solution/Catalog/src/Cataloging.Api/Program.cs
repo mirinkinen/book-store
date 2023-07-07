@@ -1,41 +1,29 @@
+using Cataloging.Api;
 using Common.Api.Auditing;
 using Oakton;
-using System.Diagnostics.CodeAnalysis;
 
-namespace Cataloging.Api;
+var builder = WebApplication.CreateBuilder(args);
 
-[SuppressMessage("Design", "CA1052:Static holder types should be Static or NotInheritable", Justification = "Must not be static for API tests.")]
-public class Program
+var connectionString = builder.Configuration.GetConnectionString("CatalogConnectionString");
+ArgumentNullException.ThrowIfNull(connectionString);
+
+ServiceRegistrar.RegisterApiServices(builder, connectionString);
+Cataloging.Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);
+Cataloging.Infrastructure.ServiceRegistrar.RegisterInfrastructureServices(builder.Services, connectionString);
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
-    public static async Task Main(string[] args)
-    {
-        IEnumerable<string> strings = Enumerable.Empty<string>();
-
-        var builder = WebApplication.CreateBuilder(args);
-
-        var connectionString = builder.Configuration.GetConnectionString("CatalogConnectionString");
-
-        ArgumentNullException.ThrowIfNull(connectionString);
-
-        Api.ServiceRegistrar.RegisterApiServices(builder, connectionString);
-        Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);
-        Infrastructure.ServiceRegistrar.RegisterInfrastructureServices(builder.Services, connectionString);
-
-        var app = builder.Build();
-
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-
-        app.UseHttpsRedirection();
-        app.UseAuthorization();
-        app.UseAuditLogging();
-        app.MapControllers();
-
-        await app.RunOaktonCommands(args);
-        await app.RunAsync();
-    }
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.UseAuditLogging();
+app.MapControllers();
+
+// Opt into using Oakton for command parsing
+await app.RunOaktonCommands(args);
