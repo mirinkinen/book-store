@@ -336,15 +336,11 @@ public sealed class AuthorIntegrationTests : IAsyncLifetime
         author.ModifiedBy.Should().Be(user.Id);
 
         // Assert audit context.
-        //var auditContext = _auditContextPublisher.AuditContexts.Single();
-        //auditContext.Should().NotBeNull();
-        //auditContext.ActorId.Should().Be(user.Id);
-        //auditContext.OperationType.Should().Be(OperationType.Update);
-        //auditContext.Resources.Should().HaveCount(1);
-        //auditContext.Success.Should().BeTrue();
-        //var authorResource = auditContext.Resources.First();
-        //authorResource.Type.Should().Be(ResourceType.Author);
-        //authorResource.Id.Should().Be(Guid.Parse(authorId));
+        // _auditContext.Should().NotBeNull();
+        // _auditContext.Resources.Should().HaveCount(1);
+        // var authorResource = _auditContext.Resources.First();
+        // authorResource.ResourceType.Should().Be("Author");
+        // authorResource.ResourceId.Should().Be(Guid.Parse(authorId));
     }
 
     [Fact]
@@ -388,15 +384,10 @@ public sealed class AuthorIntegrationTests : IAsyncLifetime
         authorViewmodel.Books.Should().BeNull();
 
         // Assert audit context.
-        //var auditContext = _auditContextPublisher.AuditContexts.Single();
-        //auditContext.Should().NotBeNull();
-        //auditContext.ActorId.Should().Be(user.Id);
-        //auditContext.OperationType.Should().Be(OperationType.Create);
-        //auditContext.Resources.Should().HaveCount(1);
-        ////auditContext.StatusCode.Should().Be(200);
-        //auditContext.Success.Should().BeTrue();
-        //var authorResource = auditContext.Resources.First();
-        //authorResource.Type.Should().Be(ResourceType.Author);
-        //authorResource.Id.Should().Be(authorDao.Id);
+        _auditContext.Should().NotBeNull();
+        _auditContext.Resources.Should().HaveCount(1);
+        var authorResource = _auditContext.Resources.First();
+        authorResource.ResourceType.Should().Be("Author");
+        authorResource.ResourceId.Should().Be(authorDao.Id);
     }
 }

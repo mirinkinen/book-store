@@ -54,11 +54,10 @@ public class BookIntegrationTests : IAsyncLifetime
         odata.Value.Should().HaveCount(3);
 
         // Verify that 3 IDs are audit logged.
-        //_auditContext.Resources.Should().HaveCount(3);
-        //_auditContext.Resources.Should().OnlyContain(r => r.Type == ResourceType.Book);
-        //var ids = odata.Value.Where(b => b.Id.HasValue).Select(b => b.Id.Value);
-        //_auditContext.Resources.Select(t => t.Id).Should().ContainInConsecutiveOrder(ids);
-        //_auditContext.OperationType.Should().Be(OperationType.Read);
+        _auditContext.Resources.Should().HaveCount(3);
+        _auditContext.Resources.Should().OnlyContain(r => r.ResourceType == "Book");
+        var ids = odata.Value.Where(b => b.Id.HasValue).Select(b => b.Id.Value);
+        _auditContext.Resources.Select(t => t.ResourceId).Should().ContainInConsecutiveOrder(ids);
     }
 
     [Fact]
@@ -203,7 +202,7 @@ public class BookIntegrationTests : IAsyncLifetime
     }
 
     [Fact]
-    public async Task Get_WihtoutParameters_ReturnsOnePageOfBooks()
+    public async Task Get_WithoutParameters_ReturnsOnePageOfBooks()
     {
         // Arrange
         var client = _factory.CreateClient();
@@ -231,7 +230,6 @@ public class BookIntegrationTests : IAsyncLifetime
         var response = await client.GetAsync($"v1/books?$top=21");
 
         // Assert
-        //var content = await response.Content.ReadAsStringAsync();
         var error = await response.Content.ReadFromJsonAsync<ErrorResponse>();
         error.Should().NotBeNull();
         error.Error.Message.Should().Contain("The limit of '20' for Top query has been exceeded");
