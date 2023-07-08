@@ -1,28 +1,40 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Net.Http.Json;
 using Common.Application.Auditing;
 using FluentAssertions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Net.Http.Json;
+using Oakton;
 using Xunit.Abstractions;
 
 namespace Cataloging.IntegrationTests.Books;
 
 [Trait("Category", "Book")]
-public class BookIntegrationTests : IAsyncDisposable
+[SuppressMessage("Design", "CA1001:Types that own disposable fields should be disposable",
+    Justification = "IAsyncLifetime handles disposing")]
+public class BookIntegrationTests : IAsyncLifetime
 {
     private readonly AuditContext _auditContext = new();
-    private readonly IntegrationWebApplicationFactory _factory;
+    private readonly IntegrationWebApplicationFactory _factory = new();
 
     public BookIntegrationTests(ITestOutputHelper output)
     {
-        _factory = new IntegrationWebApplicationFactory();
+        OaktonEnvironment.AutoStartHost = true;
         _factory.ConfigureServices = (services) =>
         {
             services.AddLogging(builder => builder.AddXUnit(output));
             services.AddScoped<AuditContext>(sp => _auditContext);
         };
+    }
+
+    public Task InitializeAsync()
+    {
+        return Task.CompletedTask;
+    }
+
+    public async Task DisposeAsync()
+    {
+        await _factory.DisposeAsync();
     }
 
     [Fact]
@@ -31,7 +43,7 @@ public class BookIntegrationTests : IAsyncDisposable
         // Arrange
 
         var client = _factory.CreateClient();
-        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=nonep");
+        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
         var response = await client.GetAsync("v1/books?$top=3");
@@ -223,11 +235,5 @@ public class BookIntegrationTests : IAsyncDisposable
         var error = await response.Content.ReadFromJsonAsync<ErrorResponse>();
         error.Should().NotBeNull();
         error.Error.Message.Should().Contain("The limit of '20' for Top query has been exceeded");
-    }
-    
-    [SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize")]
-    public ValueTask DisposeAsync()
-    {
-        return _factory.DisposeAsync();
     }
 }

@@ -1,33 +1,45 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Net;
+using System.Net.Http.Json;
 using Cataloging.Api.Authors;
 using Cataloging.Application.Requests.Authors.AddAuthor;
 using Cataloging.Infrastructure.Database;
 using Cataloging.IntegrationTests.Fakes;
 using Common.Application.Auditing;
 using FluentAssertions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Net;
-using System.Net.Http.Json;
+using Oakton;
 using Xunit.Abstractions;
 
 namespace Cataloging.IntegrationTests.Authors;
 
 [Trait("Category", "Author")]
-public class AuthorIntegrationTests : IAsyncDisposable
+[SuppressMessage("Design", "CA1001:Types that own disposable fields should be disposable",
+    Justification = "Disposed via IAsyncLifetime")]
+public sealed class AuthorIntegrationTests : IAsyncLifetime
 {
-    private readonly IntegrationWebApplicationFactory _factory;
     private readonly AuditContext _auditContext = new();
+    private readonly IntegrationWebApplicationFactory _factory = new();
 
     public AuthorIntegrationTests(ITestOutputHelper output)
     {
-        _factory = new IntegrationWebApplicationFactory();
+        OaktonEnvironment.AutoStartHost = true;
         _factory.ConfigureServices = (services) =>
         {
             services.AddLogging(builder => builder.AddXUnit(output));
             services.AddScoped<AuditContext>(sp => _auditContext);
         };
+    }
+
+    public Task InitializeAsync()
+    {
+        return Task.CompletedTask;
+    }
+
+    public async Task DisposeAsync()
+    {
+        await _factory.DisposeAsync();
     }
 
     [Fact]
@@ -50,7 +62,8 @@ public class AuthorIntegrationTests : IAsyncDisposable
 
         // Verify audit logging.
         _auditContext.Resources.Should().HaveCount(3);
-        _auditContext.Resources.Should().OnlyContain(alr => alr.ResourceType == "Author" && alr.ResourceId != Guid.Empty);
+        _auditContext.Resources.Should()
+            .OnlyContain(alr => alr.ResourceType == "Author" && alr.ResourceId != Guid.Empty);
     }
 
     [Fact]
@@ -227,7 +240,9 @@ public class AuthorIntegrationTests : IAsyncDisposable
         client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
 
         // Act
-        var response = await client.GetAsync($"v1/Authors?$filter=id eq 8e6a9434-87f5-46b2-a6c3-522dc35d8eef&$expand=books($top=3)");
+        var response =
+            await client.GetAsync(
+                $"v1/Authors?$filter=id eq 8e6a9434-87f5-46b2-a6c3-522dc35d8eef&$expand=books($top=3)");
 
         // TODO: Refactor this test.
         await Task.Delay(100);
@@ -344,7 +359,8 @@ public class AuthorIntegrationTests : IAsyncDisposable
         var newBirthday = DateTime.UtcNow - TimeSpan.FromDays(30 * 365);
         var organizationId = Guid.NewGuid();
         var user = new FakeUserService().GetUser();
-        using var json = JsonContent.Create(new AddAuthorCommand(newFirstName, newLastName, newBirthday, organizationId, user));
+        using var json =
+            JsonContent.Create(new AddAuthorCommand(newFirstName, newLastName, newBirthday, organizationId, user));
 
         // Act
         var response = await client.PostAsync($"v1/authors", json);
@@ -382,11 +398,5 @@ public class AuthorIntegrationTests : IAsyncDisposable
         //var authorResource = auditContext.Resources.First();
         //authorResource.Type.Should().Be(ResourceType.Author);
         //authorResource.Id.Should().Be(authorDao.Id);
-    }
-
-    [SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize")]
-    public ValueTask DisposeAsync()
-    {
-        return _factory.DisposeAsync();
     }
 }
