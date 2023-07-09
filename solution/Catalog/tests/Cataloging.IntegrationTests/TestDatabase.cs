@@ -46,6 +46,11 @@ public sealed class TestDatabase : IAsyncDisposable
             using SqlLocalDbApi sqlLoccalDbApi = new();
             var instance = sqlLoccalDbApi.GetOrCreateInstance("BookStoreTest");
 
+            if (!instance.IsRunning)
+            {
+                sqlLoccalDbApi.StartInstance(instance.Name);
+            }
+            
             using var connection = instance.CreateConnection();
             connection.Open();
             connection.ChangeDatabase("master");
