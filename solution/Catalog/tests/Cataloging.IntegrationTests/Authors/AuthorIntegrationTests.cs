@@ -17,24 +17,22 @@ namespace Cataloging.IntegrationTests.Authors;
 [Trait("Category", "Author")]
 [SuppressMessage("Design", "CA1001:Types that own disposable fields should be disposable",
     Justification = "Disposed via IAsyncLifetime")]
-public sealed class AuthorIntegrationTests : IAsyncLifetime
+public sealed class AuthorIntegrationTests : IAsyncLifetime, IClassFixture<WebApplicationFactoryWarmer>
 {
-    private readonly AuditContext _auditContext = new();
-    private readonly IntegrationWebApplicationFactory _factory = new();
+    private readonly ITestOutputHelper _output;
+    private static WebApplicationFactoryWarmer? _webApplicationFactoryWarmer;
+    private IntegrationWebApplicationFactory _factory;
 
-    public AuthorIntegrationTests(ITestOutputHelper output)
+    public AuthorIntegrationTests(WebApplicationFactoryWarmer webApplicationFactoryWarmer, ITestOutputHelper output)
     {
         OaktonEnvironment.AutoStartHost = true;
-        _factory.ConfigureServices = (services) =>
-        {
-            services.AddLogging(builder => builder.AddXUnit(output));
-            services.AddScoped<AuditContext>(sp => _auditContext);
-        };
+        _output = output;
+        _webApplicationFactoryWarmer = webApplicationFactoryWarmer;
     }
 
-    public Task InitializeAsync()
+    public async Task InitializeAsync()
     {
-        return Task.CompletedTask;
+        _factory = await _webApplicationFactoryWarmer.GetFactory();
     }
 
     public async Task DisposeAsync()
@@ -61,8 +59,8 @@ public sealed class AuthorIntegrationTests : IAsyncLifetime
         odata.Value.Should().HaveCount(3);
 
         // Verify audit logging.
-        _auditContext.Resources.Should().HaveCount(3);
-        _auditContext.Resources.Should()
+        _factory.AuditContext.Resources.Should().HaveCount(3);
+        _factory.AuditContext.Resources.Should()
             .OnlyContain(alr => alr.ResourceType == "Author" && alr.ResourceId != Guid.Empty);
     }
 
@@ -132,8 +130,8 @@ public sealed class AuthorIntegrationTests : IAsyncLifetime
         author.Id.Should().Be(authorId);
 
         // Verify audit logging.
-        _auditContext.Resources.Should().HaveCount(1);
-        var auditResource = _auditContext.Resources.First();
+        _factory.AuditContext.Resources.Should().HaveCount(1);
+        var auditResource = _factory.AuditContext.Resources.First();
         auditResource.ResourceId.Should().Be(author.Id.Value);
     }
 
@@ -262,11 +260,11 @@ public sealed class AuthorIntegrationTests : IAsyncLifetime
         author.Books.Should().HaveCount(3);
 
         // Verify audit logging.
-        _auditContext.Resources.Should().HaveCount(4);
-        var authorResource = _auditContext.Resources.First(ar => ar.ResourceType == "Author");
+        _factory.AuditContext.Resources.Should().HaveCount(4);
+        var authorResource = _factory.AuditContext.Resources.First(ar => ar.ResourceType == "Author");
         authorResource.ResourceId.Should().Be(author.Id.Value);
 
-        var bookResources = _auditContext.Resources.Where(ar => ar.ResourceType == "Book");
+        var bookResources = _factory.AuditContext.Resources.Where(ar => ar.ResourceType == "Book");
         bookResources.Should().HaveCount(3);
     }
 
@@ -336,9 +334,9 @@ public sealed class AuthorIntegrationTests : IAsyncLifetime
         author.ModifiedBy.Should().Be(user.Id);
 
         // Assert audit context.
-        // _auditContext.Should().NotBeNull();
-        // _auditContext.Resources.Should().HaveCount(1);
-        // var authorResource = _auditContext.Resources.First();
+        // _factory.AuditContext.Should().NotBeNull();
+        // _factory.AuditContext.Resources.Should().HaveCount(1);
+        // var authorResource = _factory.AuditContext.Resources.First();
         // authorResource.ResourceType.Should().Be("Author");
         // authorResource.ResourceId.Should().Be(Guid.Parse(authorId));
     }
@@ -384,9 +382,9 @@ public sealed class AuthorIntegrationTests : IAsyncLifetime
         authorViewmodel.Books.Should().BeNull();
 
         // Assert audit context.
-        _auditContext.Should().NotBeNull();
-        _auditContext.Resources.Should().HaveCount(1);
-        var authorResource = _auditContext.Resources.First();
+        _factory.AuditContext.Should().NotBeNull();
+        _factory.AuditContext.Resources.Should().HaveCount(1);
+        var authorResource = _factory.AuditContext.Resources.First();
         authorResource.ResourceType.Should().Be("Author");
         authorResource.ResourceId.Should().Be(authorDao.Id);
     }

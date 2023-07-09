@@ -34,8 +34,8 @@ public partial class OrdersController : ODataController
     public async Task<IActionResult> Get([FromRoute] Guid key)
     {
         var query = new GetOrderByIdQuery(key, _userService.GetUser());
-        var OrderQuery = await _bus.InvokeAsync<IQueryable<Order>>(query);
+        var orderQuery = await _bus.InvokeAsync<IQueryable<Order>>(query);
 
-        return Ok(SingleResult.Create(OrderQuery));
+        return Ok(SingleResult.Create(orderQuery));
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Cataloging.IntegrationTests.Fakes;
+using Common.Application.Auditing;
 using Common.Application.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -10,15 +11,11 @@ internal class IntegrationWebApplicationFactory : WebApplicationFactory<Program>
 {
     public Action<IServiceCollection>? ConfigureServices { get; set; }
 
-    public IUserService UserService { get; }
+    public IUserService UserService { get; } = new FakeUserService();
 
-    public TestDatabase TestDatabase { get; }
+    public TestDatabase TestDatabase { get; } = new();
 
-    public IntegrationWebApplicationFactory()
-    {
-        UserService = new FakeUserService();
-        TestDatabase = new TestDatabase();
-    }
+    public AuditContext AuditContext { get; } = new();
 
     public override async ValueTask DisposeAsync()
     {
@@ -41,6 +38,7 @@ internal class IntegrationWebApplicationFactory : WebApplicationFactory<Program>
             var userServiceDescriptor = services.Single(d => d.ImplementationType == typeof(UserService));
             services.Remove(userServiceDescriptor);
             services.AddScoped<IUserService>(sp => UserService);
+            services.AddScoped<AuditContext>(sp => AuditContext);
 
             ConfigureServices?.Invoke(services);
         });

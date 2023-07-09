@@ -13,12 +13,14 @@ namespace Cataloging.Infrastructure;
 
 public static class ServiceRegistrar
 {
+    private const string _wolverineSchema = "wolverine";
+
     public static void RegisterInfrastructureServices(IServiceCollection services, string connectionString)
     {
         services.AddDbContextWithWolverineIntegration<CatalogDbContext>(dbContextOptions =>
             {
                 dbContextOptions.UseSqlServer(connectionString);
-            });
+            }, _wolverineSchema);
 
         services.AddScoped<IQueryAuthorizer, QueryAuthorizer>();
         services.AddScoped<IAuthorRepository, AuthorRepository>();
@@ -28,7 +30,7 @@ public static class ServiceRegistrar
     {
         // Setting up Sql Server-backed message storage
         // This requires a reference to Wolverine.SqlServer
-        opts.PersistMessagesWithSqlServer(connectionString);
+        opts.PersistMessagesWithSqlServer(connectionString, _wolverineSchema);
 
         // Enrolling all local queues into the
         // durable inbox/outbox processing
