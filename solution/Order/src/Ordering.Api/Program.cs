@@ -4,7 +4,7 @@ using Oakton;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("OrderingConnectionString");
+var connectionString = builder.Configuration.GetConnectionString("OrderConnectionString");
 ArgumentNullException.ThrowIfNull(connectionString);
 
 ServiceRegistrar.RegisterApiServices(builder, connectionString);

@@ -13,10 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EditorConfigFiles Include="Database\Migrations\.editorconfig" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\..\..\Common\src\Common.Application\Common.Application.csproj" />
       <ProjectReference Include="..\Ordering.Domain\Ordering.Domain.csproj" />
     </ItemGroup>

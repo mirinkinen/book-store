@@ -11,7 +11,7 @@ internal class Program
     [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "No need.")]
     private static async Task Main()
     {
-        var connectionString = "Data Source=(localdb)\\BookStore;Initial Catalog=BookStore;Integrated Security=True";
+        var connectionString = "Data Source=(localdb)\\BookStore;Initial Catalog=Books;Integrated Security=True";
 
         Console.Write($"Do you want to seed the database (localdb)\\BookStore? (y/N): ");
         var answer = Console.ReadLine();

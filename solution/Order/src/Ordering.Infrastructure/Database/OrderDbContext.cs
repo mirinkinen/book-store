@@ -7,13 +7,13 @@ using Ordering.Infrastructure.Database.EntityTypeConfigurations;
 
 namespace Ordering.Infrastructure.Database;
 
-public class OrderingDbContext : DbContext
+public class OrderDbContext : DbContext
 {
     private readonly IUserService _userService;
 
     public DbSet<Order> Orders { get; set; }
 
-    public OrderingDbContext(DbContextOptions options, IUserService userService) : base(options)
+    public OrderDbContext(DbContextOptions options, IUserService userService) : base(options)
     {
         _userService = userService;
     }

@@ -14,7 +14,7 @@ public static class ServiceRegistrar
 
     public static void RegisterInfrastructureServices(IServiceCollection services, string connectionString)
     {
-        services.AddDbContextWithWolverineIntegration<OrderingDbContext>(dbContextOptions =>
+        services.AddDbContextWithWolverineIntegration<OrderDbContext>(dbContextOptions =>
         {
             dbContextOptions.UseSqlServer(connectionString);
         }, _wolverineSchema);
