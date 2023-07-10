@@ -1,36 +1,29 @@
-using System.Diagnostics.CodeAnalysis;
+using Ordering.Api;
+using Common.Api.Auditing;
+using Oakton;
 
-namespace Ordering.Api;
+var builder = WebApplication.CreateBuilder(args);
 
-[SuppressMessage("Design", "CA1052:Static holder types should be Static or NotInheritable", Justification = "Must not be static for API tests.")]
-public class Program
+var connectionString = builder.Configuration.GetConnectionString("OrderingConnectionString");
+ArgumentNullException.ThrowIfNull(connectionString);
+
+ServiceRegistrar.RegisterApiServices(builder, connectionString);
+Ordering.Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);
+Ordering.Infrastructure.ServiceRegistrar.RegisterInfrastructureServices(builder.Services, connectionString);
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
-    public static void Main(string[] args)
-    {
-        var builder = WebApplication.CreateBuilder(args);
-
-        // Add services to the container.
-
-        builder.Services.AddControllers();
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-
-        var app = builder.Build();
-
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-
-        app.UseHttpsRedirection();
-
-        app.UseAuthorization();
-
-        app.MapControllers();
-
-        app.Run();
-    }
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.UseAuditLogging();
+app.MapControllers();
+
+// Opt into using Oakton for command parsing
+await app.RunOaktonCommands(args);

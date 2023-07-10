@@ -23,6 +23,14 @@ public partial class OrdersController : ODataController
         _userService = userService;
     }
 
+    // [Route("shoppingcart")]
+    // public Task<Order> GetShoppingCart()
+    // {
+    //     var query = new GetShoppingCartQuery(_userService.GetUser());
+    //     return _bus.InvokeAsync<Order>(query);
+    // }
+    //
+    
     [EnableQuery(PageSize = 20)]
     public Task<IQueryable<Order>> Get()
     {

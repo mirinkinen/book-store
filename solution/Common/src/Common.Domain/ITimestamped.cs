@@ -15,5 +15,5 @@ public interface ITimestamped
     /// <summary>
     /// Who modified the entity.
     /// </summary>
-    public Guid ModifiedBy { get; }
+    public Guid ModifiedBy { get; set; }
 }

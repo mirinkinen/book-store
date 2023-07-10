@@ -1,8 +1,7 @@
 ﻿using Ordering.Domain.SeedWork;
 
-namespace Ordering.Domain.Orders
+namespace Ordering.Domain.Orders;
+
+public class Order : Entity
 {
-    public class Order : Entity
-    {
-    }
 }

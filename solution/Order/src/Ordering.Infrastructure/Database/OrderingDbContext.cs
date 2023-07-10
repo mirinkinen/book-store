@@ -1,0 +1,55 @@
+﻿using Common.Application.Authentication;
+using Common.Domain;
+using Microsoft.EntityFrameworkCore;
+using Ordering.Domain.Orders;
+using Ordering.Domain.SeedWork;
+using Ordering.Infrastructure.Database.EntityTypeConfigurations;
+
+namespace Ordering.Infrastructure.Database;
+
+public class OrderingDbContext : DbContext
+{
+    private readonly IUserService _userService;
+
+    public DbSet<Order> Orders { get; set; }
+
+    public OrderingDbContext(DbContextOptions options, IUserService userService) : base(options)
+    {
+        _userService = userService;
+    }
+
+    public override int SaveChanges(bool acceptAllChangesOnSuccess)
+    {
+        throw new NotImplementedException("Use SaveChangesAsync");
+    }
+
+    public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+    {
+        var entities = ChangeTracker
+            .Entries<ITimestamped>()
+            .Where(e => e.State is EntityState.Added or EntityState.Deleted or EntityState.Modified);
+        var user = _userService.GetUser();
+
+        foreach (var entityEntry in entities)
+        {
+            entityEntry.Entity.ModifiedBy = user.Id;
+        }
+
+        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        ArgumentNullException.ThrowIfNull(optionsBuilder);
+
+        optionsBuilder.EnableSensitiveDataLogging();
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        ArgumentNullException.ThrowIfNull(modelBuilder);
+
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(OrderEntityConfiguration).Assembly);
+    }
+}
