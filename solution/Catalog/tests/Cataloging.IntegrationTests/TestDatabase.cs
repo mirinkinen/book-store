@@ -49,12 +49,15 @@ public sealed class TestDatabase : IAsyncDisposable
             if (!instance.IsRunning)
             {
                 sqlLoccalDbApi.StartInstance(instance.Name);
+                // Starting an instance doesn't seem to effect the current instance object.
+                // Therefore, the started instance needs to be fetched again.
+                instance = sqlLoccalDbApi.GetOrCreateInstance("BookStoreTest");
             }
-            
+
             using var connection = instance.CreateConnection();
             connection.Open();
             connection.ChangeDatabase("master");
-            
+
             using var getDatabasesCommand =
                 new SqlCommand("SELECT * FROM sys.databases WHERE name LIKE 'BookStoreTest%'", connection);
             using var reader = getDatabasesCommand.ExecuteReader();
