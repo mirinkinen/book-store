@@ -1,1 +1,0 @@
-dotnet ef database drop -s ..\src\Cataloging.Api\ -p ..\src\Cataloging.Infrastructure\

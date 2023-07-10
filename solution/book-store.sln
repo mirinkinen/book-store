@@ -84,9 +84,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Api", "Common\src\Co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{4233635C-2908-4932-AA23-7F196BF1E71C}"
 	ProjectSection(SolutionItems) = preProject
-		Common\tools\Drop-Database.cmd = Common\tools\Drop-Database.cmd
-		Common\tools\Update-Database.cmd = Common\tools\Update-Database.cmd
 		Common\tools\Add-Migration.txt = Common\tools\Add-Migration.txt
+		Common\tools\Drop-Database.txt = Common\tools\Drop-Database.txt
+		Common\tools\Update-Database.txt = Common\tools\Update-Database.txt
 	EndProjectSection
 EndProject
 Global

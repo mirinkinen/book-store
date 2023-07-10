@@ -1,3 +1,4 @@
 Run this command in the tools directory in order the relative paths to work. Change the <MigrationName> before running.
 
-dotnet ef migrations add -c CatalogDbContext -s ..\src\Cataloging.Api\ -p ..\src\Cataloging.Infrastructure\ -o Database\Migrations\ <MigrationName>
+dotnet ef migrations add -c CatalogDbContext -s ..\..\Catalog\src\Cataloging.Api -p ..\..\Catalog\src\Cataloging.Infrastructure -o Database\Migrations\ <MigrationName>
+dotnet ef migrations add -c OrderDbContext -s ..\..\Order\src\Ordering.Api -p ..\..\Order\src\Ordering.Infrastructure -o Database\Migrations\ <MigrationName>

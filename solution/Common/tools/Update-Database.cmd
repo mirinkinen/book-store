@@ -1,1 +1,0 @@
-dotnet ef database update -s ..\src\Cataloging.Api\ -p ..\src\Cataloging.Infrastructure\
