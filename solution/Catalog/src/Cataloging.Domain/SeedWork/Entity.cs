@@ -5,7 +5,7 @@ namespace Cataloging.Domain.SeedWork
     /// <summary>
     /// Represents shared properties for all entities in this domain.
     /// </summary>
-    public abstract class Entity : IIdentifiable
+    public abstract class Entity : IIdentifiable, ITimestamped
     {
         public Guid Id { get; private set; }
 

@@ -2,8 +2,8 @@ namespace Cataloging.IntegrationTests;
 
 public class WebApplicationFactoryWarmer : IAsyncDisposable
 {
-    private readonly List<Task<IntegrationWebApplicationFactory>> _factoryPipelines = new();
-    private int _pipelinePointer;
+    private readonly List<Task<IntegrationWebApplicationFactory>> _factoryLines = new();
+    private int _linePointer;
     private readonly object _threadLock = new();
 
     public WebApplicationFactoryWarmer()
@@ -12,7 +12,7 @@ public class WebApplicationFactoryWarmer : IAsyncDisposable
         {
             var factory = CreateFactory();
 
-            _factoryPipelines.Add(factory);
+            _factoryLines.Add(factory);
         }
     }
 
@@ -29,9 +29,9 @@ public class WebApplicationFactoryWarmer : IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
-        foreach (var pipeline in _factoryPipelines)
+        foreach (var factoryLine in _factoryLines)
         {
-            var factory = await pipeline;
+            var factory = await factoryLine;
             await factory.DisposeAsync();
         }
     }
@@ -42,15 +42,15 @@ public class WebApplicationFactoryWarmer : IAsyncDisposable
         lock (_threadLock)
         {
             // Get ready factory...
-            var factory = _factoryPipelines[_pipelinePointer];
+            var factory = _factoryLines[_linePointer];
 
-            // ... and start making a new factory at the same pipeline.
-            _factoryPipelines[_pipelinePointer] = CreateFactory();
+            // ... and start making a new factory at the same factory line.
+            _factoryLines[_linePointer] = CreateFactory();
 
-            _pipelinePointer++;
-            if (_pipelinePointer >= _factoryPipelines.Count)
+            _linePointer++;
+            if (_linePointer >= _factoryLines.Count)
             {
-                _pipelinePointer = 0;
+                _linePointer = 0;
             }
 
             return factory;

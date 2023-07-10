@@ -101,6 +101,9 @@ dotnet_naming_style.instance_field_style.required_prefix = _
 
 # Dotnet Diagnostic
 
+# In externally visible method validate parameter 'request' is non-null before using it.
+dotnet_diagnostic.CA1062.severity = suggestion      
+
 # Do not directly await a Task
 dotnet_diagnostic.CA2007.severity = none      
 
