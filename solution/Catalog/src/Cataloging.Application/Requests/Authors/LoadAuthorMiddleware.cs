@@ -10,11 +10,7 @@ public static class LoadAuthorMiddleware
         IAuthorRepository authorRepository, CancellationToken cancellationToken)
     {
         var author = await authorRepository.GetAuthorById(command.AuthorId, cancellationToken);
-        if (author == null)
-        {
-            logger.LogInformation("Unable to find an account for {AccountId}, aborting the requested operation", command.AuthorId);
-        }
-
+        
         return (author == null ? HandlerContinuation.Stop : HandlerContinuation.Continue, author);
     }
 }

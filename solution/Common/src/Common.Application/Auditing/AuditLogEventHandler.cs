@@ -1,26 +1,28 @@
-﻿using Microsoft.Extensions.Logging;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.Extensions.Logging;
 
 namespace Common.Application.Auditing;
 
 /// <summary>
 /// Middleware for AuditableCommands. Executed by Wolverine.
 /// </summary>
-[SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
-[SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix")]
 public class AuditLogEventHandler
 {
-    [SuppressMessage("Performance", "CA1822:Mark members as static")]
+    private static readonly Action<ILogger, Guid, OperationType, Exception?> _logAudit =
+        LoggerMessage.Define<Guid, OperationType>(LogLevel.Information, new EventId(0),
+            "Audit logging, User: {UserId}, OperationType: {OperationType}");
+
+    private static readonly Action<ILogger, string, Guid, Exception?> _logResource =
+        LoggerMessage.Define<string, Guid>(LogLevel.Information, new EventId(0),
+            "Type: {Type}: Id: {Id}");
+
     public void Handle(AuditLogEvent auditLogEvent, ILogger<AuditLogEventHandler> logger)
     {
-        // This could persist the events, but now we are just logging.
-        using var scope = logger.BeginScope("Audit logging");
-        logger.LogInformation("User: {ActorId}", auditLogEvent.ActorId);
-        logger.LogInformation("Operation: {OperationType}", auditLogEvent.OperationType);
+        _logAudit.Invoke(logger, auditLogEvent.ActorId, auditLogEvent.OperationType, null);
 
         foreach (var resource in auditLogEvent.Resources)
         {
-            logger.LogInformation("Type: {Type}: Id: {Id}", resource.ResourceType, resource.ResourceId);
+            _logResource.Invoke(logger, resource.ResourceType, resource.ResourceId, null);
         }
     }
 }

@@ -106,6 +106,12 @@ dotnet_diagnostic.CA1052.severity = none
 # In externally visible method validate parameter 'request' is non-null before using it.
 dotnet_diagnostic.CA1062.severity = suggestion
 
+# Mark members as static
+dotnet_diagnostic.CA1822.severity = suggestion
+
+# Identifiers should not have incorrect suffix
+dotnet_diagnostic.CA1711.severity = suggestion
+
 # Do not directly await a Task
 dotnet_diagnostic.CA2007.severity = none
 
