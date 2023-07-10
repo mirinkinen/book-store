@@ -42,11 +42,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cataloging.Api.UnitTests", "Catalog\tests\Cataloging.Api.UnitTests\Cataloging.Api.UnitTests.csproj", "{56890B31-D76B-4C48-BEAD-1DA6BE1CDFD1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{AC7A8847-1363-41F7-B9CE-7EFE6D1C3B3B}"
-	ProjectSection(SolutionItems) = preProject
-		Catalog\tools\Add-Migration.txt = Catalog\tools\Add-Migration.txt
-		Catalog\tools\Drop-Database.cmd = Catalog\tools\Drop-Database.cmd
-		Catalog\tools\Update-Database.cmd = Catalog\tools\Update-Database.cmd
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Inventory", "Inventory", "{6CF13A43-506E-4EAB-A829-EE14CE9A3BA6}"
 	ProjectSection(SolutionItems) = preProject
@@ -86,6 +81,13 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Domain", "Common\src\Common.Domain\Common.Domain.csproj", "{FB01D03B-2280-4E56-B84C-66521058E1EB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Api", "Common\src\Common.Api\Common.Api.csproj", "{89375998-7D2F-496A-8034-EAAE406DEF96}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{4233635C-2908-4932-AA23-7F196BF1E71C}"
+	ProjectSection(SolutionItems) = preProject
+		Common\tools\Drop-Database.cmd = Common\tools\Drop-Database.cmd
+		Common\tools\Update-Database.cmd = Common\tools\Update-Database.cmd
+		Common\tools\Add-Migration.txt = Common\tools\Add-Migration.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -190,6 +192,7 @@ Global
 		{3A7886F9-F009-42F0-B6DC-60F73420EFB6} = {3EB05445-5BEB-457B-B088-6EEFBFFAE4C1}
 		{FB01D03B-2280-4E56-B84C-66521058E1EB} = {3EB05445-5BEB-457B-B088-6EEFBFFAE4C1}
 		{89375998-7D2F-496A-8034-EAAE406DEF96} = {3EB05445-5BEB-457B-B088-6EEFBFFAE4C1}
+		{4233635C-2908-4932-AA23-7F196BF1E71C} = {542694A3-CDE3-4010-A050-3F67E0F89242}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2A7F10F0-64D8-490D-8D09-380016A23617}
