@@ -12,7 +12,9 @@ namespace Cataloging.IntegrationTests;
 public sealed class TestDatabase : IAsyncDisposable
 {
     private static bool _leftOverDatabasesCleaned;
-    private static object _cleanerLock = new();
+    private static readonly object _cleanerLock = new();
+    private const string _sqlInstanceName = "BookStoreTest";
+    private const string _sqlDatabasePrefix = "BookStoreTest";
 
     public string Name { get; }
 
@@ -23,9 +25,9 @@ public sealed class TestDatabase : IAsyncDisposable
     {
         CleanLeftoverDatabases();
 
-        Name = $"BookStoreTest-{Guid.NewGuid():D}";
+        Name = $"{_sqlDatabasePrefix}-{Guid.NewGuid():D}";
         ConnectionString =
-            $"Data Source=(localdb)\\BookStoreTest;Initial Catalog={Name};Integrated Security=True";
+            $"Data Source=(localdb)\\{_sqlInstanceName};Initial Catalog={Name};Integrated Security=True";
 
         CreateAndSeedDatabase().Wait();
     }
@@ -43,15 +45,15 @@ public sealed class TestDatabase : IAsyncDisposable
 
             _leftOverDatabasesCleaned = true;
 
-            using SqlLocalDbApi sqlLoccalDbApi = new();
-            var instance = sqlLoccalDbApi.GetOrCreateInstance("BookStoreTest");
+            using SqlLocalDbApi sqlLocalDbApi = new();
+            var instance = sqlLocalDbApi.GetOrCreateInstance(_sqlInstanceName);
 
             if (!instance.IsRunning)
             {
-                sqlLoccalDbApi.StartInstance(instance.Name);
+                sqlLocalDbApi.StartInstance(instance.Name);
                 // Starting an instance doesn't seem to effect the current instance object.
                 // Therefore, the started instance needs to be fetched again.
-                instance = sqlLoccalDbApi.GetOrCreateInstance("BookStoreTest");
+                instance = sqlLocalDbApi.GetOrCreateInstance(_sqlInstanceName);
             }
 
             using var connection = instance.CreateConnection();
@@ -59,7 +61,7 @@ public sealed class TestDatabase : IAsyncDisposable
             connection.ChangeDatabase("master");
 
             using var getDatabasesCommand =
-                new SqlCommand("SELECT * FROM sys.databases WHERE name LIKE 'BookStoreTest%'", connection);
+                new SqlCommand($"SELECT * FROM sys.databases WHERE name LIKE '{_sqlDatabasePrefix}%'", connection);
             using var reader = getDatabasesCommand.ExecuteReader();
             var databases = new List<string>();
 
