@@ -1,6 +1,4 @@
-﻿using Cataloging.Infrastructure.Database;
-
-namespace Cataloging.MockDataSeeder;
+﻿namespace Cataloging.Infrastructure.Database.Setup;
 
 public static class DataSeeder
 {
@@ -8,14 +6,14 @@ public static class DataSeeder
     {
         ArgumentNullException.ThrowIfNull(catalogDbContext);
 
-        var authors = MockDataContainer.GetAuthors();
+        var authors = MockDataContainer.GetAuthors().ToList();
 
         // If not already seeded.
         if (!catalogDbContext.Authors.Any())
         {
             await catalogDbContext.AddRangeAsync(authors);
             await catalogDbContext.SaveChangesAsync();
-        };
+        }
 
         // If not already seeded.
         if (!catalogDbContext.Books.Any())

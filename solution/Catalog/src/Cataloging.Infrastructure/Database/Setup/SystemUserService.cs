@@ -1,6 +1,6 @@
 ﻿using Common.Application.Authentication;
 
-namespace Cataloging.MockDataSeeder;
+namespace Cataloging.Infrastructure.Database.Setup;
 
 internal class SystemUserService : IUserService
 {

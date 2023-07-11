@@ -1,4 +1,4 @@
-﻿using Cataloging.MockDataSeeder;
+﻿using Cataloging.Infrastructure.Database.Setup;
 using Common.Application.Authentication;
 
 namespace Cataloging.IntegrationTests.Fakes;

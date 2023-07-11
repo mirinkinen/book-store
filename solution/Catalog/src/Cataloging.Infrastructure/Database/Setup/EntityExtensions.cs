@@ -1,7 +1,7 @@
-﻿using Cataloging.Domain.SeedWork;
-using System.Reflection;
+﻿using System.Reflection;
+using Cataloging.Domain.SeedWork;
 
-namespace Cataloging.MockDataSeeder;
+namespace Cataloging.Infrastructure.Database.Setup;
 
 internal static class EntityExtensions
 {

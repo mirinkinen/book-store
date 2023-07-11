@@ -1,7 +1,7 @@
 ﻿using Cataloging.Domain.Authors;
 using Cataloging.Domain.Books;
 
-namespace Cataloging.MockDataSeeder;
+namespace Cataloging.Infrastructure.Database.Setup;
 
 public static class MockDataContainer
 {
@@ -21,12 +21,15 @@ public static class MockDataContainer
     {
         var unauthorizedOrganization = Guid.Parse("A34B1695-DB25-4AFF-A717-3C47EC7E89F4");
 
-        var authors = new Author[] {
+        var authors = new Author[]
+        {
             new Author("Stephen", "King", new DateTime(1947, 9, 21), AuthorizedOrganization1).SetId(StephenKingId),
             new Author("Dan", "Brown", new DateTime(1964, 6, 22), AuthorizedOrganization1).SetId(DanBrownId),
             new Author("J.K.", "Rowling", new DateTime(1965, 7, 31), AuthorizedOrganization2).SetId(JkRowlingId),
-            new Author("William", "Shakespeare", new DateTime(1564, 4, 15), AuthorizedOrganization2).SetId(WilliamShakeSpeareId),
-            new Author("Ernest.", "Hemingway", new DateTime(1899, 7, 21), unauthorizedOrganization).SetId(ErnestHemingwayId)
+            new Author("William", "Shakespeare", new DateTime(1564, 4, 15), AuthorizedOrganization2).SetId(
+                WilliamShakeSpeareId),
+            new Author("Ernest.", "Hemingway", new DateTime(1899, 7, 21), unauthorizedOrganization).SetId(
+                ErnestHemingwayId)
         };
 
         return authors;
@@ -42,16 +45,17 @@ public static class MockDataContainer
         var theShining = new Book(StephenKingId, "The Shining", new DateTime(1977, 1, 28), 20);
         theShining.SetId(Guid.Parse("A125C5BD-4F8E-4794-9C36-76E401FB4F24"));
 
-        books.AddRange(new[] {
+        books.AddRange(new[]
+        {
             theShining,
             new Book(StephenKingId, "The Green Mile", new DateTime(1996, 3, 28), 20),
             new Book(StephenKingId, "End of Watch", new DateTime(2016, 6, 7), 25),
 
-            new Book(DanBrownId, "Angels and Demons", new DateTime(2000,5,15), 30),
+            new Book(DanBrownId, "Angels and Demons", new DateTime(2000, 5, 15), 30),
             new Book(DanBrownId, "The Da Vinci Code", new DateTime(2003, 3, 18), 35),
             new Book(DanBrownId, "Inferno", new DateTime(2013, 5, 14), 33),
 
-            new Book(JkRowlingId, "Harry Potter and the Philosopher's Stone", new DateTime(1997, 6,26), 15),
+            new Book(JkRowlingId, "Harry Potter and the Philosopher's Stone", new DateTime(1997, 6, 26), 15),
             new Book(JkRowlingId, "Fantastic Beasts and Where to Find Them", new DateTime(2001, 3, 15), 17),
             new Book(JkRowlingId, "Harry Potter and the Deathly Hallows", new DateTime(2007, 7, 21), 21),
 
@@ -63,7 +67,8 @@ public static class MockDataContainer
         // Generate some random books for all authors.
         books.AddRange(Enumerable
             .Range(1, 1000)
-            .Select(id => new Book(GetRandomAuthor(authorsList).Id, $"Book #{id}", GetRandomPublishedDate(), GetRandomPrice())));
+            .Select(id => new Book(GetRandomAuthor(authorsList).Id, $"Book #{id}", GetRandomPublishedDate(),
+                GetRandomPrice())));
 
         return books;
     }

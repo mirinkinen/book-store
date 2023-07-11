@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Cataloging.Infrastructure.Database;
+using Cataloging.Infrastructure.Database.Setup;
 using Cataloging.IntegrationTests.Fakes;
-using Cataloging.MockDataSeeder;
 using MartinCostello.SqlLocalDb;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
