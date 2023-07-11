@@ -2,12 +2,14 @@
 using Cataloging.Application.Requests.Books.GetBooks;
 using Cataloging.Domain.Authors;
 using Cataloging.Domain.Books;
+using Cataloging.Infrastructure.Database.Setup;
 using Common.Api.Auditing;
 using Common.Application.Auditing;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.OData.ModelBuilder;
 using Oakton;
+using Oakton.Resources;
 using Wolverine;
 
 namespace Cataloging.Api;
@@ -17,6 +19,7 @@ public static class ServiceRegistrar
     internal static void RegisterApiServices(WebApplicationBuilder builder, string connectionString)
     {
         builder.Host.ApplyOaktonExtensions();
+        builder.Services.AddScoped<IStatefulResource, DatabaseInitializer>();
 
         // All commands are handled by Wolverine.
         builder.Host.UseWolverine(opts =>
