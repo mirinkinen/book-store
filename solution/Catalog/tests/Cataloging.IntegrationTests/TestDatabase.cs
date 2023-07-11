@@ -14,7 +14,7 @@ public sealed class TestDatabase : IAsyncDisposable
     private static bool _leftOverDatabasesCleaned;
     private static readonly object _cleanerLock = new();
     private const string _sqlInstanceName = "BookStoreTest";
-    private const string _sqlDatabasePrefix = "Catalog";
+    private const string _sqlDatabasePrefix = "BookCatalog";
 
     public string Name { get; }
 
