@@ -13,19 +13,18 @@ namespace Common.Api.Auditing;
 public class AuditingODataResourceSerializer : ODataResourceSerializer
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IOptions<AuditOptions> _auditOptions;
 
-    public AuditingODataResourceSerializer(IODataSerializerProvider serializerProvider, IHttpContextAccessor httpContextAccessor,
-        IOptions<AuditOptions> auditOptions)
+    public AuditingODataResourceSerializer(IODataSerializerProvider serializerProvider, IHttpContextAccessor httpContextAccessor)
         : base(serializerProvider)
     {
         _httpContextAccessor = httpContextAccessor;
-        _auditOptions = auditOptions;
     }
 
     public override Task WriteObjectInlineAsync(object graph, IEdmTypeReference expectedType, ODataWriter writer, ODataSerializerContext writeContext)
     {
-        if (_auditOptions.Value.Enabled)
+        var auditOptions = _httpContextAccessor.HttpContext?.RequestServices.GetRequiredService<IOptions<AuditOptions>>();
+        
+        if (auditOptions.Value.Enabled)
         {
             if (graph is IEdmStructuredObject structuredObject)
             {

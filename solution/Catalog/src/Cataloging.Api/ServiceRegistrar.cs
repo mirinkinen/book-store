@@ -91,7 +91,6 @@ public static class ServiceRegistrar
                     // Register services here that are used in overridden OData implementations.
                     services.AddSingleton<ODataResourceSerializer, AuditingODataResourceSerializer>();
                     services.AddHttpContextAccessor();
-                    services.Configure<AuditOptions>(builder.Configuration.GetSection(AuditOptions.Audit));
                 }));
     }
 }

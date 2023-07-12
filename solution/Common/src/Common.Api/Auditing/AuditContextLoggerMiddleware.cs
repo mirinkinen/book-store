@@ -9,17 +9,13 @@ namespace Common.Api.Auditing;
 public class AuditContextLoggerMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly IMessageBus _bus;
-    private readonly IUserService _userService;
 
     /// <summary>
     /// Publishes audit context after handlers. Should be only used for queries.
     /// </summary>
-    public AuditContextLoggerMiddleware(RequestDelegate next, IMessageBus bus, IUserService userService)
+    public AuditContextLoggerMiddleware(RequestDelegate next)
     {
         _next = next;
-        _bus = bus;
-        _userService = userService;
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -34,7 +30,10 @@ public class AuditContextLoggerMiddleware
             return;
         }
 
-        var auditLogEvent = new AuditLogEvent(_userService.GetUser().Id, OperationType.Read, auditContext.Resources);
-        await _bus.SendAsync(auditLogEvent);
+        var userService = context.RequestServices.GetRequiredService<IUserService>();
+        var bus = context.RequestServices.GetRequiredService<IMessageBus>();
+        
+        var auditLogEvent = new AuditLogEvent(userService.GetUser().Id, OperationType.Read, auditContext.Resources);
+        await bus.SendAsync(auditLogEvent);
     }
 }
