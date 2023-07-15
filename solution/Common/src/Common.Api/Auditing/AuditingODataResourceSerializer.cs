@@ -24,7 +24,7 @@ public class AuditingODataResourceSerializer : ODataResourceSerializer
     {
         var auditOptions = _httpContextAccessor.HttpContext?.RequestServices.GetRequiredService<IOptions<AuditOptions>>();
         
-        if (auditOptions.Value.Enabled)
+        if (auditOptions!.Value.Enabled)
         {
             if (graph is IEdmStructuredObject structuredObject)
             {

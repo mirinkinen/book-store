@@ -1,6 +1,5 @@
 using Alba;
 using Cataloging.IntegrationTests.Fakes;
-using Common.Application.Auditing;
 using Common.Application.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Oakton;
@@ -25,10 +24,7 @@ public class AppFixture : IAsyncLifetime
         // its implied Program.Main() set up
         Host = await AlbaHost.For<Program>(builder =>
         {
-            builder.ConfigureServices(services =>
-            {
-                services.AddScoped<IUserService>(sp => UserService);
-            });
+            builder.ConfigureServices(services => { services.AddScoped<IUserService>(_ => UserService); });
         });
     }
 
@@ -58,7 +54,7 @@ public abstract class IntegrationContext : IAsyncLifetime
 
     protected IAlbaHost Host => _fixture.Host!;
 
-    Task IAsyncLifetime.InitializeAsync()
+    public Task InitializeAsync()
     {
         // Using Marten, wipe out all data and reset the state
         // back to exactly what we described in InitialAccountData

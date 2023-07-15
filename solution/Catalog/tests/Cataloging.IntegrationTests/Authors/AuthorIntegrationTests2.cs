@@ -5,7 +5,6 @@ using Cataloging.Application.Requests.Authors.GetAuthors;
 using Common.Application.Auditing;
 using FluentAssertions;
 using Wolverine.Tracking;
-using Xunit.Abstractions;
 
 namespace Cataloging.IntegrationTests.Authors;
 
@@ -15,12 +14,10 @@ namespace Cataloging.IntegrationTests.Authors;
 public sealed class AuthorIntegrationTests2 : IntegrationContext
 {
     private readonly AppFixture _app;
-    private readonly ITestOutputHelper _output;
 
-    public AuthorIntegrationTests2(AppFixture app, ITestOutputHelper output) : base(app)
+    public AuthorIntegrationTests2(AppFixture app) : base(app)
     {
         _app = app;
-        _output = output;
     }
 
     [Fact]
