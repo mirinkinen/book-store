@@ -1,5 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
+using Alba;
+using Cataloging.Application.Requests.Authors.GetAuthors;
 using Common.Application.Auditing;
 using FluentAssertions;
 using Wolverine.Tracking;
@@ -22,32 +24,31 @@ public sealed class AuthorIntegrationTests2 : IntegrationContext
     }
 
     [Fact]
-    public async Task Get_Top3_Returns3Authors_Host()
+    public async Task Get_Top3_Returns3Authors()
     {
         // Act
-        var (tracked, response) = await TrackedHttpCall(scenario => { scenario.Get.Url("/v1/authors?$top=3"); });
-
-        // Assert
-        var json = await response.ReadAsTextAsync();
-        var odata = JsonSerializer.Deserialize<ValueResponse<AuthorViewmodel>>(json);
-
-        odata.Should().NotBeNull();
-        odata.Value.Should().HaveCount(3);
-
-        await Task.Delay(1000);
-    }
-
-    [Fact]
-    public async Task Get_Audit()
-    {
-        // Act
-        var auditLogEvent = new AuditLogEvent(Guid.NewGuid(), OperationType.Read, new AuditLogResource[]
+        IScenarioResult? result;
+        ValueResponse<AuthorViewmodel>? response = null;
+        var tracked = await Host.ExecuteAndWaitAsync(async () =>
         {
-            new(Guid.NewGuid(), "Author"),
-            new(Guid.NewGuid(), "Author")
+            result = await Host.Scenario(scenario => scenario.Get.Url("/v1/authors?$top=3"));
+            // Deserialization of the response is here is important.
+            // If the response is not fully waited, tracking ends prematurely
+            // and all messages are not tracked.
+            response = JsonSerializer.Deserialize<ValueResponse<AuthorViewmodel>>(result.Context.Response.Body);
         });
-        var session = await _app.Host!.InvokeMessageAndWaitAsync(auditLogEvent);
 
-        // Assert
+        // Assert response.
+        response.Should().NotBeNull();
+        response.Value.Should().HaveCount(3);
+
+        // Assert messages.
+        Assert.NotNull(tracked.FindSingleTrackedMessageOfType<GetAuthorsQuery>());
+        var auditLogEvent = tracked.FindSingleTrackedMessageOfType<AuditLogEvent>();
+
+        auditLogEvent.ActorId.Should().Be(_app.UserService.GetUser().Id);
+        auditLogEvent.Resources.Should().HaveCount(3);
+        auditLogEvent.Resources.Should()
+            .OnlyContain(alr => alr.ResourceType == "Author" && alr.ResourceId != Guid.Empty);
     }
 }

@@ -1,9 +1,10 @@
 using Alba;
+using Cataloging.IntegrationTests.Fakes;
 using Common.Application.Auditing;
+using Common.Application.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Oakton;
 using Wolverine.Runtime;
-using Wolverine.Tracking;
 
 namespace Cataloging.IntegrationTests;
 
@@ -11,7 +12,7 @@ public class AppFixture : IAsyncLifetime
 {
     public IAlbaHost? Host { get; private set; }
 
-    public AuditContext AuditContext { get; } = new();
+    public FakeUserService UserService { get; } = new();
 
     public async Task InitializeAsync()
     {
@@ -24,7 +25,10 @@ public class AppFixture : IAsyncLifetime
         // its implied Program.Main() set up
         Host = await AlbaHost.For<Program>(builder =>
         {
-            builder.ConfigureServices(services => services.AddScoped<AuditContext>(sp => AuditContext));
+            builder.ConfigureServices(services =>
+            {
+                services.AddScoped<IUserService>(sp => UserService);
+            });
         });
     }
 
@@ -50,9 +54,9 @@ public abstract class IntegrationContext : IAsyncLifetime
         Runtime = (WolverineRuntime)fixture.Host!.Services.GetRequiredService<IWolverineRuntime>();
     }
 
-    public WolverineRuntime Runtime { get; }
+    protected WolverineRuntime Runtime { get; }
 
-    public IAlbaHost Host => _fixture.Host!;
+    protected IAlbaHost Host => _fixture.Host!;
 
     Task IAsyncLifetime.InitializeAsync()
     {
@@ -67,31 +71,5 @@ public abstract class IntegrationContext : IAsyncLifetime
     public Task DisposeAsync()
     {
         return Task.CompletedTask;
-    }
-
-    public Task<IScenarioResult> Scenario(Action<Scenario> configure)
-    {
-        return Host.Scenario(configure);
-    }
-    
-    // This method allows us to make HTTP calls into our system
-    // in memory with Alba, but do so within Wolverine's test support
-    // for message tracking to both record outgoing messages and to ensure
-    // that any cascaded work spawned by the initial command is completed
-    // before passing control back to the calling test
-    protected async Task<(ITrackedSession, IScenarioResult)> TrackedHttpCall(Action<Scenario> configuration)
-    {
-        IScenarioResult? result = null;
-
-        // The outer part is tying into Wolverine's test support
-        // to "wait" for all detected message activity to complete
-        var tracked = await Host.ExecuteAndWaitAsync(async () =>
-        {
-            // The inner part here is actually making an HTTP request
-            // to the system under test with Alba
-            result = await Host.Scenario(configuration);
-        });
-
-        return (tracked!, result!);
     }
 }
