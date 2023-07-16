@@ -10,7 +10,6 @@ using Cataloging.Infrastructure.Database;
 using Cataloging.IntegrationTests.Fakes;
 using Common.Application.Auditing;
 using FluentAssertions;
-using IdentityModel.Client;
 using JasperFx.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Wolverine.Tracking;
@@ -43,9 +42,6 @@ public sealed class AuthorIntegrationTests2 : IntegrationContext
         var tracked = await Host.ExecuteAndWaitAsync(async () =>
         {
             result = await Host.Scenario(scenario => scenario.Get.Url("/v1/authors?$top=3"));
-            // Deserialization of the response is here is important.
-            // If the response is not fully waited, tracking ends prematurely
-            // and all messages are not tracked.
             response = JsonSerializer.Deserialize<ValueResponse<AuthorViewmodel>>(result.Context.Response.Body);
         });
 
@@ -75,9 +71,6 @@ public sealed class AuthorIntegrationTests2 : IntegrationContext
         {
             result = await Host.Scenario(
                 scenario => scenario.Get.Url("/v1/authors?$top=3&$select=id,firstname,lastname"));
-            // Deserialization of the response is here is important.
-            // If the response is not fully waited, tracking ends prematurely
-            // and all messages are not tracked.
             response = JsonSerializer.Deserialize<ValueResponse<AuthorViewmodel>>(result.Context.Response.Body);
         });
 
@@ -108,9 +101,6 @@ public sealed class AuthorIntegrationTests2 : IntegrationContext
         var tracked = await Host.ExecuteAndWaitAsync(async () =>
         {
             result = await Host.Scenario(scenario => scenario.Get.Url("/v1/authors?$filter=contains(firstname,'n')"));
-            // Deserialization of the response is here is important.
-            // If the response is not fully waited, tracking ends prematurely
-            // and all messages are not tracked.
             response = JsonSerializer.Deserialize<ValueResponse<AuthorViewmodel>>(result.Context.Response.Body);
         });
 
@@ -134,9 +124,6 @@ public sealed class AuthorIntegrationTests2 : IntegrationContext
         var tracked = await Host.ExecuteAndWaitAsync(async () =>
         {
             result = await Host.Scenario(scenario => scenario.Get.Url($"/v1/authors({authorId})"));
-            // Deserialization of the response is here is important.
-            // If the response is not fully waited, tracking ends prematurely
-            // and all messages are not tracked.
             author = JsonSerializer.Deserialize<AuthorViewmodel>(result.Context.Response.Body);
         });
 
@@ -163,9 +150,6 @@ public sealed class AuthorIntegrationTests2 : IntegrationContext
         var tracked = await Host.ExecuteAndWaitAsync(async () =>
         {
             result = await Host.Scenario(scenario => scenario.Get.Url($"/v1/authors({authorId})"));
-            // Deserialization of the response is here is important.
-            // If the response is not fully waited, tracking ends prematurely
-            // and all messages are not tracked.
             author = JsonSerializer.Deserialize<AuthorViewmodel>(result.Context.Response.Body);
         });
 
@@ -185,9 +169,6 @@ public sealed class AuthorIntegrationTests2 : IntegrationContext
         var tracked = await Host.ExecuteAndWaitAsync(async () =>
         {
             result = await Host.Scenario(scenario => scenario.Get.Url($"/v1/authors?$top=20&orderby=firstname"));
-            // Deserialization of the response is here is important.
-            // If the response is not fully waited, tracking ends prematurely
-            // and all messages are not tracked.
             response = JsonSerializer.Deserialize<ValueResponse<AuthorViewmodel>>(result.Context.Response.Body);
         });
 
@@ -210,9 +191,6 @@ public sealed class AuthorIntegrationTests2 : IntegrationContext
         var tracked = await Host.ExecuteAndWaitAsync(async () =>
         {
             result = await Host.Scenario(scenario => scenario.Get.Url($"/v1/authors?$top=20&orderby=firstname desc"));
-            // Deserialization of the response is here is important.
-            // If the response is not fully waited, tracking ends prematurely
-            // and all messages are not tracked.
             response = JsonSerializer.Deserialize<ValueResponse<AuthorViewmodel>>(result.Context.Response.Body);
         });
 
@@ -234,9 +212,6 @@ public sealed class AuthorIntegrationTests2 : IntegrationContext
         var tracked = await Host.ExecuteAndWaitAsync(async () =>
         {
             result = await Host.Scenario(scenario => scenario.Get.Url($"/v1/authors/$count"));
-            // Deserialization of the response is here is important.
-            // If the response is not fully waited, tracking ends prematurely
-            // and all messages are not tracked.
             count = JsonSerializer.Deserialize<int>(result.Context.Response.Body);
         });
 
@@ -255,10 +230,8 @@ public sealed class AuthorIntegrationTests2 : IntegrationContext
         // Act
         var tracked = await Host.ExecuteAndWaitAsync(async () =>
         {
-            result = await Host.Scenario(scenario => scenario.Get.Url($"/v1/authors?$top=1&$expand=books"));
-            // Deserialization of the response is here is important.
-            // If the response is not fully waited, tracking ends prematurely
-            // and all messages are not tracked.
+            result = await Host.Scenario(scenario =>
+                scenario.Get.Url("/v1/Authors?$filter=id eq 8e6a9434-87f5-46b2-a6c3-522dc35d8eef&$expand=Books"));
             response = JsonSerializer.Deserialize<ValueResponse<AuthorViewmodel>>(result.Context.Response.Body);
         });
 
@@ -287,9 +260,6 @@ public sealed class AuthorIntegrationTests2 : IntegrationContext
             result = await Host.Scenario(scenario =>
                 scenario.Get.Url(
                     $"/v1/Authors?$filter=id eq 8e6a9434-87f5-46b2-a6c3-522dc35d8eef&$expand=books($top=3)"));
-            // Deserialization of the response is here is important.
-            // If the response is not fully waited, tracking ends prematurely
-            // and all messages are not tracked.
             response = JsonSerializer.Deserialize<ValueResponse<AuthorViewmodel>>(result.Context.Response.Body);
         });
 
@@ -326,9 +296,6 @@ public sealed class AuthorIntegrationTests2 : IntegrationContext
         var tracked = await Host.ExecuteAndWaitAsync(async () =>
         {
             result = await Host.Scenario(scenario => scenario.Get.Url($"/v1/authors"));
-            // Deserialization of the response is here is important.
-            // If the response is not fully waited, tracking ends prematurely
-            // and all messages are not tracked.
             response = JsonSerializer.Deserialize<ValueResponse<AuthorViewmodel>>(result.Context.Response.Body);
         });
 
@@ -354,10 +321,7 @@ public sealed class AuthorIntegrationTests2 : IntegrationContext
                 scenario.Get.Url($"/v1/authors?$top=21");
                 scenario.StatusCodeShouldBe(400);
             });
-            // Deserialization of the response is here is important.
-            // If the response is not fully waited, tracking ends prematurely
-            // and all messages are not tracked.
-            
+
             response = JsonSerializer.Deserialize<ErrorResponse>(result.Context.Response.Body, _serializerOptions);
         });
 
@@ -404,11 +368,11 @@ public sealed class AuthorIntegrationTests2 : IntegrationContext
         var createAuthorAuditLogEvent = tracked.FindEnvelopesWithMessageType<AuditLogEvent>()
             .Single(e => e is
             {
-                MessageEventType: MessageEventType.Sent, 
+                MessageEventType: MessageEventType.Sent,
                 Message: AuditLogEvent { OperationType: OperationType.Update }
             })
             .Message as AuditLogEvent;
-        
+
         createAuthorAuditLogEvent.Should().NotBeNull();
         createAuthorAuditLogEvent.Resources.Should().HaveCount(1);
         var authorResource = createAuthorAuditLogEvent.Resources.First();
@@ -440,7 +404,7 @@ public sealed class AuthorIntegrationTests2 : IntegrationContext
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
         var author = await response.Content.ReadFromJsonAsync<AuthorViewmodel>();
-        
+
         // Assert that author is added.
         using var scope = _app.Host.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
@@ -462,19 +426,19 @@ public sealed class AuthorIntegrationTests2 : IntegrationContext
         var createAuthorAuditLogEvent = tracked.FindEnvelopesWithMessageType<AuditLogEvent>()
             .Single(e => e is
             {
-                MessageEventType: MessageEventType.Sent, 
+                MessageEventType: MessageEventType.Sent,
                 Message: AuditLogEvent { OperationType: OperationType.Create }
             })
             .Message as AuditLogEvent;
-        
+
         var readAuthorAuditLogEvent = tracked.FindEnvelopesWithMessageType<AuditLogEvent>()
             .Single(e => e is
             {
-                MessageEventType: MessageEventType.Sent, 
+                MessageEventType: MessageEventType.Sent,
                 Message: AuditLogEvent { OperationType: OperationType.Read }
             })
             .Message as AuditLogEvent;
-        
+
         createAuthorAuditLogEvent.Should().NotBeNull();
         createAuthorAuditLogEvent.Resources.Should().HaveCount(1);
         var authorResource = createAuthorAuditLogEvent.Resources.First();
