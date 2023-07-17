@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
+﻿using Alba;
 using Oakton;
+using Wolverine;
 
 namespace Cataloging.IntegrationTests.Wolverine;
 
@@ -13,18 +13,9 @@ public class WolverineTests
     }
 
     [Fact]
-    public void StartAndStop()
+    public async Task WolverineConfigurationIsValid()
     {
-        OaktonEnvironment.AutoStartHost = true;
-
-        using var factory = new WebApplicationFactory<Program>();
-        using var httpClient = factory.CreateClient();
-    }
-
-    [Fact]
-    public void ValidateWolverineConfiguration()
-    {
-        using var factory = new WolverineValidationFactory();
-        using var httpClient = factory.CreateClient();
+        var host = await AlbaHost.For<Program>();
+        host.AssertWolverineConfigurationIsValid();
     }
 }

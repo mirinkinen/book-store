@@ -2,78 +2,63 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Json;
 using Common.Application.Auditing;
 using FluentAssertions;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Oakton;
-using Xunit.Abstractions;
+using Wolverine.Tracking;
 
 namespace Cataloging.IntegrationTests.Books;
 
 [Trait("Category", "Book")]
 [SuppressMessage("Design", "CA1001:Types that own disposable fields should be disposable",
-    Justification = "IAsyncLifetime handles disposing")]
-public class BookIntegrationTests : IAsyncLifetime
+    Justification = "Disposed via IAsyncLifetime")]
+public class BookIntegrationTests : IntegrationContext
 {
-    private readonly AuditContext _auditContext = new();
-    private readonly IntegrationWebApplicationFactory _factory = new();
-
-    public BookIntegrationTests(ITestOutputHelper output)
+    public BookIntegrationTests(AppFixture app) : base(app)
     {
-        OaktonEnvironment.AutoStartHost = true;
-        _factory.ConfigureServices = (services) =>
-        {
-            services.AddLogging(builder => builder.AddXUnit(output));
-            services.AddScoped<AuditContext>(sp => _auditContext);
-        };
-    }
-
-    public Task InitializeAsync()
-    {
-        return Task.CompletedTask;
-    }
-
-    public async Task DisposeAsync()
-    {
-        await _factory.DisposeAsync();
     }
 
     [Fact]
     public async Task Get_Top3_Returns3Books()
     {
         // Arrange
-
-        var client = _factory.CreateClient();
-        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
+        ValueResponse<BookViewmodel>? content = null;
 
         // Act
-        var response = await client.GetAsync("v1/books?$top=3");
+        var tracked = await Host.ExecuteAndWaitAsync(async () =>
+        {
+            var client = Host.Server.CreateClient();
+            var response = await client.GetAsync("v1/books?$top=3");
+            content = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
+        });
 
         // Assert
-        var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
-        odata.Should().NotBeNull();
-        odata.Value.Should().HaveCount(3);
+        content.Should().NotBeNull();
+        content.Value.Should().HaveCount(3);
 
         // Verify that 3 IDs are audit logged.
-        _auditContext.Resources.Should().HaveCount(3);
-        _auditContext.Resources.Should().OnlyContain(r => r.ResourceType == "Book");
-        var ids = odata.Value.Where(b => b.Id.HasValue).Select(b => b.Id.Value);
-        _auditContext.Resources.Select(t => t.ResourceId).Should().ContainInConsecutiveOrder(ids);
+        var auditLogEvent = tracked.FindSingleTrackedMessageOfType<AuditLogEvent>();
+
+        auditLogEvent.Resources.Should().HaveCount(3);
+        auditLogEvent.Resources.Should().OnlyContain(r => r.ResourceType == "Book");
+        var ids = content.Value.Where(b => b.Id.HasValue).Select(b => b.Id.Value);
+        auditLogEvent.Resources.Select(t => t.ResourceId).Should().ContainInConsecutiveOrder(ids);
     }
 
     [Fact]
     public async Task Get_Select3Properties_Returns3Properties()
     {
         // Arrange
-        var client = _factory.CreateClient();
-        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
+        ValueResponse<BookViewmodel>? content = null;
 
         // Act
-        var response = await client.GetAsync("v1/books?$top=3&$select=id,title,createdat");
+        var _ = await Host.ExecuteAndWaitAsync(async () =>
+        {
+            var client = Host.Server.CreateClient();
+            var response = await client.GetAsync("v1/books?$top=3&$select=id,title,createdat");
+            content = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
+        });
 
         // Assert
-        var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
-        odata.Should().NotBeNull();
-        var books = odata.Value;
+        content.Should().NotBeNull();
+        var books = content.Value;
         books.Should().HaveCount(3);
 
         var book = books.First();
@@ -91,18 +76,20 @@ public class BookIntegrationTests : IAsyncLifetime
     public async Task Get_FilterByTitle_ReturnsFilteredBooks()
     {
         // Arrange
-        var client = _factory.CreateClient();
-        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
+        ValueResponse<BookViewmodel>? content = null;
 
         // Act
-        var response = await client.GetAsync("v1/books?$filter=contains(title,'and')");
+        var _ = await Host.ExecuteAndWaitAsync(async () =>
+        {
+            var client = Host.Server.CreateClient();
+            var response = await client.GetAsync("v1/books?$filter=contains(title,'and')");
+            content = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
+        });
 
         // Assert
-        var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
-        odata.Should().NotBeNull();
-        var books = odata.Value;
+        content.Should().NotBeNull();
+        var books = content.Value;
         books.Should().NotBeEmpty();
-
         books.Should().OnlyContain(book => book.Title.Contains("and"));
     }
 
@@ -110,15 +97,19 @@ public class BookIntegrationTests : IAsyncLifetime
     public async Task Get_BookById_ReturnsBook()
     {
         // Arrange
-        var client = _factory.CreateClient();
-        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
+        BookViewmodel? book = null;
         var bookId = Guid.Parse("A125C5BD-4F8E-4794-9C36-76E401FB4F24");
 
+
         // Act
-        var response = await client.GetAsync($"v1/books({bookId})");
+        var _ = await Host.ExecuteAndWaitAsync(async () =>
+        {
+            var client = Host.Server.CreateClient();
+            var response = await client.GetAsync($"v1/books({bookId})");
+            book = await response.Content.ReadFromJsonAsync<BookViewmodel>();
+        });
 
         // Assert
-        var book = await response.Content.ReadFromJsonAsync<BookViewmodel>();
         book.Should().NotBeNull();
         book.Id.Should().Be(bookId);
     }
@@ -127,18 +118,20 @@ public class BookIntegrationTests : IAsyncLifetime
     public async Task Get_OrderByTitleAscending_ReturnsOrderedBooks()
     {
         // Arrange
-        var client = _factory.CreateClient();
-        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
-        var bookId = Guid.Parse("A125C5BD-4F8E-4794-9C36-76E401FB4F24");
+        ValueResponse<BookViewmodel>? content = null;
 
         // Act
-        var response = await client.GetAsync($"v1/books?$top=20&orderby=title");
+        var _ = await Host.ExecuteAndWaitAsync(async () =>
+        {
+            var client = Host.Server.CreateClient();
+            var response = await client.GetAsync("v1/books?$top=20&orderby=title");
+            content = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
+        });
 
         // Assert
-        var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
-        odata.Should().NotBeNull();
+        content.Should().NotBeNull();
 
-        var books = odata.Value;
+        var books = content.Value;
         books.Should().NotBeEmpty();
         books.Should().BeInAscendingOrder(book => book.Title);
     }
@@ -147,18 +140,20 @@ public class BookIntegrationTests : IAsyncLifetime
     public async Task Get_OrderByTitleDescending_ReturnsOrderedBooks()
     {
         // Arrange
-        var client = _factory.CreateClient();
-        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
-        var bookId = Guid.Parse("A125C5BD-4F8E-4794-9C36-76E401FB4F24");
+        ValueResponse<BookViewmodel>? content = null;
 
         // Act
-        var response = await client.GetAsync($"v1/books?$top=20&orderby=title desc");
+        var _ = await Host.ExecuteAndWaitAsync(async () =>
+        {
+            var client = Host.Server.CreateClient();
+            var response = await client.GetAsync("v1/books?$top=20&orderby=title desc");
+            content = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
+        });
 
         // Assert
-        var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
-        odata.Should().NotBeNull();
+        content.Should().NotBeNull();
 
-        var books = odata.Value;
+        var books = content.Value;
         books.Should().NotBeEmpty();
         books.Should().BeInDescendingOrder(book => book.Title);
     }
@@ -167,14 +162,17 @@ public class BookIntegrationTests : IAsyncLifetime
     public async Task Get_Count_ReturnsCount()
     {
         // Arrange
-        var client = _factory.CreateClient();
-        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
+        var count = 0;
 
         // Act
-        var response = await client.GetAsync($"v1/books/$count");
+        var _ = await Host.ExecuteAndWaitAsync(async () =>
+        {
+            var client = Host.Server.CreateClient();
+            var response = await client.GetAsync("v1/books/$count");
+            count = await response.Content.ReadFromJsonAsync<int>();
+        });
 
         // Assert
-        var count = await response.Content.ReadFromJsonAsync<int>();
         count.Should().NotBe(0);
     }
 
@@ -182,17 +180,20 @@ public class BookIntegrationTests : IAsyncLifetime
     public async Task Get_BooksWithAuthors_ReturnsBooksWithAuthors()
     {
         // Arrange
-        var client = _factory.CreateClient();
-        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
+        ValueResponse<BookViewmodel>? content = null;
 
         // Act
-        var response = await client.GetAsync($"v1/books?$top=1&$expand=author");
+        var _ = await Host.ExecuteAndWaitAsync(async () =>
+        {
+            var client = Host.Server.CreateClient();
+            var response = await client.GetAsync("v1/books?$top=1&$expand=author");
+            content = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
+        });
 
         // Assert
-        var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
-        odata.Should().NotBeNull();
+        content.Should().NotBeNull();
 
-        var books = odata.Value;
+        var books = content.Value;
         books.Should().NotBeEmpty();
         var book = books.First();
 
@@ -205,17 +206,20 @@ public class BookIntegrationTests : IAsyncLifetime
     public async Task Get_WithoutParameters_ReturnsOnePageOfBooks()
     {
         // Arrange
-        var client = _factory.CreateClient();
-        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
+        ValueResponse<BookViewmodel>? content = null;
 
         // Act
-        var response = await client.GetAsync($"v1/books");
+        var _ = await Host.ExecuteAndWaitAsync(async () =>
+        {
+            var client = Host.Server.CreateClient();
+            var response = await client.GetAsync("v1/books");
+            content = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
+        });
 
         // Assert
-        var odata = await response.Content.ReadFromJsonAsync<ValueResponse<BookViewmodel>>();
-        odata.Should().NotBeNull();
+        content.Should().NotBeNull();
 
-        var books = odata.Value;
+        var books = content.Value;
         books.Should().HaveCount(20);
     }
 
@@ -223,15 +227,18 @@ public class BookIntegrationTests : IAsyncLifetime
     public async Task Get_Top21_Fails()
     {
         // Arrange
-        var client = _factory.CreateClient();
-        client.DefaultRequestHeaders.Add("Accept", "application/json;odata.metadata=none");
+        ErrorResponse? content = null;
 
         // Act
-        var response = await client.GetAsync($"v1/books?$top=21");
+        var _ = await Host.ExecuteAndWaitAsync(async () =>
+        {
+            var client = Host.Server.CreateClient();
+            var response = await client.GetAsync("v1/books?$top=21");
+            content = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+        });
 
         // Assert
-        var error = await response.Content.ReadFromJsonAsync<ErrorResponse>();
-        error.Should().NotBeNull();
-        error.Error.Message.Should().Contain("The limit of '20' for Top query has been exceeded");
+        content.Should().NotBeNull();
+        content.Error.Message.Should().Contain("The limit of '20' for Top query has been exceeded");
     }
 }

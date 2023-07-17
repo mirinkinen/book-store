@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Alba;
 using Cataloging.IntegrationTests.Fakes;
 using Common.Application.Authentication;
@@ -34,25 +35,33 @@ public class AppFixture : IAsyncLifetime
     }
 }
 
-[CollectionDefinition("integration")]
+[CollectionDefinition("Integration")]
 public class IntegrationCollection : ICollectionFixture<AppFixture>
 {
 }
 
-[Collection("integration")]
+[Collection("Integration")]
 public abstract class IntegrationContext : IAsyncLifetime
 {
-    private readonly AppFixture _fixture;
+    private readonly AppFixture _app;
 
-    protected IntegrationContext(AppFixture fixture)
+    protected IntegrationContext(AppFixture app)
     {
-        _fixture = fixture;
-        Runtime = (WolverineRuntime)fixture.Host!.Services.GetRequiredService<IWolverineRuntime>();
+        _app = app;
+        Runtime = (WolverineRuntime)app.Host!.Services.GetRequiredService<IWolverineRuntime>();
+        SerializerOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
     }
+
+    public JsonSerializerOptions SerializerOptions { get; }
 
     protected WolverineRuntime Runtime { get; }
 
-    protected IAlbaHost Host => _fixture.Host!;
+    protected IAlbaHost Host => _app.Host!;
+
+    protected FakeUserService UserService => _app.UserService;
 
     public Task InitializeAsync()
     {

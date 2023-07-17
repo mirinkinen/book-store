@@ -1,8 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http.Json;
-using System.Text.Json;
-using Alba;
 using Cataloging.Api.Authors;
 using Cataloging.Application.Requests.Authors.AddAuthor;
 using Cataloging.Application.Requests.Authors.GetAuthors;
@@ -21,39 +19,33 @@ namespace Cataloging.IntegrationTests.Authors;
     Justification = "Disposed via IAsyncLifetime")]
 public sealed class AuthorIntegrationTests : IntegrationContext
 {
-    private readonly AppFixture _app;
-    private readonly JsonSerializerOptions _serializerOptions;
-
     public AuthorIntegrationTests(AppFixture app) : base(app)
     {
-        _serializerOptions = new JsonSerializerOptions()
-        {
-            PropertyNameCaseInsensitive = true
-        };
-        _app = app;
     }
 
     [Fact]
     public async Task Get_Top3_Returns3Authors()
     {
+        // Arrange
+        ValueResponse<AuthorViewmodel>? content = null;
+
         // Act
-        IScenarioResult? result;
-        ValueResponse<AuthorViewmodel>? response = null;
         var tracked = await Host.ExecuteAndWaitAsync(async () =>
         {
-            result = await Host.Scenario(scenario => scenario.Get.Url("/v1/authors?$top=3"));
-            response = JsonSerializer.Deserialize<ValueResponse<AuthorViewmodel>>(result.Context.Response.Body);
+            var client = Host.Server.CreateClient();
+            var response = await client.GetAsync("/v1/authors?$top=3");
+            content = await response.Content.ReadFromJsonAsync<ValueResponse<AuthorViewmodel>>();
         });
 
-        // Assert response.
-        response.Should().NotBeNull();
-        response.Value.Should().HaveCount(3);
+        // Assert content
+        content.Should().NotBeNull();
+        content.Value.Should().HaveCount(3);
 
-        // Assert messages.
+        // Assert messages
         Assert.NotNull(tracked.FindSingleTrackedMessageOfType<GetAuthorsQuery>());
         var auditLogEvent = tracked.FindSingleTrackedMessageOfType<AuditLogEvent>();
 
-        auditLogEvent.ActorId.Should().Be(_app.UserService.GetUser().Id);
+        auditLogEvent.ActorId.Should().Be(UserService.GetUser().Id);
         auditLogEvent.Resources.Should().HaveCount(3);
         auditLogEvent.Resources.Should()
             .OnlyContain(alr => alr.ResourceType == "Author" && alr.ResourceId != Guid.Empty);
@@ -63,20 +55,19 @@ public sealed class AuthorIntegrationTests : IntegrationContext
     public async Task Get_Select3Properties_Returns3Properties()
     {
         // Arrange
-        IScenarioResult? result;
-        ValueResponse<AuthorViewmodel>? response = null;
+        ValueResponse<AuthorViewmodel>? content = null;
 
         // Act
-        var tracked = await Host.ExecuteAndWaitAsync(async () =>
+        var _ = await Host.ExecuteAndWaitAsync(async () =>
         {
-            result = await Host.Scenario(
-                scenario => scenario.Get.Url("/v1/authors?$top=3&$select=id,firstname,lastname"));
-            response = JsonSerializer.Deserialize<ValueResponse<AuthorViewmodel>>(result.Context.Response.Body);
+            var client = Host.Server.CreateClient();
+            var response = await client.GetAsync("/v1/authors?$top=3&$select=id,firstname,lastname");
+            content = await response.Content.ReadFromJsonAsync<ValueResponse<AuthorViewmodel>>();
         });
 
         // Assert
-        response.Should().NotBeNull();
-        var authors = response.Value;
+        content.Should().NotBeNull();
+        var authors = content.Value;
         authors.Should().HaveCount(3);
 
         var author = authors.First();
@@ -94,37 +85,37 @@ public sealed class AuthorIntegrationTests : IntegrationContext
     public async Task Get_FilterByFirstName_ReturnsFilteredAuthors()
     {
         // Arrange
-        IScenarioResult? result;
-        ValueResponse<AuthorViewmodel>? response = null;
+        ValueResponse<AuthorViewmodel>? content = null;
 
         // Act
-        var tracked = await Host.ExecuteAndWaitAsync(async () =>
+        var _ = await Host.ExecuteAndWaitAsync(async () =>
         {
-            result = await Host.Scenario(scenario => scenario.Get.Url("/v1/authors?$filter=contains(firstname,'n')"));
-            response = JsonSerializer.Deserialize<ValueResponse<AuthorViewmodel>>(result.Context.Response.Body);
+            var client = Host.Server.CreateClient();
+            var response = await client.GetAsync("/v1/authors?$filter=contains(firstname,'n')");
+            content = await response.Content.ReadFromJsonAsync<ValueResponse<AuthorViewmodel>>();
         });
 
         // Assert
-        response.Should().NotBeNull();
-        var authors = response.Value;
+        content.Should().NotBeNull();
+        var authors = content.Value;
         authors.Should().NotBeEmpty();
 
-        authors.Should().OnlyContain(author => author.FirstName.ContainsIgnoreCase("n"));
+        authors.Should().OnlyContain(author => author.FirstName!.ContainsIgnoreCase("n"));
     }
 
     [Fact]
     public async Task Get_AuthorById_ReturnsAuthor()
     {
         // Arrange
-        IScenarioResult? result;
         AuthorViewmodel? author = null;
         var authorId = Guid.Parse("8E6A9434-87F5-46B2-A6C3-522DC35D8EEF");
 
         // Act
         var tracked = await Host.ExecuteAndWaitAsync(async () =>
         {
-            result = await Host.Scenario(scenario => scenario.Get.Url($"/v1/authors({authorId})"));
-            author = JsonSerializer.Deserialize<AuthorViewmodel>(result.Context.Response.Body);
+            var client = Host.Server.CreateClient();
+            var response = await client.GetAsync($"/v1/authors({authorId})");
+            author = await response.Content.ReadFromJsonAsync<AuthorViewmodel>();
         });
 
         // Assert
@@ -142,15 +133,15 @@ public sealed class AuthorIntegrationTests : IntegrationContext
     public async Task Get_AuthorWithBooks_ReturnsAuthorAndBooks()
     {
         // Arrange
-        IScenarioResult? result;
         AuthorViewmodel? author = null;
         var authorId = Guid.Parse("8E6A9434-87F5-46B2-A6C3-522DC35D8EEF");
 
         // Act
-        var tracked = await Host.ExecuteAndWaitAsync(async () =>
+        var _ = await Host.ExecuteAndWaitAsync(async () =>
         {
-            result = await Host.Scenario(scenario => scenario.Get.Url($"/v1/authors({authorId})"));
-            author = JsonSerializer.Deserialize<AuthorViewmodel>(result.Context.Response.Body);
+            var client = Host.Server.CreateClient();
+            var response = await client.GetAsync($"/v1/authors({authorId})");
+            author = await response.Content.ReadFromJsonAsync<AuthorViewmodel>();
         });
 
         // Assert
@@ -162,20 +153,20 @@ public sealed class AuthorIntegrationTests : IntegrationContext
     public async Task Get_OrderByTitleAscending_ReturnsOrderedAuthors()
     {
         // Arrange
-        IScenarioResult? result;
-        ValueResponse<AuthorViewmodel>? response = null;
+        ValueResponse<AuthorViewmodel>? content = null;
 
         // Act
-        var tracked = await Host.ExecuteAndWaitAsync(async () =>
+        var _ = await Host.ExecuteAndWaitAsync(async () =>
         {
-            result = await Host.Scenario(scenario => scenario.Get.Url($"/v1/authors?$top=20&orderby=firstname"));
-            response = JsonSerializer.Deserialize<ValueResponse<AuthorViewmodel>>(result.Context.Response.Body);
+            var client = Host.Server.CreateClient();
+            var response = await client.GetAsync($"/v1/authors?$top=20&orderby=firstname");
+            content = await response.Content.ReadFromJsonAsync<ValueResponse<AuthorViewmodel>>();
         });
 
         // Assert
-        response.Should().NotBeNull();
+        content.Should().NotBeNull();
 
-        var authors = response.Value;
+        var authors = content.Value;
         authors.Should().NotBeEmpty();
         authors.Should().BeInAscendingOrder(author => author.FirstName);
     }
@@ -184,19 +175,19 @@ public sealed class AuthorIntegrationTests : IntegrationContext
     public async Task Get_OrderByTitleDescending_ReturnsOrderedAuthors()
     {
         // Arrange
-        IScenarioResult? result;
-        ValueResponse<AuthorViewmodel>? response = null;
+        ValueResponse<AuthorViewmodel>? content = null;
 
         // Act
-        var tracked = await Host.ExecuteAndWaitAsync(async () =>
+        var _ = await Host.ExecuteAndWaitAsync(async () =>
         {
-            result = await Host.Scenario(scenario => scenario.Get.Url($"/v1/authors?$top=20&orderby=firstname desc"));
-            response = JsonSerializer.Deserialize<ValueResponse<AuthorViewmodel>>(result.Context.Response.Body);
+            var client = Host.Server.CreateClient();
+            var response = await client.GetAsync("/v1/authors?$top=20&orderby=firstname desc");
+            content = await response.Content.ReadFromJsonAsync<ValueResponse<AuthorViewmodel>>();
         });
 
-        response.Should().NotBeNull();
+        content.Should().NotBeNull();
 
-        var authors = response.Value;
+        var authors = content.Value;
         authors.Should().NotBeEmpty();
         authors.Should().BeInDescendingOrder(author => author.FirstName);
     }
@@ -205,14 +196,14 @@ public sealed class AuthorIntegrationTests : IntegrationContext
     public async Task Get_Count_ReturnsCount()
     {
         // Arrange
-        IScenarioResult? result;
         int? count = null;
 
         // Act
-        var tracked = await Host.ExecuteAndWaitAsync(async () =>
+        var _ = await Host.ExecuteAndWaitAsync(async () =>
         {
-            result = await Host.Scenario(scenario => scenario.Get.Url($"/v1/authors/$count"));
-            count = JsonSerializer.Deserialize<int>(result.Context.Response.Body);
+            var client = Host.Server.CreateClient();
+            var response = await client.GetAsync("/v1/authors/$count");
+            count = await response.Content.ReadFromJsonAsync<int>();
         });
 
         // Assert
@@ -224,21 +215,21 @@ public sealed class AuthorIntegrationTests : IntegrationContext
     public async Task Get_AuthorsWithBooks_ReturnsAuthorsWithBooks()
     {
         // Arrange
-        IScenarioResult? result;
-        ValueResponse<AuthorViewmodel>? response = null;
+        ValueResponse<AuthorViewmodel>? content = null;
 
         // Act
-        var tracked = await Host.ExecuteAndWaitAsync(async () =>
+        var _ = await Host.ExecuteAndWaitAsync(async () =>
         {
-            result = await Host.Scenario(scenario =>
-                scenario.Get.Url("/v1/Authors?$filter=id eq 8e6a9434-87f5-46b2-a6c3-522dc35d8eef&$expand=Books"));
-            response = JsonSerializer.Deserialize<ValueResponse<AuthorViewmodel>>(result.Context.Response.Body);
+            var client = Host.Server.CreateClient();
+            var response =
+                await client.GetAsync("/v1/Authors?$filter=id eq 8e6a9434-87f5-46b2-a6c3-522dc35d8eef&$expand=Books");
+            content = await response.Content.ReadFromJsonAsync<ValueResponse<AuthorViewmodel>>();
         });
 
         // Assert
-        response.Should().NotBeNull();
+        content.Should().NotBeNull();
 
-        var authors = response.Value;
+        var authors = content.Value;
         authors.Should().NotBeEmpty();
         var author = authors.First();
 
@@ -251,22 +242,22 @@ public sealed class AuthorIntegrationTests : IntegrationContext
     public async Task Get_AuthorWithBooks_ReturnsAuthorWithBooks()
     {
         // Arrange
-        IScenarioResult? result;
-        ValueResponse<AuthorViewmodel>? response = null;
+        ValueResponse<AuthorViewmodel>? content = null;
 
         // Act
         var tracked = await Host.ExecuteAndWaitAsync(async () =>
         {
-            result = await Host.Scenario(scenario =>
-                scenario.Get.Url(
-                    $"/v1/Authors?$filter=id eq 8e6a9434-87f5-46b2-a6c3-522dc35d8eef&$expand=books($top=3)"));
-            response = JsonSerializer.Deserialize<ValueResponse<AuthorViewmodel>>(result.Context.Response.Body);
+            var client = Host.Server.CreateClient();
+            var response =
+                await client.GetAsync(
+                    "/v1/Authors?$filter=id eq 8e6a9434-87f5-46b2-a6c3-522dc35d8eef&$expand=books($top=3)");
+            content = await response.Content.ReadFromJsonAsync<ValueResponse<AuthorViewmodel>>();
         });
 
         // Assert
-        response.Should().NotBeNull();
+        content.Should().NotBeNull();
 
-        var authors = response.Value;
+        var authors = content.Value;
         authors.Should().HaveCount(1);
         authors.Should().NotBeEmpty();
 
@@ -289,20 +280,20 @@ public sealed class AuthorIntegrationTests : IntegrationContext
     public async Task Get_WithoutParameters_ReturnsOnePageOfAuthors()
     {
         // Arrange
-        IScenarioResult? result;
-        ValueResponse<AuthorViewmodel>? response = null;
+        ValueResponse<AuthorViewmodel>? content = null;
 
         // Act
-        var tracked = await Host.ExecuteAndWaitAsync(async () =>
+        var _ = await Host.ExecuteAndWaitAsync(async () =>
         {
-            result = await Host.Scenario(scenario => scenario.Get.Url($"/v1/authors"));
-            response = JsonSerializer.Deserialize<ValueResponse<AuthorViewmodel>>(result.Context.Response.Body);
+            var client = Host.Server.CreateClient();
+            var response = await client.GetAsync("/v1/authors");
+            content = await response.Content.ReadFromJsonAsync<ValueResponse<AuthorViewmodel>>();
         });
 
         // Assert
-        response.Should().NotBeNull();
+        content.Should().NotBeNull();
 
-        var authors = response.Value;
+        var authors = content.Value;
         authors.Should().HaveCountLessThanOrEqualTo(20);
     }
 
@@ -310,31 +301,25 @@ public sealed class AuthorIntegrationTests : IntegrationContext
     public async Task Get_TopTooBig_Fails()
     {
         // Arrange
-        IScenarioResult? result;
-        ErrorResponse? response = null;
+        ErrorResponse? content = null;
 
         // Act
-        var tracked = await Host.ExecuteAndWaitAsync(async () =>
+        var _ = await Host.ExecuteAndWaitAsync(async () =>
         {
-            result = await Host.Scenario(scenario =>
-            {
-                scenario.Get.Url($"/v1/authors?$top=21");
-                scenario.StatusCodeShouldBe(400);
-            });
-
-            response = JsonSerializer.Deserialize<ErrorResponse>(result.Context.Response.Body, _serializerOptions);
+            var client = Host.Server.CreateClient();
+            var response = await client.GetAsync("/v1/authors?$top=21");
+            content = await response.Content.ReadFromJsonAsync<ErrorResponse>();
         });
 
         // Assert
-        response.Should().NotBeNull();
-        response.Error.Message.Should().Contain("The limit of '20' for Top query has been exceeded");
+        content.Should().NotBeNull();
+        content.Error.Message.Should().Contain("The limit of '20' for Top query has been exceeded");
     }
 
     [Fact]
     public async Task Put_ValidAuthor_UpdatesAuthor()
     {
         // Arrange
-        IScenarioResult? result = null;
         HttpResponseMessage? response = null;
 
         var authorId = "8e6a9434-87f5-46b2-a6c3-522dc35d8eef";
@@ -356,7 +341,7 @@ public sealed class AuthorIntegrationTests : IntegrationContext
         var user = new FakeUserService().GetUser();
 
         // Assert that author is updated.
-        using var scope = _app.Host.Services.CreateScope();
+        using var scope = Host.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
         var authorDao = await dbContext.Authors.FindAsync(Guid.Parse(authorId));
         authorDao.FirstName.Should().Be(newFirstName);
@@ -406,7 +391,7 @@ public sealed class AuthorIntegrationTests : IntegrationContext
         var author = await response.Content.ReadFromJsonAsync<AuthorViewmodel>();
 
         // Assert that author is added.
-        using var scope = _app.Host.Services.CreateScope();
+        using var scope = Host.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
         var authorDao = await dbContext.Authors.FindAsync(author.Id);
         authorDao.Id.Should().NotBeEmpty();
@@ -440,8 +425,16 @@ public sealed class AuthorIntegrationTests : IntegrationContext
             .Message as AuditLogEvent;
 
         createAuthorAuditLogEvent.Should().NotBeNull();
+        createAuthorAuditLogEvent.OperationType.Should().Be(OperationType.Create);
         createAuthorAuditLogEvent.Resources.Should().HaveCount(1);
         var authorResource = createAuthorAuditLogEvent.Resources.First();
+        authorResource.ResourceType.Should().Be("Author");
+        authorResource.ResourceId.Should().Be(authorDao.Id);
+
+        readAuthorAuditLogEvent.Should().NotBeNull();
+        readAuthorAuditLogEvent.OperationType.Should().Be(OperationType.Read);
+        readAuthorAuditLogEvent.Resources.Should().HaveCount(1);
+        authorResource = readAuthorAuditLogEvent.Resources.First();
         authorResource.ResourceType.Should().Be("Author");
         authorResource.ResourceId.Should().Be(authorDao.Id);
     }
