@@ -7,9 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("CatalogConnectionString");
 ArgumentNullException.ThrowIfNull(connectionString);
 
-ServiceRegistrar.RegisterApiServices(builder, connectionString);
-Cataloging.Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);
-Cataloging.Infrastructure.ServiceRegistrar.RegisterInfrastructureServices(builder.Services, connectionString);
+ServiceRegistrar.RegisterServices(builder, connectionString);
 
 var app = builder.Build();
 

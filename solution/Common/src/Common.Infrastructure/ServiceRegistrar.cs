@@ -19,12 +19,9 @@ public static class ServiceRegistrar
         }, _wolverineSchema);
 
     }
-
+    
     public static void UseWolverine(WolverineOptions opts, string connectionString)
     {
-        opts.Policies.UseDurableInboxOnAllListeners();
-        opts.Policies.UseDurableOutboxOnAllSendingEndpoints();
-        
         // Setting up Sql Server-backed message storage
         // This requires a reference to Wolverine.SqlServer
         opts.PersistMessagesWithSqlServer(connectionString, _wolverineSchema);
@@ -32,9 +29,10 @@ public static class ServiceRegistrar
         // Adds the usage of DbContextOutbox.
         opts.UseEntityFrameworkCoreTransactions();
         
-        // Enrolling all local queues into the
-        // durable inbox/outbox processing
-        opts.Policies.UseDurableLocalQueues();
+        // Use durable inbox and outbox.
+        // opts.Policies.UseDurableLocalQueues();
+        // opts.Policies.UseDurableInboxOnAllListeners();
+        // opts.Policies.UseDurableOutboxOnAllSendingEndpoints();
 
         // Add the auto transaction middleware attachment policy
         // If enabled, handlers don't need [AutoApplyTransactions] attribute.

@@ -1,18 +1,21 @@
 using Common.Api.Auditing;
 using Common.Application.Auditing;
+using Common.Application.Messages;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.OData.ModelBuilder;
 using Oakton;
 using Ordering.Application.Requests.GetShoppingCart;
 using Ordering.Domain.Orders;
+using Ordering.Infrastructure.Database;
 using Wolverine;
+using Wolverine.Transports.Tcp;
 
 namespace Ordering.Api;
 
 public static class ServiceRegistrar
 {
-    internal static void RegisterApiServices(WebApplicationBuilder builder, string connectionString)
+    internal static void RegisterServices(WebApplicationBuilder builder, string connectionString)
     {
         builder.Host.ApplyOaktonExtensions();
 
@@ -25,13 +28,23 @@ public static class ServiceRegistrar
 
             opts.Policies.LogMessageStarting(LogLevel.Debug);
 
+            Common.Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);
             Common.Application.ServiceRegistrar.UseWolferine(opts);
-            Infrastructure.ServiceRegistrar.UseWolverine(opts, connectionString);
+            Common.Infrastructure.ServiceRegistrar.UseWolverine(opts, connectionString);
 
+            opts.ListenAtPort(5202).UseDurableInbox();
+            opts.PublishMessage<Ping>().ToPort(5201).UseDurableOutbox();
+            
             //opts.CodeGeneration.TypeLoadMode = JasperFx.CodeGeneration.TypeLoadMode.Auto;
         });
 
+        ConfigureApiServices(builder);
+        ConfigureApplicationServices(builder);
+        ConfigureInfrastructureServices(builder, connectionString);
+    }
 
+    private static void ConfigureApiServices(WebApplicationBuilder builder)
+    {
         // Add services to the container.
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -71,5 +84,16 @@ public static class ServiceRegistrar
                     services.AddHttpContextAccessor();
                     services.Configure<AuditOptions>(builder.Configuration.GetSection(AuditOptions.Audit));
                 }));
+    }
+    
+    private static void ConfigureApplicationServices(WebApplicationBuilder builder)
+    {
+        Common.Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);
+    }
+
+    private static void ConfigureInfrastructureServices(WebApplicationBuilder builder, string connectionString)
+    {
+        Common.Infrastructure.ServiceRegistrar.RegisterInfrastructureServices<OrderDbContext>(builder.Services,
+            connectionString);
     }
 }
