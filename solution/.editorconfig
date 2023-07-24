@@ -119,7 +119,7 @@ dotnet_diagnostic.CA2007.severity = none
 dotnet_diagnostic.CA5394.severity = none
 
 # Non-nullable variable must contain a non-null value when exiting constructor. Consider declaring it as nullable.
-dotnet_diagnostic.CS8618.severity = suggestion
+dotnet_diagnostic.CS8618.severity = none
 
 # Seal internal types
 dotnet_diagnostic.CA1852.severity = none

@@ -1,39 +1,24 @@
-using Microsoft.EntityFrameworkCore;
+using Common.Application.Messages;
 using Microsoft.Extensions.DependencyInjection;
-using Ordering.Domain.Orders;
 using Ordering.Infrastructure.Database;
 using Wolverine;
-using Wolverine.EntityFrameworkCore;
-using Wolverine.SqlServer;
+using Wolverine.Transports.Tcp;
 
 namespace Ordering.Infrastructure;
 
 public static class ServiceRegistrar
 {
-    private const string _wolverineSchema = "wolverine";
-
     public static void RegisterInfrastructureServices(IServiceCollection services, string connectionString)
     {
-        services.AddDbContextWithWolverineIntegration<OrderDbContext>(dbContextOptions =>
-        {
-            dbContextOptions.UseSqlServer(connectionString);
-        }, _wolverineSchema);
-
-        services.AddScoped<IOrderRepository, OrderRepository>();
+        Common.Infrastructure.ServiceRegistrar.RegisterInfrastructureServices<OrderDbContext>(services,
+            connectionString);
     }
 
     public static void UseWolverine(WolverineOptions opts, string connectionString)
     {
-        // Setting up Sql Server-backed message storage
-        // This requires a reference to Wolverine.SqlServer
-        opts.PersistMessagesWithSqlServer(connectionString, _wolverineSchema);
-
-        // Enrolling all local queues into the
-        // durable inbox/outbox processing
-        opts.Policies.UseDurableLocalQueues();
-
-        // Add the auto transaction middleware attachment policy
-        // If enabled, handlers don't need [AutoApplyTransactions] attribute.
-        //opts.Policies.AutoApplyTransactions();
+        opts.ListenAtPort(5202).UseDurableInbox();
+        opts.PublishMessage<Ping>().ToPort(5201).UseDurableOutbox();
+        
+        Common.Infrastructure.ServiceRegistrar.UseWolverine(opts, connectionString);
     }
 }

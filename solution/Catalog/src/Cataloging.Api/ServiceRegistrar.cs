@@ -24,15 +24,17 @@ public static class ServiceRegistrar
         // All commands are handled by Wolverine.
         builder.Host.UseWolverine(opts =>
         {
+            opts.ServiceName = "Catalog API";
             opts.Discovery.IncludeAssembly(typeof(GetBooksHandler).Assembly);
             opts.Discovery.IncludeAssembly(typeof(AuditLogEventHandler).Assembly);
 
             opts.Policies.ForMessagesOfType<IAuthorCommand>().AddMiddleware(typeof(LoadAuthorMiddleware));
             opts.Policies.LogMessageStarting(LogLevel.Debug);
 
+            Common.Application.ServiceRegistrar.UseWolferine(opts);
             Infrastructure.ServiceRegistrar.UseWolverine(opts, connectionString);
 
-            //opts.CodeGeneration.TypeLoadMode = JasperFx.CodeGeneration.TypeLoadMode.Auto;
+            // opts.CodeGeneration.TypeLoadMode = JasperFx.CodeGeneration.TypeLoadMode.Auto;
         });
 
 
@@ -74,7 +76,6 @@ public static class ServiceRegistrar
         bookEntity.Property(book => book.Price);
         bookEntity.Property(book => book.Title);
         bookEntity.ContainsRequired(book => book.Author);
-
         var bookEntitySet = modelBuilder.EntitySet<Book>("Books");
 
         builder.Services.AddControllers().AddOData(

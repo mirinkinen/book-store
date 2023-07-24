@@ -19,11 +19,13 @@ public static class ServiceRegistrar
         // All commands are handled by Wolverine.
         builder.Host.UseWolverine(opts =>
         {
+            opts.ServiceName = "Order API";
             opts.Discovery.IncludeAssembly(typeof(GetShoppingCartQuery).Assembly);
             opts.Discovery.IncludeAssembly(typeof(AuditLogEventHandler).Assembly);
 
             opts.Policies.LogMessageStarting(LogLevel.Debug);
 
+            Common.Application.ServiceRegistrar.UseWolferine(opts);
             Infrastructure.ServiceRegistrar.UseWolverine(opts, connectionString);
 
             //opts.CodeGeneration.TypeLoadMode = JasperFx.CodeGeneration.TypeLoadMode.Auto;

@@ -3,24 +3,19 @@ using Cataloging.Domain.Authors;
 using Cataloging.Infrastructure.Database;
 using Cataloging.Infrastructure.Queries;
 using Cataloging.Infrastructure.Repository;
-using Microsoft.EntityFrameworkCore;
+using Common.Application.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Wolverine;
-using Wolverine.EntityFrameworkCore;
-using Wolverine.SqlServer;
+using Wolverine.Transports.Tcp;
 
 namespace Cataloging.Infrastructure;
 
 public static class ServiceRegistrar
 {
-    private const string _wolverineSchema = "wolverine";
-
     public static void RegisterInfrastructureServices(IServiceCollection services, string connectionString)
     {
-        services.AddDbContextWithWolverineIntegration<CatalogDbContext>(dbContextOptions =>
-            {
-                dbContextOptions.UseSqlServer(connectionString);
-            }, _wolverineSchema);
+        Common.Infrastructure.ServiceRegistrar.RegisterInfrastructureServices<CatalogDbContext>(services,
+            connectionString);
 
         services.AddScoped<IQueryAuthorizer, QueryAuthorizer>();
         services.AddScoped<IAuthorRepository, AuthorRepository>();
@@ -28,16 +23,9 @@ public static class ServiceRegistrar
 
     public static void UseWolverine(WolverineOptions opts, string connectionString)
     {
-        // Setting up Sql Server-backed message storage
-        // This requires a reference to Wolverine.SqlServer
-        opts.PersistMessagesWithSqlServer(connectionString, _wolverineSchema);
+        opts.ListenAtPort(5201).UseDurableInbox();
+        opts.PublishMessage<Pong>().ToPort(5202).UseDurableOutbox();
 
-        // Enrolling all local queues into the
-        // durable inbox/outbox processing
-        opts.Policies.UseDurableLocalQueues();
-
-        // Add the auto transaction middleware attachment policy
-        // If enabled, handlers don't need [AutoApplyTransactions] attribute.
-        //opts.Policies.AutoApplyTransactions();
+        Common.Infrastructure.ServiceRegistrar.UseWolverine(opts, connectionString);
     }
 }

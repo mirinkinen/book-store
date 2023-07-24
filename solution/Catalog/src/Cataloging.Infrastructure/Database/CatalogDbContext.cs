@@ -21,7 +21,7 @@ public class CatalogDbContext : DbContext
 
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
     {
-        throw new NotImplementedException("Use SaveChangesAsync");
+        return SaveChangesAsync(acceptAllChangesOnSuccess).GetAwaiter().GetResult();
     }
 
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)

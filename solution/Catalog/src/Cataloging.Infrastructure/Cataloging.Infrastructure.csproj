@@ -7,13 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.8" />
-    <PackageReference Include="WolverineFx.EntityFrameworkCore" Version="1.1.3" />
-    <PackageReference Include="WolverineFx.SqlServer" Version="1.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.9" />
+    <PackageReference Include="WolverineFx.EntityFrameworkCore" Version="1.2.1" />
+    <PackageReference Include="WolverineFx.SqlServer" Version="1.2.1" />
   </ItemGroup>
     
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\src\Common.Application\Common.Application.csproj" />
+    <ProjectReference Include="..\..\..\Common\src\Common.Infrastructure\Common.Infrastructure.csproj" />
     <ProjectReference Include="..\Cataloging.Application\Cataloging.Application.csproj" />
     <ProjectReference Include="..\Cataloging.Domain\Cataloging.Domain.csproj" />
   </ItemGroup>
