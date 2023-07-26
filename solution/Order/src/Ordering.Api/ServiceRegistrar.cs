@@ -23,12 +23,9 @@ public static class ServiceRegistrar
         builder.Host.UseWolverine(opts =>
         {
             opts.ServiceName = "Order API";
-            opts.Discovery.IncludeAssembly(typeof(GetShoppingCartQuery).Assembly);
+            opts.ApplicationAssembly = typeof(GetShoppingCartQuery).Assembly;
             opts.Discovery.IncludeAssembly(typeof(AuditLogEventHandler).Assembly);
 
-            opts.Policies.LogMessageStarting(LogLevel.Debug);
-
-            Common.Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);
             Common.Application.ServiceRegistrar.UseWolferine(opts);
             Common.Infrastructure.ServiceRegistrar.UseWolverine(opts, connectionString);
 

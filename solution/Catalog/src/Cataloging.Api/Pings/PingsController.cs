@@ -13,9 +13,8 @@ public class PingsController : ODataController
     [Route("ping")]
     public async Task<IActionResult> Ping([FromServices] IMessageBus messageBus)
     {
-        await messageBus.SendAsync(new Ping(1));
+        await messageBus.SendAsync(new Ping(0));
 
         return Ok();
     }
 }
-

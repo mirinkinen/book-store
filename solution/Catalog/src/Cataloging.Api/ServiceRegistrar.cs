@@ -30,18 +30,11 @@ public static class ServiceRegistrar
         // All commands are handled by Wolverine.
         builder.Host.UseWolverine(opts =>
         {
-            
             // Application based settings.
             opts.ServiceName = "Catalog API";
             opts.ApplicationAssembly = typeof(GetBooksHandler).Assembly;
             opts.Discovery.IncludeAssembly(typeof(AuditLogEventHandler).Assembly);
             
-            opts.DurableScheduledMessagesLocalQueue.UseDurableInbox();
-            opts.Durability.NodeReassignmentPollingTime = TimeSpan.FromSeconds(5);
-            opts.Durability.StaleNodeTimeout = TimeSpan.FromSeconds(5);
-            opts.Durability.CheckAssignmentPeriod = TimeSpan.FromSeconds(5);
-            opts.Durability.DurabilityAgentEnabled = true;
-
             opts.Policies.ForMessagesOfType<IAuthorCommand>().AddMiddleware(typeof(LoadAuthorMiddleware));
 
             Common.Application.ServiceRegistrar.UseWolferine(opts);
@@ -49,7 +42,7 @@ public static class ServiceRegistrar
 
             opts.ListenAtPort(5201).UseDurableInbox();
             opts.PublishMessage<Pong>().ToPort(5202).UseDurableOutbox();
-            
+
             // opts.CodeGeneration.TypeLoadMode = JasperFx.CodeGeneration.TypeLoadMode.Auto;
         });
 

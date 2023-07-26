@@ -30,9 +30,9 @@ public static class ServiceRegistrar
         opts.UseEntityFrameworkCoreTransactions();
         
         // Use durable inbox and outbox.
-        // opts.Policies.UseDurableLocalQueues();
-        // opts.Policies.UseDurableInboxOnAllListeners();
-        // opts.Policies.UseDurableOutboxOnAllSendingEndpoints();
+        opts.Policies.UseDurableLocalQueues();
+        opts.Policies.UseDurableInboxOnAllListeners();
+        opts.Policies.UseDurableOutboxOnAllSendingEndpoints();
 
         // Add the auto transaction middleware attachment policy
         // If enabled, handlers don't need [AutoApplyTransactions] attribute.
