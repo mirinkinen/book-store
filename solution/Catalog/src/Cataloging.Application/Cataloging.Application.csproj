@@ -11,8 +11,4 @@
     <ProjectReference Include="..\Cataloging.Domain\Cataloging.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="WolverineFx" Version="1.2.1" />
-  </ItemGroup>
-
 </Project>
