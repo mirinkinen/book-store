@@ -2,7 +2,6 @@
 using Cataloging.Infrastructure.Database;
 using Cataloging.Infrastructure.Database.Setup;
 using Cataloging.IntegrationTests.Fakes;
-using MartinCostello.SqlLocalDb;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,8 +12,7 @@ public sealed class TestDatabase : IAsyncDisposable
 {
     private static bool _leftOverDatabasesCleaned;
     private static readonly object _cleanerLock = new();
-    private const string _sqlInstanceName = "BookStoreTest";
-    private const string _sqlDatabasePrefix = "BookCatalog";
+    private const string _sqlDatabasePrefix = "BookCatalogTest";
 
     public string Name { get; }
 
@@ -27,7 +25,7 @@ public sealed class TestDatabase : IAsyncDisposable
 
         Name = $"{_sqlDatabasePrefix}-{Guid.NewGuid():D}";
         ConnectionString =
-            $"Data Source=(localdb)\\{_sqlInstanceName};Initial Catalog={Name};Integrated Security=True";
+            $"Data Source=localhost;Initial Catalog={Name};User ID=sa;Trust Server Certificate=True;Authentication=SqlPassword;Password=P@55w0rd";
 
         CreateAndSeedDatabase().Wait();
     }
@@ -45,18 +43,9 @@ public sealed class TestDatabase : IAsyncDisposable
 
             _leftOverDatabasesCleaned = true;
 
-            using SqlLocalDbApi sqlLocalDbApi = new();
-            var instance = sqlLocalDbApi.GetOrCreateInstance(_sqlInstanceName);
-
-            if (!instance.IsRunning)
-            {
-                sqlLocalDbApi.StartInstance(instance.Name);
-                // Starting an instance doesn't seem to effect the current instance object.
-                // Therefore, the started instance needs to be fetched again.
-                instance = sqlLocalDbApi.GetOrCreateInstance(_sqlInstanceName);
-            }
-
-            using var connection = instance.CreateConnection();
+            var masterConnectionString =
+                "Data Source=localhost;Initial Catalog=master;User ID=sa;Trust Server Certificate=True;Authentication=SqlPassword;Password=P@55w0rd";
+            using SqlConnection connection = new(masterConnectionString);
             connection.Open();
             connection.ChangeDatabase("master");
 

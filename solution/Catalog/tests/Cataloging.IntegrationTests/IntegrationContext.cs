@@ -14,6 +14,8 @@ public class AppFixture : IAsyncLifetime
 
     public FakeUserService UserService { get; } = new();
 
+    public TestDatabase TestDatabase { get; } = new();
+
     public async Task InitializeAsync()
     {
         // Sorry folks, but this is absolutely necessary if you 
@@ -25,13 +27,16 @@ public class AppFixture : IAsyncLifetime
         // its implied Program.Main() set up
         Host = await AlbaHost.For<Program>(builder =>
         {
+            builder.UseSetting("ConnectionStrings:CatalogConnectionString", TestDatabase.ConnectionString);
+            
             builder.ConfigureServices(services => { services.AddScoped<IUserService>(_ => UserService); });
         });
     }
 
-    public Task DisposeAsync()
+    public async Task DisposeAsync()
     {
-        return Host!.StopAsync();
+        await TestDatabase.DisposeAsync();
+        await Host!.StopAsync();
     }
 }
 
