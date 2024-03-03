@@ -56,6 +56,7 @@ public static class ServiceRegistrar
         builder.Services.AddGraphQL(o =>
         {
             o.AddSchema<CatalogSchema>();
+            o.AddDataLoader();
             o.UseTelemetry();
             o.AddSystemTextJson();
         });
