@@ -55,11 +55,11 @@ public static class ServiceRegistrar
 
         builder.Services.AddGraphQL(o =>
         {
-            o.AddSchema<BookSchema>();
+            o.AddSchema<CatalogSchema>();
             o.UseTelemetry();
             o.AddSystemTextJson();
         });
-        builder.Services.AddScoped<BookQuery>();
+        builder.Services.AddScoped<CatalogQuery>();
         
     }
 

@@ -23,7 +23,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.UseAuditLogging();
 app.MapControllers();
-app.UseGraphQL<BookSchema>();
+app.UseGraphQL<CatalogSchema>();
 app.UseGraphQLPlayground();
 app.UseGraphQLGraphiQL();
 app.UseGraphQLAltair();
