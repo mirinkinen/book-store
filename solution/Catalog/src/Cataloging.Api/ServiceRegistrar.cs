@@ -1,4 +1,6 @@
-﻿using Cataloging.Application.Requests.Authors;
+﻿using Cataloging.Api.Schema;
+using Cataloging.Api.Schema.Types;
+using Cataloging.Application.Requests.Authors;
 using Cataloging.Application.Requests.Books.GetBooks;
 using Cataloging.Application.Services;
 using Cataloging.Domain.Authors;
@@ -10,6 +12,7 @@ using Cataloging.Infrastructure.Repository;
 using Common.Api.Auditing;
 using Common.Application.Auditing;
 using Common.Application.Messages;
+using GraphQL;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.OData.ModelBuilder;
@@ -49,6 +52,15 @@ public static class ServiceRegistrar
         ConfigureApiServices(builder);
         ConfigureApplicationServices(builder);
         ConfigureInfrastructureServices(builder, connectionString);
+
+        builder.Services.AddGraphQL(o =>
+        {
+            o.AddSchema<BookSchema>();
+            o.UseTelemetry();
+            o.AddSystemTextJson();
+        });
+        builder.Services.AddScoped<BookQuery>();
+        
     }
 
     private static void ConfigureApiServices(WebApplicationBuilder builder)

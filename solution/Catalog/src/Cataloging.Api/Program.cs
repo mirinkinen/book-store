@@ -1,4 +1,5 @@
 using Cataloging.Api;
+using Cataloging.Api.Schema;
 using Common.Api.Auditing;
 using Oakton;
 
@@ -22,6 +23,10 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.UseAuditLogging();
 app.MapControllers();
+app.UseGraphQL<BookSchema>();
+app.UseGraphQLPlayground();
+app.UseGraphQLGraphiQL();
+app.UseGraphQLAltair();
 
 // Opt into using Oakton for command parsing
 await app.RunOaktonCommands(args);
