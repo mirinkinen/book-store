@@ -27,9 +27,7 @@ public class BookType : ObjectGraphType<Book>
                     var authors = await dbContext.Authors.Where(a => authorIds.Contains(context.Source.AuthorId))
                         .ToListAsync();
 
-                    var authorsDictionary = authors.ToDictionary(a => a.Id);
-
-                    return authorsDictionary;
+                    return authors.ToDictionary(a => a.Id);
                 });
 
             return loader.LoadAsync(context.Source.AuthorId);
