@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "9cf82d2b-4a3a-4327-bf75-d1dd0c7d8e81",
-		"name": "Books.Api",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"_postman_id": "1e3dbb9f-525d-4639-9c81-0ee60dfbdc24",
+		"name": "Book store",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7575247"
 	},
 	"item": [
 		{
@@ -618,6 +619,151 @@
 							"body": "{\n  \"schemaElements\": [\n    {\n      \"schemaElementKind\": 5,\n      \"namespace\": \"mollit magna Excepteur\",\n      \"name\": \"aliquip si\"\n    },\n    {\n      \"schemaElementKind\": 2,\n      \"namespace\": \"cillum \",\n      \"name\": \"Duis nostrud aliquip occaecat\"\n    }\n  ],\n  \"vocabularyAnnotations\": [\n    {\n      \"qualifier\": \"consequat non labore\",\n      \"term\": {\n        \"type\": {\n          \"isNullable\": false,\n          \"definition\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"appliesTo\": \"nulla\",\n        \"defaultValue\": \"laboris sint con\",\n        \"schemaElementKind\": 5,\n        \"namespace\": \"amet proident qui dolore\",\n        \"name\": \"laborum et pariatur ut\"\n      },\n      \"target\": {},\n      \"value\": {\n        \"expressionKind\": 24\n      }\n    },\n    {\n      \"qualifier\": \"aliquip\",\n      \"term\": {\n        \"type\": {\n          \"isNullable\": false,\n          \"definition\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"appliesTo\": \"consectetur sit\",\n        \"defaultValue\": \"laborum\",\n        \"schemaElementKind\": 5,\n        \"namespace\": \"ea amet\",\n        \"name\": \"dolore aute\"\n      },\n      \"target\": {},\n      \"value\": {\n        \"expressionKind\": 5\n      }\n    }\n  ],\n  \"referencedModels\": [\n    {\n      \"value\": \"<Circular reference to #/components/schemas/IEdmModel detected>\"\n    },\n    {\n      \"value\": \"<Circular reference to #/components/schemas/IEdmModel detected>\"\n    }\n  ],\n  \"declaredNamespaces\": [\n    \"Excepteur adipisicing\",\n    \"anim dolor\"\n  ],\n  \"directValueAnnotationsManager\": {},\n  \"entityContainer\": {\n    \"elements\": [\n      {\n        \"containerElementKind\": 1,\n        \"container\": {\n          \"value\": \"<Circular reference to #/components/schemas/IEdmEntityContainer detected>\"\n        },\n        \"name\": \"consectetur ut\"\n      },\n      {\n        \"containerElementKind\": 4,\n        \"container\": {\n          \"value\": \"<Circular reference to #/components/schemas/IEdmEntityContainer detected>\"\n        },\n        \"name\": \"laborum mollit\"\n      }\n    ],\n    \"schemaElementKind\": 0,\n    \"namespace\": \"voluptate\",\n    \"name\": \"laboris officia eu\"\n  }\n}"
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "graphql",
+			"item": [
+				{
+					"name": "Get books",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/graphql",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "query {\r\n  books {\r\n    authorId\r\n    datePublished\r\n    id\r\n    price\r\n    title\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/graphql",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get books with authors",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/graphql",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "query {\r\n  books {\r\n    author {\r\n      firstName\r\n      lastName\r\n    }\r\n    title\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/graphql",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get authors",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/graphql",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "query {\r\n  authors {\r\n    id,\r\n    firstName\r\n    lastName\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/graphql",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get author",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/graphql",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "query {\r\n  author(id: \"8e6a9434-87f5-46b2-a6c3-522dc35d8eef\") {\r\n    id,\r\n    firstName,\r\n    lastName,\r\n    birthday\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/graphql",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
