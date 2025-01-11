@@ -18,6 +18,7 @@ public class AppFixture : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
+        await TestDatabase.CleanLeftoverDatabasesAsync();
         await TestDatabase.CreateAndSeedDatabase();
         
         // Sorry folks, but this is absolutely necessary if you 

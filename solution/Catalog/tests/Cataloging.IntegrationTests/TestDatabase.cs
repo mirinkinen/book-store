@@ -1,9 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Cataloging.Infrastructure.Database;
+﻿using Cataloging.Infrastructure.Database;
 using Cataloging.Infrastructure.Database.Setup;
 using Cataloging.IntegrationTests.Fakes;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.IntegrationTests;
 
@@ -11,7 +11,7 @@ namespace Cataloging.IntegrationTests;
 public sealed class TestDatabase : IAsyncDisposable
 {
     private static bool _leftOverDatabasesCleaned;
-    private static readonly object _cleanerLock = new();
+    private static readonly SemaphoreSlim _cleanerSemaphore = new(1, 1);
     private const string _sqlDatabasePrefix = "BookCatalogTest";
 
     public string Name { get; }
@@ -20,17 +20,17 @@ public sealed class TestDatabase : IAsyncDisposable
 
     public TestDatabase()
     {
-        CleanLeftoverDatabases();
-
         Name = $"{_sqlDatabasePrefix}-{Guid.NewGuid():D}";
         ConnectionString =
             $"Data Source=localhost;Initial Catalog={Name};User ID=sa;Trust Server Certificate=True;Authentication=SqlPassword;Password=P@55w0rd";
     }
 
-    private static void CleanLeftoverDatabases()
+    
+
+    public static async Task CleanLeftoverDatabasesAsync()
     {
-        // Allow only one thread at a time.
-        lock (_cleanerLock)
+        await _cleanerSemaphore.WaitAsync();
+        try
         {
             // Run only once per test run.
             if (_leftOverDatabasesCleaned)
@@ -42,34 +42,38 @@ public sealed class TestDatabase : IAsyncDisposable
 
             var masterConnectionString =
                 "Data Source=localhost;Initial Catalog=master;User ID=sa;Trust Server Certificate=True;Authentication=SqlPassword;Password=P@55w0rd";
-            using SqlConnection connection = new(masterConnectionString);
-            connection.Open();
-            connection.ChangeDatabase("master");
+            await using SqlConnection connection = new(masterConnectionString);
+            await connection.OpenAsync();
+            await connection.ChangeDatabaseAsync("master");
 
-            using var getDatabasesCommand =
+            await using var getDatabasesCommand =
                 new SqlCommand($"SELECT * FROM sys.databases WHERE name LIKE '{_sqlDatabasePrefix}%'", connection);
-            using var reader = getDatabasesCommand.ExecuteReader();
+            await using var reader = await getDatabasesCommand.ExecuteReaderAsync();
             var databases = new List<string>();
 
-            while (reader.Read())
+            while (await reader.ReadAsync())
             {
                 databases.Add(reader.GetString(0));
             }
 
-            reader.Close();
+            await reader.CloseAsync();
 
             foreach (var database in databases)
             {
                 try
                 {
-                    using var dropCommand = new SqlCommand($"DROP DATABASE [{database}]", connection);
-                    dropCommand.ExecuteNonQuery();
+                    await using var dropCommand = new SqlCommand($"DROP DATABASE [{database}]", connection);
+                    await dropCommand.ExecuteNonQueryAsync();
                 }
                 // SQLExceptions can happen if database files are not found. Don't care about those scenarios.
                 catch (SqlException)
                 {
                 }
             }
+        }
+        finally
+        {
+            _cleanerSemaphore.Release();
         }
     }
 
