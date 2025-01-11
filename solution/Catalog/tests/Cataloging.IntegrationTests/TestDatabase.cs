@@ -18,7 +18,6 @@ public sealed class TestDatabase : IAsyncDisposable
 
     public string ConnectionString { get; }
 
-
     public TestDatabase()
     {
         CleanLeftoverDatabases();
@@ -26,8 +25,6 @@ public sealed class TestDatabase : IAsyncDisposable
         Name = $"{_sqlDatabasePrefix}-{Guid.NewGuid():D}";
         ConnectionString =
             $"Data Source=localhost;Initial Catalog={Name};User ID=sa;Trust Server Certificate=True;Authentication=SqlPassword;Password=P@55w0rd";
-
-        CreateAndSeedDatabase().Wait();
     }
 
     private static void CleanLeftoverDatabases()
@@ -76,8 +73,7 @@ public sealed class TestDatabase : IAsyncDisposable
         }
     }
 
-
-    private async Task CreateAndSeedDatabase()
+    public async Task CreateAndSeedDatabase()
     {
         var dbOptions = new DbContextOptionsBuilder<CatalogDbContext>()
             .UseSqlServer(ConnectionString)

@@ -18,6 +18,8 @@ public class AppFixture : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
+        await TestDatabase.CreateAndSeedDatabase();
+        
         // Sorry folks, but this is absolutely necessary if you 
         // use Oakton for command line processing and want to 
         // use WebApplicationFactory and/or Alba for integration testing
