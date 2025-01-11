@@ -1,6 +1,7 @@
 using Cataloging.Domain.Authors;
 using Cataloging.Domain.Books;
 using Cataloging.Infrastructure.Database;
+using GraphQL;
 using GraphQL.DataLoader;
 using GraphQL.Types;
 using Microsoft.EntityFrameworkCore;
