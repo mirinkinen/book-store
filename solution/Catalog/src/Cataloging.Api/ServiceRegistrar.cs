@@ -47,7 +47,8 @@ public static class ServiceRegistrar
             opts.ListenAtPort(5201).UseDurableInbox();
             opts.PublishMessage<Pong>().ToPort(5202).UseDurableOutbox();
 
-            // opts.CodeGeneration.TypeLoadMode = JasperFx.CodeGeneration.TypeLoadMode.Auto;
+            // Enable to preview generated code upon first call.
+            //opts.CodeGeneration.TypeLoadMode = JasperFx.CodeGeneration.TypeLoadMode.Auto;
         });
 
         ConfigureApiServices(builder);
