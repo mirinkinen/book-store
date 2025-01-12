@@ -26,8 +26,8 @@ public static class ServiceRegistrar
             opts.ApplicationAssembly = typeof(GetShoppingCartQuery).Assembly;
             opts.Discovery.IncludeAssembly(typeof(AuditLogEventHandler).Assembly);
 
-            Common.Application.ServiceRegistrar.UseWolferine(opts);
-            Common.Infrastructure.ServiceRegistrar.UseWolverine(opts, connectionString);
+            Common.Application.ServiceRegistrar.UseCommonApplicationSettings(opts);
+            Common.Infrastructure.ServiceRegistrar.UseCommonInfrastructureSettings(opts, connectionString);
 
             opts.ListenAtPort(5202).UseDurableInbox();
             opts.PublishMessage<Ping>().ToPort(5201).UseDurableOutbox();

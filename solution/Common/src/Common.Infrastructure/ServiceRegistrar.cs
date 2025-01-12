@@ -20,7 +20,7 @@ public static class ServiceRegistrar
 
     }
     
-    public static void UseWolverine(WolverineOptions opts, string connectionString)
+    public static void UseCommonInfrastructureSettings(this WolverineOptions opts, string connectionString)
     {
         // Setting up Sql Server-backed message storage
         // This requires a reference to Wolverine.SqlServer

@@ -17,7 +17,7 @@ public static class ServiceRegistrar
         services.AddScoped<AuditContext>();
     }
 
-    public static void UseWolferine(WolverineOptions opts)
+    public static void UseCommonApplicationSettings(this WolverineOptions opts)
     {
         opts.Policies.LogMessageStarting(LogLevel.Debug);
     }

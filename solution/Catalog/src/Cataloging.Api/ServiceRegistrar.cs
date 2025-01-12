@@ -11,8 +11,10 @@ using Cataloging.Infrastructure.Database.Setup;
 using Cataloging.Infrastructure.Queries;
 using Cataloging.Infrastructure.Repository;
 using Common.Api.Auditing;
+using Common.Application;
 using Common.Application.Auditing;
 using Common.Application.Messages;
+using Common.Infrastructure;
 using GraphQL;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
@@ -34,15 +36,20 @@ public static class ServiceRegistrar
         // All commands are handled by Wolverine.
         builder.Host.UseWolverine(opts =>
         {
+            if (builder.Environment.IsDevelopment())
+            {
+                opts.Durability.Mode = DurabilityMode.Solo;
+            }
+            
             // Application based settings.
             opts.ServiceName = "Catalog API";
             opts.ApplicationAssembly = typeof(GetBooksHandler).Assembly;
             opts.Discovery.IncludeAssembly(typeof(AuditLogEventHandler).Assembly);
-            
+
             opts.Policies.ForMessagesOfType<IAuthorCommand>().AddMiddleware(typeof(LoadAuthorMiddleware));
 
-            Common.Application.ServiceRegistrar.UseWolferine(opts);
-            Common.Infrastructure.ServiceRegistrar.UseWolverine(opts, connectionString);
+            opts.UseCommonApplicationSettings();
+            opts.UseCommonInfrastructureSettings(connectionString);
 
             opts.ListenAtPort(5201).UseDurableInbox();
             opts.PublishMessage<Pong>().ToPort(5202).UseDurableOutbox();
@@ -63,7 +70,6 @@ public static class ServiceRegistrar
             o.AddSystemTextJson();
         });
         builder.Services.AddScoped<CatalogQuery>();
-        
     }
 
     private static void ConfigureApiServices(WebApplicationBuilder builder)
