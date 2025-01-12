@@ -25,7 +25,7 @@ public class AuditContextLoggerMiddleware
         await _next(context);
 
         var auditContext = context.RequestServices.GetRequiredService<AuditContext>();
-        if (!auditContext.Resources.Any())
+        if (auditContext.Resources.Count == 0)
         {
             return;
         }

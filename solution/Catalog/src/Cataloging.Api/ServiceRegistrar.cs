@@ -1,6 +1,7 @@
 ﻿using Cataloging.Api.Schema;
 using Cataloging.Api.Schema.Types;
 using Cataloging.Application.Requests.Authors;
+using Cataloging.Application.Requests.Authors.Middleware;
 using Cataloging.Application.Requests.Books.GetBooks;
 using Cataloging.Application.Services;
 using Cataloging.Domain.Authors;

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Wolverine;
 
-namespace Cataloging.Application.Requests.Authors;
+namespace Cataloging.Application.Requests.Authors.Middleware;
 
 public static class LoadAuthorMiddleware
 {
