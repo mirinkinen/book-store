@@ -20,5 +20,6 @@ public static class ServiceRegistrar
     public static void UseCommonApplicationSettings(this WolverineOptions opts)
     {
         opts.Policies.LogMessageStarting(LogLevel.Debug);
+        opts.Discovery.IncludeAssembly(typeof(AuditLogEventHandler).Assembly);
     }
 }

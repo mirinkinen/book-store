@@ -1,4 +1,5 @@
-﻿using Cataloging.Api.Schema;
+﻿using Azure.Monitor.OpenTelemetry.AspNetCore;
+using Cataloging.Api.Schema;
 using Cataloging.Api.Schema.Types;
 using Cataloging.Application.Requests.Authors;
 using Cataloging.Application.Requests.Authors.Middleware;
@@ -10,6 +11,7 @@ using Cataloging.Infrastructure.Database;
 using Cataloging.Infrastructure.Database.Setup;
 using Cataloging.Infrastructure.Queries;
 using Cataloging.Infrastructure.Repository;
+using Common.Api;
 using Common.Api.Auditing;
 using Common.Application;
 using Common.Application.Auditing;
@@ -21,6 +23,7 @@ using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.OData.ModelBuilder;
 using Oakton;
 using Oakton.Resources;
+using OpenTelemetry.Trace;
 using Wolverine;
 using Wolverine.Transports.Tcp;
 
@@ -36,26 +39,19 @@ public static class ServiceRegistrar
         // All commands are handled by Wolverine.
         builder.Host.UseWolverine(opts =>
         {
-            if (builder.Environment.IsDevelopment())
-            {
-                opts.Durability.Mode = DurabilityMode.Solo;
-            }
+            // API settings.
+            opts.UseCommonApiSettings(builder);
             
-            // Application based settings.
+            // Application settings.
+            opts.UseCommonApplicationSettings();
             opts.ServiceName = "Catalog API";
             opts.ApplicationAssembly = typeof(GetBooksHandler).Assembly;
-            opts.Discovery.IncludeAssembly(typeof(AuditLogEventHandler).Assembly);
-
             opts.Policies.ForMessagesOfType<IAuthorCommand>().AddMiddleware(typeof(LoadAuthorMiddleware));
 
-            opts.UseCommonApplicationSettings();
+            // Infrastructure settings.
             opts.UseCommonInfrastructureSettings(connectionString);
-
             opts.ListenAtPort(5201).UseDurableInbox();
             opts.PublishMessage<Pong>().ToPort(5202).UseDurableOutbox();
-
-            // Enable to preview generated code upon first call.
-            //opts.CodeGeneration.TypeLoadMode = JasperFx.CodeGeneration.TypeLoadMode.Auto;
         });
 
         ConfigureApiServices(builder);
