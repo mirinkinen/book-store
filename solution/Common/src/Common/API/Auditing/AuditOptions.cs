@@ -1,4 +1,4 @@
-﻿namespace Common.Api.API.Auditing;
+﻿namespace Common.API.Auditing;
 
 public class AuditOptions
 {

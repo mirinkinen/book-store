@@ -1,8 +1,8 @@
 ﻿using Cataloging.Domain;
-using Cataloging.Infra.Database.EntityTypeConfigurations;
 using Cataloging.Requests.Authors.Domain;
+using Cataloging.Requests.Authors.Infra;
 using Cataloging.Requests.Books.Domain;
-using Common.Api.Application.Authentication;
+using Common.Application.Authentication;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cataloging.Infra.Database;

@@ -1,6 +1,6 @@
 using Cataloging.Application;
 using Cataloging.Requests.Books.Domain;
-using Common.Api.Application;
+using Common.Application;
 
 namespace Cataloging.Requests.Books.Application.GetBookById;
 

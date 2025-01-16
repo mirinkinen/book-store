@@ -1,4 +1,4 @@
-﻿using Common.Api.Application.Authentication;
+﻿using Common.Application.Authentication;
 
 namespace Cataloging.Infra.Database.Setup;
 

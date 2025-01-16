@@ -1,4 +1,4 @@
-﻿namespace Common.Api.Domain;
+﻿namespace Common.Domain;
 
 public interface IIdentifiable
 {

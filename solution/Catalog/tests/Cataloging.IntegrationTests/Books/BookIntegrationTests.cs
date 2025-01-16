@@ -1,4 +1,4 @@
-using Common.Api.Application.Auditing;
+using Common.Application.Auditing;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Json;
 using FluentAssertions;

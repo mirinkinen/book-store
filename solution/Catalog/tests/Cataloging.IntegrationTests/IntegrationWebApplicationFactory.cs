@@ -1,6 +1,6 @@
 ﻿using Cataloging.IntegrationTests.Fakes;
-using Common.Api.Application.Auditing;
-using Common.Api.Application.Authentication;
+using Common.Application.Auditing;
+using Common.Application.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 using OpenTelemetry.Trace;
 using Wolverine;
 
-namespace Common.Api.API;
+namespace Common.API;
 
 public static class ServiceRegistrar
 {

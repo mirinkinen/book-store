@@ -1,5 +1,5 @@
 ﻿using Cataloging.Infra.Database.Setup;
-using Common.Api.Application.Authentication;
+using Common.Application.Authentication;
 
 namespace Cataloging.IntegrationTests.Fakes;
 

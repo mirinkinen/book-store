@@ -1,10 +1,10 @@
-using Common.Api.Application.Auditing;
-using Common.Api.Application.Authentication;
+using Common.Application.Auditing;
+using Common.Application.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Wolverine;
 
-namespace Common.Api.Application;
+namespace Common.Application;
 
 public static class ServiceRegistrar
 {

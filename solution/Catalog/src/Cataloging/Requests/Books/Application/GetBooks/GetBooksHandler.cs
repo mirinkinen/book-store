@@ -1,7 +1,7 @@
 using Cataloging.Application;
 using Cataloging.Requests.Books.Domain;
-using Common.Api.Application;
-using Common.Api.Application.Authentication;
+using Common.Application;
+using Common.Application.Authentication;
 using System.Diagnostics;
 
 namespace Cataloging.Requests.Books.Application.GetBooks;

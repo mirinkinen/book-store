@@ -6,7 +6,7 @@ using Cataloging.IntegrationTests.Fakes;
 using Cataloging.Requests.Authors.Application;
 using Cataloging.Requests.Authors.Application.AddAuthor;
 using Cataloging.Requests.Authors.Application.GetAuthors;
-using Common.Api.Application.Auditing;
+using Common.Application.Auditing;
 using FluentAssertions;
 using JasperFx.Core;
 using Microsoft.Extensions.DependencyInjection;

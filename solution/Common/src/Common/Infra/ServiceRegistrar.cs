@@ -4,7 +4,7 @@ using Wolverine;
 using Wolverine.EntityFrameworkCore;
 using Wolverine.SqlServer;
 
-namespace Common.Api.Infra;
+namespace Common.Infra;
 
 public static class ServiceRegistrar
 {

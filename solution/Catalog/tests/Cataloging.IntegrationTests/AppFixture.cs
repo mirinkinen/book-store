@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Alba;
 using Cataloging.IntegrationTests.Fakes;
-using Common.Api.Application.Authentication;
+using Common.Application.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Oakton;
 using Wolverine.Runtime;
