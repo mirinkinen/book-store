@@ -1,5 +1,5 @@
-﻿using Common.Application.Auditing;
-using Common.Domain;
+﻿using Common.Api.Application.Auditing;
+using Common.Api.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.AspNetCore.OData.Formatter.Value;
@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.OData;
 using Microsoft.OData.Edm;
 
-namespace Common.Api.Auditing;
+namespace Common.Api.API.Auditing;
 
 public class AuditingODataResourceSerializer : ODataResourceSerializer
 {

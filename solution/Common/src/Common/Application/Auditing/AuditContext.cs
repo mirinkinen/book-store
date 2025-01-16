@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace Common.Application.Auditing;
+namespace Common.Api.Application.Auditing;
 
 public class AuditContext
 {

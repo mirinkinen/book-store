@@ -1,6 +1,6 @@
-using Common.Api.Auditing;
-using Common.Application.Auditing;
-using Common.Application.Messages;
+using Common.Api.API.Auditing;
+using Common.Api.Application.Auditing;
+using Common.Api.Application.Messages;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.OData.ModelBuilder;
@@ -26,8 +26,8 @@ public static class ServiceRegistrar
             opts.ApplicationAssembly = typeof(GetShoppingCartQuery).Assembly;
             opts.Discovery.IncludeAssembly(typeof(AuditLogEventHandler).Assembly);
 
-            Common.Application.ServiceRegistrar.UseCommonApplicationSettings(opts);
-            Common.Infrastructure.ServiceRegistrar.UseCommonInfrastructureSettings(opts, connectionString);
+            Common.Api.Application.ServiceRegistrar.UseCommonApplicationSettings(opts);
+            Common.Api.Infra.ServiceRegistrar.UseCommonInfrastructureSettings(opts, connectionString);
 
             opts.ListenAtPort(5202).UseDurableInbox();
             opts.PublishMessage<Ping>().ToPort(5201).UseDurableOutbox();
@@ -85,12 +85,12 @@ public static class ServiceRegistrar
     
     private static void ConfigureApplicationServices(WebApplicationBuilder builder)
     {
-        Common.Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);
+        Common.Api.Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);
     }
 
     private static void ConfigureInfrastructureServices(WebApplicationBuilder builder, string connectionString)
     {
-        Common.Infrastructure.ServiceRegistrar.RegisterInfrastructureServices<OrderDbContext>(builder.Services,
+        Common.Api.Infra.ServiceRegistrar.RegisterInfrastructureServices<OrderDbContext>(builder.Services,
             connectionString);
     }
 }

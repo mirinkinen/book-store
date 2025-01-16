@@ -1,6 +1,6 @@
 ﻿using Cataloging.Domain;
 using Cataloging.Requests.Books.Domain;
-using Common.Domain;
+using Common.Api.Domain;
 
 namespace Cataloging.Requests.Authors.Domain;
 

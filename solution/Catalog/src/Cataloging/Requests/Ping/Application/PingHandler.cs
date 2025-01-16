@@ -1,4 +1,4 @@
-using Common.Application.Messages;
+using Common.Api.Application.Messages;
 using Wolverine.Attributes;
 
 namespace Cataloging.Requests.Ping.Application;

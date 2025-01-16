@@ -1,5 +1,5 @@
 ﻿using Cataloging.Requests.Authors.Domain;
-using Common.Domain;
+using Common.Api.Domain;
 using FluentAssertions;
 
 namespace Cataloging.Domain.UnitTests.Authors;

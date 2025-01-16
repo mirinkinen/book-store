@@ -1,4 +1,4 @@
-﻿namespace Common.Application;
+﻿namespace Common.Api.Application;
 
 /// <summary>
 /// Wraps IQueryable objects to disable Wolverine's cascade logic.

@@ -1,4 +1,4 @@
-﻿namespace Common.Application.Auditing;
+﻿namespace Common.Api.Application.Auditing;
 
 public enum OperationType
 {

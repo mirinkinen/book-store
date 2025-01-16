@@ -1,4 +1,4 @@
-﻿namespace Common.Application.Authentication;
+﻿namespace Common.Api.Application.Authentication;
 
 public interface IUserService
 {

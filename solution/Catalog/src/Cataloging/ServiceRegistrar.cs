@@ -11,10 +11,11 @@ using Cataloging.Requests.Books.Domain;
 using Cataloging.Schema;
 using Cataloging.Schema.Types;
 using Common.Api;
-using Common.Api.Auditing;
-using Common.Application;
-using Common.Application.Messages;
-using Common.Infrastructure;
+using Common.Api.API;
+using Common.Api.API.Auditing;
+using Common.Api.Application;
+using Common.Api.Application.Messages;
+using Common.Api.Infra;
 using GraphQL;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
@@ -127,12 +128,12 @@ public static class ServiceRegistrar
 
     private static void ConfigureApplicationServices(WebApplicationBuilder builder)
     {
-        Common.Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);
+        Common.Api.Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);
     }
 
     private static void ConfigureInfrastructureServices(WebApplicationBuilder builder, string connectionString)
     {
-        Common.Infrastructure.ServiceRegistrar.RegisterInfrastructureServices<CatalogDbContext>(builder.Services,
+        Common.Api.Infra.ServiceRegistrar.RegisterInfrastructureServices<CatalogDbContext>(builder.Services,
             connectionString);
 
         builder.Services.AddScoped<IQueryAuthorizer, QueryAuthorizer>();

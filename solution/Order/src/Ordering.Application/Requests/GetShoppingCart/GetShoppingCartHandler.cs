@@ -1,4 +1,4 @@
-using Common.Application.Authentication;
+using Common.Api.Application.Authentication;
 using Ordering.Application.Requests.CreateShoppingCart;
 using Ordering.Domain.Orders;
 using Wolverine;

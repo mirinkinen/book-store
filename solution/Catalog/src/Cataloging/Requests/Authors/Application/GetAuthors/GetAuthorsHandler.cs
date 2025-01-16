@@ -1,7 +1,7 @@
 using Cataloging.Application;
 using Cataloging.Requests.Authors.Domain;
-using Common.Application;
-using Common.Application.Authentication;
+using Common.Api.Application;
+using Common.Api.Application.Authentication;
 
 namespace Cataloging.Requests.Authors.Application.GetAuthors;
 

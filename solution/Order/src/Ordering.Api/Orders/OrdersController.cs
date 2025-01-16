@@ -1,4 +1,4 @@
-﻿using Common.Application.Authentication;
+﻿using Common.Api.Application.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;

@@ -1,6 +1,6 @@
 using Cataloging;
 using Cataloging.Schema;
-using Common.Api.Auditing;
+using Common.Api.API.Auditing;
 using Oakton;
 
 var builder = WebApplication.CreateBuilder(args);

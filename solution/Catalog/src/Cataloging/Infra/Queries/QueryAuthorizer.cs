@@ -3,7 +3,7 @@ using Cataloging.Domain;
 using Cataloging.Infra.Database;
 using Cataloging.Requests.Authors.Domain;
 using Cataloging.Requests.Books.Domain;
-using Common.Application.Authentication;
+using Common.Api.Application.Authentication;
 
 namespace Cataloging.Infra.Queries;
 

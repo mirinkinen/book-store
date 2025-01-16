@@ -1,4 +1,4 @@
-using Common.Application.Authentication;
+using Common.Api.Application.Authentication;
 using Ordering.Application.Services;
 using Ordering.Domain.Orders;
 

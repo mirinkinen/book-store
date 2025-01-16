@@ -1,4 +1,4 @@
-﻿using Common.Domain;
+﻿using Common.Api.Domain;
 
 namespace Cataloging.Domain;
 

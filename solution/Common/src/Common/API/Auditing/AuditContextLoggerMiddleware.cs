@@ -1,10 +1,10 @@
-﻿using Common.Application.Auditing;
-using Common.Application.Authentication;
+﻿using Common.Api.Application.Auditing;
+using Common.Api.Application.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Wolverine;
 
-namespace Common.Api.Auditing;
+namespace Common.Api.API.Auditing;
 
 public class AuditContextLoggerMiddleware
 {

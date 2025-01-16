@@ -1,6 +1,6 @@
+using Common.Api.Application.Auditing;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Json;
-using Common.Application.Auditing;
 using FluentAssertions;
 using Wolverine.Tracking;
 
