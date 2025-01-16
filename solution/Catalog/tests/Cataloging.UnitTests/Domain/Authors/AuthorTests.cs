@@ -2,7 +2,7 @@
 using Common.Domain;
 using FluentAssertions;
 
-namespace Cataloging.Domain.UnitTests.Authors;
+namespace Cataloging.UnitTests.Domain.Authors;
 
 [Trait("Category", "Author")]
 public class AuthorTests

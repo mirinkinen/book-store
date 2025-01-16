@@ -1,7 +1,8 @@
+using Cataloging.Domain;
 using Cataloging.Requests.Books.Domain;
 using FluentAssertions;
 
-namespace Cataloging.Domain.UnitTests.Books;
+namespace Cataloging.UnitTests.Domain.Books;
 
 [Trait("Category", "Book")]
 public class BookTests

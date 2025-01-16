@@ -1,7 +1,8 @@
+using Cataloging.Domain;
 using Cataloging.Requests.Books.Domain;
 using FluentAssertions;
 
-namespace Cataloging.Domain.UnitTests.SeedWork;
+namespace Cataloging.UnitTests.Domain.SeedWork;
 
 [Trait("Category", "SeedWork")]
 public class EntityTests
