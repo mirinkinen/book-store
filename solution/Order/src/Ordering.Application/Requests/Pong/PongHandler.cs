@@ -1,4 +1,3 @@
-using Wolverine;
 using Wolverine.Attributes;
 
 namespace Ordering.Application.Requests.Pong;

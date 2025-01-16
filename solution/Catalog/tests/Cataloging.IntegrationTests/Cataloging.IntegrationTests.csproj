@@ -29,7 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\src\Common.Application\Common.Application.csproj" />
-    <ProjectReference Include="..\..\src\Cataloging.Api\Cataloging.Api.csproj" />
+    <ProjectReference Include="..\..\src\Cataloging\Cataloging.csproj" />
   </ItemGroup>
 
 

@@ -2,7 +2,6 @@
 using Common.Domain;
 using Microsoft.EntityFrameworkCore;
 using Ordering.Domain.Orders;
-using Ordering.Domain.SeedWork;
 using Ordering.Infrastructure.Database.EntityTypeConfigurations;
 
 namespace Ordering.Infrastructure.Database;

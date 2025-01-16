@@ -1,5 +1,5 @@
-﻿using Cataloging.Infrastructure.Database;
-using Cataloging.Infrastructure.Database.Setup;
+﻿using Cataloging.Infra.Database;
+using Cataloging.Infra.Database.Setup;
 using Cataloging.IntegrationTests.Fakes;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;

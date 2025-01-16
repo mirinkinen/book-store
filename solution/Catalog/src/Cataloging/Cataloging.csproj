@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GraphQL" Version="8.2.1" />
+    <PackageReference Include="GraphQL.DataLoader" Version="8.2.1" />
+    <PackageReference Include="GraphQL.MicrosoftDI" Version="8.2.1" />
+    <PackageReference Include="GraphQL.Server.Transports.AspNetCore" Version="8.2.0" />
+    <PackageReference Include="GraphQL.Server.Ui.Altair" Version="8.2.0" />
+    <PackageReference Include="GraphQL.Server.Ui.GraphiQL" Version="8.2.0" />
+    <PackageReference Include="GraphQL.Server.Ui.Playground" Version="8.2.0" />
+    <PackageReference Include="GraphQL.SystemTextJson" Version="8.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.11" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\src\Common.Api\Common.Api.csproj" />
+    <ProjectReference Include="..\..\..\Common\src\Common.Application\Common.Application.csproj" />
+    <ProjectReference Include="..\..\..\Common\src\Common.Infrastructure\Common.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.Development.json">
+      <DependentUpon>appsettings.json</DependentUpon>
+    </Content>
+  </ItemGroup>
+
+</Project>

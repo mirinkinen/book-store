@@ -1,6 +1,6 @@
 <Project>
- <PropertyGroup>
-   <AnalysisLevel>latest-all</AnalysisLevel>
-   <LangVersion>latest</LangVersion>
- </PropertyGroup>
+    <PropertyGroup>
+        <AnalysisLevel>latest-all</AnalysisLevel>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
 </Project>
