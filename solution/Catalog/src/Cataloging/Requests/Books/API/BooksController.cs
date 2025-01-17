@@ -7,14 +7,12 @@ using Common.Application.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
-using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using System.Diagnostics.CodeAnalysis;
 using Wolverine;
 
 namespace Cataloging.Requests.Books.API;
 
-[ODataRouteComponent("v1")]
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
 public class BooksController : ODataController
 {

@@ -7,7 +7,6 @@ using Cataloging.Requests.Authors.Application.Middleware;
 using Cataloging.Requests.Authors.Domain;
 using Cataloging.Requests.Authors.Infra;
 using Cataloging.Requests.Books.Application.GetBooks;
-using Cataloging.Requests.Books.Domain;
 using Cataloging.Schema;
 using Cataloging.Schema.Types;
 using Common.API;
@@ -16,9 +15,6 @@ using Common.Application;
 using Common.Application.Messages;
 using Common.Infra;
 using GraphQL;
-using Microsoft.AspNetCore.OData;
-using Microsoft.AspNetCore.OData.Formatter.Serialization;
-using Microsoft.OData.ModelBuilder;
 using Oakton;
 using Oakton.Resources;
 using Wolverine;
@@ -76,53 +72,7 @@ public static class ServiceRegistrar
 
         builder.Services.Configure<AuditOptions>(builder.Configuration.GetSection(AuditOptions.Audit));
 
-        // API
-        AddOData(builder);
-    }
-
-    private static void AddOData(WebApplicationBuilder builder)
-    {
-        var modelBuilder = new ODataConventionModelBuilder();
-
-        var authorEntity = modelBuilder.EntityType<Author>();
-        authorEntity.HasKey(book => book.Id);
-        authorEntity.Property(book => book.Birthday);
-        authorEntity.Property(book => book.CreatedAt);
-        authorEntity.Property(book => book.FirstName);
-        authorEntity.Property(book => book.LastName);
-        authorEntity.Property(book => book.OrganizationId);
-        authorEntity.Property(book => book.ModifiedAt);
-        authorEntity.Property(book => book.ModifiedBy);
-        authorEntity.ContainsMany(author => author.Books);
-        var authorEntitySet = modelBuilder.EntitySet<Author>("Authors");
-
-        var bookEntity = modelBuilder.EntityType<Book>();
-        bookEntity.HasKey(book => book.Id);
-        bookEntity.Property(book => book.AuthorId);
-        bookEntity.Property(book => book.CreatedAt);
-        bookEntity.Property(book => book.DatePublished);
-        bookEntity.Property(book => book.ModifiedAt);
-        bookEntity.Property(book => book.ModifiedBy);
-        bookEntity.Property(book => book.Price);
-        bookEntity.Property(book => book.Title);
-        bookEntity.ContainsRequired(book => book.Author);
-        var bookEntitySet = modelBuilder.EntitySet<Book>("Books");
-
-        builder.Services.AddControllers().AddOData(
-            options => options
-                .Count()
-                .Expand()
-                .Filter()
-                .OrderBy()
-                .Select()
-                .SetMaxTop(20)
-                .AddRouteComponents("v1", modelBuilder.GetEdmModel(), services =>
-                {
-                    // OData seems to have its own container.
-                    // Register services here that are used in overridden OData implementations.
-                    services.AddSingleton<ODataResourceSerializer, AuditingODataResourceSerializer>();
-                    services.AddHttpContextAccessor();
-                }));
+        builder.AddOData();
     }
 
     private static void ConfigureApplicationServices(WebApplicationBuilder builder)
