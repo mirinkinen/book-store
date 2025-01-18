@@ -7,12 +7,12 @@ namespace Cataloging.Requests.Authors.Domain;
 
 public class Author : Entity
 {
-    public DateTime Birthday { get; protected set; }
-    public IReadOnlyList<Book> Books { get; protected set; } = new List<Book>();
-    public string FirstName { get; protected set; }
+    public DateTime Birthday { get; set; }
+    public IReadOnlyList<Book> Books { get; set; } = new List<Book>();
+    public string FirstName { get; set; }
 
-    public string LastName { get; protected set; }
-    public Guid OrganizationId { get; protected set; }
+    public string LastName { get; set; }
+    public Guid OrganizationId { get; set; }
 
     [Obsolete("Only for serialization", true)]
     public Author()

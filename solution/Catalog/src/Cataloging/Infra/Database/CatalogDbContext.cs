@@ -26,6 +26,8 @@ public class CatalogDbContext : DbContext
 
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
     {
+        var now = DateTime.Now;
+        
         var entities = ChangeTracker
             .Entries<Entity>()
             .Where(e => e.State == EntityState.Added || e.State == EntityState.Deleted || e.State == EntityState.Modified);
@@ -34,6 +36,7 @@ public class CatalogDbContext : DbContext
         foreach (var entityEntry in entities)
         {
             entityEntry.Entity.ModifiedBy = user.Id;
+            entityEntry.Entity.ModifiedAt = now;
         }
 
         return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
