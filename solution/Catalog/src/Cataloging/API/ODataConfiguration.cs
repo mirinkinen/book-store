@@ -77,7 +77,7 @@ internal static class ODataConfiguration
 
         return modelBuilder.GetEdmModel();
     }
-
+    
     private static IEdmModel GetEdmModelV2()
     {
         var modelBuilder = new ODataConventionModelBuilder();
@@ -85,9 +85,11 @@ internal static class ODataConfiguration
         var authorEntity = modelBuilder.EntityType<Author>();
         authorEntity.HasKey(e => e.Id);
         authorEntity.Property(e => e.Birthday);
+        authorEntity.Ignore(e => e.CreatedAt);
         authorEntity.Property(e => e.FirstName);
         authorEntity.Property(e => e.LastName);
         authorEntity.Property(e => e.OrganizationId);
+        authorEntity.Ignore(e => e.ModifiedAt);
         authorEntity.Ignore(e => e.ModifiedBy);
         authorEntity.ContainsMany(e => e.Books);
         var authorEntitySet = modelBuilder.EntitySet<Author>("Authors");
@@ -95,10 +97,12 @@ internal static class ODataConfiguration
         var bookEntity = modelBuilder.EntityType<Book>();
         bookEntity.HasKey(e => e.Id);
         bookEntity.Property(e => e.AuthorId);
+        bookEntity.Ignore(e => e.CreatedAt);
         bookEntity.Property(e => e.DatePublished);
-        bookEntity.Property(e => e.Title);
-        bookEntity.Property(e => e.Price);
+        bookEntity.Ignore(e => e.ModifiedAt);
         bookEntity.Ignore(e => e.ModifiedBy);
+        bookEntity.Property(e => e.Price);
+        bookEntity.Property(e => e.Title);
         bookEntity.ContainsRequired(e => e.Author);
         var bookEntitySet = modelBuilder.EntitySet<Book>("Books");
 

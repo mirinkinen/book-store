@@ -1,4 +1,5 @@
 ﻿using Cataloging.Application;
+using Cataloging.Requests.Authors.API;
 using Cataloging.Requests.Books.Application.GetBookById;
 using Cataloging.Requests.Books.Application.GetBooks;
 using Cataloging.Requests.Books.Domain;
@@ -24,10 +25,21 @@ public class BooksController : ApiODataController
     }
 
     [HttpGet("v1/books")]
-    [HttpGet("v2/books")]
     [HttpGet("v1/books/$count")]
     [EnableQuery(PageSize = 20)]
-    public async Task<IQueryable<Book>> Get([FromServices] IMessageBus bus, [FromServices] IQueryAuthorizer queryAuthorizer)
+    [Produces<BookV1>]
+    public async Task<IQueryable<Book>> GetV1([FromServices] IMessageBus bus, [FromServices] IQueryAuthorizer queryAuthorizer)
+    {
+        var query = new GetBooksQuery(_userService.GetUser(), queryAuthorizer);
+        var queryable = await bus.InvokeAsync<QueryableResponse<Book>>(query);
+
+        return queryable.Query;
+    }
+    
+    [HttpGet("v2/books")]
+    [EnableQuery(PageSize = 20)]
+    [Produces<BookV2>]
+    public async Task<IQueryable<Book>> GetV2([FromServices] IMessageBus bus, [FromServices] IQueryAuthorizer queryAuthorizer)
     {
         var query = new GetBooksQuery(_userService.GetUser(), queryAuthorizer);
         var queryable = await bus.InvokeAsync<QueryableResponse<Book>>(query);

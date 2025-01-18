@@ -110,14 +110,14 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/v1/Books/90e02c36-f8f8-49ac-8c2e-22baf7258824",
+									"raw": "{{baseUrl}}/v1/Books/9f3957e7-cc08-4338-ae9f-4279c18687fc",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"v1",
 										"Books",
-										"90e02c36-f8f8-49ac-8c2e-22baf7258824"
+										"9f3957e7-cc08-4338-ae9f-4279c18687fc"
 									]
 								}
 							},
@@ -134,14 +134,14 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/v1/Books/90e02c36-f8f8-49ac-8c2e-22baf7258824?$expand=author",
+									"raw": "{{baseUrl}}/v1/Books/9f3957e7-cc08-4338-ae9f-4279c18687fc?$expand=author",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"v1",
 										"Books",
-										"90e02c36-f8f8-49ac-8c2e-22baf7258824"
+										"9f3957e7-cc08-4338-ae9f-4279c18687fc"
 									],
 									"query": [
 										{
