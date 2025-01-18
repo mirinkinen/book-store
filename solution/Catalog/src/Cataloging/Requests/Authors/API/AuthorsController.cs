@@ -1,5 +1,4 @@
 ﻿using Cataloging.Application;
-using Cataloging.Requests.Authors.Application;
 using Cataloging.Requests.Authors.Application.AddAuthor;
 using Cataloging.Requests.Authors.Application.DeleteAuthor;
 using Cataloging.Requests.Authors.Application.GetAuthorById;
@@ -11,6 +10,7 @@ using Cataloging.Requests.Books.Domain;
 using Common.Application;
 using Common.Application.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Deltas;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
@@ -69,10 +69,26 @@ public class AuthorsController : ODataController
         return bus.InvokeAsync<Author>(command);
     }
 
-    public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] UpdateAuthorDto dto,
+    public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] Author dto, [FromServices] IMessageBus bus)
+    {
+        var command = new UpdateAuthorCommand(key, dto, _userService.GetUser());
+
+        var author = await bus.InvokeAsync<Author?>(command);
+
+        if (author == null)
+        {
+            return NotFound();
+        }
+
+        return Updated(author);
+
+        return Ok();
+    }
+
+    public async Task<IActionResult> Patch([FromRoute] Guid key, [FromBody] Delta<Author> delta,
         [FromServices] IMessageBus bus)
     {
-        var command = new UpdateAuthorCommand(key, dto.Firstname, dto.Lastname, dto.Birthday, _userService.GetUser());
+        var command = new PatchAuthorCommand(key, delta, _userService.GetUser());
 
         var author = await bus.InvokeAsync<Author?>(command);
 

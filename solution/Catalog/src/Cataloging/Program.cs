@@ -2,6 +2,7 @@ using Cataloging;
 using Cataloging.API;
 using Cataloging.Schema;
 using Common.API.Auditing;
+using Microsoft.AspNetCore.OData;
 using Oakton;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,7 @@ app.UseGraphQL<CatalogSchema>();
 app.UseGraphQLPlayground();
 app.UseGraphQLGraphiQL();
 app.UseGraphQLAltair();
+app.UseODataRouteDebug();
 
 // Opt into using Oakton for command parsing
 await app.RunOaktonCommands(args);

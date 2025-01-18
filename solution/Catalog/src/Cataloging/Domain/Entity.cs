@@ -7,11 +7,11 @@ namespace Cataloging.Domain;
 /// </summary>
 public abstract class Entity : IIdentifiable, ITimestamped
 {
-    public Guid Id { get; private set; }
+    public Guid Id { get; protected set; }
 
-    public DateTime CreatedAt { get; private set; }
+    public DateTime CreatedAt { get; protected set; }
 
-    public DateTime ModifiedAt { get; private set; }
+    public DateTime ModifiedAt { get; protected set; }
 
     /// <summary>
     /// ModifiedBy is managed at infra layer to keep domain logic cleaner.

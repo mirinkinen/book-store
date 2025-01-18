@@ -1,17 +1,23 @@
 ﻿using Cataloging.Domain;
 using Cataloging.Requests.Books.Domain;
 using Common.Domain;
+using Microsoft.AspNetCore.OData.Deltas;
 
 namespace Cataloging.Requests.Authors.Domain;
 
 public class Author : Entity
 {
-    public DateTime Birthday { get; private set; }
-    public IReadOnlyList<Book> Books { get; private set; } = new List<Book>();
-    public string FirstName { get; private set; }
+    public DateTime Birthday { get; protected set; }
+    public IReadOnlyList<Book> Books { get; protected set; } = new List<Book>();
+    public string FirstName { get; protected set; }
 
-    public string LastName { get; private set; }
-    public Guid OrganizationId { get; private set; }
+    public string LastName { get; protected set; }
+    public Guid OrganizationId { get; protected set; }
+
+    [Obsolete("Only for serialization", true)]
+    public Author()
+    {
+    }
 
     public Author(string firstName, string lastName, DateTime birthday, Guid organizationId)
     {
@@ -40,5 +46,10 @@ public class Author : Entity
         FirstName = firstName;
         LastName = lastName;
         Birthday = birthday;
+    }
+
+    public void Patch(Delta<Author> delta)
+    {
+        delta.Patch(this);
     }
 }

@@ -5,7 +5,6 @@ using Wolverine;
 
 namespace Cataloging.Requests.Ping.API;
 
-[ODataRouteComponent("v1")]
 public class PingsController : ODataController
 {
     [HttpPost]

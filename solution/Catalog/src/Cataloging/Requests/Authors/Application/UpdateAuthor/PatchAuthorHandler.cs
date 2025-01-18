@@ -1,27 +1,27 @@
-﻿using Cataloging.Requests.Authors.Domain;
+using Cataloging.Requests.Authors.Domain;
 using Common.Application.Auditing;
 using Common.Application.Authentication;
+using Microsoft.AspNetCore.OData.Deltas;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Requests.Authors.Application.UpdateAuthor;
 
-public record UpdateAuthorCommand(Guid AuthorId, Author Author, User Actor) : IAuthorCommand;
-public record AuthorUpdated(Guid AuthorId);
+public record PatchAuthorCommand(Guid AuthorId, Delta<Author> delta, User Actor) : 
+    IAuthorCommand;
 
-
-public class UpdateAuthorHandler
+public class PatchAuthorHandler
 {
     private readonly IAuthorRepository _authorRepository;
 
-    public UpdateAuthorHandler(IAuthorRepository authorRepository)
+    public PatchAuthorHandler(IAuthorRepository authorRepository)
     {
         _authorRepository = authorRepository;
     }
 
     [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
-    public async IAsyncEnumerable<object> Handle(UpdateAuthorCommand request, Author author)
+    public async IAsyncEnumerable<object> Handle(PatchAuthorCommand request, Author author)
     {
-        author.Update(request.Author.FirstName, request.Author.LastName, request.Author.Birthday);
+        author.Patch(request.delta);
 
         await _authorRepository.SaveChangesAsync();
 

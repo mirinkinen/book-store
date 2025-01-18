@@ -4,8 +4,8 @@ using Oakton;
 
 namespace Cataloging.Oakton;
 
-[Description("Initialize Catalog database with development time data", Name = "seed-dev-data")]
-public class DevelopmentDataCommand : OaktonCommand<NetCoreInput>
+[Description("Seed catalog database with development data", Name = "seed-dev-data")]
+public class SeedDevelopmentDataCommand : OaktonCommand<NetCoreInput>
 {
     public override bool Execute(NetCoreInput input)
     {
