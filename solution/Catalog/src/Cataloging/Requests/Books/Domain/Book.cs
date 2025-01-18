@@ -5,15 +5,15 @@ namespace Cataloging.Requests.Books.Domain;
 
 public class Book : Entity
 {
-    public string Title { get; protected set; }
+    public string Title { get; set; }
 
-    public DateTime DatePublished { get; protected set; }
+    public DateTime DatePublished { get; set; }
 
-    public Author Author { get; protected set; }
+    public Author Author { get; set; }
 
-    public Guid AuthorId { get; protected set; }
+    public Guid AuthorId { get; set; }
 
-    public decimal Price { get; protected set; }
+    public decimal Price { get; set; }
 
     [Obsolete("Only for serialization", true)]
     public Book()
