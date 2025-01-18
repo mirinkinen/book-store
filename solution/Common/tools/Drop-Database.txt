@@ -1,2 +1,2 @@
-dotnet ef database drop -s ..\..\Catalog\src\Cataloging.Api -p ..\..\Catalog\src\Cataloging.Infrastructure
-dotnet ef database drop -s ..\..\Order\src\Ordering.Api -p ..\..\Order\src\Ordering.Infrastructure
+dotnet ef database drop -s Catalog\src\Cataloging
+dotnet ef database drop -s Order\src\Ordering

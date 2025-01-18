@@ -56,13 +56,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{371356E1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\src\Common\Common.csproj", "{89375998-7D2F-496A-8034-EAAE406DEF96}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{4233635C-2908-4932-AA23-7F196BF1E71C}"
-	ProjectSection(SolutionItems) = preProject
-		Common\tools\Add-Migration.txt = Common\tools\Add-Migration.txt
-		Common\tools\Drop-Database.txt = Common\tools\Drop-Database.txt
-		Common\tools\Update-Database.txt = Common\tools\Update-Database.txt
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -110,7 +103,6 @@ Global
 		{3EB05445-5BEB-457B-B088-6EEFBFFAE4C1} = {542694A3-CDE3-4010-A050-3F67E0F89242}
 		{371356E1-63A9-44CD-9905-759B09717A1A} = {542694A3-CDE3-4010-A050-3F67E0F89242}
 		{89375998-7D2F-496A-8034-EAAE406DEF96} = {3EB05445-5BEB-457B-B088-6EEFBFFAE4C1}
-		{4233635C-2908-4932-AA23-7F196BF1E71C} = {542694A3-CDE3-4010-A050-3F67E0F89242}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2A7F10F0-64D8-490D-8D09-380016A23617}

@@ -2,18 +2,40 @@
 
 ## Local develoment
 
-The start database, move to path `solution` and run
+
+The start database, move to path `solution` folder. To start docker, run
 
 ```
 docker compose up -d
 ```
 
-in solution folder.
-
-### Data seeding
-
-Catalog component needs data seeding to work properly. To seed the data, move to path `solution/Catalog/src/Cataloging` and run
+To create databases, run
 
 ```
-dotnet run -- seed-dev-data
+dotnet ef database update -s Catalog\src\Cataloging
+dotnet ef database update -s Order\src\Ordering
+```
+
+To seed development data, run 
+
+```
+dotnet run --project Catalog/src/Cataloging -- seed-dev-data
+```
+
+## Database migrations
+
+To add new database migration, change the `<MigrationName>` and run
+
+```
+dotnet ef migrations add -c CatalogDbContext -s Catalog\src\Cataloging -o Database\Migrations\ <MigrationName>
+dotnet ef migrations add -c OrderDbContext -s Order\src\Ordering -o Database\Migrations\ <MigrationName>
+```
+
+## Cleaning up
+
+To drop databases, run
+
+```
+dotnet ef database drop -s Catalog\src\Cataloging
+dotnet ef database drop -s Order\src\Ordering
 ```
