@@ -16,6 +16,7 @@ internal static class ODataConfiguration
     {
         var edmModelV1 = GetEdmModelV1();
         var edmModelV2 = GetEdmModelV2();
+        var edmModelV3 = GetEdmModelV3();
 
         builder.Services.AddControllers().AddOData(options =>
         {
@@ -34,6 +35,11 @@ internal static class ODataConfiguration
                     services.AddHttpContextAccessor();
                 })
                 .AddRouteComponents("v2", edmModelV2, services =>
+                {
+                    services.AddSingleton<ODataResourceSerializer, AuditingODataResourceSerializer>();
+                    services.AddHttpContextAccessor();
+                })
+                .AddRouteComponents("v3", edmModelV3, services =>
                 {
                     services.AddSingleton<ODataResourceSerializer, AuditingODataResourceSerializer>();
                     services.AddHttpContextAccessor();
@@ -104,6 +110,25 @@ internal static class ODataConfiguration
         bookEntity.Property(e => e.Price);
         bookEntity.Property(e => e.Title);
         bookEntity.ContainsRequired(e => e.Author);
+        var bookEntitySet = modelBuilder.EntitySet<Book>("Books");
+
+        return modelBuilder.GetEdmModel();
+    }
+    
+    private static IEdmModel GetEdmModelV3()
+    {
+        var modelBuilder = new ODataConventionModelBuilder();
+        
+        var bookEntity = modelBuilder.EntityType<Book>();
+        bookEntity.HasKey(e => e.Id);
+        bookEntity.Property(e => e.AuthorId);
+        bookEntity.Ignore(e => e.CreatedAt);
+        bookEntity.Property(e => e.DatePublished);
+        bookEntity.Ignore(e => e.ModifiedAt);
+        bookEntity.Ignore(e => e.ModifiedBy);
+        bookEntity.Property(e => e.Price);
+        bookEntity.Property(e => e.Title);
+        bookEntity.Ignore(e => e.Author);
         var bookEntitySet = modelBuilder.EntitySet<Book>("Books");
 
         return modelBuilder.GetEdmModel();

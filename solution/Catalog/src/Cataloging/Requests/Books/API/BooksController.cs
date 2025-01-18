@@ -27,7 +27,7 @@ public class BooksController : ApiODataController
     [HttpGet("v1/books")]
     [HttpGet("v1/books/$count")]
     [EnableQuery(PageSize = 20)]
-    [Produces<BookV1>]
+    [Produces<List<BookV1>>]
     public async Task<IQueryable<Book>> GetV1([FromServices] IMessageBus bus, [FromServices] IQueryAuthorizer queryAuthorizer)
     {
         var query = new GetBooksQuery(_userService.GetUser(), queryAuthorizer);
@@ -38,8 +38,19 @@ public class BooksController : ApiODataController
     
     [HttpGet("v2/books")]
     [EnableQuery(PageSize = 20)]
-    [Produces<BookV2>]
+    [Produces<List<BookV2>>]
     public async Task<IQueryable<Book>> GetV2([FromServices] IMessageBus bus, [FromServices] IQueryAuthorizer queryAuthorizer)
+    {
+        var query = new GetBooksQuery(_userService.GetUser(), queryAuthorizer);
+        var queryable = await bus.InvokeAsync<QueryableResponse<Book>>(query);
+
+        return queryable.Query;
+    }
+    
+    [HttpGet("v3/books")]
+    [EnableQuery(PageSize = 20)]
+    [Produces<List<BookV3>>]
+    public async Task<IQueryable<Book>> GetV3([FromServices] IMessageBus bus, [FromServices] IQueryAuthorizer queryAuthorizer)
     {
         var query = new GetBooksQuery(_userService.GetUser(), queryAuthorizer);
         var queryable = await bus.InvokeAsync<QueryableResponse<Book>>(query);
@@ -48,9 +59,33 @@ public class BooksController : ApiODataController
     }
 
     [HttpGet("v1/books/{key}")]
+    [EnableQuery]
+    [Produces<BookV1>]
+    public async Task<IActionResult> GetV1([FromRoute] Guid key, [FromServices] IMessageBus bus,
+        [FromServices] IQueryAuthorizer queryAuthorizer)
+    {
+        var query = new GetBookByIdQuery(key, queryAuthorizer);
+        var queryable = await bus.InvokeAsync<QueryableResponse<Book>>(query);
+
+        return Ok(SingleResult.Create(queryable.Query));
+    }
+    
     [HttpGet("v2/books/{key}")]
     [EnableQuery]
-    public async Task<IActionResult> Get([FromRoute] Guid key, [FromServices] IMessageBus bus,
+    [Produces<BookV2>]
+    public async Task<IActionResult> GetV2([FromRoute] Guid key, [FromServices] IMessageBus bus,
+        [FromServices] IQueryAuthorizer queryAuthorizer)
+    {
+        var query = new GetBookByIdQuery(key, queryAuthorizer);
+        var queryable = await bus.InvokeAsync<QueryableResponse<Book>>(query);
+
+        return Ok(SingleResult.Create(queryable.Query));
+    }
+    
+    [HttpGet("v3/books/{key}")]
+    [EnableQuery]
+    [Produces<BookV3>]
+    public async Task<IActionResult> GetV3([FromRoute] Guid key, [FromServices] IMessageBus bus,
         [FromServices] IQueryAuthorizer queryAuthorizer)
     {
         var query = new GetBookByIdQuery(key, queryAuthorizer);

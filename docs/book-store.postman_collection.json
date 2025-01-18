@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1e3dbb9f-525d-4639-9c81-0ee60dfbdc24",
+		"_postman_id": "bf543163-8846-4353-9517-52a7cb186258",
 		"name": "Book store",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "7575247"
@@ -124,7 +124,36 @@
 							"response": []
 						},
 						{
-							"name": "book by ID with author",
+							"name": "books by author ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json;odata.metadata=minimal;odata.streaming=true"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/Books?filter=authorId eq 8e6a9434-87f5-46b2-a6c3-522dc35d8eef",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"Books"
+									],
+									"query": [
+										{
+											"key": "filter",
+											"value": "authorId eq 8e6a9434-87f5-46b2-a6c3-522dc35d8eef"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "v1 - book by ID with author",
 							"request": {
 								"method": "GET",
 								"header": [
@@ -148,6 +177,60 @@
 											"key": "$expand",
 											"value": "author"
 										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "v2 - book by ID with author Copy",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json;odata.metadata=minimal;odata.streaming=true"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v2/Books/9f3957e7-cc08-4338-ae9f-4279c18687fc?$expand=author",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v2",
+										"Books",
+										"9f3957e7-cc08-4338-ae9f-4279c18687fc"
+									],
+									"query": [
+										{
+											"key": "$expand",
+											"value": "author"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "v3 - book by ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json;odata.metadata=minimal;odata.streaming=true"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v3/Books/9f3957e7-cc08-4338-ae9f-4279c18687fc",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v3",
+										"Books",
+										"9f3957e7-cc08-4338-ae9f-4279c18687fc"
 									]
 								}
 							},
@@ -346,6 +429,31 @@
 							"response": []
 						},
 						{
+							"name": "books from author by ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json;odata.metadata=minimal;odata.streaming=true"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/v1/Authors/8e6a9434-87f5-46b2-a6c3-522dc35d8eef/Books",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"Authors",
+										"8e6a9434-87f5-46b2-a6c3-522dc35d8eef",
+										"Books"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "author by by ID",
 							"request": {
 								"method": "PUT",
@@ -362,7 +470,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{    \r\n    \"FirstName\": \"Stephen\",\r\n    \"LastName\": \"King\"\r\n}",
+									"raw": "{    \r\n    \"FirstName\": \"Stephen\",\r\n    \"LastName\": \"King2\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -627,6 +735,29 @@
 							],
 							"path": [
 								"v2",
+								"$metadata"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "v3/$metadata",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json;odata.metadata=minimal;odata.streaming=true"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/v3/$metadata",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v3",
 								"$metadata"
 							]
 						}

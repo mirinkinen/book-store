@@ -5,6 +5,7 @@ using Cataloging.Requests.Authors.Application.GetAuthorById;
 using Cataloging.Requests.Authors.Application.GetAuthors;
 using Cataloging.Requests.Authors.Application.UpdateAuthor;
 using Cataloging.Requests.Authors.Domain;
+using Cataloging.Requests.Books.API;
 using Cataloging.Requests.Books.Application.GetBooksFromAuthor;
 using Cataloging.Requests.Books.Domain;
 using Common.API;
@@ -32,6 +33,7 @@ public class AuthorsController : ApiODataController
     [HttpGet("v1/authors")]
     [HttpGet("v1/authors/$count")]
     [EnableQuery(PageSize = 20)]
+    [Produces<List<AuthorV1>>]
     public async Task<IQueryable<Author>> GetAuthors([FromServices] IMessageBus bus,
         [FromServices] IQueryAuthorizer queryAuthorizer)
     {
@@ -43,6 +45,7 @@ public class AuthorsController : ApiODataController
 
     [HttpGet("v1/authors/{key}")]
     [EnableQuery]
+    [Produces<AuthorV1>]
     public async Task<IActionResult> Get([FromRoute] Guid key, [FromServices] IMessageBus bus,
         [FromServices] IQueryAuthorizer queryAuthorizer)
     {
@@ -54,6 +57,7 @@ public class AuthorsController : ApiODataController
 
     [HttpGet("v1/authors/{key}/books")]
     [EnableQuery(PageSize = 20)]
+    [Produces<List<BookV1>>]
     public async Task<IQueryable<Book>> GetBooksFromAuthor([FromRoute] Guid key, [FromServices] IMessageBus bus,
         [FromServices] IQueryAuthorizer queryAuthorizer)
     {
