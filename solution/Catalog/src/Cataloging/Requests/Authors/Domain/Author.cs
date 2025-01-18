@@ -10,7 +10,6 @@ public class Author : Entity
     public DateTime Birthday { get; set; }
     public IReadOnlyList<Book> Books { get; set; } = new List<Book>();
     public string FirstName { get; set; }
-
     public string LastName { get; set; }
     public Guid OrganizationId { get; set; }
 
@@ -45,7 +44,7 @@ public class Author : Entity
 
         FirstName = firstName;
         LastName = lastName;
-        Birthday = birthday;
+        Birthday = birthday.Date;
     }
 
     public void Patch(Delta<Author> delta)

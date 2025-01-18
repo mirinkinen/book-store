@@ -470,7 +470,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{    \r\n    \"FirstName\": \"Stephen\",\r\n    \"LastName\": \"King2\"\r\n}",
+									"raw": "{    \r\n    \"FirstName\": \"Stephen\",\r\n    \"LastName\": \"King\",\r\n    \"Birthday\": \"1947-09-21\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -673,7 +673,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"firstname\": \"New\"\r\n}",
+									"raw": "{\r\n  \"FirstName\": \"Patched first name\",\r\n  \"LastName\": \"Patched last name\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -681,13 +681,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/v1/Authors(8e6a9434-87f5-46b2-a6c3-522dc35d8eef)",
+									"raw": "{{baseUrl}}/v1/Authors/8e6a9434-87f5-46b2-a6c3-522dc35d8eef",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"v1",
-										"Authors(8e6a9434-87f5-46b2-a6c3-522dc35d8eef)"
+										"Authors",
+										"8e6a9434-87f5-46b2-a6c3-522dc35d8eef"
 									]
 								}
 							},
