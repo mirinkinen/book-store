@@ -110,13 +110,14 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/v1/Books(A125C5BD-4F8E-4794-9C36-76E401FB4F24)",
+									"raw": "{{baseUrl}}/v1/Books/90e02c36-f8f8-49ac-8c2e-22baf7258824",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"v1",
-										"Books(A125C5BD-4F8E-4794-9C36-76E401FB4F24)"
+										"Books",
+										"90e02c36-f8f8-49ac-8c2e-22baf7258824"
 									]
 								}
 							},
@@ -133,13 +134,14 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/v1/Books(A125C5BD-4F8E-4794-9C36-76E401FB4F24)?$expand=author",
+									"raw": "{{baseUrl}}/v1/Books/90e02c36-f8f8-49ac-8c2e-22baf7258824?$expand=author",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"v1",
-										"Books(A125C5BD-4F8E-4794-9C36-76E401FB4F24)"
+										"Books",
+										"90e02c36-f8f8-49ac-8c2e-22baf7258824"
 									],
 									"query": [
 										{
@@ -330,13 +332,14 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/v1/Authors(8e6a9434-87f5-46b2-a6c3-522dc35d8eef)",
+									"raw": "{{baseUrl}}/v1/Authors/8e6a9434-87f5-46b2-a6c3-522dc35d8eef",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"v1",
-										"Authors(8e6a9434-87f5-46b2-a6c3-522dc35d8eef)"
+										"Authors",
+										"8e6a9434-87f5-46b2-a6c3-522dc35d8eef"
 									]
 								}
 							},
@@ -350,11 +353,16 @@
 									{
 										"key": "Accept",
 										"value": "application/json;odata.metadata=minimal;odata.streaming=true"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"Birthday\": \"1947-09-21T00:00:00+03:00\",\r\n    \"FirstName\": \"Stephen\",\r\n    \"LastName\": \"King\"\r\n}",
+									"raw": "{    \r\n    \"FirstName\": \"Stephen\",\r\n    \"LastName\": \"King\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -362,13 +370,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/v1/Authors(8e6a9434-87f5-46b2-a6c3-522dc35d8eef)",
+									"raw": "{{baseUrl}}/v1/Authors/8e6a9434-87f5-46b2-a6c3-522dc35d8eef",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"v1",
-										"Authors(8e6a9434-87f5-46b2-a6c3-522dc35d8eef)"
+										"Authors",
+										"8e6a9434-87f5-46b2-a6c3-522dc35d8eef"
 									]
 								}
 							},
@@ -394,13 +403,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/v1/Authors(8e6a9434-87f5-46b2-a6c3-522dc35d8eef)",
+									"raw": "{{baseUrl}}/v1/Authors/8e6a9434-87f5-46b2-a6c3-522dc35d8eef",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"v1",
-										"Authors(8e6a9434-87f5-46b2-a6c3-522dc35d8eef)"
+										"Authors",
+										"8e6a9434-87f5-46b2-a6c3-522dc35d8eef"
 									]
 								}
 							},
@@ -536,23 +546,40 @@
 									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/v1/Authors?&$expand=Books($count=true;$top=0)",
+									"raw": "{{baseUrl}}/v1/Authors",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
 										"v1",
 										"Authors"
-									],
-									"query": [
-										{
-											"key": null,
-											"value": null
-										},
-										{
-											"key": "$expand",
-											"value": "Books($count=true;$top=0)"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "author",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"firstname\": \"New\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
 										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/v1/Authors(8e6a9434-87f5-46b2-a6c3-522dc35d8eef)",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"v1",
+										"Authors(8e6a9434-87f5-46b2-a6c3-522dc35d8eef)"
 									]
 								}
 							},
@@ -581,41 +608,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "Success",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/odata/$metadata",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"odata",
-										"$metadata"
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json;odata.metadata=minimal;odata.streaming=true"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"schemaElements\": [\n    {\n      \"schemaElementKind\": 5,\n      \"namespace\": \"mollit magna Excepteur\",\n      \"name\": \"aliquip si\"\n    },\n    {\n      \"schemaElementKind\": 2,\n      \"namespace\": \"cillum \",\n      \"name\": \"Duis nostrud aliquip occaecat\"\n    }\n  ],\n  \"vocabularyAnnotations\": [\n    {\n      \"qualifier\": \"consequat non labore\",\n      \"term\": {\n        \"type\": {\n          \"isNullable\": false,\n          \"definition\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"appliesTo\": \"nulla\",\n        \"defaultValue\": \"laboris sint con\",\n        \"schemaElementKind\": 5,\n        \"namespace\": \"amet proident qui dolore\",\n        \"name\": \"laborum et pariatur ut\"\n      },\n      \"target\": {},\n      \"value\": {\n        \"expressionKind\": 24\n      }\n    },\n    {\n      \"qualifier\": \"aliquip\",\n      \"term\": {\n        \"type\": {\n          \"isNullable\": false,\n          \"definition\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        },\n        \"appliesTo\": \"consectetur sit\",\n        \"defaultValue\": \"laborum\",\n        \"schemaElementKind\": 5,\n        \"namespace\": \"ea amet\",\n        \"name\": \"dolore aute\"\n      },\n      \"target\": {},\n      \"value\": {\n        \"expressionKind\": 5\n      }\n    }\n  ],\n  \"referencedModels\": [\n    {\n      \"value\": \"<Circular reference to #/components/schemas/IEdmModel detected>\"\n    },\n    {\n      \"value\": \"<Circular reference to #/components/schemas/IEdmModel detected>\"\n    }\n  ],\n  \"declaredNamespaces\": [\n    \"Excepteur adipisicing\",\n    \"anim dolor\"\n  ],\n  \"directValueAnnotationsManager\": {},\n  \"entityContainer\": {\n    \"elements\": [\n      {\n        \"containerElementKind\": 1,\n        \"container\": {\n          \"value\": \"<Circular reference to #/components/schemas/IEdmEntityContainer detected>\"\n        },\n        \"name\": \"consectetur ut\"\n      },\n      {\n        \"containerElementKind\": 4,\n        \"container\": {\n          \"value\": \"<Circular reference to #/components/schemas/IEdmEntityContainer detected>\"\n        },\n        \"name\": \"laborum mollit\"\n      }\n    ],\n    \"schemaElementKind\": 0,\n    \"namespace\": \"voluptate\",\n    \"name\": \"laboris officia eu\"\n  }\n}"
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "v2/$metadata",
@@ -635,6 +628,28 @@
 							"path": [
 								"v2",
 								"$metadata"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "$odata",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/$odata",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"$odata"
 							]
 						}
 					},

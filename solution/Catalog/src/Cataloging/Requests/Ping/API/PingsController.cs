@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Routing.Attributes;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Wolverine;
 
 namespace Cataloging.Requests.Ping.API;
 
-public class PingsController : ODataController
+[ApiController]
+public class PingsController : ControllerBase
 {
     [HttpPost]
     [Route("ping")]

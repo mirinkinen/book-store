@@ -7,22 +7,20 @@ using Cataloging.Requests.Authors.Application.UpdateAuthor;
 using Cataloging.Requests.Authors.Domain;
 using Cataloging.Requests.Books.Application.GetBooksFromAuthor;
 using Cataloging.Requests.Books.Domain;
+using Common.API;
 using Common.Application;
 using Common.Application.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
-using Microsoft.AspNetCore.OData.Routing.Attributes;
-using Microsoft.AspNetCore.OData.Routing.Controllers;
 using System.Diagnostics.CodeAnalysis;
 using Wolverine;
 
 namespace Cataloging.Requests.Authors.API;
 
-[ODataRouteComponent("v1")]
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
-public class AuthorsController : ODataController
+public class AuthorsController : ApiODataController
 {
     private readonly IUserService _userService;
 
@@ -31,8 +29,10 @@ public class AuthorsController : ODataController
         _userService = userService;
     }
 
+    [HttpGet("v1/authors")]
+    [HttpGet("v1/authors/$count")]
     [EnableQuery(PageSize = 20)]
-    public async Task<IQueryable<Author>> Get([FromServices] IMessageBus bus,
+    public async Task<IQueryable<Author>> GetAuthors([FromServices] IMessageBus bus,
         [FromServices] IQueryAuthorizer queryAuthorizer)
     {
         var query = new GetAuthorsQuery(_userService.GetUser(), queryAuthorizer);
@@ -41,6 +41,7 @@ public class AuthorsController : ODataController
         return queryable.Query;
     }
 
+    [HttpGet("v1/authors/{key}")]
     [EnableQuery]
     public async Task<IActionResult> Get([FromRoute] Guid key, [FromServices] IMessageBus bus,
         [FromServices] IQueryAuthorizer queryAuthorizer)
@@ -51,6 +52,7 @@ public class AuthorsController : ODataController
         return Ok(SingleResult.Create(queryable.Query));
     }
 
+    [HttpGet("v1/authors/{key}/books")]
     [EnableQuery(PageSize = 20)]
     public async Task<IQueryable<Book>> GetBooksFromAuthor([FromRoute] Guid key, [FromServices] IMessageBus bus,
         [FromServices] IQueryAuthorizer queryAuthorizer)
@@ -61,6 +63,7 @@ public class AuthorsController : ODataController
         return queryable.Query;
     }
 
+    [HttpPost("v1/authors")]
     public Task<Author> Post([FromBody] AddAuthorDto addAuthorDto, [FromServices] IMessageBus bus)
     {
         var command = new AddAuthorCommand(addAuthorDto.Firstname, addAuthorDto.Lastname, addAuthorDto.Birthday,
@@ -69,6 +72,7 @@ public class AuthorsController : ODataController
         return bus.InvokeAsync<Author>(command);
     }
 
+    [HttpPut("v1/authors/{key}")]
     public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] Author dto, [FromServices] IMessageBus bus)
     {
         var command = new UpdateAuthorCommand(key, dto, _userService.GetUser());
@@ -85,6 +89,7 @@ public class AuthorsController : ODataController
         return Ok();
     }
 
+    [HttpPatch("v1/authors/{key}")]
     public async Task<IActionResult> Patch([FromRoute] Guid key, [FromBody] Delta<Author> delta,
         [FromServices] IMessageBus bus)
     {
@@ -100,6 +105,7 @@ public class AuthorsController : ODataController
         return Updated(author);
     }
 
+    [HttpDelete("v1/authors/{key}")]
     public async Task<IActionResult> Delete([FromRoute] Guid key, [FromServices] IMessageBus bus)
     {
         var command = new DeleteAuthorCommand(key, _userService.GetUser());

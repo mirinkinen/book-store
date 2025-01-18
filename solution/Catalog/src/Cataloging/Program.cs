@@ -1,4 +1,3 @@
-using Cataloging;
 using Cataloging.API;
 using Cataloging.Schema;
 using Common.API.Auditing;
@@ -29,7 +28,11 @@ app.UseGraphQL<CatalogSchema>();
 app.UseGraphQLPlayground();
 app.UseGraphQLGraphiQL();
 app.UseGraphQLAltair();
-app.UseODataRouteDebug();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseODataRouteDebug();
+}
 
 // Opt into using Oakton for command parsing
 await app.RunOaktonCommands(args);

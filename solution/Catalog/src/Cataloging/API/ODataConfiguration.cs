@@ -1,8 +1,10 @@
 using Cataloging.Requests.Authors.Domain;
 using Cataloging.Requests.Books.Domain;
 using Common.API.Auditing;
+using JasperFx.Core;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
+using Microsoft.AspNetCore.OData.Routing.Conventions;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
 
@@ -15,8 +17,9 @@ internal static class ODataConfiguration
         var edmModelV1 = GetEdmModelV1();
         var edmModelV2 = GetEdmModelV2();
 
-        builder.Services.AddControllers().AddOData(
-            options => options
+        builder.Services.AddControllers().AddOData(options =>
+        {
+            options
                 .Count()
                 .Expand()
                 .Filter()
@@ -34,7 +37,15 @@ internal static class ODataConfiguration
                 {
                     services.AddSingleton<ODataResourceSerializer, AuditingODataResourceSerializer>();
                     services.AddHttpContextAccessor();
-                }));
+                });
+
+            // Limit routing conventions.
+            var conventions = options.Conventions
+                .Where(c => c is AttributeRoutingConvention || c is MetadataRoutingConvention)
+                .ToList();
+            options.Conventions.Clear();
+            options.Conventions.AddRange(conventions);
+        });
     }
 
     private static IEdmModel GetEdmModelV1()
