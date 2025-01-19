@@ -1,4 +1,5 @@
-﻿using Cataloging.Application;
+﻿using Cataloging.API;
+using Cataloging.Application;
 using Cataloging.Infra.Database;
 using Cataloging.Infra.Database.Setup;
 using Cataloging.Infra.Queries;
@@ -10,7 +11,7 @@ using Cataloging.Requests.Authors.Infra;
 using Cataloging.Requests.Books.Application.GetBooks;
 using Cataloging.Schema;
 using Cataloging.Schema.Types;
-using Common.API;
+using Common;
 using Common.API.Auditing;
 using Common.Application;
 using Common.Application.Messages;
@@ -18,13 +19,12 @@ using Common.Infra;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using GraphQL;
-using Microsoft.AspNetCore.Components.Forms;
 using Oakton;
 using Oakton.Resources;
 using Wolverine;
 using Wolverine.Transports.Tcp;
 
-namespace Cataloging.API;
+namespace Cataloging;
 
 public static class ServiceRegistrar
 {

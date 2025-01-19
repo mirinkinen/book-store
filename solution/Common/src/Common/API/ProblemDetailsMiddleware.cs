@@ -1,5 +1,8 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+namespace Common.API;
 
 public class ProblemDetailsMiddleware
 {
