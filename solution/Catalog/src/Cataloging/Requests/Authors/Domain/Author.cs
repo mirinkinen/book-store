@@ -2,20 +2,28 @@
 using Cataloging.Requests.Books.Domain;
 using Common.Domain;
 using Microsoft.AspNetCore.OData.Deltas;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Requests.Authors.Domain;
 
 public class Author : Entity
 {
-    public required DateTime Birthday { get; set; }
+    [Required]
+    [DataType(DataType.Date)]
+    public required DateTime? Birthday { get; set; }
 
     public IReadOnlyList<Book> Books { get; set; } = new List<Book>();
 
+    [Required]
+    [StringLength(32)]
     public required string FirstName { get; set; }
 
+    [Required]
+    [StringLength(32)]
     public required string LastName { get; set; }
 
+    [Required]
     public Guid OrganizationId { get; set; }
 
     [Obsolete("Only for serialization", true)]
@@ -24,7 +32,7 @@ public class Author : Entity
     }
 
     [SetsRequiredMembers]
-    public Author(string firstName, string lastName, DateTime birthday, Guid organizationId)
+    public Author(string firstName, string lastName, DateTime? birthday, Guid organizationId)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -56,7 +64,7 @@ public class Author : Entity
         Validate();
     }
 
-    public void Update(string firstName, string lastName, DateTime birthday)
+    public void Update(string firstName, string lastName, DateTime? birthday)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -77,7 +85,12 @@ public class Author : Entity
             throw new DomainRuleException($"'{nameof(LastName)}' cannot be null or whitespace.");
         }
 
-        if (Birthday == default)
+        if (Birthday is null)
+        {
+            throw new DomainRuleException($"'{nameof(Birthday)}' cannot be null.");
+        }
+        
+        if (Birthday == DateTime.MinValue)
         {
             throw new DomainRuleException($"'{nameof(Birthday)}' cannot be min value.");
         }

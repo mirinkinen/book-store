@@ -62,10 +62,7 @@ internal static class ODataConfiguration
         
         authorEntity.HasKey(author => author.Id);
         
-        var birthday = authorEntity.Property(e => e.Birthday);
-        birthday.IsRequired();
-        birthday.AsDate();
-        
+        authorEntity.Property(e => e.Birthday);
         authorEntity.Property(e => e.CreatedAt);
         authorEntity.Property(e => e.FirstName);
         authorEntity.Property(e => e.LastName);
