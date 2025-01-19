@@ -14,10 +14,8 @@ public class UpdateAuthorHandler
 {
     [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
     public static async IAsyncEnumerable<object> Handle(UpdateAuthorCommand request, Author author, IAuthorRepository authorRepository,
-        IValidator<PutAuthorDtoV1> authorPutValidator, IUserService userService)
+        IUserService userService)
     {
-        await authorPutValidator.ValidateAndThrowAsync(request.Dto);
-        
         var user = await userService.GetUser();
 
         author.Update(request.Dto.FirstName, request.Dto.LastName, request.Dto.Birthday);

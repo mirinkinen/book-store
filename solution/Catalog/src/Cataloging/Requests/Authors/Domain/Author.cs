@@ -1,8 +1,8 @@
 ﻿using Cataloging.Domain;
 using Cataloging.Requests.Books.Domain;
-using Common.Domain;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.OData.Deltas;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Requests.Authors.Domain;
@@ -68,34 +68,41 @@ public class Author : Entity
 
     private void Validate()
     {
+        var failures = new List<ValidationFailure>();
+        
         if (string.IsNullOrWhiteSpace(FirstName))
         {
-            throw new DomainRuleException($"'{nameof(FirstName)}' cannot be null or whitespace.");
+            failures.Add(new ValidationFailure(nameof(FirstName), $"'{nameof(FirstName)}' cannot be null or whitespace."));
         }
 
         if (string.IsNullOrWhiteSpace(LastName))
         {
-            throw new DomainRuleException($"'{nameof(LastName)}' cannot be null or whitespace.");
+            failures.Add(new ValidationFailure(nameof(LastName), $"'{nameof(LastName)}' cannot be null or whitespace."));
         }
 
         if (Birthday is null)
         {
-            throw new DomainRuleException($"'{nameof(Birthday)}' cannot be null.");
+            failures.Add(new ValidationFailure(nameof(Birthday), $"'{nameof(Birthday)}' cannot be null."));
         }
         
         if (Birthday == DateTime.MinValue)
         {
-            throw new DomainRuleException($"'{nameof(Birthday)}' cannot be min value.");
+            failures.Add(new ValidationFailure(nameof(Birthday), $"'{nameof(Birthday)}' cannot be min value."));
         }
 
         if (Birthday > DateTime.UtcNow)
         {
-            throw new DomainRuleException($"'{nameof(Birthday)}' cannot be in future.");
+            failures.Add(new ValidationFailure(nameof(Birthday), $"'{nameof(Birthday)}' cannot be in future."));
         }
 
         if (OrganizationId == Guid.Empty)
         {
-            throw new DomainRuleException("Empty organization ID not allowed.");
+            failures.Add(new ValidationFailure(nameof(OrganizationId), $"'{nameof(OrganizationId)}' cannot be empty."));
+        }
+
+        if (failures.Count != 0)
+        {
+            throw new ValidationException("Author validation failed.", failures);
         }
     }
 }
