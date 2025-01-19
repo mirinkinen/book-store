@@ -34,14 +34,14 @@ public partial class OrdersController : ODataController
     [EnableQuery(PageSize = 20)]
     public async Task<IQueryable<Order>> Get()
     {
-        var query = new GetOrdersQuery(await _userService.GetUser());
+        var query = new GetOrdersQuery();
         return await _bus.InvokeAsync<IQueryable<Order>>(query);
     }
 
     [EnableQuery]
     public async Task<IActionResult> Get([FromRoute] Guid key)
     {
-        var query = new GetOrderByIdQuery(key, await _userService.GetUser());
+        var query = new GetOrderByIdQuery(key);
         var orderQuery = await _bus.InvokeAsync<IQueryable<Order>>(query);
 
         return Ok(SingleResult.Create(orderQuery));

@@ -4,7 +4,7 @@ using Ordering.Requests.Orders.Domain.Orders;
 
 namespace Ordering.Requests.Orders.Application.GetOrders;
 
-public record GetOrdersQuery(User Actor);
+public record GetOrdersQuery();
 
 public class GetOrdersHandler
 {

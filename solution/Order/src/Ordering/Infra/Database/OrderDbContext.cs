@@ -27,6 +27,7 @@ public class OrderDbContext : DbContext
         var entities = ChangeTracker
             .Entries<ITimestamped>()
             .Where(e => e.State is EntityState.Added or EntityState.Deleted or EntityState.Modified);
+        
         var user = await _userService.GetUser();
 
         foreach (var entityEntry in entities)

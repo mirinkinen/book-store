@@ -30,7 +30,8 @@ public class CatalogDbContext : DbContext
         
         var entities = ChangeTracker
             .Entries<Entity>()
-            .Where(e => e.State == EntityState.Added || e.State == EntityState.Deleted || e.State == EntityState.Modified);
+            .Where(e => e.State is EntityState.Added or EntityState.Deleted or EntityState.Modified);
+        
         var user = await _userService.GetUser();
 
         foreach (var entityEntry in entities)

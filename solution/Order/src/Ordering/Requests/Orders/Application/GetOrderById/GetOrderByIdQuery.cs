@@ -4,7 +4,7 @@ using Ordering.Requests.Orders.Domain.Orders;
 
 namespace Ordering.Requests.Orders.Application.GetOrderById;
 
-public record GetOrderByIdQuery(Guid OrderId, User Actor);
+public record GetOrderByIdQuery(Guid OrderId);
 
 public class GetOrderByIdHandler
 {
