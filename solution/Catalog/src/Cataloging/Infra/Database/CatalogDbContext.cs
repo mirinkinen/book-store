@@ -24,14 +24,14 @@ public class CatalogDbContext : DbContext
         return SaveChangesAsync(acceptAllChangesOnSuccess).GetAwaiter().GetResult();
     }
 
-    public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+    public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
     {
         var now = DateTime.Now;
         
         var entities = ChangeTracker
             .Entries<Entity>()
             .Where(e => e.State == EntityState.Added || e.State == EntityState.Deleted || e.State == EntityState.Modified);
-        var user = _userService.GetUser();
+        var user = await _userService.GetUser();
 
         foreach (var entityEntry in entities)
         {
@@ -39,7 +39,7 @@ public class CatalogDbContext : DbContext
             entityEntry.Entity.ModifiedAt = now;
         }
 
-        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

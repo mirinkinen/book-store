@@ -9,9 +9,9 @@ public record GetAuthorsQuery(IQueryAuthorizer QueryAuthorizer);
 
 public static class GetAuthorsHandler
 {
-    public static QueryableResponse<Author> Handle(GetAuthorsQuery request)
+    public static async Task<QueryableResponse<Author>> Handle(GetAuthorsQuery request)
     {
         return new QueryableResponse<Author>(
-            request.QueryAuthorizer.GetAuthorizedEntities<Author>());
+            (await request.QueryAuthorizer.GetAuthorizedEntities<Author>()));
     }
 }

@@ -18,9 +18,9 @@ public class QueryAuthorizer : IQueryAuthorizer
         _userService = userService;
     }
 
-    public IQueryable<TEntity> GetAuthorizedEntities<TEntity>() where TEntity : Entity
+    public async Task<IQueryable<TEntity>> GetAuthorizedEntities<TEntity>() where TEntity : Entity
     {
-        var user = _userService.GetUser();
+        var user = await _userService.GetUser();
 
         if (typeof(TEntity) == typeof(Author))
         {

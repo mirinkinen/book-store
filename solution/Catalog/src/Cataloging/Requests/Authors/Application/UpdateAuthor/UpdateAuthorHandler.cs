@@ -18,7 +18,7 @@ public class UpdateAuthorHandler
     {
         await authorPutValidator.ValidateAndThrowAsync(request.Dto);
         
-        var user = userService.GetUser();
+        var user = await userService.GetUser();
 
         author.Update(request.Dto.FirstName, request.Dto.LastName, request.Dto.Birthday);
 

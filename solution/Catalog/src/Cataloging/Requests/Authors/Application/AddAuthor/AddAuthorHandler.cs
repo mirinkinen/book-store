@@ -16,7 +16,7 @@ public static class AddAuthorHandler
     public static async IAsyncEnumerable<object> Handle(AddAuthorCommand request, IAuthorRepository authorRepository, IUserService 
         userService)
     {
-        var user = userService.GetUser();
+        var user = await userService.GetUser();
         var author = new Author(request.Firstname, request.Lastname, request.Birthday, request.OrganizationId);
 
         authorRepository.AddAuthor(author);

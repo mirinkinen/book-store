@@ -22,19 +22,19 @@ public class OrderDbContext : DbContext
         return SaveChangesAsync(acceptAllChangesOnSuccess).GetAwaiter().GetResult();
     }
 
-    public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+    public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
     {
         var entities = ChangeTracker
             .Entries<ITimestamped>()
             .Where(e => e.State is EntityState.Added or EntityState.Deleted or EntityState.Modified);
-        var user = _userService.GetUser();
+        var user = await _userService.GetUser();
 
         foreach (var entityEntry in entities)
         {
             entityEntry.Entity.ModifiedBy = user.Id;
         }
 
-        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

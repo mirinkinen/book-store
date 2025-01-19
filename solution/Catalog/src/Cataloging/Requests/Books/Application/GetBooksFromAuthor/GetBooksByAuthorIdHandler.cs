@@ -9,9 +9,9 @@ public record GetBooksFromAuthorQuery(Guid AuthorId, IQueryAuthorizer QueryAutho
 
 public static class GetBooksFromAuthorHandler
 {
-    public static QueryableResponse<Book> Handle(GetBooksFromAuthorQuery request)
+    public static async Task<QueryableResponse<Book>> Handle(GetBooksFromAuthorQuery request)
     {
-        var query = request.QueryAuthorizer.GetAuthorizedEntities<Book>();
+        var query = await request.QueryAuthorizer.GetAuthorizedEntities<Book>();
         query = query.Where(b => b.AuthorId == request.AuthorId);
 
         return new QueryableResponse<Book>(query);

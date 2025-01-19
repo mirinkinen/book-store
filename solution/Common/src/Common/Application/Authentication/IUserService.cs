@@ -2,5 +2,5 @@
 
 public interface IUserService
 {
-    User GetUser();
+    Task<User> GetUser();
 }

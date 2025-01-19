@@ -15,7 +15,7 @@ public static class PatchAuthorHandler
     public static async IAsyncEnumerable<object> Handle(PatchAuthorCommand request, Author author, IAuthorRepository authorRepository, 
     IUserService userService)
     {
-        var user = userService.GetUser();
+        var user = await userService.GetUser();
         
         author.Patch(request.delta);
 

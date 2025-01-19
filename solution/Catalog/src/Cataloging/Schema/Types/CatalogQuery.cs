@@ -16,7 +16,7 @@ public class CatalogQuery : ObjectGraphType
             resolve: context =>
             {
                 var authorId = context.GetArgument<Guid>("id");
-                return queryAuthorizer.GetAuthorizedEntities<Author>().Where(a => a.Id == authorId);
+                return queryAuthorizer.GetAuthorizedEntities<Author>().GetAwaiter().GetResult().Where(a => a.Id == authorId);
             });
 
         Field<ListGraphType<AuthorType>>(

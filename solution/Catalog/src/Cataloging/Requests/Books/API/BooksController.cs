@@ -30,7 +30,7 @@ public class BooksController : ApiODataController
     [Produces<List<BookV1>>]
     public async Task<IQueryable<Book>> GetV1([FromServices] IMessageBus bus, [FromServices] IQueryAuthorizer queryAuthorizer)
     {
-        var query = new GetBooksQuery(_userService.GetUser(), queryAuthorizer);
+        var query = new GetBooksQuery(await _userService.GetUser(), queryAuthorizer);
         var queryable = await bus.InvokeAsync<QueryableResponse<Book>>(query);
 
         return queryable.Query;
@@ -41,7 +41,7 @@ public class BooksController : ApiODataController
     [Produces<List<BookV2>>]
     public async Task<IQueryable<Book>> GetV2([FromServices] IMessageBus bus, [FromServices] IQueryAuthorizer queryAuthorizer)
     {
-        var query = new GetBooksQuery(_userService.GetUser(), queryAuthorizer);
+        var query = new GetBooksQuery(await _userService.GetUser(), queryAuthorizer);
         var queryable = await bus.InvokeAsync<QueryableResponse<Book>>(query);
 
         return queryable.Query;
@@ -52,7 +52,7 @@ public class BooksController : ApiODataController
     [Produces<List<BookV3>>]
     public async Task<IQueryable<Book>> GetV3([FromServices] IMessageBus bus, [FromServices] IQueryAuthorizer queryAuthorizer)
     {
-        var query = new GetBooksQuery(_userService.GetUser(), queryAuthorizer);
+        var query = new GetBooksQuery(await _userService.GetUser(), queryAuthorizer);
         var queryable = await bus.InvokeAsync<QueryableResponse<Book>>(query);
 
         return queryable.Query;

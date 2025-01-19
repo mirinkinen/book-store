@@ -8,10 +8,10 @@ public record GetBookByIdQuery(Guid BookId, IQueryAuthorizer QueryAuthorizer);
 
 public static class GetBookByIdHandler
 {
-    public static QueryableResponse<Book> Handle(GetBookByIdQuery request)
+    public static async Task<QueryableResponse<Book>> Handle(GetBookByIdQuery request)
     {
         return new QueryableResponse<Book>(
-            request.QueryAuthorizer.GetAuthorizedEntities<Book>()
+            (await request.QueryAuthorizer.GetAuthorizedEntities<Book>())
                 .Where(a => a.Id == request.BookId));
     }
 }

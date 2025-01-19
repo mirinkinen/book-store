@@ -5,10 +5,10 @@ namespace Cataloging.IntegrationTests.Fakes;
 
 public class FakeUserService : IUserService
 {
-    public User GetUser()
+    public Task<User> GetUser()
     {
-        return new User(
+        return Task.FromResult(new User(
             Guid.Parse("DC5230E4-E4DC-4DAA-A325-71839CD91F54"),
-            new[] { MockDataContainer.AuthorizedOrganization1, MockDataContainer.AuthorizedOrganization2 });
+            new[] { MockDataContainer.AuthorizedOrganization1, MockDataContainer.AuthorizedOrganization2 }));
     }
 }

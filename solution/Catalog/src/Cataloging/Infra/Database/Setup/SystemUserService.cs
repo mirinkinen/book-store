@@ -4,8 +4,8 @@ namespace Cataloging.Infra.Database.Setup;
 
 internal class SystemUserService : IUserService
 {
-    public User GetUser()
+    public Task<User> GetUser()
     {
-        return new User(MockDataContainer.SystemUserId, Enumerable.Empty<Guid>());
+        return Task.FromResult(new User(MockDataContainer.SystemUserId, Enumerable.Empty<Guid>()));
     }
 }

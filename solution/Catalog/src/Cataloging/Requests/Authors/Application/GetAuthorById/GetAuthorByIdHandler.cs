@@ -9,10 +9,10 @@ public record GetAuthorByIdQuery(Guid AuthorId, IQueryAuthorizer QueryAuthorizer
 
 public static class GetAuthorByIdHandler
 {
-    public static QueryableResponse<Author> Handle(GetAuthorByIdQuery request)
+    public static async Task<QueryableResponse<Author>> Handle(GetAuthorByIdQuery request)
     {
         return new QueryableResponse<Author>(
-            request.QueryAuthorizer.GetAuthorizedEntities<Author>()
+            (await request.QueryAuthorizer.GetAuthorizedEntities<Author>())
                 .Where(a => a.Id == request.AuthorId));
     }
 }

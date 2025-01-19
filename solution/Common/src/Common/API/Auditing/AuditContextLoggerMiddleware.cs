@@ -29,11 +29,13 @@ public class AuditContextLoggerMiddleware
         {
             return;
         }
-
-        var userService = context.RequestServices.GetRequiredService<IUserService>();
-        var bus = context.RequestServices.GetRequiredService<IMessageBus>();
         
-        var auditLogEvent = new AuditLogEvent(userService.GetUser().Id, OperationType.Read, auditContext.Resources);
+        var userService = context.RequestServices.GetRequiredService<IUserService>();
+        var user = await userService.GetUser();
+        
+        var auditLogEvent = new AuditLogEvent(user.Id, OperationType.Read, auditContext.Resources);
+        
+        var bus = context.RequestServices.GetRequiredService<IMessageBus>();
         await bus.SendAsync(auditLogEvent);
     }
 }
