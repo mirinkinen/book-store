@@ -2,15 +2,20 @@
 using Cataloging.Requests.Books.Domain;
 using Common.Domain;
 using Microsoft.AspNetCore.OData.Deltas;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Requests.Authors.Domain;
 
 public class Author : Entity
 {
-    public DateTime Birthday { get; set; }
+    public required DateTime Birthday { get; set; }
+
     public IReadOnlyList<Book> Books { get; set; } = new List<Book>();
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
+
+    public required string FirstName { get; set; }
+
+    public required string LastName { get; set; }
+
     public Guid OrganizationId { get; set; }
 
     [Obsolete("Only for serialization", true)]
@@ -18,37 +23,73 @@ public class Author : Entity
     {
     }
 
+    [SetsRequiredMembers]
     public Author(string firstName, string lastName, DateTime birthday, Guid organizationId)
     {
-        Update(firstName, lastName, birthday);
-
-        if (organizationId == Guid.Empty)
-        {
-            throw new DomainRuleException("Empty organization ID not allowed.");
-        }
-
-        OrganizationId = organizationId;
-    }
-
-    public void Update(string firstName, string lastName, DateTime birthday)
-    {
-        if (string.IsNullOrWhiteSpace(firstName))
-        {
-            throw new DomainRuleException($"'{nameof(firstName)}' cannot be null or whitespace.");
-        }
-
-        if (string.IsNullOrWhiteSpace(lastName))
-        {
-            throw new DomainRuleException($"'{nameof(lastName)}' cannot be null or whitespace.");
-        }
-
         FirstName = firstName;
         LastName = lastName;
-        Birthday = birthday.Date;
+        Birthday = birthday;
+        OrganizationId = organizationId;
+
+        Validate();
     }
 
     public void Patch(Delta<Author> delta)
     {
-        delta.Patch(this);
+        var updatedProperties = GetUpdatedProperties(delta);
+
+        if (updatedProperties.TryGetValue(nameof(FirstName), out var firstName))
+        {
+            FirstName = firstName.ToString()!;
+        }
+
+        if (updatedProperties.TryGetValue(nameof(LastName), out var lastName))
+        {
+            LastName = lastName.ToString()!;
+        }
+
+        if (updatedProperties.TryGetValue(nameof(Birthday), out var birthday))
+        {
+            Birthday = (DateTime)birthday;
+        }
+
+        Validate();
+    }
+
+    public void Update(string firstName, string lastName, DateTime birthday)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        Birthday = birthday;
+
+        Validate();
+    }
+
+    private void Validate()
+    {
+        if (string.IsNullOrWhiteSpace(FirstName))
+        {
+            throw new DomainRuleException($"'{nameof(FirstName)}' cannot be null or whitespace.");
+        }
+
+        if (string.IsNullOrWhiteSpace(LastName))
+        {
+            throw new DomainRuleException($"'{nameof(LastName)}' cannot be null or whitespace.");
+        }
+
+        if (Birthday == default)
+        {
+            throw new DomainRuleException($"'{nameof(Birthday)}' cannot be min value.");
+        }
+
+        if (Birthday > DateTime.UtcNow)
+        {
+            throw new DomainRuleException($"'{nameof(Birthday)}' cannot be in future.");
+        }
+
+        if (OrganizationId == Guid.Empty)
+        {
+            throw new DomainRuleException("Empty organization ID not allowed.");
+        }
     }
 }

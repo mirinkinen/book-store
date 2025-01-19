@@ -59,8 +59,13 @@ internal static class ODataConfiguration
         var modelBuilder = new ODataConventionModelBuilder();
 
         var authorEntity = modelBuilder.EntityType<Author>();
+        
         authorEntity.HasKey(author => author.Id);
-        authorEntity.Property(e => e.Birthday);
+        
+        var birthday = authorEntity.Property(e => e.Birthday);
+        birthday.IsRequired();
+        birthday.AsDate();
+        
         authorEntity.Property(e => e.CreatedAt);
         authorEntity.Property(e => e.FirstName);
         authorEntity.Property(e => e.LastName);
@@ -68,8 +73,9 @@ internal static class ODataConfiguration
         authorEntity.Property(e => e.ModifiedAt);
         authorEntity.Property(e => e.ModifiedBy);
         authorEntity.ContainsMany(e => e.Books);
+        
         var authorEntitySet = modelBuilder.EntitySet<Author>("Authors");
-
+        
         var bookEntity = modelBuilder.EntityType<Book>();
         bookEntity.HasKey(e => e.Id);
         bookEntity.Property(e => e.AuthorId);

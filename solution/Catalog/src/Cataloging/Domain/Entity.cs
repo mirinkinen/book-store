@@ -1,4 +1,7 @@
-﻿using Common.Domain;
+﻿using Cataloging.Requests.Authors.Domain;
+using Common.Domain;
+using Microsoft.AspNetCore.OData.Deltas;
+using System.Reflection;
 
 namespace Cataloging.Domain;
 
@@ -23,5 +26,28 @@ public abstract class Entity : IIdentifiable, ITimestamped
         Id = Guid.NewGuid();
         CreatedAt = DateTime.UtcNow;
         ModifiedAt = CreatedAt;
+    }
+
+    protected Dictionary<string, object> GetUpdatedProperties(Delta<Author> delta)
+    {
+        ArgumentNullException.ThrowIfNull(delta);
+        
+        var updatablePropertyNames = GetType().GetProperties()
+            .Where(p => p.GetCustomAttribute<UpdatableAttribute>() != null)
+            .Select(p => p.Name);
+
+        var updatedPropertyNames = delta.GetChangedPropertyNames().Intersect(updatablePropertyNames);
+
+        var updatedValues = new Dictionary<string, object>();
+
+        foreach (var propertyName in updatedPropertyNames)
+        {
+            if (delta.TryGetPropertyValue(propertyName, out var value))
+            {
+                updatedValues.Add(propertyName, value);
+            }
+        }
+
+        return updatedValues;
     }
 }
