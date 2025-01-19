@@ -6,27 +6,23 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Requests.Authors.Application.UpdateAuthor;
 
-public record PatchAuthorCommand(Guid AuthorId, Delta<Author> delta, User Actor) : 
+public record PatchAuthorCommand(Guid AuthorId, Delta<Author> delta) : 
     IAuthorCommand;
 
-public class PatchAuthorHandler
+public static class PatchAuthorHandler
 {
-    private readonly IAuthorRepository _authorRepository;
-
-    public PatchAuthorHandler(IAuthorRepository authorRepository)
-    {
-        _authorRepository = authorRepository;
-    }
-
     [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
-    public async IAsyncEnumerable<object> Handle(PatchAuthorCommand request, Author author)
+    public static async IAsyncEnumerable<object> Handle(PatchAuthorCommand request, Author author, IAuthorRepository authorRepository, 
+    IUserService userService)
     {
+        var user = userService.GetUser();
+        
         author.Patch(request.delta);
 
-        await _authorRepository.SaveChangesAsync();
+        await authorRepository.SaveChangesAsync();
 
         yield return author;
         yield return new AuthorUpdated(author.Id);
-        yield return new AuditLogEvent(request.Actor.Id, OperationType.Update, new[] { new AuditLogResource(author.Id, "Author") });
+        yield return new AuditLogEvent(user.Id, OperationType.Update, new[] { new AuditLogResource(author.Id, "Author") });
     }
 }

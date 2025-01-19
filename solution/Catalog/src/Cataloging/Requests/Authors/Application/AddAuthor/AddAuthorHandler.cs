@@ -6,28 +6,24 @@ using Wolverine.Attributes;
 
 namespace Cataloging.Requests.Authors.Application.AddAuthor;
 
-public record AddAuthorCommand(string Firstname, string Lastname, DateTime Birthday, Guid OrganizationId, User Actor);
+public record AddAuthorCommand(string Firstname, string Lastname, DateTime Birthday, Guid OrganizationId);
 
 [Transactional]
-public class AddAuthorHandler
+public static class AddAuthorHandler
 {
-    private readonly IAuthorRepository _authorRepository;
-
-    public AddAuthorHandler(IAuthorRepository authorRepository)
-    {
-        _authorRepository = authorRepository;
-    }
 
     [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
-    public async IAsyncEnumerable<object> Handle(AddAuthorCommand request)
+    public static async IAsyncEnumerable<object> Handle(AddAuthorCommand request, IAuthorRepository authorRepository, IUserService 
+        userService)
     {
+        var user = userService.GetUser();
         var author = new Author(request.Firstname, request.Lastname, request.Birthday, request.OrganizationId);
 
-        _authorRepository.AddAuthor(author);
-        await _authorRepository.SaveChangesAsync();
+        authorRepository.AddAuthor(author);
+        await authorRepository.SaveChangesAsync();
 
         yield return author;
-        yield return new AuthorAdded(request.Actor.Id);
-        yield return new AuditLogEvent(request.Actor.Id, OperationType.Create, new[] { new AuditLogResource(author.Id, "Author") });
+        yield return new AuthorAdded(user.Id);
+        yield return new AuditLogEvent(user.Id, OperationType.Create, new[] { new AuditLogResource(author.Id, "Author") });
     }
 }

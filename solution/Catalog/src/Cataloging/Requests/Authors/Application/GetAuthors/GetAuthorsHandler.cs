@@ -5,7 +5,7 @@ using Common.Application.Authentication;
 
 namespace Cataloging.Requests.Authors.Application.GetAuthors;
 
-public record GetAuthorsQuery(User Actor, IQueryAuthorizer QueryAuthorizer);
+public record GetAuthorsQuery(IQueryAuthorizer QueryAuthorizer);
 
 public static class GetAuthorsHandler
 {

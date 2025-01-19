@@ -4,6 +4,7 @@ namespace Cataloging.Requests.Authors.Application.UpdateAuthor;
 
 public class AuthorPutDtoV1
 {
+    [Required]
     public DateTime? Birthday { get; set; }
 
     [Required]

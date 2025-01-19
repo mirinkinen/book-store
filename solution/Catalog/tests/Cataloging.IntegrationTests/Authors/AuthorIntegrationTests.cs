@@ -321,25 +321,25 @@ public sealed class AuthorIntegrationTests : IntegrationContext
     {
         // Arrange
         HttpResponseMessage? response = null;
-
+    
         var authorId = "8e6a9434-87f5-46b2-a6c3-522dc35d8eef";
         var newFirstName = "TestFirstName";
         var newLastName = "TestLastName";
         var newBirthday = DateTime.UtcNow - TimeSpan.FromDays(30 * 365);
         var command = new UpdateAuthorDto(newFirstName, newLastName, newBirthday);
-
+    
         // Act
         var tracked = await Host.ExecuteAndWaitAsync(async () =>
         {
             var client = Host.Server.CreateClient();
             response = await client.PutAsJsonAsync($"v1/authors({authorId})", command);
         });
-
+    
         // Assert request
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
-
+    
         var user = new FakeUserService().GetUser();
-
+    
         // Assert that author is updated.
         using var scope = Host.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
@@ -348,7 +348,7 @@ public sealed class AuthorIntegrationTests : IntegrationContext
         authorDao.LastName.Should().Be(newLastName);
         authorDao.Birthday.Should().Be(newBirthday);
         authorDao.ModifiedBy.Should().Be(user.Id);
-
+    
         // Assert audit context.
         var createAuthorAuditLogEvent = tracked.FindEnvelopesWithMessageType<AuditLogEvent>()
             .Single(e => e is
@@ -357,7 +357,7 @@ public sealed class AuthorIntegrationTests : IntegrationContext
                 Message: AuditLogEvent { OperationType: OperationType.Update }
             })
             .Message as AuditLogEvent;
-
+    
         createAuthorAuditLogEvent.Should().NotBeNull();
         createAuthorAuditLogEvent.Resources.Should().HaveCount(1);
         var authorResource = createAuthorAuditLogEvent.Resources.First();

@@ -5,25 +5,19 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Requests.Authors.Application.DeleteAuthor;
 
-public record DeleteAuthorCommand(Guid AuthorId, User Actor) : IAuthorCommand;
+public record DeleteAuthorCommand(Guid AuthorId) : IAuthorCommand;
 
-public class DeleteAuthorHandler
+public static class DeleteAuthorHandler
 {
-    private readonly IAuthorRepository _authorRepository;
-
-    public DeleteAuthorHandler(IAuthorRepository authorRepository)
-    {
-        _authorRepository = authorRepository;
-    }
-
     [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
-    public async IAsyncEnumerable<object> Handle(DeleteAuthorCommand request, Author author)
+    public static async IAsyncEnumerable<object> Handle(DeleteAuthorCommand request, Author author, IAuthorRepository authorRepository, IUserService userService)
     {
-        _authorRepository.Delete(author);
-        await _authorRepository.SaveChangesAsync();
+        var user = userService.GetUser();
+        authorRepository.Delete(author);
+        await authorRepository.SaveChangesAsync();
 
         yield return author;
         yield return new AuthorDeleted(author.Id);
-        yield return new AuditLogEvent(request.Actor.Id, OperationType.Delete, new[] { new AuditLogResource(author.Id, "Author") });
+        yield return new AuditLogEvent(user.Id, OperationType.Delete, new[] { new AuditLogResource(author.Id, "Author") });
     }
 }

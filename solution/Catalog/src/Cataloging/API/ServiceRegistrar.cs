@@ -16,11 +16,12 @@ using Common.Application;
 using Common.Application.Messages;
 using Common.Infra;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using GraphQL;
+using Microsoft.AspNetCore.Components.Forms;
 using Oakton;
 using Oakton.Resources;
 using Wolverine;
-using Wolverine.FluentValidation;
 using Wolverine.Transports.Tcp;
 
 namespace Cataloging.API;
@@ -68,6 +69,7 @@ public static class ServiceRegistrar
     {
         // Add services to the container.
         builder.Services.AddControllers();
+            
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -80,9 +82,13 @@ public static class ServiceRegistrar
 
     private static void ConfigureApplicationServices(WebApplicationBuilder builder)
     {
+        builder.Services.AddFluentValidationAutoValidation(config =>
+        {
+            config.DisableDataAnnotationsValidation = true;
+        });
+        
+        builder.Services.AddValidatorsFromAssemblyContaining<AuthorPutValidator>();
         Common.Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);
-        builder.Services.AddScoped<IValidator<AuthorPutDtoV1>, AuthorPutValidator>();
-
     }
 
     private static void ConfigureInfrastructureServices(WebApplicationBuilder builder, string connectionString)

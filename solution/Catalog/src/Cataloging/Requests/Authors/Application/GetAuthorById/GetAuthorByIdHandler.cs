@@ -5,7 +5,7 @@ using Common.Application.Authentication;
 
 namespace Cataloging.Requests.Authors.Application.GetAuthorById;
 
-public record GetAuthorByIdQuery(Guid AuthorId, User Actor, IQueryAuthorizer QueryAuthorizer);
+public record GetAuthorByIdQuery(Guid AuthorId, IQueryAuthorizer QueryAuthorizer);
 
 public static class GetAuthorByIdHandler
 {

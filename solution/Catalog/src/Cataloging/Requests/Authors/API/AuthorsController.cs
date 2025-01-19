@@ -23,13 +23,6 @@ namespace Cataloging.Requests.Authors.API;
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
 public class AuthorsController : ApiODataController
 {
-    private readonly IUserService _userService;
-
-    public AuthorsController(IUserService userService)
-    {
-        _userService = userService;
-    }
-
     [HttpGet("v1/authors")]
     [HttpGet("v1/authors/$count")]
     [EnableQuery(PageSize = 20)]
@@ -37,7 +30,7 @@ public class AuthorsController : ApiODataController
     public async Task<IQueryable<Author>> GetAuthors([FromServices] IMessageBus bus,
         [FromServices] IQueryAuthorizer queryAuthorizer)
     {
-        var query = new GetAuthorsQuery(_userService.GetUser(), queryAuthorizer);
+        var query = new GetAuthorsQuery(queryAuthorizer);
         var queryable = await bus.InvokeAsync<QueryableResponse<Author>>(query);
 
         return queryable.Query;
@@ -49,7 +42,7 @@ public class AuthorsController : ApiODataController
     public async Task<IActionResult> Get([FromRoute] Guid key, [FromServices] IMessageBus bus,
         [FromServices] IQueryAuthorizer queryAuthorizer)
     {
-        var query = new GetAuthorByIdQuery(key, _userService.GetUser(), queryAuthorizer);
+        var query = new GetAuthorByIdQuery(key, queryAuthorizer);
         var queryable = await bus.InvokeAsync<QueryableResponse<Author>>(query);
 
         return Ok(SingleResult.Create(queryable.Query));
@@ -61,7 +54,7 @@ public class AuthorsController : ApiODataController
     public async Task<IQueryable<Book>> GetBooksFromAuthor([FromRoute] Guid key, [FromServices] IMessageBus bus,
         [FromServices] IQueryAuthorizer queryAuthorizer)
     {
-        var query = new GetBooksFromAuthorQuery(_userService.GetUser(), key, queryAuthorizer);
+        var query = new GetBooksFromAuthorQuery(key, queryAuthorizer);
         var queryable = await bus.InvokeAsync<QueryableResponse<Book>>(query);
 
         return queryable.Query;
@@ -71,7 +64,7 @@ public class AuthorsController : ApiODataController
     public Task<Author> Post([FromBody] AddAuthorDto addAuthorDto, [FromServices] IMessageBus bus)
     {
         var command = new AddAuthorCommand(addAuthorDto.Firstname, addAuthorDto.Lastname, addAuthorDto.Birthday,
-            addAuthorDto.OrganizationId, _userService.GetUser());
+            addAuthorDto.OrganizationId);
 
         return bus.InvokeAsync<Author>(command);
     }
@@ -79,7 +72,7 @@ public class AuthorsController : ApiODataController
     [HttpPut("v1/authors/{key}")]
     public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] AuthorPutDtoV1 dto, [FromServices] IMessageBus bus)
     {
-        var command = new UpdateAuthorCommand(key, dto, _userService.GetUser());
+        var command = new UpdateAuthorCommand(key, dto);
 
         var author = await bus.InvokeAsync<Author?>(command);
 
@@ -97,7 +90,7 @@ public class AuthorsController : ApiODataController
     public async Task<IActionResult> Patch([FromRoute] Guid key, [FromBody] Delta<Author> delta,
         [FromServices] IMessageBus bus)
     {
-        var command = new PatchAuthorCommand(key, delta, _userService.GetUser());
+        var command = new PatchAuthorCommand(key, delta);
 
         var author = await bus.InvokeAsync<Author?>(command);
 
@@ -112,7 +105,7 @@ public class AuthorsController : ApiODataController
     [HttpDelete("v1/authors/{key}")]
     public async Task<IActionResult> Delete([FromRoute] Guid key, [FromServices] IMessageBus bus)
     {
-        var command = new DeleteAuthorCommand(key, _userService.GetUser());
+        var command = new DeleteAuthorCommand(key);
 
         var author = await bus.InvokeAsync<Author?>(command);
 

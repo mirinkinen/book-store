@@ -5,7 +5,7 @@ using Common.Application.Authentication;
 
 namespace Cataloging.Requests.Books.Application.GetBooksFromAuthor;
 
-public record GetBooksFromAuthorQuery(User Actor, Guid AuthorId, IQueryAuthorizer QueryAuthorizer);
+public record GetBooksFromAuthorQuery(Guid AuthorId, IQueryAuthorizer QueryAuthorizer);
 
 public static class GetBooksFromAuthorHandler
 {

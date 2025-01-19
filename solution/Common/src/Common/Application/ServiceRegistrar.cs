@@ -3,6 +3,7 @@ using Common.Application.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Wolverine;
+using Wolverine.FluentValidation;
 
 namespace Common.Application;
 
@@ -19,6 +20,10 @@ public static class ServiceRegistrar
 
     public static void UseCommonApplicationSettings(this WolverineOptions opts)
     {
+        opts.UseFluentValidation();
+         // opts.UseFluentValidationProblemDetailMiddleware();
+
+        
         opts.Policies.LogMessageStarting(LogLevel.Debug);
         opts.Discovery.IncludeAssembly(typeof(AuditLogEventHandler).Assembly);
     }
