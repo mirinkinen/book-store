@@ -1,7 +1,6 @@
 using Cataloging.Requests.Books.API;
-using GraphQLParser.AST;
 
-namespace Cataloging.Requests.Authors.API;
+namespace Cataloging.Requests.Authors.API.Models;
 
 public class AuthorV2
 {

@@ -1,6 +1,7 @@
 ﻿using Cataloging.Requests.Authors.Domain;
 using Common.Domain;
 using FluentAssertions;
+using FluentValidation;
 
 namespace Cataloging.UnitTests.Domain.Authors;
 
@@ -36,7 +37,7 @@ public class AuthorTests
 
         var constructor = () => new Author(firstName, lastName, birthday, organizationId);
 
-        constructor.Should().Throw<DomainRuleException>();
+        constructor.Should().Throw<ValidationException>();
     }
 
     [Theory]
@@ -52,7 +53,7 @@ public class AuthorTests
 
         var constructor = () => new Author(firstName, lastName, birthday, organizationId);
 
-        constructor.Should().Throw<DomainRuleException>();
+        constructor.Should().Throw<ValidationException>();
     }
 
     [Fact]
@@ -65,6 +66,6 @@ public class AuthorTests
 
         var constructor = () => new Author(firstName, lastName, birthday, Guid.Empty);
 
-        constructor.Should().Throw<DomainRuleException>();
+        constructor.Should().Throw<ValidationException>();
     }
 }

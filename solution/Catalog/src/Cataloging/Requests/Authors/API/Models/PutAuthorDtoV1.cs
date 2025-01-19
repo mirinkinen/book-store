@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Cataloging.Requests.Authors.Application.UpdateAuthor;
+namespace Cataloging.Requests.Authors.API.Models;
 
 public class PutAuthorDtoV1
 {

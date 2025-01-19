@@ -3,6 +3,7 @@ using Cataloging.Application;
 using Cataloging.Infra.Database;
 using Cataloging.Infra.Database.Setup;
 using Cataloging.Infra.Queries;
+using Cataloging.Requests.Authors.API;
 using Cataloging.Requests.Authors.Application;
 using Cataloging.Requests.Authors.Application.Middleware;
 using Cataloging.Requests.Authors.Application.UpdateAuthor;
@@ -82,7 +83,7 @@ public static class ServiceRegistrar
 
     private static void ConfigureApplicationServices(WebApplicationBuilder builder)
     {
-        builder.Services.AddValidatorsFromAssemblyContaining<AuthorPutValidator>();
+        builder.Services.AddValidatorsFromAssemblyContaining<PutAuthorDtoV1Validator>();
         Common.Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);
     }
 

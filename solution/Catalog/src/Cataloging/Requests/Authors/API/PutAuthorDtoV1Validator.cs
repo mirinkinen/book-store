@@ -1,10 +1,11 @@
+using Cataloging.Requests.Authors.API.Models;
 using FluentValidation;
 
-namespace Cataloging.Requests.Authors.Application.UpdateAuthor;
+namespace Cataloging.Requests.Authors.API;
 
-public class AuthorPutValidator : AbstractValidator<PutAuthorDtoV1>
+public class PutAuthorDtoV1Validator : AbstractValidator<PutAuthorDtoV1>
 {
-    public AuthorPutValidator()
+    public PutAuthorDtoV1Validator()
     {
         RuleFor(x => x.FirstName)
             .NotEmpty().WithErrorCode("firstname-is-empty")

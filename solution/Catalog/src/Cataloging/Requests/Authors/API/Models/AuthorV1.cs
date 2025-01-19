@@ -1,6 +1,6 @@
 using Cataloging.Requests.Books.API;
 
-namespace Cataloging.Requests.Authors.API;
+namespace Cataloging.Requests.Authors.API.Models;
 
 public class AuthorV1
 {

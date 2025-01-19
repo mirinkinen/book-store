@@ -6,14 +6,14 @@ using Wolverine.Attributes;
 
 namespace Cataloging.Requests.Authors.Application.AddAuthor;
 
-public record AddAuthorCommand(string Firstname, string Lastname, DateTime Birthday, Guid OrganizationId);
+public record PostAuthorCommand(string Firstname, string Lastname, DateTime Birthday, Guid OrganizationId);
 
 [Transactional]
 public static class AddAuthorHandler
 {
 
     [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
-    public static async IAsyncEnumerable<object> Handle(AddAuthorCommand request, IAuthorRepository authorRepository, IUserService 
+    public static async IAsyncEnumerable<object> Handle(PostAuthorCommand request, IAuthorRepository authorRepository, IUserService 
         userService)
     {
         var user = await userService.GetUser();

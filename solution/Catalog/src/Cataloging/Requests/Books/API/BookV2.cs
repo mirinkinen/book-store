@@ -1,4 +1,5 @@
 using Cataloging.Requests.Authors.API;
+using Cataloging.Requests.Authors.API.Models;
 using Cataloging.Requests.Authors.Domain;
 
 namespace Cataloging.Requests.Books.API;

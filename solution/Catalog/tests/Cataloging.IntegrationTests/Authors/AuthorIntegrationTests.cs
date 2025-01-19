@@ -3,6 +3,8 @@ using System.Net;
 using System.Net.Http.Json;
 using Cataloging.Infra.Database;
 using Cataloging.IntegrationTests.Fakes;
+using Cataloging.Requests.Authors.API;
+using Cataloging.Requests.Authors.API.Models;
 using Cataloging.Requests.Authors.Application;
 using Cataloging.Requests.Authors.Application.AddAuthor;
 using Cataloging.Requests.Authors.Application.GetAuthors;
@@ -384,7 +386,7 @@ public sealed class AuthorIntegrationTests : IntegrationContext
         var organizationId = Guid.NewGuid();
         var user = await new FakeUserService().GetUser();
         
-        var command = new AddAuthorCommand(newFirstName, newLastName, newBirthday, organizationId);
+        var command = new PostAuthorCommand(newFirstName, newLastName, newBirthday, organizationId);
 
         // Act
         var tracked = await Host.ExecuteAndWaitAsync(async () =>

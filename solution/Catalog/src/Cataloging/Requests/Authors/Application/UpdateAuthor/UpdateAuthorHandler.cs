@@ -1,12 +1,11 @@
 ﻿using Cataloging.Requests.Authors.Domain;
 using Common.Application.Auditing;
 using Common.Application.Authentication;
-using FluentValidation;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Requests.Authors.Application.UpdateAuthor;
 
-public record UpdateAuthorCommand(Guid AuthorId, PutAuthorDtoV1 Dto) : IAuthorCommand;
+public record UpdateAuthorCommand(Guid AuthorId, DateTime Birthday, string FirstName, string LastName) : IAuthorCommand;
 
 public record AuthorUpdated(Guid AuthorId);
 
@@ -18,7 +17,7 @@ public class UpdateAuthorHandler
     {
         var user = await userService.GetUser();
 
-        author.Update(request.Dto.FirstName, request.Dto.LastName, request.Dto.Birthday);
+        author.Update(request.FirstName, request.LastName, request.Birthday);
 
         await authorRepository.SaveChangesAsync();
 

@@ -1,4 +1,5 @@
 ﻿using Cataloging.Application;
+using Cataloging.Requests.Authors.API.Models;
 using Cataloging.Requests.Authors.Application.AddAuthor;
 using Cataloging.Requests.Authors.Application.DeleteAuthor;
 using Cataloging.Requests.Authors.Application.GetAuthorById;
@@ -10,7 +11,6 @@ using Cataloging.Requests.Books.Application.GetBooksFromAuthor;
 using Cataloging.Requests.Books.Domain;
 using Common.API;
 using Common.Application;
-using Common.Application.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;
 using Microsoft.AspNetCore.OData.Query;
@@ -61,10 +61,10 @@ public class AuthorsController : ApiODataController
     }
 
     [HttpPost("v1/authors")]
-    public Task<Author> Post([FromBody] AddAuthorDto addAuthorDto, [FromServices] IMessageBus bus)
+    public Task<Author> Post([FromBody] PostAuthorDtoV1 postAuthorDtoV1, [FromServices] IMessageBus bus)
     {
-        var command = new AddAuthorCommand(addAuthorDto.Firstname, addAuthorDto.Lastname, addAuthorDto.Birthday,
-            addAuthorDto.OrganizationId);
+        var command = new PostAuthorCommand(postAuthorDtoV1.FirstName!, postAuthorDtoV1.LastName!, postAuthorDtoV1.Birthday!.Value,
+            postAuthorDtoV1.OrganizationId!.Value);
 
         return bus.InvokeAsync<Author>(command);
     }
@@ -72,7 +72,7 @@ public class AuthorsController : ApiODataController
     [HttpPut("v1/authors/{key}")]
     public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] PutAuthorDtoV1 dto, [FromServices] IMessageBus bus)
     {
-        var command = new UpdateAuthorCommand(key, dto);
+        var command = new UpdateAuthorCommand(key, dto.Birthday!.Value, dto.FirstName!, dto.LastName!);
 
         var author = await bus.InvokeAsync<Author?>(command);
 
