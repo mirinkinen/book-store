@@ -9,7 +9,7 @@ namespace Cataloging.Requests.Authors.Domain;
 
 public class Author : Entity
 {
-    public required DateTime? Birthday { get; set; }
+    public required DateTime Birthday { get; set; }
 
     public IReadOnlyList<Book> Books { get; set; } = new List<Book>();
 
@@ -25,7 +25,7 @@ public class Author : Entity
     }
 
     [SetsRequiredMembers]
-    public Author(string firstName, string lastName, DateTime? birthday, Guid organizationId)
+    public Author(string firstName, string lastName, DateTime birthday, Guid organizationId)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -57,7 +57,7 @@ public class Author : Entity
         Validate();
     }
 
-    public void Update(string firstName, string lastName, DateTime? birthday)
+    public void Update(string firstName, string lastName, DateTime birthday)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -80,11 +80,6 @@ public class Author : Entity
             failures.Add(new ValidationFailure(nameof(LastName), $"'{nameof(LastName)}' cannot be null or whitespace."));
         }
 
-        if (Birthday is null)
-        {
-            failures.Add(new ValidationFailure(nameof(Birthday), $"'{nameof(Birthday)}' cannot be null."));
-        }
-        
         if (Birthday == DateTime.MinValue)
         {
             failures.Add(new ValidationFailure(nameof(Birthday), $"'{nameof(Birthday)}' cannot be min value."));
