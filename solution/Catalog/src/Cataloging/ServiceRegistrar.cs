@@ -82,11 +82,6 @@ public static class ServiceRegistrar
 
     private static void ConfigureApplicationServices(WebApplicationBuilder builder)
     {
-        builder.Services.AddFluentValidationAutoValidation(config =>
-        {
-            config.DisableDataAnnotationsValidation = true;
-        });
-        
         builder.Services.AddValidatorsFromAssemblyContaining<AuthorPutValidator>();
         Common.Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);
     }
