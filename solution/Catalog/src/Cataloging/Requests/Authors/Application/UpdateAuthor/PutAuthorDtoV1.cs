@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Cataloging.Requests.Authors.Application.UpdateAuthor;
 
-public class AuthorPutDtoV1
+public class PutAuthorDtoV1
 {
     [Required]
     public DateTime? Birthday { get; set; }

@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace Cataloging.Requests.Authors.Application.UpdateAuthor;
 
-public class AuthorPutValidator : AbstractValidator<AuthorPutDtoV1>
+public class AuthorPutValidator : AbstractValidator<PutAuthorDtoV1>
 {
     public AuthorPutValidator()
     {

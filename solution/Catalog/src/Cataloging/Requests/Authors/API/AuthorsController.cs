@@ -70,7 +70,7 @@ public class AuthorsController : ApiODataController
     }
 
     [HttpPut("v1/authors/{key}")]
-    public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] AuthorPutDtoV1 dto, [FromServices] IMessageBus bus)
+    public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] PutAuthorDtoV1 dto, [FromServices] IMessageBus bus)
     {
         var command = new UpdateAuthorCommand(key, dto);
 

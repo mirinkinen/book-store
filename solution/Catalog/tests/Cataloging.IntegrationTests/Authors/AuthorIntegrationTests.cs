@@ -6,6 +6,7 @@ using Cataloging.IntegrationTests.Fakes;
 using Cataloging.Requests.Authors.Application;
 using Cataloging.Requests.Authors.Application.AddAuthor;
 using Cataloging.Requests.Authors.Application.GetAuthors;
+using Cataloging.Requests.Authors.Application.UpdateAuthor;
 using Common.Application.Auditing;
 using FluentAssertions;
 using JasperFx.Core;
@@ -114,7 +115,7 @@ public sealed class AuthorIntegrationTests : IntegrationContext
         var tracked = await Host.ExecuteAndWaitAsync(async () =>
         {
             var client = Host.Server.CreateClient();
-            var response = await client.GetAsync($"/v1/authors({authorId})");
+            var response = await client.GetAsync($"/v1/authors/{authorId}");
             author = await response.Content.ReadFromJsonAsync<AuthorViewmodel>();
         });
 
@@ -140,7 +141,7 @@ public sealed class AuthorIntegrationTests : IntegrationContext
         var _ = await Host.ExecuteAndWaitAsync(async () =>
         {
             var client = Host.Server.CreateClient();
-            var response = await client.GetAsync($"/v1/authors({authorId})");
+            var response = await client.GetAsync($"/v1/authors/{authorId}");
             author = await response.Content.ReadFromJsonAsync<AuthorViewmodel>();
         });
 
@@ -320,19 +321,25 @@ public sealed class AuthorIntegrationTests : IntegrationContext
     public async Task Put_ValidAuthor_UpdatesAuthor()
     {
         // Arrange
-        HttpResponseMessage? response = null;
-    
         var authorId = "8e6a9434-87f5-46b2-a6c3-522dc35d8eef";
         var newFirstName = "TestFirstName";
         var newLastName = "TestLastName";
         var newBirthday = DateTime.UtcNow - TimeSpan.FromDays(30 * 365);
-        var command = new UpdateAuthorDto(newFirstName, newLastName, newBirthday);
+        
+        var putAuthorDto = new PutAuthorDtoV1
+        {
+            FirstName = newFirstName,
+            LastName = newLastName,
+            Birthday = newBirthday  
+        };  
+        
+        HttpResponseMessage? response = null;
     
         // Act
         var tracked = await Host.ExecuteAndWaitAsync(async () =>
         {
             var client = Host.Server.CreateClient();
-            response = await client.PutAsJsonAsync($"v1/authors({authorId})", command);
+            response = await client.PutAsJsonAsync($"v1/authors/{authorId}", putAuthorDto);
         });
     
         // Assert request
@@ -376,7 +383,8 @@ public sealed class AuthorIntegrationTests : IntegrationContext
         var newBirthday = DateTime.UtcNow - TimeSpan.FromDays(30 * 365);
         var organizationId = Guid.NewGuid();
         var user = new FakeUserService().GetUser();
-        var command = new AddAuthorCommand(newFirstName, newLastName, newBirthday, organizationId, user);
+        
+        var command = new AddAuthorCommand(newFirstName, newLastName, newBirthday, organizationId);
 
         // Act
         var tracked = await Host.ExecuteAndWaitAsync(async () =>

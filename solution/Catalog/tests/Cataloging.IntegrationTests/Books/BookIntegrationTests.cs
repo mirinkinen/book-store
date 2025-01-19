@@ -105,7 +105,7 @@ public class BookIntegrationTests : IntegrationContext
         var _ = await Host.ExecuteAndWaitAsync(async () =>
         {
             var client = Host.Server.CreateClient();
-            var response = await client.GetAsync($"v1/books({bookId})");
+            var response = await client.GetAsync($"v1/books/{bookId}");
             book = await response.Content.ReadFromJsonAsync<BookViewmodel>();
         });
 

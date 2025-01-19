@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Requests.Authors.Application.UpdateAuthor;
 
-public record UpdateAuthorCommand(Guid AuthorId, AuthorPutDtoV1 Dto) : IAuthorCommand;
+public record UpdateAuthorCommand(Guid AuthorId, PutAuthorDtoV1 Dto) : IAuthorCommand;
 
 public record AuthorUpdated(Guid AuthorId);
 
@@ -14,7 +14,7 @@ public class UpdateAuthorHandler
 {
     [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
     public static async IAsyncEnumerable<object> Handle(UpdateAuthorCommand request, Author author, IAuthorRepository authorRepository,
-        IValidator<AuthorPutDtoV1> authorPutValidator, IUserService userService)
+        IValidator<PutAuthorDtoV1> authorPutValidator, IUserService userService)
     {
         await authorPutValidator.ValidateAndThrowAsync(request.Dto);
         

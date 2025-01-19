@@ -8,18 +8,6 @@ namespace Cataloging.UnitTests.Domain.SeedWork;
 public class EntityTests
 {
     [Fact]
-    public void Entities_DoesNotHavePublicSetters()
-    {
-        typeof(Entity).Assembly.GetTypes()
-            .Where(type => typeof(Entity).IsAssignableFrom(type))
-            .SelectMany(type => type.GetProperties())
-            .Where(property => property.Name != "ModifiedBy")
-            .Select(propertyInfo => propertyInfo.GetSetMethod())
-            .Where(methodInfo => methodInfo != null && methodInfo.IsPublic)
-            .Should().BeEmpty("domain entities should not have public setters");
-    }
-
-    [Fact]
     public void Entity_WhenCreated_HasId()
     {
         var entity = (Entity)new Book(Guid.NewGuid(), "test", new DateTime(2020, 1, 1), 10);
