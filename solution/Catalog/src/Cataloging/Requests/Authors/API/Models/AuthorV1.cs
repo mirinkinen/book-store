@@ -1,4 +1,5 @@
 using Cataloging.Requests.Books.API;
+using System.ComponentModel.DataAnnotations;
 
 namespace Cataloging.Requests.Authors.API.Models;
 
@@ -6,7 +7,8 @@ public class AuthorV1
 {
     public Guid Id { get; set; }
 
-    public DateTimeOffset Birthday { get; set; }
+    [DataType(DataType.Date)]
+    public DateTime Birthday { get; set; }
 
     public DateTimeOffset CreatedAt { get; set; }
 

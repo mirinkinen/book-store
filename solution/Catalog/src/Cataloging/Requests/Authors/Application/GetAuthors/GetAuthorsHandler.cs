@@ -11,7 +11,7 @@ public static class GetAuthorsHandler
 {
     public static async Task<QueryableResponse<Author>> Handle(GetAuthorsQuery request)
     {
-        return new QueryableResponse<Author>(
-            (await request.QueryAuthorizer.GetAuthorizedEntities<Author>()));
+        var query = await request.QueryAuthorizer.GetAuthorizedEntities<Author>();
+        return new QueryableResponse<Author>(query);
     }
 }

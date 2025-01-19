@@ -5,7 +5,7 @@ namespace Cataloging.Requests.Authors.API.Models;
 public class PutAuthorDtoV1
 {
     [Required]
-    public DateTime? Birthday { get; set; }
+    public DateTime Birthday { get; set; }
 
     [Required]
     [StringLength(32)]

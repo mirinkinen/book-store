@@ -63,8 +63,8 @@ public class AuthorsController : ApiODataController
     [HttpPost("v1/authors")]
     public Task<Author> Post([FromBody] PostAuthorDtoV1 postAuthorDtoV1, [FromServices] IMessageBus bus)
     {
-        var command = new PostAuthorCommand(postAuthorDtoV1.FirstName!, postAuthorDtoV1.LastName!, postAuthorDtoV1.Birthday!.Value,
-            postAuthorDtoV1.OrganizationId!.Value);
+        var command = new PostAuthorCommand(postAuthorDtoV1.FirstName, postAuthorDtoV1.LastName, postAuthorDtoV1.Birthday,
+            postAuthorDtoV1.OrganizationId);
 
         return bus.InvokeAsync<Author>(command);
     }
@@ -72,7 +72,7 @@ public class AuthorsController : ApiODataController
     [HttpPut("v1/authors/{key}")]
     public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] PutAuthorDtoV1 dto, [FromServices] IMessageBus bus)
     {
-        var command = new UpdateAuthorCommand(key, dto.Birthday!.Value, dto.FirstName!, dto.LastName!);
+        var command = new UpdateAuthorCommand(key, dto.Birthday, dto.FirstName, dto.LastName);
 
         var author = await bus.InvokeAsync<Author?>(command);
 
@@ -82,8 +82,6 @@ public class AuthorsController : ApiODataController
         }
 
         return Updated(author);
-
-        return Ok();
     }
 
     [HttpPatch("v1/authors/{key}")]
