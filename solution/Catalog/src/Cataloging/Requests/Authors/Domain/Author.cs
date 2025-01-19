@@ -9,22 +9,15 @@ namespace Cataloging.Requests.Authors.Domain;
 
 public class Author : Entity
 {
-    [Required]
-    [DataType(DataType.Date)]
     public required DateTime? Birthday { get; set; }
 
     public IReadOnlyList<Book> Books { get; set; } = new List<Book>();
 
-    [Required]
-    [StringLength(32)]
     public required string FirstName { get; set; }
 
-    [Required]
-    [StringLength(32)]
     public required string LastName { get; set; }
-
-    [Required]
-    public Guid OrganizationId { get; set; }
+    
+    public required Guid OrganizationId { get; set; }
 
     [Obsolete("Only for serialization", true)]
     public Author()

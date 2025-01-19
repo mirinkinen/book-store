@@ -1,29 +1,26 @@
 ﻿using Cataloging.Requests.Authors.Domain;
 using Common.Application.Auditing;
 using Common.Application.Authentication;
+using FluentValidation;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Requests.Authors.Application.UpdateAuthor;
 
-public record UpdateAuthorCommand(Guid AuthorId, Author dto, User Actor) : IAuthorCommand;
+public record UpdateAuthorCommand(Guid AuthorId, AuthorPutDtoV1 Dto, User Actor) : IAuthorCommand;
 
 public record AuthorUpdated(Guid AuthorId);
 
 public class UpdateAuthorHandler
 {
-    private readonly IAuthorRepository _authorRepository;
-
-    public UpdateAuthorHandler(IAuthorRepository authorRepository)
-    {
-        _authorRepository = authorRepository;
-    }
-
     [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
-    public async IAsyncEnumerable<object> Handle(UpdateAuthorCommand request, Author author)
+    public static async IAsyncEnumerable<object> Handle(UpdateAuthorCommand request, Author author, IAuthorRepository authorRepository,
+        IValidator<AuthorPutDtoV1> authorPutValidator)
     {
-        author.Update(request.dto.FirstName, request.dto.LastName, request.dto.Birthday);
+        await authorPutValidator.ValidateAndThrowAsync(request.Dto);
 
-        await _authorRepository.SaveChangesAsync();
+        author.Update(request.Dto.FirstName, request.Dto.LastName, request.Dto.Birthday);
+
+        await authorRepository.SaveChangesAsync();
 
         yield return author;
         yield return new AuthorUpdated(author.Id);

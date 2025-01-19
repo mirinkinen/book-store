@@ -4,6 +4,7 @@ using Cataloging.Infra.Database.Setup;
 using Cataloging.Infra.Queries;
 using Cataloging.Requests.Authors.Application;
 using Cataloging.Requests.Authors.Application.Middleware;
+using Cataloging.Requests.Authors.Application.UpdateAuthor;
 using Cataloging.Requests.Authors.Domain;
 using Cataloging.Requests.Authors.Infra;
 using Cataloging.Requests.Books.Application.GetBooks;
@@ -14,10 +15,12 @@ using Common.API.Auditing;
 using Common.Application;
 using Common.Application.Messages;
 using Common.Infra;
+using FluentValidation;
 using GraphQL;
 using Oakton;
 using Oakton.Resources;
 using Wolverine;
+using Wolverine.FluentValidation;
 using Wolverine.Transports.Tcp;
 
 namespace Cataloging.API;
@@ -78,6 +81,8 @@ public static class ServiceRegistrar
     private static void ConfigureApplicationServices(WebApplicationBuilder builder)
     {
         Common.Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);
+        builder.Services.AddScoped<IValidator<AuthorPutDtoV1>, AuthorPutValidator>();
+
     }
 
     private static void ConfigureInfrastructureServices(WebApplicationBuilder builder, string connectionString)
