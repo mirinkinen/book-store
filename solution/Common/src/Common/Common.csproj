@@ -19,7 +19,6 @@
     <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.9.0" />
     <PackageReference Include="WolverineFx" Version="3.6.5" />
     <PackageReference Include="WolverineFx.EntityFrameworkCore" Version="3.6.5" />
-    <PackageReference Include="WolverineFx.FluentValidation" Version="3.6.5" />
     <PackageReference Include="WolverineFx.SqlServer" Version="3.6.5" />
   </ItemGroup>
 
