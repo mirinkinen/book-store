@@ -10,8 +10,10 @@ public class AuthorV2
     [DataType(DataType.Date)]
     public DateTime Birthday { get; set; }
 
+    [MaxLength(32)]
     public string FirstName { get; set; }
 
+    [MaxLength(32)]
     public string LastName { get; set; }
 
     public Guid OrgnizationId { get; set; }

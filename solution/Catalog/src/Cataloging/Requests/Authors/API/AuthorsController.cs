@@ -32,7 +32,7 @@ public class AuthorsController : ApiODataController
     {
         var query = new GetAuthorsQuery(queryAuthorizer);
         var queryable = await bus.InvokeAsync<QueryableResponse<Author>>(query);
-
+    
         return queryable.Query;
     }
 
@@ -44,10 +44,10 @@ public class AuthorsController : ApiODataController
     {
         var query = new GetAuthorByIdQuery(key, queryAuthorizer);
         var queryable = await bus.InvokeAsync<QueryableResponse<Author>>(query);
-
+    
         return Ok(SingleResult.Create(queryable.Query));
     }
-
+    
     [HttpGet("v1/authors/{key}/books")]
     [EnableQuery(PageSize = 20)]
     [Produces<List<BookV1>>]
@@ -56,62 +56,65 @@ public class AuthorsController : ApiODataController
     {
         var query = new GetBooksFromAuthorQuery(key, queryAuthorizer);
         var queryable = await bus.InvokeAsync<QueryableResponse<Book>>(query);
-
+    
         return queryable.Query;
     }
-
+    
     [HttpPost("v1/authors")]
+    [Produces<AuthorV1>]
     public Task<Author> Post([FromBody] PostAuthorDtoV1 postAuthorDtoV1, [FromServices] IMessageBus bus)
     {
         var command = new PostAuthorCommand(postAuthorDtoV1.FirstName, postAuthorDtoV1.LastName, postAuthorDtoV1.Birthday,
             postAuthorDtoV1.OrganizationId);
-
+    
         return bus.InvokeAsync<Author>(command);
     }
-
+    
     [HttpPut("v1/authors/{key}")]
+    [Produces<AuthorV1>]
     public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] PutAuthorDtoV1 dto, [FromServices] IMessageBus bus)
     {
         var command = new UpdateAuthorCommand(key, dto.Birthday, dto.FirstName, dto.LastName);
-
+    
         var author = await bus.InvokeAsync<Author?>(command);
-
+    
         if (author == null)
         {
             return NotFound();
         }
-
+    
         return Updated(author);
     }
-
+    
     [HttpPatch("v1/authors/{key}")]
+    [Produces<AuthorV1>]
     public async Task<IActionResult> Patch([FromRoute] Guid key, [FromBody] Delta<Author> delta,
         [FromServices] IMessageBus bus)
     {
         var command = new PatchAuthorCommand(key, delta);
-
+    
         var author = await bus.InvokeAsync<Author?>(command);
-
+    
         if (author == null)
         {
             return NotFound();
         }
-
-        return Updated(author);
+    
+        return Ok();
     }
-
+    
     [HttpDelete("v1/authors/{key}")]
     public async Task<IActionResult> Delete([FromRoute] Guid key, [FromServices] IMessageBus bus)
     {
         var command = new DeleteAuthorCommand(key);
-
+    
         var author = await bus.InvokeAsync<Author?>(command);
-
+    
         if (author == null)
         {
             return NotFound();
         }
-
+    
         return NoContent();
     }
 }

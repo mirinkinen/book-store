@@ -9,11 +9,13 @@ public class AuthorV1
 
     [DataType(DataType.Date)]
     public DateTime Birthday { get; set; }
-
+    
     public DateTimeOffset CreatedAt { get; set; }
 
+    [MaxLength(32)]
     public string FirstName { get; set; }
 
+    [MaxLength(32)]
     public string LastName { get; set; }
 
     public Guid OrganizationId { get; set; }

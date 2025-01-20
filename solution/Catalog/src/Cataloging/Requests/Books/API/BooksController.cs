@@ -1,5 +1,4 @@
 ﻿using Cataloging.Application;
-using Cataloging.Requests.Authors.API;
 using Cataloging.Requests.Books.Application.GetBookById;
 using Cataloging.Requests.Books.Application.GetBooks;
 using Cataloging.Requests.Books.Domain;
@@ -35,7 +34,7 @@ public class BooksController : ApiODataController
 
         return queryable.Query;
     }
-    
+
     [HttpGet("v2/books")]
     [EnableQuery(PageSize = 20)]
     [Produces<List<BookV2>>]
@@ -46,7 +45,7 @@ public class BooksController : ApiODataController
 
         return queryable.Query;
     }
-    
+
     [HttpGet("v3/books")]
     [EnableQuery(PageSize = 20)]
     [Produces<List<BookV3>>]
@@ -69,7 +68,7 @@ public class BooksController : ApiODataController
 
         return Ok(SingleResult.Create(queryable.Query));
     }
-    
+
     [HttpGet("v2/books/{key}")]
     [EnableQuery]
     [Produces<BookV2>]
@@ -81,7 +80,7 @@ public class BooksController : ApiODataController
 
         return Ok(SingleResult.Create(queryable.Query));
     }
-    
+
     [HttpGet("v3/books/{key}")]
     [EnableQuery]
     [Produces<BookV3>]
