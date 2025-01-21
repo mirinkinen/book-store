@@ -6,20 +6,15 @@ using Cataloging.Infra.Queries;
 using Cataloging.Requests.Authors.API;
 using Cataloging.Requests.Authors.Application;
 using Cataloging.Requests.Authors.Application.Middleware;
-using Cataloging.Requests.Authors.Application.UpdateAuthor;
 using Cataloging.Requests.Authors.Domain;
 using Cataloging.Requests.Authors.Infra;
 using Cataloging.Requests.Books.Application.GetBooks;
-using Cataloging.Schema;
-using Cataloging.Schema.Types;
 using Common;
 using Common.API.Auditing;
 using Common.Application;
 using Common.Application.Messages;
 using Common.Infra;
 using FluentValidation;
-using FluentValidation.AspNetCore;
-using GraphQL;
 using Oakton;
 using Oakton.Resources;
 using Wolverine;
@@ -55,22 +50,13 @@ public static class ServiceRegistrar
         ConfigureApiServices(builder);
         ConfigureApplicationServices(builder);
         ConfigureInfrastructureServices(builder, connectionString);
-
-        builder.Services.AddGraphQL(o =>
-        {
-            o.AddSchema<CatalogSchema>();
-            o.AddDataLoader();
-            o.UseTelemetry();
-            o.AddSystemTextJson();
-        });
-        builder.Services.AddScoped<CatalogQuery>();
     }
 
     private static void ConfigureApiServices(WebApplicationBuilder builder)
     {
         // Add services to the container.
         builder.Services.AddControllers();
-            
+
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -79,6 +65,7 @@ public static class ServiceRegistrar
         builder.Services.Configure<AuditOptions>(builder.Configuration.GetSection(AuditOptions.Audit));
 
         builder.AddOData();
+        builder.AddGraphQLConfiguration();
     }
 
     private static void ConfigureApplicationServices(WebApplicationBuilder builder)

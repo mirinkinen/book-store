@@ -1,6 +1,4 @@
 using Cataloging;
-using Cataloging.API;
-using Cataloging.Schema;
 using Common.API;
 using Common.API.Auditing;
 using Microsoft.AspNetCore.OData;
@@ -27,10 +25,7 @@ app.UseMiddleware<ProblemDetailsMiddleware>();
 app.UseAuthorization();
 app.UseAuditLogging();
 app.MapControllers();
-app.UseGraphQL<CatalogSchema>();
-app.UseGraphQLPlayground();
-app.UseGraphQLGraphiQL();
-app.UseGraphQLAltair();
+app.MapGraphQL();
 
 if (app.Environment.IsDevelopment())
 {
