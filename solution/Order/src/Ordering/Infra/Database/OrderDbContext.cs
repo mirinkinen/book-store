@@ -1,8 +1,7 @@
 ﻿using Common.Application.Authentication;
 using Common.Domain;
 using Microsoft.EntityFrameworkCore;
-using Ordering.Requests.Orders.Domain.Orders;
-using Ordering.Requests.Orders.Infra;
+using Ordering.Domain;
 
 namespace Ordering.Infra.Database;
 

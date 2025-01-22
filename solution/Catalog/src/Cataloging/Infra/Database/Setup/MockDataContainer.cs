@@ -1,5 +1,4 @@
-﻿using Cataloging.Requests.Authors.Domain;
-using Cataloging.Requests.Books.Domain;
+﻿using Cataloging.Domain;
 
 namespace Cataloging.Infra.Database.Setup;
 

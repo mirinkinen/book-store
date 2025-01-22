@@ -1,4 +1,4 @@
-﻿using Cataloging.Requests.Authors.Domain;
+﻿using Cataloging.Domain;
 using Common.Domain;
 using FluentAssertions;
 using FluentValidation;

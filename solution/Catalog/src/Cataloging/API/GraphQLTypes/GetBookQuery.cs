@@ -1,4 +1,4 @@
-using Cataloging.Requests.Books.Domain;
+using Cataloging.Domain;
 using HotChocolate.Types;
 
 namespace Cataloging.API.GraphQLTypes;

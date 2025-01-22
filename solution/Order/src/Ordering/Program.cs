@@ -1,6 +1,6 @@
 using Common.API.Auditing;
 using Oakton;
-using Ordering.API;
+using Ordering;
 
 var builder = WebApplication.CreateBuilder(args);
 

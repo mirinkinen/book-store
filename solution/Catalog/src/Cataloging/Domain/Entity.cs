@@ -1,5 +1,4 @@
-﻿using Cataloging.Requests.Authors.Domain;
-using Common.Domain;
+﻿using Common.Domain;
 using Microsoft.AspNetCore.OData.Deltas;
 using System.Reflection;
 

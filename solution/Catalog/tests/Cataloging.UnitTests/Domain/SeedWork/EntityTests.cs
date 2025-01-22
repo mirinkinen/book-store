@@ -1,5 +1,4 @@
 using Cataloging.Domain;
-using Cataloging.Requests.Books.Domain;
 using FluentAssertions;
 
 namespace Cataloging.UnitTests.Domain.SeedWork;

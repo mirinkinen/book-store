@@ -1,14 +1,11 @@
+using Cataloging.API.Models;
+using Cataloging.Application.AddAuthor;
+using Cataloging.Application.GetAuthors;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http.Json;
 using Cataloging.Infra.Database;
 using Cataloging.IntegrationTests.Fakes;
-using Cataloging.Requests.Authors.API;
-using Cataloging.Requests.Authors.API.Models;
-using Cataloging.Requests.Authors.Application;
-using Cataloging.Requests.Authors.Application.AddAuthor;
-using Cataloging.Requests.Authors.Application.GetAuthors;
-using Cataloging.Requests.Authors.Application.UpdateAuthor;
 using Common.Application.Auditing;
 using FluentAssertions;
 using JasperFx.Core;

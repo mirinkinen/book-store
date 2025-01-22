@@ -1,7 +1,4 @@
 ﻿using Cataloging.Domain;
-using Cataloging.Requests.Authors.Domain;
-using Cataloging.Requests.Authors.Infra;
-using Cataloging.Requests.Books.Domain;
 using Common.Application.Authentication;
 using Microsoft.EntityFrameworkCore;
 
