@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Common.API;
 
@@ -13,6 +14,7 @@ public class ProblemDetailsMiddleware
         _next = next;
     }
 
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", MessageId = "All exceptions need to be caught and handled.")]
     public async Task InvokeAsync(HttpContext context)
     {
         try
@@ -49,7 +51,7 @@ public class ProblemDetailsMiddleware
             
             await context.Response.WriteAsJsonAsync(problemDetails);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             var problemDetails = new ProblemDetails
             {

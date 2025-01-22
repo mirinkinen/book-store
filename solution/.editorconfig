@@ -20,7 +20,7 @@ csharp_style_throw_expression = true:suggestion
 csharp_style_unused_value_assignment_preference = discard_variable:warning
 
 # Xml files
-[*.xml]
+[*.{xml,csproj}]
 indent_size = 2
 
 [*.{cs,vb}]
@@ -133,5 +133,3 @@ dotnet_diagnostic.CA1812.severity = none
 
 # Because an application's API isn't typically referenced from outside the assembly, types can be made internal (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1515)
 dotnet_diagnostic.CA1515.severity = suggestion
-
-

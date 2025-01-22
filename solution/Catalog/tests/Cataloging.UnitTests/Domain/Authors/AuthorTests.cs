@@ -28,14 +28,14 @@ public class AuthorTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Author_WithEmptyFirstName_ShouldThrowException(string firstName)
+    public void Author_WithEmptyFirstName_ShouldThrowException(string? firstName)
     {
         var userId = Guid.NewGuid();
         var lastName = "Last name";
         var birthday = DateTime.UtcNow;
         var organizationId = Guid.NewGuid();
 
-        var constructor = () => new Author(firstName, lastName, birthday, organizationId);
+        var constructor = () => new Author(firstName!, lastName, birthday, organizationId);
 
         constructor.Should().Throw<ValidationException>();
     }
@@ -44,14 +44,14 @@ public class AuthorTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Author_WithEmptyLastName_ShouldThrowException(string lastName)
+    public void Author_WithEmptyLastName_ShouldThrowException(string? lastName)
     {
         var userId = Guid.NewGuid();
         var firstName = "First name";
         var birthday = DateTime.UtcNow;
         var organizationId = Guid.NewGuid();
 
-        var constructor = () => new Author(firstName, lastName, birthday, organizationId);
+        var constructor = () => new Author(firstName, lastName!, birthday, organizationId);
 
         constructor.Should().Throw<ValidationException>();
     }
