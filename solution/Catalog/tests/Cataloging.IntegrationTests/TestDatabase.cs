@@ -22,7 +22,7 @@ public sealed class TestDatabase : IAsyncDisposable
     {
         Name = $"{_sqlDatabasePrefix}-{Guid.NewGuid():D}";
         ConnectionString =
-            $"Data Source=localhost;Initial Catalog={Name};User ID=sa;Trust Server Certificate=True;Authentication=SqlPassword;Password=P@55w0rd";
+            $"Data Source=127.0.0.1;Initial Catalog={Name};User ID=sa;Trust Server Certificate=True;Authentication=SqlPassword;Password=P@55w0rd";
     }
 
     
@@ -41,7 +41,7 @@ public sealed class TestDatabase : IAsyncDisposable
             _leftOverDatabasesCleaned = true;
 
             var masterConnectionString =
-                "Data Source=localhost;Initial Catalog=master;User ID=sa;Trust Server Certificate=True;Authentication=SqlPassword;Password=P@55w0rd";
+                "Data Source=127.0.0.1;Initial Catalog=master;User ID=sa;Trust Server Certificate=True;Authentication=SqlPassword;Password=P@55w0rd";
             await using SqlConnection connection = new(masterConnectionString);
             await connection.OpenAsync();
             await connection.ChangeDatabaseAsync("master");
