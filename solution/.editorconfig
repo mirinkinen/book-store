@@ -71,6 +71,7 @@ dotnet_naming_style.pascal_case.required_suffix =
 dotnet_naming_style.pascal_case.word_separator =
 dotnet_naming_style.pascal_case.capitalization = pascal_case
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
+
 tab_width = 4
 indent_size = 4
 end_of_line = crlf
@@ -90,13 +91,16 @@ dotnet_style_prefer_compound_assignment = true:suggestion
 dotnet_style_prefer_simplified_interpolation = true:suggestion
 dotnet_style_namespace_match_folder = true:suggestion
 
-# Instance fields are camelCase and start with _
+# Instance fields are camelCase and start with underscore
 dotnet_naming_rule.instance_fields_should_be_camel_case.severity = suggestion
 dotnet_naming_rule.instance_fields_should_be_camel_case.symbols = instance_fields
 dotnet_naming_rule.instance_fields_should_be_camel_case.style = instance_field_style
 dotnet_naming_symbols.instance_fields.applicable_kinds = field
 dotnet_naming_style.instance_field_style.capitalization = camel_case
 dotnet_naming_style.instance_field_style.required_prefix = _
+
+# dotnet_code
+dotnet_code_quality_unused_parameters = all:suggestion
 
 # Dotnet Diagnostic
 
@@ -126,4 +130,8 @@ dotnet_diagnostic.CA1852.severity = none
 
 # 'Class' is an internal class that is apparently never instantiated.
 dotnet_diagnostic.CA1812.severity = none
-dotnet_code_quality_unused_parameters = all:suggestion
+
+# Because an application's API isn't typically referenced from outside the assembly, types can be made internal (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1515)
+dotnet_diagnostic.CA1515.severity = suggestion
+
+

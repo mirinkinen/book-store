@@ -14,7 +14,7 @@ public static class GetBooksHandler
     public static async Task<QueryableResponse<Book>> Handle(GetBooksQuery request)
     {
         using var activity = _activitySource.StartActivity();
-        activity.SetTag("TestKey", "TestValue");
+        activity?.SetTag("TestKey", "TestValue");
 
         var query = await request.QueryAuthorizer.GetAuthorizedEntities<Book>();
         return new QueryableResponse<Book>(query);

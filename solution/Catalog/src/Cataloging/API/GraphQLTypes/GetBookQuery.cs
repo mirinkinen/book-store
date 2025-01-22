@@ -4,7 +4,7 @@ using HotChocolate.Types;
 namespace Cataloging.API.GraphQLTypes;
 
 [QueryType]
-public static class Query
+public static class GetBookQuery
 {
     public static Book GetBook()
         => new Book(

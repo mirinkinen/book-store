@@ -24,5 +24,5 @@ public class AuthorV1
 
     public Guid ModifiedBy { get; set; }
 
-    public List<BookV1> Books { get; set; }
+    public IReadOnlyList<BookV1> Books { get; } = new List<BookV1>();
 }

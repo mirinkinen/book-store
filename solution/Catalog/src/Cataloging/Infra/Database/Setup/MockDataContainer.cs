@@ -78,7 +78,7 @@ public static class MockDataContainer
         return _randomizer.Next(10, 36);
     }
 
-    private static Author GetRandomAuthor(IList<Author> authors)
+    private static Author GetRandomAuthor(List<Author> authors)
     {
         return authors[_randomizer.Next(0, 4)];
     }

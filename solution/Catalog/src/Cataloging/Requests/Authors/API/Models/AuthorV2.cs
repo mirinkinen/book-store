@@ -18,5 +18,5 @@ public class AuthorV2
 
     public Guid OrgnizationId { get; set; }
 
-    public List<BookV2> Books { get; set; }
+    public IReadOnlyList<BookV2> Books { get; } = new List<BookV2>();
 }
