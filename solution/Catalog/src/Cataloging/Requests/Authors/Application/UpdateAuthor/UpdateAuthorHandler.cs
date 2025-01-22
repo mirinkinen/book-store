@@ -9,7 +9,7 @@ public record UpdateAuthorCommand(Guid AuthorId, DateTime Birthday, string First
 
 public record AuthorUpdated(Guid AuthorId);
 
-public class UpdateAuthorHandler
+public static class UpdateAuthorHandler
 {
     [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
     public static async IAsyncEnumerable<object> Handle(UpdateAuthorCommand request, Author author, IAuthorRepository authorRepository,
