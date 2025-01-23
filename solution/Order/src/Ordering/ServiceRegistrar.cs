@@ -31,8 +31,6 @@ public static class ServiceRegistrar
 
             opts.ListenAtPort(5202).UseDurableInbox();
             opts.PublishMessage<Ping>().ToPort(5201).UseDurableOutbox();
-            
-            //opts.CodeGeneration.TypeLoadMode = JasperFx.CodeGeneration.TypeLoadMode.Auto;
         });
 
         ConfigureApiServices(builder);
