@@ -1,5 +1,4 @@
 using Cataloging.Application;
-using Cataloging.Application.GetBooks;
 using Cataloging.Domain;
 using Common.Application;
 using HotChocolate.Types;
@@ -8,8 +7,8 @@ using Wolverine;
 
 namespace Cataloging.API.GraphQLTypes;
 
-[QueryType]
-public static class GetBooksQuery
+[QueryType()]
+public static class BookQueries
 {
     public static async Task<IQueryable<Book>> GetBooks([FromServices] IMessageBus bus, [FromServices] IQueryAuthorizer queryAuthorizer)
     {
