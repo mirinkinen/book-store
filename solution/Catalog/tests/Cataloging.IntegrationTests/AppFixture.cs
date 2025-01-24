@@ -73,14 +73,9 @@ public abstract class IntegrationContext : IAsyncLifetime
 
     public ValueTask InitializeAsync()
     {
-        // Using Marten, wipe out all data and reset the state
-        // back to exactly what we described in InitialAccountData
         return ValueTask.CompletedTask;
     }
 
-    // This is required because of the IAsyncLifetime 
-    // interface. Note that I do *not* tear down database
-    // state after the test. That's purposeful
     public ValueTask DisposeAsync()
     {
         return ValueTask.CompletedTask;
