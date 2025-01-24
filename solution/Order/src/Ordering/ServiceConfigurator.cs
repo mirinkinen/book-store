@@ -13,7 +13,7 @@ using Wolverine.Transports.Tcp;
 
 namespace Ordering;
 
-public static class ServiceRegistrar
+public static class ServiceConfigurator
 {
     internal static void RegisterServices(WebApplicationBuilder builder, string connectionString)
     {
@@ -26,8 +26,8 @@ public static class ServiceRegistrar
             opts.ApplicationAssembly = typeof(GetShoppingCartQuery).Assembly;
             opts.Discovery.IncludeAssembly(typeof(AuditLogEventHandler).Assembly);
 
-            Common.Application.ServiceRegistrar.UseCommonApplicationSettings(opts);
-            Common.Infra.ServiceRegistrar.UseCommonInfrastructureSettings(opts, connectionString);
+            Common.Application.ServiceConfigurator.UseCommonApplicationSettings(opts);
+            Common.Infra.ServiceConfigurator.UseCommonInfrastructureSettings(opts, connectionString);
 
             opts.ListenAtPort(5202).UseDurableInbox();
             opts.PublishMessage<Ping>().ToPort(5201).UseDurableOutbox();
@@ -83,12 +83,12 @@ public static class ServiceRegistrar
     
     private static void ConfigureApplicationServices(WebApplicationBuilder builder)
     {
-        Common.Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);
+        Common.Application.ServiceConfigurator.RegisterApplicationServices(builder.Services);
     }
 
     private static void ConfigureInfrastructureServices(WebApplicationBuilder builder, string connectionString)
     {
-        Common.Infra.ServiceRegistrar.RegisterInfrastructureServices<OrderDbContext>(builder.Services,
+        Common.Infra.ServiceConfigurator.RegisterInfrastructureServices<OrderDbContext>(builder.Services,
             connectionString);
     }
 }

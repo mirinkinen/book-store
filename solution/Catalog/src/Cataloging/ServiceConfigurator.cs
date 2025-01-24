@@ -19,7 +19,7 @@ using Wolverine.Transports.Tcp;
 
 namespace Cataloging;
 
-public static class ServiceRegistrar
+public static class ServiceConfigurator
 {
     internal static void RegisterServices(WebApplicationBuilder builder, string connectionString)
     {
@@ -68,12 +68,12 @@ public static class ServiceRegistrar
     private static void ConfigureApplicationServices(WebApplicationBuilder builder)
     {
         builder.Services.AddValidatorsFromAssemblyContaining<PutAuthorDtoV1Validator>();
-        Common.Application.ServiceRegistrar.RegisterApplicationServices(builder.Services);
+        Common.Application.ServiceConfigurator.RegisterApplicationServices(builder.Services);
     }
 
     private static void ConfigureInfrastructureServices(WebApplicationBuilder builder, string connectionString)
     {
-        Common.Infra.ServiceRegistrar.RegisterInfrastructureServices<CatalogDbContext>(builder.Services,
+        Common.Infra.ServiceConfigurator.RegisterInfrastructureServices<CatalogDbContext>(builder.Services,
             connectionString);
 
         builder.Services.AddScoped<IQueryAuthorizer, QueryAuthorizer>();

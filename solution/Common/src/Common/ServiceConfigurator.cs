@@ -8,7 +8,7 @@ using Wolverine;
 
 namespace Common;
 
-public static class ServiceRegistrar
+public static class ServiceConfigurator
 {
     public static void UseCommonApiSettings(this WolverineOptions opts, WebApplicationBuilder builder)
     {

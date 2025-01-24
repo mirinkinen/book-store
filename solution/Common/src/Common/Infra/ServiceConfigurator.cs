@@ -6,7 +6,7 @@ using Wolverine.SqlServer;
 
 namespace Common.Infra;
 
-public static class ServiceRegistrar
+public static class ServiceConfigurator
 {
     private const string _wolverineSchema = "wolverine";
 

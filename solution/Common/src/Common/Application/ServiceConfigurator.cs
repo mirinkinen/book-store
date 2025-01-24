@@ -6,7 +6,7 @@ using Wolverine;
 
 namespace Common.Application;
 
-public static class ServiceRegistrar
+public static class ServiceConfigurator
 {
     public static void RegisterApplicationServices(IServiceCollection services)
     {
