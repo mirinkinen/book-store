@@ -30,16 +30,16 @@ public static class ServiceConfigurator
         builder.Host.UseWolverine(opts =>
         {
             // API settings.
-            opts.UseCommonApiSettings(builder);
+            opts.UseCommonWolverineApiSettings(builder);
 
             // Application settings.
-            opts.UseCommonApplicationSettings();
+            opts.UseCommonWolverineApplicationSettings();
             opts.ServiceName = "Catalog API";
             opts.ApplicationAssembly = typeof(GetBooksHandler).Assembly;
             opts.Policies.ForMessagesOfType<IAuthorCommand>().AddMiddleware(typeof(LoadAuthorMiddleware));
 
             // Infrastructure settings.
-            opts.UseCommonInfrastructureSettings(connectionString);
+            opts.UseCommonWolverineInfrastructureSettings(connectionString);
             opts.ListenAtPort(5201).UseDurableInbox();
             opts.PublishMessage<Pong>().ToPort(5202).UseDurableOutbox();
         });
@@ -68,12 +68,12 @@ public static class ServiceConfigurator
     private static void ConfigureApplicationServices(WebApplicationBuilder builder)
     {
         builder.Services.AddValidatorsFromAssemblyContaining<PutAuthorDtoV1Validator>();
-        Common.Application.ServiceConfigurator.RegisterApplicationServices(builder.Services);
+        Common.Application.ServiceConfigurator.ConfigureApplicationServices(builder.Services);
     }
 
     private static void ConfigureInfrastructureServices(WebApplicationBuilder builder, string connectionString)
     {
-        Common.Infra.ServiceConfigurator.RegisterInfrastructureServices<CatalogDbContext>(builder.Services,
+        Common.Infra.ServiceConfigurator.ConfigureInfrastructureServices<CatalogDbContext>(builder.Services,
             connectionString);
 
         builder.Services.AddScoped<IQueryAuthorizer, QueryAuthorizer>();

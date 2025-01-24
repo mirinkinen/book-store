@@ -8,7 +8,7 @@ namespace Common.Application;
 
 public static class ServiceConfigurator
 {
-    public static void RegisterApplicationServices(IServiceCollection services)
+    public static void ConfigureApplicationServices(IServiceCollection services)
     {
         // User
         services.AddScoped<IUserService, UserService>();
@@ -17,7 +17,7 @@ public static class ServiceConfigurator
         services.AddScoped<AuditContext>();
     }
 
-    public static void UseCommonApplicationSettings(this WolverineOptions opts)
+    public static void UseCommonWolverineApplicationSettings(this WolverineOptions opts)
     {
         opts.Policies.LogMessageStarting(LogLevel.Debug);
         opts.Discovery.IncludeAssembly(typeof(AuditLogEventHandler).Assembly);

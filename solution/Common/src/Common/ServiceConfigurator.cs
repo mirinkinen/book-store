@@ -10,7 +10,7 @@ namespace Common;
 
 public static class ServiceConfigurator
 {
-    public static void UseCommonApiSettings(this WolverineOptions opts, WebApplicationBuilder builder)
+    public static void UseCommonWolverineApiSettings(this WolverineOptions opts, WebApplicationBuilder builder)
     {
         opts.Services.AddOpenTelemetry()
             .WithTracing(trace => trace

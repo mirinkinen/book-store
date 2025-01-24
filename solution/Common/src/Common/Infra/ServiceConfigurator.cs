@@ -10,7 +10,7 @@ public static class ServiceConfigurator
 {
     private const string _wolverineSchema = "wolverine";
 
-    public static void RegisterInfrastructureServices<TDbContext>(IServiceCollection services, string connectionString) where 
+    public static void ConfigureInfrastructureServices<TDbContext>(IServiceCollection services, string connectionString) where 
         TDbContext : DbContext
     {
         services.AddDbContextWithWolverineIntegration<TDbContext>(dbContextOptions =>
@@ -20,7 +20,7 @@ public static class ServiceConfigurator
 
     }
     
-    public static void UseCommonInfrastructureSettings(this WolverineOptions opts, string connectionString)
+    public static void UseCommonWolverineInfrastructureSettings(this WolverineOptions opts, string connectionString)
     {
         // Setting up Sql Server-backed message storage
         // This requires a reference to Wolverine.SqlServer

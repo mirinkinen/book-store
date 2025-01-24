@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("OrderConnectionString");
 ArgumentNullException.ThrowIfNull(connectionString);
 
-ServiceConfigurator.RegisterServices(builder, connectionString);
+ServiceConfigurator.ConfigureServices(builder, connectionString);
 
 var app = builder.Build();
 

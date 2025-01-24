@@ -15,7 +15,7 @@ namespace Ordering;
 
 public static class ServiceConfigurator
 {
-    internal static void RegisterServices(WebApplicationBuilder builder, string connectionString)
+    internal static void ConfigureServices(WebApplicationBuilder builder, string connectionString)
     {
         builder.Host.ApplyOaktonExtensions();
 
@@ -26,8 +26,8 @@ public static class ServiceConfigurator
             opts.ApplicationAssembly = typeof(GetShoppingCartQuery).Assembly;
             opts.Discovery.IncludeAssembly(typeof(AuditLogEventHandler).Assembly);
 
-            Common.Application.ServiceConfigurator.UseCommonApplicationSettings(opts);
-            Common.Infra.ServiceConfigurator.UseCommonInfrastructureSettings(opts, connectionString);
+            Common.Application.ServiceConfigurator.UseCommonWolverineApplicationSettings(opts);
+            Common.Infra.ServiceConfigurator.UseCommonWolverineInfrastructureSettings(opts, connectionString);
 
             opts.ListenAtPort(5202).UseDurableInbox();
             opts.PublishMessage<Ping>().ToPort(5201).UseDurableOutbox();
@@ -83,12 +83,12 @@ public static class ServiceConfigurator
     
     private static void ConfigureApplicationServices(WebApplicationBuilder builder)
     {
-        Common.Application.ServiceConfigurator.RegisterApplicationServices(builder.Services);
+        Common.Application.ServiceConfigurator.ConfigureApplicationServices(builder.Services);
     }
 
     private static void ConfigureInfrastructureServices(WebApplicationBuilder builder, string connectionString)
     {
-        Common.Infra.ServiceConfigurator.RegisterInfrastructureServices<OrderDbContext>(builder.Services,
+        Common.Infra.ServiceConfigurator.ConfigureInfrastructureServices<OrderDbContext>(builder.Services,
             connectionString);
     }
 }
