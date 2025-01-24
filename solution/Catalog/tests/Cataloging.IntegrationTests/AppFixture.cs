@@ -16,7 +16,7 @@ public class AppFixture : IAsyncLifetime
 
     public TestDatabase TestDatabase { get; } = new();
 
-    public async Task InitializeAsync()
+    public async ValueTask InitializeAsync()
     {
         await TestDatabase.CleanLeftoverDatabasesAsync();
         await TestDatabase.CreateAndSeedDatabase();
@@ -36,7 +36,7 @@ public class AppFixture : IAsyncLifetime
         });
     }
 
-    public async Task DisposeAsync()
+    public async ValueTask DisposeAsync()
     {
         await TestDatabase.DisposeAsync();
         await Host!.StopAsync();
@@ -71,18 +71,18 @@ public abstract class IntegrationContext : IAsyncLifetime
 
     protected FakeUserService UserService => _app.UserService;
 
-    public Task InitializeAsync()
+    public ValueTask InitializeAsync()
     {
         // Using Marten, wipe out all data and reset the state
         // back to exactly what we described in InitialAccountData
-        return Task.CompletedTask;
+        return ValueTask.CompletedTask;
     }
 
     // This is required because of the IAsyncLifetime 
     // interface. Note that I do *not* tear down database
     // state after the test. That's purposeful
-    public Task DisposeAsync()
+    public ValueTask DisposeAsync()
     {
-        return Task.CompletedTask;
+        return ValueTask.CompletedTask;
     }
 }

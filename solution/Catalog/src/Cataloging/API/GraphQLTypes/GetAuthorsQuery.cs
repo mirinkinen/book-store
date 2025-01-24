@@ -15,7 +15,7 @@ public static class GetAuthorsQuery
             queryAuthorizer, CancellationToken cancellationToken)
     {
         var query = new Application.GetAuthors.GetAuthorsQuery(queryAuthorizer);
-        var queryable = await bus.InvokeAsync<QueryableResponse<Author>>(query);
+        var queryable = await bus.InvokeAsync<QueryableResponse<Author>>(query, cancellationToken);
 
         return queryable.Query;
     }
