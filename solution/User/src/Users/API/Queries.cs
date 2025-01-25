@@ -3,7 +3,7 @@ using Users.Infra.Database;
 
 namespace Users.API;
 
-public class Query
+public class Queries
 {
     public IQueryable<User> GetUsers(UserDbContext userDbContext)
     {

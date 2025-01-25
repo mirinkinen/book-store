@@ -9,7 +9,9 @@ public class User : Entity
 
     public required string LastName { get; set; }
 
+#pragma warning disable CA1002
     public List<Address> Addresses { get; init; } = new List<Address>();
+#pragma warning restore CA1002
 
     [SetsRequiredMembers]
     public User(string firstName, string lastName)

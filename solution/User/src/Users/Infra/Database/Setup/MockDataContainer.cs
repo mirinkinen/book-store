@@ -6,7 +6,6 @@ public static class MockDataContainer
 {
     public static Guid SystemUserId => Guid.Parse("11111111-1111-1111-1111-111111111111");
 
-    private static readonly Random _randomizer = new(Guid.NewGuid().GetHashCode());
     public static Guid AuthorizedOrganization1 => Guid.Parse("5D8E6753-1479-408E-BB3D-CB3A02BE486C");
     public static Guid AuthorizedOrganization2 => Guid.Parse("284F633F-2D13-4F4D-8E37-1EE5C9F6B140");
 
