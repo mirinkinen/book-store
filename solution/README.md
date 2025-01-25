@@ -21,6 +21,7 @@ To seed development data, run
 
 ```
 dotnet run --project Catalog/src/Cataloging -- seed-dev-data
+dotnet run --project User/src/Users -- seed-dev-data
 ```
 
 ## Database migrations

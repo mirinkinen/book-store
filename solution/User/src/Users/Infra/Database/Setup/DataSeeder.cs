@@ -2,25 +2,25 @@
 
 public static class DataSeeder
 {
-    public static async Task SeedDataAsync(UserDbContext catalogDbContext)
+    public static async Task SeedDataAsync(UserDbContext userDbContext)
     {
-        ArgumentNullException.ThrowIfNull(catalogDbContext);
+        ArgumentNullException.ThrowIfNull(userDbContext);
 
-        var authors = MockDataContainer.GetUsers().ToList();
+        var users = MockDataContainer.GetUsers().ToList();
 
         // If not already seeded.
-        if (!catalogDbContext.Users.Any())
+        if (!userDbContext.Users.Any())
         {
-            await catalogDbContext.AddRangeAsync(authors);
-            await catalogDbContext.SaveChangesAsync();
+            await userDbContext.AddRangeAsync(users);
+            await userDbContext.SaveChangesAsync();
         }
 
         // If not already seeded.
-        if (!catalogDbContext.Addresses.Any())
+        if (!userDbContext.Addresses.Any())
         {
-            var books = MockDataContainer.GetAddresses(authors);
-            await catalogDbContext.AddRangeAsync(books);
-            await catalogDbContext.SaveChangesAsync();
+            var addresses = MockDataContainer.GetAddresses(users);
+            await userDbContext.AddRangeAsync(addresses);
+            await userDbContext.SaveChangesAsync();
         }
     }
 }
