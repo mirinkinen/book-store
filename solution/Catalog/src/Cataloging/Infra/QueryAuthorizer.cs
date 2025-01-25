@@ -2,6 +2,7 @@
 using Cataloging.Domain;
 using Cataloging.Infra.Database;
 using Common.Application.Authentication;
+using Common.Domain;
 
 namespace Cataloging.Infra;
 

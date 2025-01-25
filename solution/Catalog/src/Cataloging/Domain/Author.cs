@@ -1,7 +1,9 @@
-﻿using FluentValidation;
+﻿using Common.Domain;
+using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.OData.Deltas;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 
 namespace Cataloging.Domain;
 
@@ -62,6 +64,29 @@ public class Author : Entity
         Birthday = birthday;
 
         Validate();
+    }
+    
+    private Dictionary<string, object> GetUpdatedProperties(Delta<Author> delta)
+    {
+        ArgumentNullException.ThrowIfNull(delta);
+        
+        var updatablePropertyNames = GetType().GetProperties()
+            .Where(p => p.GetCustomAttribute<UpdatableAttribute>() != null)
+            .Select(p => p.Name);
+
+        var updatedPropertyNames = delta.GetChangedPropertyNames().Intersect(updatablePropertyNames);
+
+        var updatedValues = new Dictionary<string, object>();
+
+        foreach (var propertyName in updatedPropertyNames)
+        {
+            if (delta.TryGetPropertyValue(propertyName, out var value))
+            {
+                updatedValues.Add(propertyName, value);
+            }
+        }
+
+        return updatedValues;
     }
 
     private void Validate()

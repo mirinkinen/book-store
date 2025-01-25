@@ -1,4 +1,5 @@
 ﻿using Cataloging.Domain;
+using Common.Infra;
 
 namespace Cataloging.Infra.Database.Setup;
 

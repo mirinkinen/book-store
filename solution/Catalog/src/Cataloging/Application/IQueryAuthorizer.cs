@@ -1,4 +1,5 @@
 ﻿using Cataloging.Domain;
+using Common.Domain;
 
 namespace Cataloging.Application;
 

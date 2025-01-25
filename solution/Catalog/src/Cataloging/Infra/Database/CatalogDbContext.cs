@@ -1,6 +1,8 @@
 ﻿using Cataloging.Domain;
 using Common.Application.Authentication;
+using Common.Domain;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Cataloging.Infra.Database;
 
@@ -52,6 +54,6 @@ public class CatalogDbContext : DbContext
         ArgumentNullException.ThrowIfNull(modelBuilder);
 
         base.OnModelCreating(modelBuilder);
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AuthorEntityConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }

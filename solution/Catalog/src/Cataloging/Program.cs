@@ -25,7 +25,6 @@ app.UseMiddleware<ProblemDetailsMiddleware>();
 app.UseAuthorization();
 app.UseAuditLogging();
 app.MapControllers();
-app.MapGraphQL();
 
 if (app.Environment.IsDevelopment())
 {

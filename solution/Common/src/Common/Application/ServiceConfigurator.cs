@@ -2,6 +2,7 @@ using Common.Application.Auditing;
 using Common.Application.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Reflection;
 using Wolverine;
 
 namespace Common.Application;
@@ -20,6 +21,6 @@ public static class ServiceConfigurator
     public static void UseCommonWolverineApplicationSettings(this WolverineOptions opts)
     {
         opts.Policies.LogMessageStarting(LogLevel.Debug);
-        opts.Discovery.IncludeAssembly(typeof(AuditLogEventHandler).Assembly);
+        opts.Discovery.IncludeAssembly(Assembly.GetExecutingAssembly());
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Cataloging.Domain;
+﻿using Common.Domain;
+
+namespace Cataloging.Domain;
 
 public class Book : Entity
 {

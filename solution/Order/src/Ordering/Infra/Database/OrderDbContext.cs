@@ -2,6 +2,7 @@
 using Common.Domain;
 using Microsoft.EntityFrameworkCore;
 using Ordering.Domain;
+using System.Reflection;
 
 namespace Ordering.Infra.Database;
 
@@ -49,6 +50,6 @@ public class OrderDbContext : DbContext
         ArgumentNullException.ThrowIfNull(modelBuilder);
 
         base.OnModelCreating(modelBuilder);
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(OrderEntityConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }

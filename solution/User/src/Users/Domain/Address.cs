@@ -1,6 +1,8 @@
-namespace Users;
+using Common.Domain;
 
-public class Address
+namespace Users.Domain;
+
+public class Address : Entity
 {
     public string Country { get; init; }
 
@@ -8,5 +10,7 @@ public class Address
 
     public string PostalCode { get; init; }
 
+    public Guid UserId { get; set; }
+    
     public User User { get; set; }
 }

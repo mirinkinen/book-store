@@ -1,7 +1,7 @@
-﻿using Cataloging.Domain;
+﻿using Common.Domain;
 using System.Reflection;
 
-namespace Cataloging.Infra.Database.Setup;
+namespace Users.Infra.Database.Setup;
 
 internal static class EntityExtensions
 {

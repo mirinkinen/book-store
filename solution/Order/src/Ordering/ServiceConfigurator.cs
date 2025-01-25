@@ -8,6 +8,7 @@ using Oakton;
 using Ordering.Application.GetShoppingCart;
 using Ordering.Domain;
 using Ordering.Infra.Database;
+using System.Reflection;
 using Wolverine;
 using Wolverine.Transports.Tcp;
 
@@ -23,8 +24,7 @@ public static class ServiceConfigurator
         builder.Host.UseWolverine(opts =>
         {
             opts.ServiceName = "Order API";
-            opts.ApplicationAssembly = typeof(GetShoppingCartQuery).Assembly;
-            opts.Discovery.IncludeAssembly(typeof(AuditLogEventHandler).Assembly);
+            opts.ApplicationAssembly = Assembly.GetExecutingAssembly();
 
             Common.Application.ServiceConfigurator.UseCommonWolverineApplicationSettings(opts);
             Common.Infra.ServiceConfigurator.UseCommonWolverineInfrastructureSettings(opts, connectionString);
