@@ -14,6 +14,7 @@ To create databases, run
 ```
 dotnet ef database update -s Catalog\src\Cataloging
 dotnet ef database update -s Order\src\Ordering
+dotnet ef database update -s User\src\Users
 ```
 
 To seed development data, run 
