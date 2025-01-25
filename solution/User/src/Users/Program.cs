@@ -1,4 +1,3 @@
-using Oakton;
 using Users;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,4 +20,4 @@ app.UseAuthorization();
 app.MapGraphQL();
 
 // Opt into using Oakton for command parsing
-await app.RunOaktonCommands(args);
+await app.RunAsync();

@@ -1,8 +1,6 @@
 using Common.API.Auditing;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Oakton;
-using Oakton.Resources;
 using System.Reflection;
 using Users.API;
 using Users.Infra.Database;
@@ -22,9 +20,6 @@ public static class ServiceConfigurator
 
     private static void ConfigureApiServices(WebApplicationBuilder builder)
     {
-        builder.Host.ApplyOaktonExtensions();
-        builder.Services.AddScoped<IStatefulResource, DatabaseInitializer>();
-
         builder.Services.AddAuthorization();
         builder.Services.AddGraphQLServer().AddQueryType<Query>();
         builder.Services.AddEndpointsApiExplorer();
@@ -42,7 +37,7 @@ public static class ServiceConfigurator
 
     private static void ConfigureInfrastructureServices(WebApplicationBuilder builder, string connectionString)
     {
-        builder.Services.AddPooledDbContextFactory<UserDbContext>(options =>
+        builder.Services.AddDbContext<UserDbContext>(options =>
         {
             options.UseSqlServer(connectionString);
         });
