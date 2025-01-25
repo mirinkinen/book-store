@@ -46,6 +46,6 @@ internal class IntegrationWebApplicationFactory : WebApplicationFactory<Program>
 
     private void OverrideAppSettings(IWebHostBuilder builder)
     {
-        builder.UseSetting("ConnectionStrings:CatalogConnectionString", TestDatabase.ConnectionString);
+        builder.UseSetting("ConnectionStrings:DefaultConnection", TestDatabase.ConnectionString);
     }
 }

@@ -30,7 +30,7 @@ public class AppFixture : IAsyncLifetime
         // its implied Program.Main() set up
         Host = await AlbaHost.For<Program>(builder =>
         {
-            builder.UseSetting("ConnectionStrings:CatalogConnectionString", TestDatabase.ConnectionString);
+            builder.UseSetting("ConnectionStrings:DefaultConnection", TestDatabase.ConnectionString);
             
             builder.ConfigureServices(services => { services.AddScoped<IUserService>(_ => UserService); });
         });

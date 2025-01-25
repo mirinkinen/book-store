@@ -4,7 +4,7 @@ using Ordering;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("OrderConnectionString");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 ArgumentNullException.ThrowIfNull(connectionString);
 
 ServiceConfigurator.ConfigureServices(builder, connectionString);

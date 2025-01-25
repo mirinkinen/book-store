@@ -22,7 +22,7 @@ namespace Cataloging;
 
 public static class ServiceConfigurator
 {
-    internal static void ConfigureServices(WebApplicationBuilder builder, string connectionString)
+    internal static void ConfigureServices(this WebApplicationBuilder builder, string connectionString)
     {
         builder.Host.ApplyOaktonExtensions();
         builder.Services.AddScoped<IStatefulResource, DatabaseInitializer>();

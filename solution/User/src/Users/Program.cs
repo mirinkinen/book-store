@@ -1,8 +1,5 @@
-using Cataloging;
-using Common.API;
-using Common.API.Auditing;
-using Microsoft.AspNetCore.OData;
 using Oakton;
+using Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,20 +13,12 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapOpenApi();
 }
 
 app.UseHttpsRedirection();
-app.UseMiddleware<ProblemDetailsMiddleware>();
 app.UseAuthorization();
-app.UseAuditLogging();
-app.MapControllers();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseODataRouteDebug();
-}
+app.MapGraphQL();
 
 // Opt into using Oakton for command parsing
 await app.RunOaktonCommands(args);
