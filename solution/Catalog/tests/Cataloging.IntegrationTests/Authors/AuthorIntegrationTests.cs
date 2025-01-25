@@ -349,7 +349,7 @@ public sealed class AuthorIntegrationTests : IntegrationContext
         // Assert that author is updated.
         using var scope = Host.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
-        var authorDao = await dbContext.Authors.FindAsync(Guid.Parse(authorId));
+        var authorDao = await dbContext.Authors.FindAsync([Guid.Parse(authorId)], TestContext.Current.CancellationToken);
         authorDao.FirstName.Should().Be(newFirstName);
         authorDao.LastName.Should().Be(newLastName);
         authorDao.Birthday.Should().Be(newBirthday);
@@ -395,12 +395,12 @@ public sealed class AuthorIntegrationTests : IntegrationContext
         // Assert request
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        var author = await response.Content.ReadFromJsonAsync<AuthorViewmodel>();
+        var author = await response.Content.ReadFromJsonAsync<AuthorViewmodel>(TestContext.Current.CancellationToken);
 
         // Assert that author is added.
         using var scope = Host.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
-        var authorDao = await dbContext.Authors.FindAsync(author.Id);
+        var authorDao = await dbContext.Authors.FindAsync([author.Id], TestContext.Current.CancellationToken);
         authorDao.Id.Should().NotBeEmpty();
         authorDao.FirstName.Should().Be(newFirstName);
         authorDao.LastName.Should().Be(newLastName);

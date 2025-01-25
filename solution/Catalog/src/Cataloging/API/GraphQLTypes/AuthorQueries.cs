@@ -19,3 +19,16 @@ public static class AuthorQueries
         return queryable.Query;
     }
 }
+
+[QueryType]
+public static class Author2Queries
+{
+    public static async Task<IQueryable<Author>> GetAuthors([FromServices] IMessageBus bus, [FromServices] IQueryAuthorizer
+        queryAuthorizer, CancellationToken cancellationToken)
+    {
+        var query = new Application.GetAuthors.GetAuthorsQuery(queryAuthorizer);
+        var queryable = await bus.InvokeAsync<QueryableResponse<Author>>(query, cancellationToken);
+
+        return queryable.Query;
+    }
+}
