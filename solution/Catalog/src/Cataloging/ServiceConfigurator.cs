@@ -62,7 +62,6 @@ public static class ServiceConfigurator
         builder.Services.Configure<AuditOptions>(builder.Configuration.GetSection(AuditOptions.Audit));
 
         builder.AddOData();
-        builder.AddGraphQLConfiguration();
     }
 
     private static void ConfigureApplicationServices(WebApplicationBuilder builder)
