@@ -24,9 +24,20 @@ public static class ServiceConfigurator
 {
     internal static void ConfigureServices(this WebApplicationBuilder builder, string connectionString)
     {
+        ConfigureCommandLineCommands(builder);
+        ConfigureApiServices(builder, connectionString);
+        ConfigureApplicationServices(builder);
+        ConfigureInfrastructureServices(builder, connectionString);
+    }
+
+    private static void ConfigureCommandLineCommands(WebApplicationBuilder builder)
+    {
         builder.Host.ApplyOaktonExtensions();
         builder.Services.AddScoped<IStatefulResource, DatabaseInitializer>();
+    }
 
+    private static void ConfigureApiServices(WebApplicationBuilder builder, string connectionString)
+    {
         // All commands are handled by Wolverine.
         builder.Host.UseWolverine(opts =>
         {
@@ -44,14 +55,7 @@ public static class ServiceConfigurator
             opts.ListenAtPort(5201).UseDurableInbox();
             opts.PublishMessage<Pong>().ToPort(5202).UseDurableOutbox();
         });
-
-        ConfigureApiServices(builder);
-        ConfigureApplicationServices(builder);
-        ConfigureInfrastructureServices(builder, connectionString);
-    }
-
-    private static void ConfigureApiServices(WebApplicationBuilder builder)
-    {
+        
         // Add services to the container.
         builder.Services.AddControllers();
 
