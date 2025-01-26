@@ -13,6 +13,13 @@ public class User : Entity
     public List<Address> Addresses { get; init; } = new List<Address>();
 #pragma warning restore CA1002
 
+    /// <summary>
+    /// Only for graphql.
+    /// </summary>
+    private User()
+    {
+    }
+    
     [SetsRequiredMembers]
     public User(string firstName, string lastName)
     {

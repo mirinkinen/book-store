@@ -25,7 +25,13 @@ public static class ServiceConfigurator
     {
         builder.Host.ApplyOaktonExtensions();
         builder.Services.AddAuthorization();
-        builder.Services.AddGraphQLServer().AddQueryType<Queries>().RegisterDbContextFactory<UserDbContext>();
+        builder.Services
+            .AddGraphQLServer()
+            .AddQueryType<Queries>()
+            .RegisterDbContextFactory<UserDbContext>()
+            .AddProjections()
+            .AddFiltering()
+            .AddSorting();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddOpenApi();
         builder.Services.AddHttpContextAccessor();
@@ -45,6 +51,8 @@ public static class ServiceConfigurator
     {
         builder.Services.AddPooledDbContextFactory<UserDbContext>(options =>
         {
+            options.EnableDetailedErrors();
+            options.EnableSensitiveDataLogging();
             options.UseSqlServer(connectionString);
         });
     }

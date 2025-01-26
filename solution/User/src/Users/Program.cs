@@ -1,8 +1,5 @@
-using Microsoft.EntityFrameworkCore;
 using Oakton;
 using Users;
-using Users.Infra.Database;
-using Users.Infra.Database.Setup;
 
 var builder = WebApplication.CreateBuilder(args);
 
