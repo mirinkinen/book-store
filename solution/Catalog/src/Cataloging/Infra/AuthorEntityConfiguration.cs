@@ -10,7 +10,7 @@ public class AuthorEntityConfiguration : IEntityTypeConfiguration<Author>
     {
         ArgumentNullException.ThrowIfNull(builder);
 
-        builder.ToTable("Authors", options => options.IsTemporal());
+        builder.ToTable("Author", "Catalog", options => options.IsTemporal());
 
         builder.Property(e => e.FirstName).HasMaxLength(50);
         builder.Property(e => e.LastName).HasMaxLength(50);

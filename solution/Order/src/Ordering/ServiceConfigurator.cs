@@ -18,8 +18,6 @@ public static class ServiceConfigurator
 {
     internal static void ConfigureServices(WebApplicationBuilder builder, string connectionString)
     {
-        builder.Host.ApplyOaktonExtensions();
-
         // All commands are handled by Wolverine.
         builder.Host.UseWolverine(opts =>
         {
@@ -40,6 +38,8 @@ public static class ServiceConfigurator
 
     private static void ConfigureApiServices(WebApplicationBuilder builder)
     {
+        builder.Host.ApplyOaktonExtensions();
+        
         // Add services to the container.
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

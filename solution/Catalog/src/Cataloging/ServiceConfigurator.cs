@@ -24,20 +24,15 @@ public static class ServiceConfigurator
 {
     internal static void ConfigureServices(this WebApplicationBuilder builder, string connectionString)
     {
-        ConfigureCommandLineCommands(builder);
         ConfigureApiServices(builder, connectionString);
         ConfigureApplicationServices(builder);
         ConfigureInfrastructureServices(builder, connectionString);
     }
 
-    private static void ConfigureCommandLineCommands(WebApplicationBuilder builder)
-    {
-        builder.Host.ApplyOaktonExtensions();
-        builder.Services.AddScoped<IStatefulResource, DatabaseInitializer>();
-    }
-
     private static void ConfigureApiServices(WebApplicationBuilder builder, string connectionString)
     {
+        builder.Host.ApplyOaktonExtensions();
+        
         // All commands are handled by Wolverine.
         builder.Host.UseWolverine(opts =>
         {

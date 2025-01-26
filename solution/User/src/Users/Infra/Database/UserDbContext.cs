@@ -25,9 +25,13 @@ public class UserDbContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>()
+        var userEntity = modelBuilder.Entity<User>()
+            .ToTable("User", "Users")
             .HasMany(u => u.Addresses)
             .WithOne(a => a.User)
             .HasForeignKey(a => a.Id);
+
+        var addressEntity = modelBuilder.Entity<Address>()
+            .ToTable("User", "Addresses");
     }
 }

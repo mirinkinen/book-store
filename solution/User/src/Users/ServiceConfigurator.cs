@@ -1,9 +1,12 @@
 using Common.API.Auditing;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Oakton;
+using Oakton.Resources;
 using System.Reflection;
 using Users.API;
 using Users.Infra.Database;
+using Users.Infra.Database.Setup;
 
 namespace Users;
 
@@ -19,6 +22,8 @@ public static class ServiceConfigurator
 
     private static void ConfigureApiServices(WebApplicationBuilder builder)
     {
+        builder.Host.ApplyOaktonExtensions();
+        
         builder.Services.AddAuthorization();
         builder.Services.AddGraphQLServer().AddQueryType<Queries>();
         builder.Services.AddEndpointsApiExplorer();
