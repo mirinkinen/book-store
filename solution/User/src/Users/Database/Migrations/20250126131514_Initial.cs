@@ -6,13 +6,20 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Users.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "Addresses");
+
+            migrationBuilder.EnsureSchema(
+                name: "Users");
+
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "User",
+                schema: "Users",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -24,11 +31,12 @@ namespace Users.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_User", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Addresses",
+                name: "User",
+                schema: "Addresses",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -42,11 +50,12 @@ namespace Users.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Addresses", x => x.Id);
+                    table.PrimaryKey("PK_User", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Addresses_Users_Id",
+                        name: "FK_User_User_Id",
                         column: x => x.Id,
-                        principalTable: "Users",
+                        principalSchema: "Users",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -56,10 +65,12 @@ namespace Users.Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Addresses");
+                name: "User",
+                schema: "Addresses");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "User",
+                schema: "Users");
         }
     }
 }

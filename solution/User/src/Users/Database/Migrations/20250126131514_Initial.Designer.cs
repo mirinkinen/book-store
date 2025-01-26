@@ -12,8 +12,8 @@ using Users.Infra.Database;
 namespace Users.Database.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20250125170329_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20250126131514_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,7 +56,7 @@ namespace Users.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("User", "Addresses");
                 });
 
             modelBuilder.Entity("Users.Domain.User", b =>
@@ -84,7 +84,7 @@ namespace Users.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("User", "Users");
                 });
 
             modelBuilder.Entity("Users.Domain.Address", b =>

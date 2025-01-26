@@ -53,7 +53,7 @@ namespace Users.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("User", "Addresses");
                 });
 
             modelBuilder.Entity("Users.Domain.User", b =>
@@ -81,7 +81,7 @@ namespace Users.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("User", "Users");
                 });
 
             modelBuilder.Entity("Users.Domain.Address", b =>

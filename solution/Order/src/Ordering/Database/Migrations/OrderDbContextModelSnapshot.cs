@@ -3,31 +3,27 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ordering.Infra.Database;
-using Ordering.Infrastructure.Database;
 
 #nullable disable
 
-namespace Ordering.Infrastructure.Database.Migrations
+namespace Ordering.Database.Migrations
 {
     [DbContext(typeof(OrderDbContext))]
-    [Migration("20230710173913_Initial")]
-    partial class Initial
+    partial class OrderDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.8")
+                .HasAnnotation("ProductVersion", "9.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("WolverineEnabled", "true");
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Ordering.Domain.Orders.Order", b =>
+            modelBuilder.Entity("Ordering.Domain.Order", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
