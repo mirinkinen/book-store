@@ -15,7 +15,7 @@ public class AuditLogEventHandler
         LoggerMessage.Define<string, Guid>(LogLevel.Information, new EventId(0),
             "Type: {Type}: Id: {Id}");
 
-    public void Handle(AuditLogEvent auditLogEvent, ILogger<AuditLogEventHandler> logger)
+    public static void Handle(AuditLogEvent auditLogEvent, ILogger<AuditLogEventHandler> logger)
     {
         _logAudit.Invoke(logger, auditLogEvent.ActorId, auditLogEvent.OperationType, null);
 

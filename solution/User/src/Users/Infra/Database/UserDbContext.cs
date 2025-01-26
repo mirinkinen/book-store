@@ -11,18 +11,16 @@ public class UserDbContext : DbContext
     public DbSet<User> Users { get; set; }
     
     public DbSet<Address> Addresses { get; set; }
+
+    public UserDbContext()
+    {
+    }
     
     public UserDbContext(DbContextOptions options, IUserService userService) : base(options)
     {
         _userService = userService;
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.EnableDetailedErrors();
-        optionsBuilder.EnableSensitiveDataLogging();
-    }
-    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         var userEntity = modelBuilder.Entity<User>()

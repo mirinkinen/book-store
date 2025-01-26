@@ -1,4 +1,5 @@
 using Common.API.Auditing;
+using Common.Application.Authentication;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Oakton;
@@ -23,9 +24,8 @@ public static class ServiceConfigurator
     private static void ConfigureApiServices(WebApplicationBuilder builder)
     {
         builder.Host.ApplyOaktonExtensions();
-        
         builder.Services.AddAuthorization();
-        builder.Services.AddGraphQLServer().AddQueryType<Queries>();
+        builder.Services.AddGraphQLServer().AddQueryType<Queries>().RegisterDbContextFactory<UserDbContext>();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddOpenApi();
         builder.Services.AddHttpContextAccessor();
@@ -37,11 +37,13 @@ public static class ServiceConfigurator
     {
         builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         Common.Application.ServiceConfigurator.ConfigureApplicationServices(builder.Services);
+
+        builder.Services.AddSingleton<IUserService, UserService>();
     }
 
     private static void ConfigureInfrastructureServices(WebApplicationBuilder builder, string connectionString)
     {
-        builder.Services.AddDbContext<UserDbContext>(options =>
+        builder.Services.AddPooledDbContextFactory<UserDbContext>(options =>
         {
             options.UseSqlServer(connectionString);
         });
