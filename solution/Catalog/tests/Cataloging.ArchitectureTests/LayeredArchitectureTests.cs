@@ -4,11 +4,11 @@ using System.Reflection;
 
 namespace Cataloging.ArchitectureTests;
 
-public class LayerTests
+public class LayeredArchitectureTests
 {
     private readonly Assembly _assembly;
 
-    public LayerTests()
+    public LayeredArchitectureTests()
     {
         _assembly = typeof(ServiceConfigurator).Assembly;
     }
@@ -28,7 +28,7 @@ public class LayerTests
             .And().NotHaveDependencyOn("Cataloging.Infra")
             .GetResult().FailingTypeNames.Should().BeNullOrEmpty();
     }
-
+    
     [Fact]
     public void Application_layer_should_not_depend_on_infra_or_API()
     {
