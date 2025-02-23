@@ -1,5 +1,6 @@
 ﻿using Cataloging.Domain;
 using Common.Infra;
+using System.Security.Cryptography;
 
 namespace Cataloging.Infra.Database.Setup;
 
@@ -7,7 +8,6 @@ public static class MockDataContainer
 {
     public static Guid SystemUserId => Guid.Parse("11111111-1111-1111-1111-111111111111");
 
-    private static readonly Random _randomizer = new(Guid.NewGuid().GetHashCode());
     public static Guid AuthorizedOrganization1 => Guid.Parse("5D8E6753-1479-408E-BB3D-CB3A02BE486C");
     public static Guid AuthorizedOrganization2 => Guid.Parse("284F633F-2D13-4F4D-8E37-1EE5C9F6B140");
 
@@ -75,16 +75,16 @@ public static class MockDataContainer
 
     private static decimal GetRandomPrice()
     {
-        return _randomizer.Next(10, 36);
+        return RandomNumberGenerator.GetInt32(10, 50);
     }
 
     private static Author GetRandomAuthor(List<Author> authors)
     {
-        return authors[_randomizer.Next(0, 4)];
+        return authors[RandomNumberGenerator.GetInt32(0, 4)];
     }
 
     private static DateTime GetRandomPublishedDate()
     {
-        return DateTime.UtcNow - TimeSpan.FromDays(_randomizer.Next(0, 10000));
+        return DateTime.UtcNow - TimeSpan.FromDays(RandomNumberGenerator.GetInt32(0, 10000));
     }
 }
