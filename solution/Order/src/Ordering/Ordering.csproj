@@ -12,12 +12,19 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1" />
-        <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.11.0" />
+      <!-- Fixes dependency warning -->
+      <PackageReference Include="Microsoft.CodeAnalysis" Version="4.12.0" />
+      <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.12.0" />
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.12.0" />
+      <PackageReference Include="Microsoft.CodeAnalysis.Scripting" Version="4.12.0" />
+      <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.12.0" />
+      <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.12.0" />
+      <!-- Fix end -->
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />       
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
     </ItemGroup>
 
     <ItemGroup>
