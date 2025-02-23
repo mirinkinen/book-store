@@ -1,16 +1,17 @@
 using Common.Domain;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Users.Domain;
 
 public class Address : Entity
 {
-    public string Country { get; init; }
+    public required string Country { get; set; }
 
-    public string Street { get; init; }
+    public required string Street { get; set; }
 
-    public string PostalCode { get; init; }
+    public required string PostalCode { get; set; }
 
-    public Guid UserId { get; set; }
+    public required Guid UserId { get; set; }
 
     public User User { get; set; }
 
@@ -18,11 +19,12 @@ public class Address : Entity
     {
     }
 
-    public Address(User user, string country, string street, string postalCode)
+    [SetsRequiredMembers]
+    public Address(Guid userId, string country, string street, string postalCode)
     {
+        UserId = userId;
         Country = country;
         Street = street;
         PostalCode = postalCode;
-        User = user;
     }
 }

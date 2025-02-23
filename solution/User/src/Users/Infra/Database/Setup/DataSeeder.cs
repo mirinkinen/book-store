@@ -14,13 +14,5 @@ public static class DataSeeder
             await userDbContext.AddRangeAsync(users);
             await userDbContext.SaveChangesAsync();
         }
-
-        // If not already seeded.
-        if (!userDbContext.Addresses.Any())
-        {
-            var addresses = MockDataContainer.GetAddresses(users);
-            await userDbContext.AddRangeAsync(addresses);
-            await userDbContext.SaveChangesAsync();
-        }
     }
 }

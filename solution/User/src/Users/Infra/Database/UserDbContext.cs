@@ -24,12 +24,17 @@ public class UserDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         var userEntity = modelBuilder.Entity<User>()
-            .ToTable("User", "Users")
-            .HasMany(u => u.Addresses)
-            .WithOne(a => a.User)
-            .HasForeignKey(a => a.Id);
+            .ToTable("User", "Users");
 
         var addressEntity = modelBuilder.Entity<Address>()
-            .ToTable("User", "Addresses");
+            .ToTable("User", "Addresses")
+            .HasOne(a => a.User)
+            .WithMany(u => u.Addresses)
+            .HasForeignKey(a => a.UserId);
+
+        var subscriptionEntity = modelBuilder.Entity<Subscription>()
+            .ToTable("User", "Subscriptions")
+            .HasOne(s => s.User)
+            .WithOne(u => u.Subscription);
     }
 }
