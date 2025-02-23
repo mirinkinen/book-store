@@ -14,13 +14,18 @@ public class Subscription : Entity
     public required DateTime EndTime { get; set; }
     
     public User User { get; set; }
-
+    
     [SetsRequiredMembers]
-    public Subscription(Guid userId, SubscriptionType subscriptionType, DateTime startTime, DateTime endTime)
+    public Subscription(Guid userId, SubscriptionType subscriptionType, DateTime startTime)
     {
         UserId = userId;
         SubscriptionType = subscriptionType;
         StartTime = startTime;
-        EndTime = endTime;
+        EndTime = startTime.AddYears(1);
+    }
+    
+    // For serialization.
+    public Subscription()
+    {
     }
 }

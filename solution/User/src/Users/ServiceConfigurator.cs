@@ -32,6 +32,7 @@ public static class ServiceConfigurator
             .AddProjections()
             .AddFiltering()
             .AddSorting();
+        builder.Services.AddScoped<UserDbContext>();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddOpenApi();
         builder.Services.AddHttpContextAccessor();

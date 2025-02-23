@@ -22,7 +22,7 @@ public class User : Entity
     /// <summary>
     /// Only for graphql.
     /// </summary>
-    private User()
+    public User()
     {
     }
     
@@ -39,5 +39,10 @@ public class User : Entity
     {
         address.User = this;
         Addresses.Add(address);
+    }
+
+    public void SetSubscription(Subscription subscription)
+    {
+        Subscription = subscription;
     }
 }

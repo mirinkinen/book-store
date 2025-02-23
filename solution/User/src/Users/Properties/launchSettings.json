@@ -19,9 +19,9 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "seed-dev-data": {
+    "seeddevdata": {
       "commandName": "Project",
-      "commandLineArgs": "-- seed-dev-data",
+      "commandLineArgs": "seed-dev-data",
       "dotnetRunMessages": true,
       "launchBrowser": false,
       "applicationUrl": "https://localhost:7103;http://localhost:5103",
