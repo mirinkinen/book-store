@@ -13,10 +13,10 @@ public static class AddAuthorHandler
 {
 
     [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
-    public static async IAsyncEnumerable<object> Handle(PostAuthorCommand request, IAuthorRepository authorRepository, IUserService 
-        userService)
+    public static async IAsyncEnumerable<object> Handle(PostAuthorCommand request, IAuthorRepository authorRepository, IUserAccessor 
+        userAccessor)
     {
-        var user = await userService.GetUser();
+        var user = await userAccessor.GetUser();
         var author = new Author(request.Firstname, request.Lastname, request.Birthday, request.OrganizationId);
 
         authorRepository.AddAuthor(author);

@@ -12,7 +12,7 @@ public class AppFixture : IAsyncLifetime
 {
     public IAlbaHost? Host { get; private set; }
 
-    public FakeUserService UserService { get; } = new();
+    public FakeUserAccessor UserAccessor { get; } = new();
 
     public TestDatabase TestDatabase { get; } = new();
 
@@ -32,7 +32,7 @@ public class AppFixture : IAsyncLifetime
         {
             builder.UseSetting("ConnectionStrings:DefaultConnection", TestDatabase.ConnectionString);
             
-            builder.ConfigureServices(services => { services.AddScoped<IUserService>(_ => UserService); });
+            builder.ConfigureServices(services => { services.AddScoped<IUserAccessor>(_ => UserAccessor); });
         });
     }
 
@@ -69,7 +69,7 @@ public abstract class IntegrationContext : IAsyncLifetime
 
     protected IAlbaHost Host => _app.Host!;
 
-    protected FakeUserService UserService => _app.UserService;
+    protected FakeUserAccessor UserAccessor => _app.UserAccessor;
 
     public ValueTask InitializeAsync()
     {

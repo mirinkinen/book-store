@@ -8,13 +8,13 @@ namespace Ordering.Infra.Database;
 
 public class OrderDbContext : DbContext
 {
-    private readonly IUserService _userService;
+    private readonly IUserAccessor _userAccessor;
 
     public DbSet<Order> Orders { get; set; }
 
-    public OrderDbContext(DbContextOptions options, IUserService userService) : base(options)
+    public OrderDbContext(DbContextOptions options, IUserAccessor userAccessor) : base(options)
     {
-        _userService = userService;
+        _userAccessor = userAccessor;
     }
 
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
@@ -28,7 +28,7 @@ public class OrderDbContext : DbContext
             .Entries<ITimestamped>()
             .Where(e => e.State is EntityState.Added or EntityState.Deleted or EntityState.Modified);
         
-        var user = await _userService.GetUser();
+        var user = await _userAccessor.GetUser();
 
         foreach (var entityEntry in entities)
         {

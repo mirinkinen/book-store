@@ -3,7 +3,7 @@ using Common.Application.Authentication;
 
 namespace Cataloging.IntegrationTests.Fakes;
 
-public class FakeUserService : IUserService
+public class FakeUserAccessor : IUserAccessor
 {
     public Task<User> GetUser()
     {

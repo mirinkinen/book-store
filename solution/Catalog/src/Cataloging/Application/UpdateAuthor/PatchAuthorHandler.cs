@@ -13,9 +13,9 @@ public static class PatchAuthorHandler
 {
     [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
     public static async IAsyncEnumerable<object> Handle(PatchAuthorCommand request, Author author, IAuthorRepository authorRepository, 
-    IUserService userService)
+    IUserAccessor userAccessor)
     {
-        var user = await userService.GetUser();
+        var user = await userAccessor.GetUser();
         
         author.Patch(request.delta);
 

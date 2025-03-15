@@ -83,7 +83,7 @@ public sealed class TestDatabase : IAsyncDisposable
             .UseSqlServer(ConnectionString)
             .Options;
 
-        await using var dbContext = new CatalogDbContext(dbOptions, new FakeUserService());
+        await using var dbContext = new CatalogDbContext(dbOptions, new FakeUserAccessor());
         await dbContext.Database.MigrateAsync();
         await DataSeeder.SeedDataAsync(dbContext);
     }
@@ -94,7 +94,7 @@ public sealed class TestDatabase : IAsyncDisposable
             .UseSqlServer(ConnectionString)
             .Options;
 
-        await using var dbContext = new CatalogDbContext(dbOptions, new FakeUserService());
+        await using var dbContext = new CatalogDbContext(dbOptions, new FakeUserAccessor());
         await dbContext.Database.EnsureDeletedAsync();
     }
 

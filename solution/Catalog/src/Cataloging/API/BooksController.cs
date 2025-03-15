@@ -17,11 +17,11 @@ namespace Cataloging.API;
 [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
 public class BooksController : ApiODataController
 {
-    private readonly IUserService _userService;
+    private readonly IUserAccessor _userAccessor;
 
-    public BooksController(IUserService userService)
+    public BooksController(IUserAccessor userAccessor)
     {
-        _userService = userService;
+        _userAccessor = userAccessor;
     }
 
     [HttpGet("v1/books")]

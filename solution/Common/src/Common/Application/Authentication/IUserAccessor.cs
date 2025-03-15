@@ -1,6 +1,6 @@
 ﻿namespace Common.Application.Authentication;
 
-public interface IUserService
+public interface IUserAccessor
 {
     Task<User> GetUser();
 }

@@ -45,7 +45,7 @@ public sealed class AuthorIntegrationTests : IntegrationContext
         Assert.NotNull(tracked.FindSingleTrackedMessageOfType<GetAuthorsQuery>());
         var auditLogEvent = tracked.FindSingleTrackedMessageOfType<AuditLogEvent>();
 
-        auditLogEvent.ActorId.Should().Be((await UserService.GetUser()).Id);
+        auditLogEvent.ActorId.Should().Be((await UserAccessor.GetUser()).Id);
         auditLogEvent.Resources.Should().HaveCount(3);
         auditLogEvent.Resources.Should()
             .OnlyContain(alr => alr.ResourceType == "Author" && alr.ResourceId != Guid.Empty);
@@ -344,7 +344,7 @@ public sealed class AuthorIntegrationTests : IntegrationContext
         // Assert request
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
     
-        var user = await new FakeUserService().GetUser();
+        var user = await new FakeUserAccessor().GetUser();
     
         // Assert that author is updated.
         using var scope = Host.Services.CreateScope();
@@ -381,7 +381,7 @@ public sealed class AuthorIntegrationTests : IntegrationContext
         var newLastName = "TestLastName";
         var newBirthday = DateTime.UtcNow - TimeSpan.FromDays(30 * 365);
         var organizationId = Guid.NewGuid();
-        var user = await new FakeUserService().GetUser();
+        var user = await new FakeUserAccessor().GetUser();
         
         var command = new PostAuthorCommand(newFirstName, newLastName, newBirthday, organizationId);
 

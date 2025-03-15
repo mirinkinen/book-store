@@ -10,9 +10,10 @@ public record DeleteAuthorCommand(Guid AuthorId) : IAuthorCommand;
 public static class DeleteAuthorHandler
 {
     [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
-    public static async IAsyncEnumerable<object> Handle(DeleteAuthorCommand request, Author author, IAuthorRepository authorRepository, IUserService userService)
+    public static async IAsyncEnumerable<object> Handle(DeleteAuthorCommand request, Author author, IAuthorRepository authorRepository,
+        IUserAccessor userAccessor)
     {
-        var user = await userService.GetUser();
+        var user = await userAccessor.GetUser();
         authorRepository.Delete(author);
         await authorRepository.SaveChangesAsync();
 

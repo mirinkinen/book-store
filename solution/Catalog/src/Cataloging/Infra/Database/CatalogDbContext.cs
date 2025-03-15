@@ -8,14 +8,14 @@ namespace Cataloging.Infra.Database;
 
 public class CatalogDbContext : DbContext
 {
-    private readonly IUserService _userService;
+    private readonly IUserAccessor _userAccessor;
 
     public DbSet<Author> Authors { get; set; }
     public DbSet<Book> Books { get; set; }
 
-    public CatalogDbContext(DbContextOptions options, IUserService userService) : base(options)
+    public CatalogDbContext(DbContextOptions options, IUserAccessor userAccessor) : base(options)
     {
-        _userService = userService;
+        _userAccessor = userAccessor;
     }
 
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
@@ -31,7 +31,7 @@ public class CatalogDbContext : DbContext
             .Entries<Entity>()
             .Where(e => e.State is EntityState.Added or EntityState.Deleted or EntityState.Modified);
         
-        var user = await _userService.GetUser();
+        var user = await _userAccessor.GetUser();
 
         foreach (var entityEntry in entities)
         {

@@ -45,7 +45,7 @@ public static class ServiceConfigurator
         builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         Common.Application.ServiceConfigurator.ConfigureApplicationServices(builder.Services);
 
-        builder.Services.AddSingleton<IUserService, UserService>();
+        builder.Services.AddSingleton<IUserAccessor, UserAccessor>();
     }
 
     private static void ConfigureInfrastructureServices(WebApplicationBuilder builder, string connectionString)

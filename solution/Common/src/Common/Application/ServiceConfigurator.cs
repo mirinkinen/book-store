@@ -12,7 +12,7 @@ public static class ServiceConfigurator
     public static void ConfigureApplicationServices(IServiceCollection services)
     {
         // User
-        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IUserAccessor, UserAccessor>();
 
         // Audit.
         services.AddScoped<AuditContext>();

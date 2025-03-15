@@ -15,12 +15,12 @@ namespace Ordering.API;
 public partial class OrdersController : ODataController
 {
     private readonly IMessageBus _bus;
-    private readonly IUserService _userService;
+    private readonly IUserAccessor _userAccessor;
 
-    public OrdersController(IMessageBus bus, IUserService userService)
+    public OrdersController(IMessageBus bus, IUserAccessor userAccessor)
     {
         _bus = bus;
-        _userService = userService;
+        _userAccessor = userAccessor;
     }
 
     // [Route("shoppingcart")]

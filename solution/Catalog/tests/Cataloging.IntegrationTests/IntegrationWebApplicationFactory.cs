@@ -11,7 +11,7 @@ internal class IntegrationWebApplicationFactory : WebApplicationFactory<Program>
 {
     public Action<IServiceCollection>? ConfigureServices { get; set; }
 
-    public IUserService UserService { get; } = new FakeUserService();
+    public IUserAccessor UserAccessor { get; } = new FakeUserAccessor();
 
     public TestDatabase TestDatabase { get; } = new();
 
@@ -35,9 +35,9 @@ internal class IntegrationWebApplicationFactory : WebApplicationFactory<Program>
         builder.ConfigureServices(services =>
         {
             // Replace IUserService.
-            var userServiceDescriptor = services.Single(d => d.ImplementationType == typeof(UserService));
+            var userServiceDescriptor = services.Single(d => d.ImplementationType == typeof(UserAccessor));
             services.Remove(userServiceDescriptor);
-            services.AddScoped<IUserService>(sp => UserService);
+            services.AddScoped<IUserAccessor>(sp => UserAccessor);
             services.AddScoped<AuditContext>(sp => AuditContext);
 
             ConfigureServices?.Invoke(services);

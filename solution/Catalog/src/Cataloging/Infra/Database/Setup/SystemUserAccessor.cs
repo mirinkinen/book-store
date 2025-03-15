@@ -2,7 +2,7 @@
 
 namespace Cataloging.Infra.Database.Setup;
 
-internal class SystemUserService : IUserService
+internal class SystemUserAccessor : IUserAccessor
 {
     public Task<User> GetUser()
     {

@@ -7,7 +7,7 @@ namespace Users.Infra.Database;
 
 public class UserDbContext : DbContext
 {
-    private readonly IUserService _userService;
+    private readonly IUserAccessor _userAccessor;
     public DbSet<User> Users { get; set; }
     
     public DbSet<Address> Addresses { get; set; }
@@ -16,9 +16,9 @@ public class UserDbContext : DbContext
     {
     }
     
-    public UserDbContext(DbContextOptions options, IUserService userService) : base(options)
+    public UserDbContext(DbContextOptions options, IUserAccessor userAccessor) : base(options)
     {
-        _userService = userService;
+        _userAccessor = userAccessor;
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
