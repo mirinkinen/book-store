@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cataloging.Infra;
 
-public class ReadOnlyDbContextRepository : IReadOnlyDbContextRepository
+public class QueryAuthorizerRepository : IQueryAuthorizerRepository
 {
     private readonly CatalogDbContext _dbContext;
 
-    public ReadOnlyDbContextRepository(CatalogDbContext dbContext)
+    public QueryAuthorizerRepository(CatalogDbContext dbContext)
     {
         _dbContext = dbContext;
     }

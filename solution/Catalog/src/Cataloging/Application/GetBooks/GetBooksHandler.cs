@@ -1,11 +1,12 @@
 using Cataloging.Domain;
 using Common.Application;
 using Common.Application.Authentication;
+using Common.Domain;
 using System.Diagnostics;
 
 namespace Cataloging.Application.GetBooks;
 
-public record GetBooksQuery(IReadOnlyDbContext ReadOnlyDbContext);
+public record GetBooksQuery(IQueryAuthorizer<Book> QueryAuthorizer);
 
 public static class GetBooksHandler
 {
@@ -17,7 +18,7 @@ public static class GetBooksHandler
         using var activity = _activitySource.StartActivity();
         activity?.SetTag("TestKey", "TestValue");
 
-        var query = request.ReadOnlyDbContext.GetBooks(user);
+        var query = request.QueryAuthorizer.GetQuery(user);
         return new QueryableResponse<Book>(query);
     }
 }

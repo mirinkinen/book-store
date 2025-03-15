@@ -1,6 +1,6 @@
 namespace Cataloging.Domain;
 
-public interface IReadOnlyDbContextRepository
+public interface IQueryAuthorizerRepository
 {
     IQueryable<Author> GetAuthorQuery();
     IQueryable<Book> GetBookQuery();

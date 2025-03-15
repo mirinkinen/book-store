@@ -10,13 +10,16 @@ using Common;
 using Common.API.Auditing;
 using Common.Application;
 using Common.Application.Messages;
+using Common.Domain;
 using Common.Infra;
 using FluentValidation;
+using JasperFx.Core.IoC;
 using Oakton;
 using Oakton.Resources;
 using System.Reflection;
 using Wolverine;
 using Wolverine.Transports.Tcp;
+using ScrutorExtensions = Microsoft.Extensions.DependencyInjection.ServiceCollectionExtensions;
 
 namespace Cataloging;
 
@@ -75,8 +78,14 @@ public static class ServiceConfigurator
         Common.Infra.ServiceConfigurator.ConfigureInfrastructureServices<CatalogDbContext>(builder.Services,
             connectionString);
 
-        builder.Services.AddScoped<IReadOnlyDbContext, ReadOnlyDbContext>();
-        builder.Services.AddScoped<IReadOnlyDbContextRepository, ReadOnlyDbContextRepository>();
+        var authorizerType = typeof(IQueryAuthorizer<>);
+        
+        builder.Services.Scan(scanner => scanner.FromAssemblyOf<AuthorQueryAuthorizerAuthorizer>()
+            .AddClasses(classes => classes.AssignableTo(authorizerType))
+            .AsImplementedInterfaces()
+            .WithScopedLifetime());
+        
+        builder.Services.AddScoped<IQueryAuthorizerRepository, QueryAuthorizerRepository>();
         builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
     }
 }
