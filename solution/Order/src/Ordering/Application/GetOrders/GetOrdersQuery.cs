@@ -1,3 +1,4 @@
+using Common.Application.Authentication;
 using Ordering.Domain;
 
 namespace Ordering.Application.GetOrders;
@@ -6,15 +7,18 @@ public record GetOrdersQuery();
 
 public class GetOrdersHandler
 {
-    private readonly IQueryAuthorizer _queryAuthorizer;
+    private readonly IReadOnlyDbContext _readOnlyDbContext;
+    private readonly IUserAccessor _userAccessor;
 
-    public GetOrdersHandler(IQueryAuthorizer queryAuthorizer)
+    public GetOrdersHandler(IReadOnlyDbContext readOnlyDbContext, IUserAccessor userAccessor)
     {
-        _queryAuthorizer = queryAuthorizer;
+        _readOnlyDbContext = readOnlyDbContext;
+        _userAccessor = userAccessor;
     }
 
-    public Task<IQueryable<Order>> Handle(GetOrdersQuery request)
+    public async Task<IQueryable<Order>> Handle(GetOrdersQuery request)
     {
-        return Task.FromResult(_queryAuthorizer.GetAuthorizedEntities<Order>());
+        var user = await _userAccessor.GetUser();
+        return _readOnlyDbContext.GetOrders(user);
     }
 }

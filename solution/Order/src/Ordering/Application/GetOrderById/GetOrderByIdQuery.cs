@@ -1,3 +1,4 @@
+using Common.Application.Authentication;
 using Ordering.Domain;
 
 namespace Ordering.Application.GetOrderById;
@@ -6,17 +7,19 @@ public record GetOrderByIdQuery(Guid OrderId);
 
 public class GetOrderByIdHandler
 {
-    private readonly IQueryAuthorizer _queryAuthorizer;
+    private readonly IReadOnlyDbContext _readOnlyDbContext;
+    private readonly IUserAccessor _userAccessor;
 
-    public GetOrderByIdHandler(IQueryAuthorizer queryAuthorizer)
+    public GetOrderByIdHandler(IReadOnlyDbContext readOnlyDbContext, IUserAccessor userAccessor)
     {
-        _queryAuthorizer = queryAuthorizer;
+        _readOnlyDbContext = readOnlyDbContext;
+        _userAccessor = userAccessor;
     }
 
-    public Task<IQueryable<Order>> Handle(GetOrderByIdQuery request)
+    public async Task<IQueryable<Order>> Handle(GetOrderByIdQuery request)
     {
-        ArgumentNullException.ThrowIfNull(request);
+        var user = await _userAccessor.GetUser();
 
-        return Task.FromResult(_queryAuthorizer.GetAuthorizedEntities<Order>().Where(a => a.Id == request.OrderId));
+        return _readOnlyDbContext.GetOrders(user).Where(a => a.Id == request.OrderId);
     }
 }

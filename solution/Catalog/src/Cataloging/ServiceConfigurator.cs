@@ -75,7 +75,8 @@ public static class ServiceConfigurator
         Common.Infra.ServiceConfigurator.ConfigureInfrastructureServices<CatalogDbContext>(builder.Services,
             connectionString);
 
-        builder.Services.AddScoped<IQueryAuthorizer, QueryAuthorizer>();
+        builder.Services.AddScoped<IReadOnlyDbContext, ReadOnlyDbContext>();
+        builder.Services.AddScoped<IReadOnlyDbContextRepository, ReadOnlyDbContextRepository>();
         builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
     }
 }

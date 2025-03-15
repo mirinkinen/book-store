@@ -26,9 +26,9 @@ public class AuthorsController : ApiODataController
     [EnableQuery(PageSize = 20)]
     [Produces<List<AuthorV1>>]
     public async Task<IQueryable<Author>> GetAuthors([FromServices] IMessageBus bus,
-        [FromServices] IQueryAuthorizer queryAuthorizer)
+        [FromServices] IReadOnlyDbContext readOnlyDbContext)
     {
-        var query = new GetAuthorsQuery(queryAuthorizer);
+        var query = new GetAuthorsQuery(readOnlyDbContext);
         var queryable = await bus.InvokeAsync<QueryableResponse<Author>>(query);
     
         return queryable.Query;
@@ -38,9 +38,9 @@ public class AuthorsController : ApiODataController
     [EnableQuery]
     [Produces<AuthorV1>]
     public async Task<IActionResult> Get([FromRoute] Guid key, [FromServices] IMessageBus bus,
-        [FromServices] IQueryAuthorizer queryAuthorizer)
+        [FromServices] IReadOnlyDbContext readOnlyDbContext)
     {
-        var query = new GetAuthorByIdQuery(key, queryAuthorizer);
+        var query = new GetAuthorByIdQuery(key, readOnlyDbContext);
         var queryable = await bus.InvokeAsync<QueryableResponse<Author>>(query);
     
         return Ok(SingleResult.Create(queryable.Query));
@@ -50,9 +50,9 @@ public class AuthorsController : ApiODataController
     [EnableQuery(PageSize = 20)]
     [Produces<List<BookV1>>]
     public async Task<IQueryable<Book>> GetBooksFromAuthor([FromRoute] Guid key, [FromServices] IMessageBus bus,
-        [FromServices] IQueryAuthorizer queryAuthorizer)
+        [FromServices] IReadOnlyDbContext readOnlyDbContext)
     {
-        var query = new GetBooksFromAuthorQuery(key, queryAuthorizer);
+        var query = new GetBooksFromAuthorQuery(key, readOnlyDbContext);
         var queryable = await bus.InvokeAsync<QueryableResponse<Book>>(query);
     
         return queryable.Query;

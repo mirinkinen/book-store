@@ -20,7 +20,7 @@ public class LayeredArchitectureTests
     }
 
     [Fact]
-    public void Domain_layer_should_not_depend_on_anything()
+    public void Domain_layer_should_not_depend_on_other_layers()
     {
         Types.InAssembly(_assembly).That().ResideInNamespaceStartingWith("Cataloging.Domain")
             .Should().NotHaveDependencyOn("Cataloging.API")
@@ -28,7 +28,7 @@ public class LayeredArchitectureTests
             .And().NotHaveDependencyOn("Cataloging.Infra")
             .GetResult().FailingTypeNames.Should().BeNullOrEmpty();
     }
-    
+
     [Fact]
     public void Application_layer_should_not_depend_on_infra_or_API()
     {
@@ -37,7 +37,7 @@ public class LayeredArchitectureTests
             .And().NotHaveDependencyOn("Cataloging.API")
             .GetResult().FailingTypeNames.Should().BeNullOrEmpty();
     }
-    
+
     [Fact]
     public void Infra_layer_should_not_depend_on_API()
     {

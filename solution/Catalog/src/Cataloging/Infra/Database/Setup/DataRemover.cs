@@ -1,7 +1,6 @@
-﻿using Cataloging.Infra.Database;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace Users.Infra.Database.Setup;
+namespace Cataloging.Infra.Database.Setup;
 
 public static class DataRemover
 {

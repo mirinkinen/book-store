@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace Cataloging.Application.GetBooks;
 
-public record GetBooksQuery(IQueryAuthorizer QueryAuthorizer);
+public record GetBooksQuery(IReadOnlyDbContext ReadOnlyDbContext);
 
 public static class GetBooksHandler
 {
@@ -17,7 +17,7 @@ public static class GetBooksHandler
         using var activity = _activitySource.StartActivity();
         activity?.SetTag("TestKey", "TestValue");
 
-        var query = await request.QueryAuthorizer.GetAuthorizedEntities<Book>(user);
+        var query = request.ReadOnlyDbContext.GetBooks(user);
         return new QueryableResponse<Book>(query);
     }
 }
