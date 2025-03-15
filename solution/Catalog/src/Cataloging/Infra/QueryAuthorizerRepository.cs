@@ -1,10 +1,11 @@
 using Cataloging.Domain;
 using Cataloging.Infra.Database;
+using Common.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cataloging.Infra;
 
-public class QueryAuthorizerRepository : IQueryAuthorizerRepository
+public class QueryAuthorizerRepository<TEntity> : IQueryAuthorizerRepository<TEntity> where TEntity : Entity
 {
     private readonly CatalogDbContext _dbContext;
 
@@ -12,14 +13,9 @@ public class QueryAuthorizerRepository : IQueryAuthorizerRepository
     {
         _dbContext = dbContext;
     }
-    
-    public IQueryable<Author> GetAuthorQuery()
-    {
-        return _dbContext.Authors.AsNoTracking();
-    }
 
-    public IQueryable<Book> GetBookQuery()
+    public IQueryable<TEntity> GetQuery()
     {
-        return _dbContext.Books.AsNoTracking();
+        return _dbContext.Set<TEntity>().AsNoTracking();
     }
 }

@@ -3,16 +3,16 @@ using Common.Domain;
 
 namespace Cataloging.Domain;
 
-public class AuthorQueryAuthorizerAuthorizer : IQueryAuthorizer<Author>
+public class AuthorQueryAuthorizer : IQueryAuthorizer<Author>
 {
-    private readonly IQueryAuthorizerRepository _queryAuthorizerRepository;
+    private readonly IQueryAuthorizerRepository<Author> _queryAuthorizerRepository;
 
-    public AuthorQueryAuthorizerAuthorizer(IQueryAuthorizerRepository queryAuthorizerRepository)
+    public AuthorQueryAuthorizer(IQueryAuthorizerRepository<Author> queryAuthorizerRepository)
     {
         _queryAuthorizerRepository = queryAuthorizerRepository;
     }
 
     public IQueryable<Author> GetQuery(User user) =>
-        _queryAuthorizerRepository.GetAuthorQuery()
+        _queryAuthorizerRepository.GetQuery()
             .Where(author => user.Organizations.Contains(author.OrganizationId));
 }

@@ -1,25 +1,18 @@
-﻿using Cataloging.API;
-using Cataloging.Application;
-using Cataloging.Application.GetBooks;
+﻿using Cataloging.Application;
 using Cataloging.Application.Middleware;
 using Cataloging.Domain;
 using Cataloging.Infra;
 using Cataloging.Infra.Database;
-using Cataloging.Infra.Database.Setup;
 using Common;
 using Common.API.Auditing;
 using Common.Application;
 using Common.Application.Messages;
-using Common.Domain;
 using Common.Infra;
 using FluentValidation;
-using JasperFx.Core.IoC;
 using Oakton;
-using Oakton.Resources;
 using System.Reflection;
 using Wolverine;
 using Wolverine.Transports.Tcp;
-using ScrutorExtensions = Microsoft.Extensions.DependencyInjection.ServiceCollectionExtensions;
 
 namespace Cataloging;
 
@@ -29,13 +22,19 @@ public static class ServiceConfigurator
     {
         ConfigureApiServices(builder, connectionString);
         ConfigureApplicationServices(builder);
+        ConfigureDomainServices(builder);
         ConfigureInfrastructureServices(builder, connectionString);
+    }
+
+    private static void ConfigureDomainServices(WebApplicationBuilder builder)
+    {
+        builder.ConfigureCommonDomainServices<AuthorQueryAuthorizer>();
     }
 
     private static void ConfigureApiServices(WebApplicationBuilder builder, string connectionString)
     {
         builder.Host.ApplyOaktonExtensions();
-        
+
         // All commands are handled by Wolverine.
         builder.Host.UseWolverine(opts =>
         {
@@ -53,7 +52,7 @@ public static class ServiceConfigurator
             opts.ListenAtPort(5201).UseDurableInbox();
             opts.PublishMessage<Pong>().ToPort(5202).UseDurableOutbox();
         });
-        
+
         // Add services to the container.
         builder.Services.AddControllers();
 
@@ -78,14 +77,6 @@ public static class ServiceConfigurator
         Common.Infra.ServiceConfigurator.ConfigureInfrastructureServices<CatalogDbContext>(builder.Services,
             connectionString);
 
-        var authorizerType = typeof(IQueryAuthorizer<>);
-        
-        builder.Services.Scan(scanner => scanner.FromAssemblyOf<AuthorQueryAuthorizerAuthorizer>()
-            .AddClasses(classes => classes.AssignableTo(authorizerType))
-            .AsImplementedInterfaces()
-            .WithScopedLifetime());
-        
-        builder.Services.AddScoped<IQueryAuthorizerRepository, QueryAuthorizerRepository>();
         builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
     }
 }
