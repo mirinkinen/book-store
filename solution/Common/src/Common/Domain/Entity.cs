@@ -25,4 +25,23 @@ public abstract class Entity : IIdentifiable, ITimestamped
         CreatedAt = DateTime.UtcNow;
         ModifiedAt = CreatedAt;
     }
+    
+    protected Dictionary<string, object> GetUpdatedProperties<TEntity>(Delta<TEntity> delta) where TEntity : Entity
+    {
+        ArgumentNullException.ThrowIfNull(delta);
+        
+        var updatedPropertyNames = delta.GetChangedPropertyNames();
+
+        var updatedValues = new Dictionary<string, object>();
+
+        foreach (var propertyName in updatedPropertyNames)
+        {
+            if (delta.TryGetPropertyValue(propertyName, out var value))
+            {
+                updatedValues.Add(propertyName, value);
+            }
+        }
+
+        return updatedValues;
+    }
 }
