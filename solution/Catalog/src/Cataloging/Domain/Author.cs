@@ -37,21 +37,19 @@ public class Author : Entity
 
     public void Patch(Delta<Author> delta)
     {
-        var updatedProperties = GetUpdatedProperties(delta);
-
-        if (updatedProperties.TryGetValue(nameof(FirstName), out var firstName))
+        if (delta.TryGetPropertyValue<string>(nameof(FirstName), out var firstName))
         {
-            FirstName = firstName.ToString()!;
+            FirstName = firstName;
         }
 
-        if (updatedProperties.TryGetValue(nameof(LastName), out var lastName))
+        if (delta.TryGetPropertyValue<string>(nameof(LastName), out var lastName))
         {
-            LastName = lastName.ToString()!;
+            LastName = lastName;
         }
 
-        if (updatedProperties.TryGetValue(nameof(Birthday), out var birthday))
+        if (delta.TryGetPropertyValue<DateTime>(nameof(Birthday), out var birthday))
         {
-            Birthday = (DateTime)birthday;
+            Birthday = birthday;
         }
 
         Validate();
