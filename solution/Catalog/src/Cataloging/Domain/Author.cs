@@ -37,17 +37,17 @@ public class Author : Entity
 
     public void Patch(Delta<Author> delta)
     {
-        if (delta.TryGetPropertyValue(e => e.FirstName, out var firstName))
+        if (delta.TryGetChangedPropertyValue(e => e.FirstName, out var firstName))
         {
             FirstName = firstName;
         }
 
-        if (delta.TryGetPropertyValue(e => e.LastName, out var lastName))
+        if (delta.TryGetChangedPropertyValue(e => e.LastName, out var lastName))
         {
             LastName = lastName;
         }
 
-        if (delta.TryGetPropertyValue(e => e.Birthday, out var birthday))
+        if (delta.TryGetChangedPropertyValue(e => e.Birthday, out var birthday))
         {
             Birthday = birthday;
         }

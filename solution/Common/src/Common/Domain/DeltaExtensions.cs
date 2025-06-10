@@ -5,9 +5,22 @@ namespace Common.Domain;
 
 public static class DeltaExtensions
 {
-    public static bool TryGetPropertyValue<TProperty>(this Delta delta, string name, out TProperty value)
+    /// <summary>
+    /// Returns true if the property with the specified name has been changed in the Delta object. The actual value of the property is
+    /// returned in the out parameter.
+    /// </summary>
+    public static bool TryGetChangedPropertyValue<TProperty>(this Delta delta, string propertyName, out TProperty value)
     {
-        if (delta.TryGetPropertyValue(name, out var objectValue))
+        // Non-nullable types like DateTime will have a default value in Delta object, if the value is not provided as PATCH payload.
+        // This causes TryGetPropertyValue method to return true, even the value was not provided by client.
+        // This check ensures that the property is actually changed in the Delta object.
+        if (!delta.GetChangedPropertyNames().Contains(propertyName))
+        {
+            value = default!;
+            return false;
+        }
+
+        if (delta.TryGetPropertyValue(propertyName, out var objectValue))
         {
             if (objectValue is TProperty typedValue)
             {
@@ -20,7 +33,11 @@ public static class DeltaExtensions
         return false;
     }
 
-    public static bool TryGetPropertyValue<TEntity, TProperty>(
+    /// <summary>
+    /// Returnr true if the property with the specified selector has been changed in the Delta object. he actual value of the property is
+    /// returned in the out parameter.
+    /// </summary>
+    public static bool TryGetChangedPropertyValue<TEntity, TProperty>(
         this Delta<TEntity> delta,
         Expression<Func<TEntity, TProperty>> propertySelector,
         out TProperty value) where TEntity : class
@@ -42,6 +59,6 @@ public static class DeltaExtensions
         var propertyName = memberExpression.Member.Name;
         // Now delegate to your original method on Delta.
 
-        return delta.TryGetPropertyValue(propertyName, out value);
+        return delta.TryGetChangedPropertyValue(propertyName, out value);
     }
 }
