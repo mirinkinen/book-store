@@ -7,7 +7,7 @@ using System.Net.Http.Json;
 using Cataloging.Infra.Database;
 using Cataloging.IntegrationTests.Fakes;
 using Common.Application.Auditing;
-using FluentAssertions;
+using AwesomeAssertions;
 using JasperFx.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Wolverine.Tracking;

@@ -1,8 +1,8 @@
 using Cataloging;
 using Common.API;
 using Common.API.Auditing;
+using JasperFx;
 using Microsoft.AspNetCore.OData;
-using Oakton;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,5 +31,5 @@ if (app.Environment.IsDevelopment())
     app.UseODataRouteDebug();
 }
 
-// Opt into using Oakton for command parsing
-await app.RunOaktonCommands(args);
+// Opt into using JasperFx for command parsing
+await app.RunJasperFxCommands(args);

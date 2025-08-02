@@ -1,9 +1,9 @@
-using System.Text.Json;
 using Alba;
 using Cataloging.IntegrationTests.Fakes;
 using Common.Application.Authentication;
+using JasperFx.CommandLine;
 using Microsoft.Extensions.DependencyInjection;
-using Oakton;
+using System.Text.Json;
 using Wolverine.Runtime;
 
 namespace Cataloging.IntegrationTests;
@@ -20,18 +20,18 @@ public class AppFixture : IAsyncLifetime
     {
         await TestDatabase.CleanLeftoverDatabasesAsync();
         await TestDatabase.CreateAndSeedDatabase();
-        
+
         // Sorry folks, but this is absolutely necessary if you 
-        // use Oakton for command line processing and want to 
+        // use JasperFx for command line processing and want to 
         // use WebApplicationFactory and/or Alba for integration testing
-        OaktonEnvironment.AutoStartHost = true;
+        JasperFxEnvironment.AutoStartHost = true;
 
         // This is bootstrapping the actual application using
         // its implied Program.Main() set up
         Host = await AlbaHost.For<Program>(builder =>
         {
             builder.UseSetting("ConnectionStrings:DefaultConnection", TestDatabase.ConnectionString);
-            
+
             builder.ConfigureServices(services => { services.AddScoped<IUserAccessor>(_ => UserAccessor); });
         });
     }

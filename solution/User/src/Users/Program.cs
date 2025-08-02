@@ -1,4 +1,4 @@
-using Oakton;
+using JasperFx;
 using Users;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,5 +21,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapGraphQL();
 
-// Opt into using Oakton for command parsing
-await app.RunOaktonCommands(args);
+// Opt into using JasperFx for command parsing
+await app.RunJasperFxCommands(args);

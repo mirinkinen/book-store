@@ -1,6 +1,5 @@
-﻿using Cataloging.Domain;
-using Common.Domain;
-using FluentAssertions;
+﻿using AwesomeAssertions;
+using Cataloging.Domain;
 using FluentValidation;
 
 namespace Cataloging.UnitTests.Domain.Authors;

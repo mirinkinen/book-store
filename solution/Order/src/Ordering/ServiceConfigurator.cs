@@ -1,11 +1,9 @@
 using Common.API.Auditing;
-using Common.Application.Auditing;
 using Common.Application.Messages;
+using JasperFx;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.OData.ModelBuilder;
-using Oakton;
-using Ordering.Application.GetShoppingCart;
 using Ordering.Domain;
 using Ordering.Infra.Database;
 using System.Reflection;
@@ -38,7 +36,7 @@ public static class ServiceConfigurator
 
     private static void ConfigureApiServices(WebApplicationBuilder builder)
     {
-        builder.Host.ApplyOaktonExtensions();
+        builder.Host.ApplyJasperFxExtensions();
         
         // Add services to the container.
         builder.Services.AddControllers();

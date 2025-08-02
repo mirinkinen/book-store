@@ -1,6 +1,6 @@
 using Cataloging.Domain;
 using Common.Domain;
-using FluentAssertions;
+using AwesomeAssertions;
 
 namespace Cataloging.UnitTests.Domain.Books;
 

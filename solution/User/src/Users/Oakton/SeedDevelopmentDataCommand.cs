@@ -1,11 +1,11 @@
-using Oakton;
+using JasperFx.CommandLine;
 using Users.Infra.Database;
 using Users.Infra.Database.Setup;
 
-namespace Users.Oakton;
+namespace Users.JasperFx;
 
 [Description("Seed user database with development data", Name = "seed-dev-data")]
-public class SeedDevelopmentDataCommand : OaktonCommand<NetCoreInput>
+public class SeedDevelopmentDataCommand : JasperFxCommand<NetCoreInput>
 {
     public override bool Execute(NetCoreInput input)
     {

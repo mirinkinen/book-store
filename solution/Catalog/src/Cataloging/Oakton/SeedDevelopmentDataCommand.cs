@@ -1,11 +1,11 @@
 using Cataloging.Infra.Database;
 using Cataloging.Infra.Database.Setup;
-using Oakton;
+using JasperFx.CommandLine;
 
-namespace Cataloging.Oakton;
+namespace Cataloging.JasperFx;
 
 [Description("Seed catalog database with development data", Name = "seed-dev-data")]
-public class SeedDevelopmentDataCommand : OaktonCommand<NetCoreInput>
+public class SeedDevelopmentDataCommand : JasperFxCommand<NetCoreInput>
 {
     public override bool Execute(NetCoreInput input)
     {

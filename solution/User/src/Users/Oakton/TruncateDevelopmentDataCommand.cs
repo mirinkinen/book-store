@@ -1,11 +1,11 @@
-using Oakton;
+using JasperFx.CommandLine;
 using Users.Infra.Database;
 using Users.Infra.Database.Setup;
 
-namespace Users.Oakton;
+namespace Users.JasperFx;
 
 [Description("Truncates user database", Name = "truncate-dev-data")]
-public class TruncateDevelopmentDataCommand : OaktonCommand<NetCoreInput>
+public class TruncateDevelopmentDataCommand : JasperFxCommand<NetCoreInput>
 {
     public override bool Execute(NetCoreInput input)
     {

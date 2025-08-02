@@ -1,5 +1,5 @@
 using Common.API.Auditing;
-using Oakton;
+using JasperFx;
 using Ordering;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,5 +23,5 @@ app.UseAuthorization();
 app.UseAuditLogging();
 app.MapControllers();
 
-// Opt into using Oakton for command parsing
-await app.RunOaktonCommands(args);
+// Opt into using JasperFx for command parsing
+await app.RunJasperFxCommands(args);

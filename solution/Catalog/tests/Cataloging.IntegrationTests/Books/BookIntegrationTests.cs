@@ -1,7 +1,7 @@
 using Common.Application.Auditing;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Json;
-using FluentAssertions;
+using AwesomeAssertions;
 using Wolverine.Tracking;
 
 namespace Cataloging.IntegrationTests.Books;

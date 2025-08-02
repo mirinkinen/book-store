@@ -9,7 +9,7 @@ using Common.Application;
 using Common.Application.Messages;
 using Common.Infra;
 using FluentValidation;
-using Oakton;
+using JasperFx;
 using System.Reflection;
 using Wolverine;
 using Wolverine.Transports.Tcp;
@@ -33,7 +33,7 @@ public static class ServiceConfigurator
 
     private static void ConfigureApiServices(WebApplicationBuilder builder, string connectionString)
     {
-        builder.Host.ApplyOaktonExtensions();
+        builder.Host.ApplyJasperFxExtensions();
 
         // All commands are handled by Wolverine.
         builder.Host.UseWolverine(opts =>

@@ -1,13 +1,11 @@
 using Common.API.Auditing;
 using Common.Application.Authentication;
 using FluentValidation;
+using JasperFx;
 using Microsoft.EntityFrameworkCore;
-using Oakton;
-using Oakton.Resources;
 using System.Reflection;
 using Users.API;
 using Users.Infra.Database;
-using Users.Infra.Database.Setup;
 
 namespace Users;
 
@@ -23,7 +21,7 @@ public static class ServiceConfigurator
 
     private static void ConfigureApiServices(WebApplicationBuilder builder)
     {
-        builder.Host.ApplyOaktonExtensions();
+        builder.Host.ApplyJasperFxExtensions();
         builder.Services.AddAuthorization();
         builder.Services
             .AddGraphQLServer()

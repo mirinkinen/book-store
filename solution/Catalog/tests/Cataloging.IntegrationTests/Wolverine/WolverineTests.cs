@@ -1,5 +1,6 @@
 ﻿using Alba;
-using Oakton;
+using JasperFx.CommandLine;
+using JasperFx;
 using Wolverine;
 
 namespace Cataloging.IntegrationTests.Wolverine;
@@ -9,7 +10,7 @@ public class WolverineTests
 {
     public WolverineTests()
     {
-        OaktonEnvironment.AutoStartHost = true;
+        JasperFxEnvironment.AutoStartHost = true;
     }
 
     [Fact]
