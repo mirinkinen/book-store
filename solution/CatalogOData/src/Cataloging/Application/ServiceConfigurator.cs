@@ -1,11 +1,9 @@
-using Common.Application.Auditing;
+using Cataloging.Application.Auditing;
 using Common.Application.Authentication;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System.Reflection;
 using Wolverine;
 
-namespace Common.Application;
+namespace Cataloging.Application;
 
 public static class ServiceConfigurator
 {

@@ -1,6 +1,6 @@
 using Cataloging;
+using Cataloging.API.Auditing;
 using Common.API;
-using Common.API.Auditing;
 using JasperFx;
 using Microsoft.AspNetCore.OData;
 

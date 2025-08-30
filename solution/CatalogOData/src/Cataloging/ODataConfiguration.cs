@@ -1,5 +1,5 @@
+using Cataloging.API;
 using Cataloging.Domain;
-using Common.API.Auditing;
 using JasperFx.Core;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;

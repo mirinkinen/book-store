@@ -2,7 +2,7 @@ using Cataloging.Infra.Database;
 using Cataloging.Infra.Database.Setup;
 using JasperFx.CommandLine;
 
-namespace Cataloging.JasperFx;
+namespace Cataloging.Oakton;
 
 [Description("Seed catalog database with development data", Name = "seed-dev-data")]
 public class SeedDevelopmentDataCommand : JasperFxCommand<NetCoreInput>

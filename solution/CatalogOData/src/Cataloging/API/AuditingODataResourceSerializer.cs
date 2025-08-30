@@ -1,14 +1,13 @@
-﻿using Common.Application.Auditing;
+﻿using Cataloging.API.Auditing;
+using Cataloging.Application.Auditing;
 using Common.Domain;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.AspNetCore.OData.Formatter.Value;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.OData;
 using Microsoft.OData.Edm;
 
-namespace Common.API.Auditing;
+namespace Cataloging.API;
 
 public class AuditingODataResourceSerializer : ODataResourceSerializer
 {

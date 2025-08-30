@@ -1,10 +1,10 @@
-﻿using Cataloging.Application;
+﻿using Cataloging.API.Auditing;
+using Cataloging.Application;
 using Cataloging.Application.Middleware;
 using Cataloging.Domain;
 using Cataloging.Infra;
 using Cataloging.Infra.Database;
 using Common;
-using Common.API.Auditing;
 using Common.Application;
 using Common.Application.Messages;
 using Common.Infra;
@@ -69,7 +69,7 @@ public static class ServiceConfigurator
     private static void ConfigureApplicationServices(WebApplicationBuilder builder)
     {
         builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        Common.Application.ServiceConfigurator.ConfigureApplicationServices(builder.Services);
+        Application.ServiceConfigurator.ConfigureApplicationServices(builder.Services);
     }
 
     private static void ConfigureInfrastructureServices(WebApplicationBuilder builder, string connectionString)

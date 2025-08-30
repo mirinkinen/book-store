@@ -1,3 +1,3 @@
-﻿namespace Common.Application.Auditing;
+﻿namespace Cataloging.Application.Auditing;
 
 public record AuditLogResource(Guid ResourceId, string ResourceType);

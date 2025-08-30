@@ -1,5 +1,5 @@
-﻿using Cataloging.IntegrationTests.Fakes;
-using Common.Application.Auditing;
+﻿using Cataloging.Application.Auditing;
+using Cataloging.IntegrationTests.Fakes;
 using Common.Application.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;

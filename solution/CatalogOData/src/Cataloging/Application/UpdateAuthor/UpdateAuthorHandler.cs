@@ -1,5 +1,5 @@
-﻿using Cataloging.Domain;
-using Common.Application.Auditing;
+﻿using Cataloging.Application.Auditing;
+using Cataloging.Domain;
 using Common.Application.Authentication;
 using System.Diagnostics.CodeAnalysis;
 

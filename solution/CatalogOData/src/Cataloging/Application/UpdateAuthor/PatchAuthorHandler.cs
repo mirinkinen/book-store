@@ -1,5 +1,5 @@
+using Cataloging.Application.Auditing;
 using Cataloging.Domain;
-using Common.Application.Auditing;
 using Common.Application.Authentication;
 using Microsoft.AspNetCore.OData.Deltas;
 using System.Diagnostics.CodeAnalysis;

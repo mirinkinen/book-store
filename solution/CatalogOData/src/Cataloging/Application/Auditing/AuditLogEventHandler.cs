@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace Common.Application.Auditing;
+﻿namespace Cataloging.Application.Auditing;
 
 /// <summary>
 /// Middleware for AuditableCommands. Executed by Wolverine.
