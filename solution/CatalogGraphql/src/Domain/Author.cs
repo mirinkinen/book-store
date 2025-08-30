@@ -7,9 +7,13 @@ namespace Domain;
 
 public class Author : Entity
 {
-    public required DateTime Birthday { get; set; }
+    public required DateTime Birthdate { get; set; }
 
-    public IReadOnlyList<Book> Books { get; set; } = new List<Book>();
+    // Private backing field for the Books collection
+    private readonly List<Book> _books = new();
+
+    // Public read-only access to books
+    public IReadOnlyList<Book> Books => _books;
 
     public required string FirstName { get; set; }
 
@@ -23,11 +27,11 @@ public class Author : Entity
     }
 
     [SetsRequiredMembers]
-    public Author(string firstName, string lastName, DateTime birthday, Guid organizationId)
+    public Author(string firstName, string lastName, DateTime birthdate, Guid organizationId)
     {
         FirstName = firstName;
         LastName = lastName;
-        Birthday = birthday;
+        Birthdate = birthdate;
         OrganizationId = organizationId;
 
         Validate();
@@ -37,9 +41,26 @@ public class Author : Entity
     {
         FirstName = firstName;
         LastName = lastName;
-        Birthday = birthday;
+        Birthdate = birthday;
 
         Validate();
+    }
+
+    public void AddBook(Book book)
+    {
+        _books.Add(book);
+    }
+
+    public Book RemoveBook(Guid bookId)
+    {
+        var book = _books.FirstOrDefault(b => b.Id == bookId);
+        if (book == null)
+        {
+            throw new KeyNotFoundException($"Book with ID '{bookId}' not found for this author.");
+        }
+        
+        _books.Remove(book);
+        return book;
     }
 
     private void Validate()
@@ -56,14 +77,14 @@ public class Author : Entity
             failures.Add(new ValidationFailure(nameof(LastName), $"'{nameof(LastName)}' cannot be null or whitespace."));
         }
 
-        if (Birthday == DateTime.MinValue)
+        if (Birthdate == DateTime.MinValue)
         {
-            failures.Add(new ValidationFailure(nameof(Birthday), $"'{nameof(Birthday)}' cannot be min value."));
+            failures.Add(new ValidationFailure(nameof(Birthdate), $"'{nameof(Birthdate)}' cannot be min value."));
         }
 
-        if (Birthday > DateTime.UtcNow)
+        if (Birthdate > DateTime.UtcNow)
         {
-            failures.Add(new ValidationFailure(nameof(Birthday), $"'{nameof(Birthday)}' cannot be in future."));
+            failures.Add(new ValidationFailure(nameof(Birthdate), $"'{nameof(Birthdate)}' cannot be in future."));
         }
 
         if (OrganizationId == Guid.Empty)

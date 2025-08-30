@@ -19,6 +19,12 @@ public class Book : Entity
     {
     }
 
+    public void SetAuthor(Author author)
+    {
+        Author = author ?? throw new ArgumentNullException(nameof(author));
+        AuthorId = author.Id;
+    }
+
     public Book(Guid authorId, string title, DateTime datePublished, decimal price)
     {
         AuthorId = authorId;
