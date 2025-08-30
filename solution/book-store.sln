@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Catalog", "Catalog", "{17908272-3BC4-4555-AF7C-B4C09AC86105}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CatalogOData", "CatalogOData", "{17908272-3BC4-4555-AF7C-B4C09AC86105}"
 	ProjectSection(SolutionItems) = preProject
-		Catalog\README.md = Catalog\README.md
+		CatalogOData\README.md = CatalogOData\README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7801A4D9-54CF-43B4-B731-199A19B625DA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{EC8B366A-2968-43BF-86DF-241844445669}"
 	ProjectSection(SolutionItems) = preProject
-		Catalog\tests\.editorconfig = Catalog\tests\.editorconfig
+		CatalogOData\tests\.editorconfig = CatalogOData\tests\.editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cataloging", "Catalog\src\Cataloging\Cataloging.csproj", "{93840517-71C7-46CD-B71B-ED68A8D53DFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cataloging", "CatalogOData\src\Cataloging\Cataloging.csproj", "{93840517-71C7-46CD-B71B-ED68A8D53DFA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FF831862-C44A-436A-A1E8-3F1C4976BD2B}"
 	ProjectSection(SolutionItems) = preProject
@@ -24,9 +24,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cataloging.IntegrationTests", "Catalog\tests\Cataloging.IntegrationTests\Cataloging.IntegrationTests.csproj", "{74415934-E712-4241-A8C1-D74E72C7AF81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cataloging.IntegrationTests", "CatalogOData\tests\Cataloging.IntegrationTests\Cataloging.IntegrationTests.csproj", "{74415934-E712-4241-A8C1-D74E72C7AF81}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cataloging.UnitTests", "Catalog\tests\Cataloging.UnitTests\Cataloging.UnitTests.csproj", "{56890B31-D76B-4C48-BEAD-1DA6BE1CDFD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cataloging.UnitTests", "CatalogOData\tests\Cataloging.UnitTests\Cataloging.UnitTests.csproj", "{56890B31-D76B-4C48-BEAD-1DA6BE1CDFD1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Inventory", "Inventory", "{6CF13A43-506E-4EAB-A829-EE14CE9A3BA6}"
 	ProjectSection(SolutionItems) = preProject
@@ -62,7 +62,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D1D2BC72
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users", "User\src\Users\Users.csproj", "{829150BF-14A2-43B2-973A-8CCC1E23EAE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cataloging.ArchitectureTests", "Catalog\tests\Cataloging.ArchitectureTests\Cataloging.ArchitectureTests.csproj", "{BA98BFF0-B29E-418E-A208-1C540BDA0C60}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cataloging.ArchitectureTests", "CatalogOData\tests\Cataloging.ArchitectureTests\Cataloging.ArchitectureTests.csproj", "{BA98BFF0-B29E-418E-A208-1C540BDA0C60}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CatalogGraphql", "CatalogGraphql", "{DCDEC568-6DC2-407D-B7B2-06EFA9887DC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "CatalogGraphql\src\API\API.csproj", "{E170C143-223B-48CC-9B84-1BABF5505810}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "CatalogGraphql\src\Application\Application.csproj", "{14A7F0AA-F7CE-4D28-8D4D-040D139630B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "CatalogGraphql\src\Domain\Domain.csproj", "{05AA4E37-37CB-412B-AFA5-86E4884C0311}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infra", "CatalogGraphql\src\Infra\Infra.csproj", "{CF3BA69A-0185-4E33-A57A-0E59CEDA5E88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -98,6 +108,22 @@ Global
 		{BA98BFF0-B29E-418E-A208-1C540BDA0C60}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA98BFF0-B29E-418E-A208-1C540BDA0C60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA98BFF0-B29E-418E-A208-1C540BDA0C60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E170C143-223B-48CC-9B84-1BABF5505810}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E170C143-223B-48CC-9B84-1BABF5505810}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E170C143-223B-48CC-9B84-1BABF5505810}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E170C143-223B-48CC-9B84-1BABF5505810}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14A7F0AA-F7CE-4D28-8D4D-040D139630B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14A7F0AA-F7CE-4D28-8D4D-040D139630B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14A7F0AA-F7CE-4D28-8D4D-040D139630B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14A7F0AA-F7CE-4D28-8D4D-040D139630B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05AA4E37-37CB-412B-AFA5-86E4884C0311}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05AA4E37-37CB-412B-AFA5-86E4884C0311}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05AA4E37-37CB-412B-AFA5-86E4884C0311}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05AA4E37-37CB-412B-AFA5-86E4884C0311}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF3BA69A-0185-4E33-A57A-0E59CEDA5E88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF3BA69A-0185-4E33-A57A-0E59CEDA5E88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF3BA69A-0185-4E33-A57A-0E59CEDA5E88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF3BA69A-0185-4E33-A57A-0E59CEDA5E88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -122,6 +148,11 @@ Global
 		{D1D2BC72-15DD-43C3-AC5F-B0FB9FBD68C3} = {897449E4-1E31-4836-94CA-82A41F6BC857}
 		{829150BF-14A2-43B2-973A-8CCC1E23EAE8} = {0D76385E-1588-4EEE-A7EC-1A1E6E305206}
 		{BA98BFF0-B29E-418E-A208-1C540BDA0C60} = {EC8B366A-2968-43BF-86DF-241844445669}
+		{DCDEC568-6DC2-407D-B7B2-06EFA9887DC6} = {A82964E3-A212-46C6-8AC9-31BC524F58B8}
+		{E170C143-223B-48CC-9B84-1BABF5505810} = {DCDEC568-6DC2-407D-B7B2-06EFA9887DC6}
+		{14A7F0AA-F7CE-4D28-8D4D-040D139630B9} = {DCDEC568-6DC2-407D-B7B2-06EFA9887DC6}
+		{05AA4E37-37CB-412B-AFA5-86E4884C0311} = {DCDEC568-6DC2-407D-B7B2-06EFA9887DC6}
+		{CF3BA69A-0185-4E33-A57A-0E59CEDA5E88} = {DCDEC568-6DC2-407D-B7B2-06EFA9887DC6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2A7F10F0-64D8-490D-8D09-380016A23617}
