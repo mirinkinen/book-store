@@ -19,10 +19,11 @@ public class AuditingODataResourceSerializer : ODataResourceSerializer
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public override Task WriteObjectInlineAsync(object graph, IEdmTypeReference expectedType, ODataWriter writer, ODataSerializerContext writeContext)
+    public override Task WriteObjectInlineAsync(object graph, IEdmTypeReference expectedType, ODataWriter writer,
+        ODataSerializerContext writeContext)
     {
         var auditOptions = _httpContextAccessor.HttpContext?.RequestServices.GetRequiredService<IOptions<AuditOptions>>();
-        
+
         if (auditOptions!.Value.Enabled)
         {
             if (graph is IEdmStructuredObject structuredObject)

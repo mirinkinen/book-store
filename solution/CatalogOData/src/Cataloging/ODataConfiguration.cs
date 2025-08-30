@@ -48,7 +48,7 @@ internal static class ODataConfiguration
             var conventions = options.Conventions
                 .Where(c => c is AttributeRoutingConvention || c is MetadataRoutingConvention)
                 .ToList();
-            
+
             options.Conventions.Clear();
             options.Conventions.AddRange(conventions);
         });

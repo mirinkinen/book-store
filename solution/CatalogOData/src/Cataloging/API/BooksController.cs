@@ -1,9 +1,7 @@
 ﻿using Cataloging.API.Models;
-using Cataloging.Application;
 using Cataloging.Application.GetBookById;
 using Cataloging.Application.GetBooks;
 using Cataloging.Domain;
-using Common.API;
 using Common.Application;
 using Common.Application.Authentication;
 using Common.Domain;

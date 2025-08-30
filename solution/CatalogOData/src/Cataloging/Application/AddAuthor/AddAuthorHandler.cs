@@ -11,9 +11,8 @@ public record PostAuthorCommand(string Firstname, string Lastname, DateTime Birt
 [Transactional]
 public static class AddAuthorHandler
 {
-
     [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
-    public static async IAsyncEnumerable<object> Handle(PostAuthorCommand request, IAuthorRepository authorRepository, IUserAccessor 
+    public static async IAsyncEnumerable<object> Handle(PostAuthorCommand request, IAuthorRepository authorRepository, IUserAccessor
         userAccessor)
     {
         var user = await userAccessor.GetUser();

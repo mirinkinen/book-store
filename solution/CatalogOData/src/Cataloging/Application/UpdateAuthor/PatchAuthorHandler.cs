@@ -6,17 +6,17 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Application.UpdateAuthor;
 
-public record PatchAuthorCommand(Guid AuthorId, Delta<Author> delta) : 
+public record PatchAuthorCommand(Guid AuthorId, Delta<Author> delta) :
     IAuthorCommand;
 
 public static class PatchAuthorHandler
 {
     [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
-    public static async IAsyncEnumerable<object> Handle(PatchAuthorCommand request, Author author, IAuthorRepository authorRepository, 
-    IUserAccessor userAccessor)
+    public static async IAsyncEnumerable<object> Handle(PatchAuthorCommand request, Author author, IAuthorRepository authorRepository,
+        IUserAccessor userAccessor)
     {
         var user = await userAccessor.GetUser();
-        
+
         author.Patch(request.delta);
 
         await authorRepository.SaveChangesAsync();

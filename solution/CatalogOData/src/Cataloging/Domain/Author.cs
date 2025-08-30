@@ -15,7 +15,7 @@ public class Author : Entity
     public required string FirstName { get; set; }
 
     public required string LastName { get; set; }
-    
+
     public required Guid OrganizationId { get; set; }
 
     [Obsolete("Only for serialization", true)]
@@ -62,11 +62,11 @@ public class Author : Entity
 
         Validate();
     }
-    
+
     private void Validate()
     {
         var failures = new List<ValidationFailure>();
-        
+
         if (string.IsNullOrWhiteSpace(FirstName))
         {
             failures.Add(new ValidationFailure(nameof(FirstName), $"'{nameof(FirstName)}' cannot be null or whitespace."));

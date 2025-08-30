@@ -41,14 +41,14 @@ public class ProblemDetailsMiddleware
                     Message = error.ErrorMessage,
                     Code = error.ErrorCode
                 };
-                
+
                 errors.Add(error.PropertyName, errorDetails);
             }
 
             problemDetails.Extensions.Add("errors", errors);
 
             context.Response.StatusCode = 400;
-            
+
             await context.Response.WriteAsJsonAsync(problemDetails);
         }
         catch (Exception)
@@ -59,7 +59,7 @@ public class ProblemDetailsMiddleware
                 Title = "Internal Server Error",
             };
             context.Response.StatusCode = 500;
-            
+
             await context.Response.WriteAsJsonAsync(problemDetails);
         }
     }

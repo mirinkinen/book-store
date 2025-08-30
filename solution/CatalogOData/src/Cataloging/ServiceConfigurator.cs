@@ -5,12 +5,9 @@ using Cataloging.Application.Middleware;
 using Cataloging.Domain;
 using Cataloging.Infra;
 using Cataloging.Infra.Database;
-using Common;
-using Common.Application;
 using Common.Application.Authentication;
 using Common.Application.Messages;
 using Common.Domain;
-using Common.Infra;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using JasperFx;
@@ -27,7 +24,7 @@ namespace Cataloging;
 public static class ServiceConfigurator
 {
     private const string _wolverineSchema = "wolverine";
-    
+
     internal static void ConfigureServices(this WebApplicationBuilder builder, string connectionString)
     {
         ConfigureApiServices(builder, connectionString);
@@ -94,7 +91,7 @@ public static class ServiceConfigurator
 
             // Adds the usage of DbContextOutbox.
             opts.UseEntityFrameworkCoreTransactions();
-        
+
             // Use durable inbox and outbox.
             opts.Policies.UseDurableLocalQueues();
             opts.Policies.UseDurableInboxOnAllListeners();
@@ -123,21 +120,18 @@ public static class ServiceConfigurator
     private static void ConfigureApplicationServices(WebApplicationBuilder builder)
     {
         builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        
+
         // User
         builder.Services.AddScoped<IUserAccessor, UserAccessor>();
 
         // Audit.
         builder.Services.AddScoped<AuditContext>();
-        
     }
 
     private static void ConfigureInfrastructureServices(WebApplicationBuilder builder, string connectionString)
     {
-        builder.Services.AddDbContextWithWolverineIntegration<CatalogDbContext>(dbContextOptions =>
-        {
-            dbContextOptions.UseSqlServer(connectionString);
-        }, _wolverineSchema);
+        builder.Services.AddDbContextWithWolverineIntegration<CatalogDbContext>(
+            dbContextOptions => { dbContextOptions.UseSqlServer(connectionString); }, _wolverineSchema);
 
         builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
     }

@@ -26,11 +26,11 @@ public class CatalogDbContext : DbContext
     public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
     {
         var now = DateTime.Now;
-        
+
         var entities = ChangeTracker
             .Entries<Entity>()
             .Where(e => e.State is EntityState.Added or EntityState.Deleted or EntityState.Modified);
-        
+
         var user = await _userAccessor.GetUser();
 
         foreach (var entityEntry in entities)

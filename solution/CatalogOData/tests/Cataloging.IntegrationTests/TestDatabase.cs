@@ -25,7 +25,6 @@ public sealed class TestDatabase : IAsyncDisposable
             $"Data Source=127.0.0.1;Initial Catalog={Name};User ID=sa;Trust Server Certificate=True;Authentication=SqlPassword;Password=P@55w0rd";
     }
 
-    
 
     public static async Task CleanLeftoverDatabasesAsync()
     {

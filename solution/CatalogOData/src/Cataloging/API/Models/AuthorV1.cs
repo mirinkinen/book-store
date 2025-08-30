@@ -8,7 +8,7 @@ public class AuthorV1
 
     [DataType(DataType.Date)]
     public DateTime Birthday { get; set; }
-    
+
     public DateTimeOffset CreatedAt { get; set; }
 
     [MaxLength(32)]

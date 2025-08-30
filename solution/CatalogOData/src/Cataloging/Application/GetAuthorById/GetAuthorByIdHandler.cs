@@ -13,7 +13,7 @@ public static class GetAuthorByIdHandler
     {
         var user = await userAccessor.GetUser();
         var query = request.QueryAuthorizer.GetQuery(user).Where(a => a.Id == request.AuthorId);
-        
+
         return new QueryableResponse<Author>(query);
     }
 }

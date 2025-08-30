@@ -2,7 +2,6 @@
 
 ## Local develoment
 
-
 The start database, move to path `solution` folder. To start docker, run
 
 ```
@@ -17,7 +16,7 @@ dotnet ef database update -s Order/src/Ordering -c OrderDbContext
 dotnet ef database update -s User/src/Users -c UserDbContext 
 ```
 
-To seed development data, run 
+To seed development data, run
 
 ```
 dotnet run --project Catalog/src/Cataloging -- seed-dev-data

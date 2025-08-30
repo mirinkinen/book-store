@@ -1,6 +1,5 @@
 ﻿using Alba;
 using JasperFx.CommandLine;
-using JasperFx;
 using Wolverine;
 
 namespace Cataloging.IntegrationTests.Wolverine;

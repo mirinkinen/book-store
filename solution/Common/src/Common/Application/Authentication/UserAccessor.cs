@@ -4,7 +4,8 @@ public class UserAccessor : IUserAccessor
 {
     public Task<User> GetUser()
     {
-        var organizations = new[] {
+        var organizations = new[]
+        {
             Guid.Parse("5D8E6753-1479-408E-BB3D-CB3A02BE486C"),
             Guid.Parse("284F633F-2D13-4F4D-8E37-1EE5C9F6B140")
         };

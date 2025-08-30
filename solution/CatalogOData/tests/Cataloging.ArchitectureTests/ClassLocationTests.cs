@@ -26,7 +26,7 @@ public class LayerTests
             .Should().ResideInNamespaceStartingWith("Cataloging.Domain")
             .GetResult().FailingTypeNames.Should().BeNullOrEmpty();
     }
-    
+
     [Fact]
     public void Repository_implementations_should_reside_in_infra_layer()
     {
@@ -34,7 +34,7 @@ public class LayerTests
             .Should().ResideInNamespaceStartingWith("Cataloging.Infra")
             .GetResult().FailingTypeNames.Should().BeNullOrEmpty();
     }
-    
+
     [Fact]
     public void Query_interfaces_should_resided_in_application_layer()
     {

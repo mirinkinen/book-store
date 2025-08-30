@@ -1,15 +1,15 @@
+using AwesomeAssertions;
 using Cataloging.API.Models;
 using Cataloging.Application.AddAuthor;
+using Cataloging.Application.Auditing;
 using Cataloging.Application.GetAuthors;
+using Cataloging.Infra.Database;
+using Cataloging.IntegrationTests.Fakes;
+using JasperFx.Core;
+using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http.Json;
-using Cataloging.Infra.Database;
-using Cataloging.IntegrationTests.Fakes;
-using AwesomeAssertions;
-using Cataloging.Application.Auditing;
-using JasperFx.Core;
-using Microsoft.Extensions.DependencyInjection;
 using Wolverine.Tracking;
 
 namespace Cataloging.IntegrationTests.Authors;
@@ -324,28 +324,28 @@ public sealed class AuthorIntegrationTests : IntegrationContext
         var newFirstName = "TestFirstName";
         var newLastName = "TestLastName";
         var newBirthday = DateTime.UtcNow - TimeSpan.FromDays(30 * 365);
-        
+
         var putAuthorDto = new PutAuthorDtoV1
         {
             FirstName = newFirstName,
             LastName = newLastName,
-            Birthday = newBirthday  
-        };  
-        
+            Birthday = newBirthday
+        };
+
         HttpResponseMessage? response = null;
-    
+
         // Act
         var tracked = await Host.ExecuteAndWaitAsync(async () =>
         {
             var client = Host.Server.CreateClient();
             response = await client.PutAsJsonAsync($"v1/authors/{authorId}", putAuthorDto);
         });
-    
+
         // Assert request
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
-    
+
         var user = await new FakeUserAccessor().GetUser();
-    
+
         // Assert that author is updated.
         using var scope = Host.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
@@ -354,7 +354,7 @@ public sealed class AuthorIntegrationTests : IntegrationContext
         authorDao.LastName.Should().Be(newLastName);
         authorDao.Birthday.Should().Be(newBirthday);
         authorDao.ModifiedBy.Should().Be(user.Id);
-    
+
         // Assert audit context.
         var createAuthorAuditLogEvent = tracked.FindEnvelopesWithMessageType<AuditLogEvent>()
             .Single(e => e is
@@ -363,7 +363,7 @@ public sealed class AuthorIntegrationTests : IntegrationContext
                 Message: AuditLogEvent { OperationType: OperationType.Update }
             })
             .Message as AuditLogEvent;
-    
+
         createAuthorAuditLogEvent.Should().NotBeNull();
         createAuthorAuditLogEvent.Resources.Should().HaveCount(1);
         var authorResource = createAuthorAuditLogEvent.Resources.First();
@@ -382,7 +382,7 @@ public sealed class AuthorIntegrationTests : IntegrationContext
         var newBirthday = DateTime.UtcNow - TimeSpan.FromDays(30 * 365);
         var organizationId = Guid.NewGuid();
         var user = await new FakeUserAccessor().GetUser();
-        
+
         var command = new PostAuthorCommand(newFirstName, newLastName, newBirthday, organizationId);
 
         // Act
