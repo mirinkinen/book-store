@@ -1,6 +1,6 @@
-using Cataloging.Domain;
 using Common.Domain;
 using AwesomeAssertions;
+using Cataloging.Domain;
 
 namespace Cataloging.UnitTests.Domain.SeedWork;
 

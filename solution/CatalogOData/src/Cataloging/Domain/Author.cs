@@ -3,7 +3,6 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.OData.Deltas;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 
 namespace Cataloging.Domain;
 

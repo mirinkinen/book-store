@@ -1,4 +1,3 @@
-using Cataloging.Domain;
 using Cataloging.Infra.Database;
 using Common.Domain;
 using Microsoft.EntityFrameworkCore;

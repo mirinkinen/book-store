@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.OData.Deltas;
 using System.Linq.Expressions;
 
-namespace Common.Domain;
+namespace Cataloging.Domain;
 
 public static class DeltaExtensions
 {
