@@ -1,9 +1,11 @@
-using HotChocolate.Execution.Configuration;
+using API.Types;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.AddGraphQL().AddTypes();
+builder.AddGraphQL()
+    .AddTypes()
+    .AddType<BookType>()
+    .AddType<AuthorType>();
 
 var app = builder.Build();
 app.MapGraphQL();
 app.RunWithGraphQLCommands(args);
-
