@@ -8,37 +8,28 @@ namespace API.Types;
 [QueryType]
 public class Query
 {
-    private readonly IBookRepository _bookRepository;
-    private readonly IAuthorRepository _authorRepository;
-
-    public Query(IBookRepository bookRepository, IAuthorRepository authorRepository)
+    public async Task<Book?> GetBook(Guid id, IBookRepository bookRepository)
     {
-        _bookRepository = bookRepository;
-        _authorRepository = authorRepository;
+        return await bookRepository.GetByIdAsync(id);
     }
 
-    public async Task<Book?> GetBook(Guid id)
+    public async Task<IEnumerable<Book>> GetBooks(IBookRepository bookRepository)
     {
-        return await _bookRepository.GetByIdAsync(id);
+        return await bookRepository.GetAllAsync();
     }
 
-    public async Task<IEnumerable<Book>> GetBooks()
+    public async Task<IEnumerable<Book>> GetBooksByAuthor(Guid authorId, IBookRepository bookRepository)
     {
-        return await _bookRepository.GetAllAsync();
+        return await bookRepository.GetByAuthorIdAsync(authorId);
     }
 
-    public async Task<IEnumerable<Book>> GetBooksByAuthor(Guid authorId)
+    public async Task<Author?> GetAuthor(Guid id, IAuthorRepository authorRepository)
     {
-        return await _bookRepository.GetByAuthorIdAsync(authorId);
+        return await authorRepository.GetByIdAsync(id);
     }
 
-    public async Task<Author?> GetAuthor(Guid id)
+    public async Task<IEnumerable<Author>> GetAuthors(IAuthorRepository authorRepository)
     {
-        return await _authorRepository.GetByIdAsync(id);
-    }
-
-    public async Task<IEnumerable<Author>> GetAuthors()
-    {
-        return await _authorRepository.GetAllAsync();
+        return await authorRepository.GetAllAsync();
     }
 }
