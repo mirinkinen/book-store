@@ -12,15 +12,13 @@ To create databases, run
 
 ```
 dotnet ef database update -s CatalogOData/src/Cataloging -c CatalogDbContext
-dotnet ef database update -s Order/src/Ordering -c OrderDbContext
-dotnet ef database update -s User/src/Users -c UserDbContext 
+dotnet ef database update -s CatalogGraphql/src/API -c CatalogDbContext
 ```
 
 To seed development data, run
 
 ```
 dotnet run --project CatalogOData/src/Cataloging -- seed-dev-data
-dotnet run --project User/src/Users -- seed-dev-data
 ```
 
 ## Database migrations
@@ -28,9 +26,8 @@ dotnet run --project User/src/Users -- seed-dev-data
 To add new database migration, change the `<MigrationName>` and run
 
 ```
-dotnet ef migrations add -s CatalogOData/src/Cataloging -c CatalogDbContext  -o Database/Migrations/ <MigrationName>
-dotnet ef migrations add -s Order/src/Ordering -c OrderDbContext -o Database/Migrations/ <MigrationName>
-dotnet ef migrations add -s User/src/Users -c UserDbContext -o Database/Migrations/ <MigrationName>
+dotnet ef migrations add <MigrationName> -s CatalogOData/src/Cataloging -c CatalogDbContext -o Database/Migrations 
+dotnet ef migrations add <MigrationName> -s CatalogGraphql/src/API -p CatalogGraphql/src/Infra -c CatalogDbContext -o Database/Migrations
 ```
 
 ## Cleaning up
@@ -39,6 +36,5 @@ To drop databases, run
 
 ```
 dotnet ef database drop -s CatalogOData/src/Cataloging -c CatalogDbContext
-dotnet ef database drop -s Order/src/Ordering -c OrderDbContext
-dotnet ef database drop -s User/src/Users -c UserDbContext
+dotnet ef database drop -s CatalogGraphql/src/API -c CatalogDbContext
 ```
