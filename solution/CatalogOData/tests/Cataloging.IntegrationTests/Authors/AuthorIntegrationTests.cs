@@ -78,7 +78,7 @@ public sealed class AuthorIntegrationTests : IntegrationContext
         author.LastName.Should().NotBeNull().And.NotBeEmpty();
 
         // Unselected fields should be null.
-        author.Birthday.Should().BeNull();
+        author.Birthdate.Should().BeNull();
     }
 
     [Fact]
@@ -323,13 +323,13 @@ public sealed class AuthorIntegrationTests : IntegrationContext
         var authorId = "8e6a9434-87f5-46b2-a6c3-522dc35d8eef";
         var newFirstName = "TestFirstName";
         var newLastName = "TestLastName";
-        var newBirthday = DateTime.UtcNow - TimeSpan.FromDays(30 * 365);
+        var newBirthdate = DateTime.UtcNow - TimeSpan.FromDays(30 * 365);
 
         var putAuthorDto = new PutAuthorDtoV1
         {
             FirstName = newFirstName,
             LastName = newLastName,
-            Birthday = newBirthday
+            Birthdate = newBirthdate
         };
 
         HttpResponseMessage? response = null;
@@ -352,7 +352,7 @@ public sealed class AuthorIntegrationTests : IntegrationContext
         var authorDao = await dbContext.Authors.FindAsync([Guid.Parse(authorId)], TestContext.Current.CancellationToken);
         authorDao.FirstName.Should().Be(newFirstName);
         authorDao.LastName.Should().Be(newLastName);
-        authorDao.Birthday.Should().Be(newBirthday);
+        authorDao.Birthdate.Should().Be(newBirthdate);
         authorDao.ModifiedBy.Should().Be(user.Id);
 
         // Assert audit context.
@@ -379,11 +379,11 @@ public sealed class AuthorIntegrationTests : IntegrationContext
 
         var newFirstName = "TestFirstName";
         var newLastName = "TestLastName";
-        var newBirthday = DateTime.UtcNow - TimeSpan.FromDays(30 * 365);
+        var newBirthdate = DateTime.UtcNow - TimeSpan.FromDays(30 * 365);
         var organizationId = Guid.NewGuid();
         var user = await new FakeUserAccessor().GetUser();
 
-        var command = new PostAuthorCommand(newFirstName, newLastName, newBirthday, organizationId);
+        var command = new PostAuthorCommand(newFirstName, newLastName, newBirthdate, organizationId);
 
         // Act
         var tracked = await Host.ExecuteAndWaitAsync(async () =>
@@ -404,13 +404,11 @@ public sealed class AuthorIntegrationTests : IntegrationContext
         authorDao.Id.Should().NotBeEmpty();
         authorDao.FirstName.Should().Be(newFirstName);
         authorDao.LastName.Should().Be(newLastName);
-        // authorDao.Birthday.Should().Be(newBirthday);
         authorDao.ModifiedBy.Should().Be(user.Id);
 
         author.Id.Should().Be(authorDao.Id);
         author.FirstName.Should().Be(authorDao.FirstName);
         author.LastName.Should().Be(authorDao.LastName);
-        // author.Birthday.Should().Be(authorDao.Birthday);
         author.OrganizationId.Should().Be(authorDao.OrganizationId);
         author.Books.Should().BeNull();
 

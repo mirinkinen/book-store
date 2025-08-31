@@ -6,7 +6,7 @@ using Wolverine.Attributes;
 
 namespace Cataloging.Application.AddAuthor;
 
-public record PostAuthorCommand(string Firstname, string Lastname, DateTime Birthday, Guid OrganizationId);
+public record PostAuthorCommand(string Firstname, string Lastname, DateTime Birthdate, Guid OrganizationId);
 
 [Transactional]
 public static class AddAuthorHandler
@@ -16,7 +16,7 @@ public static class AddAuthorHandler
         userAccessor)
     {
         var user = await userAccessor.GetUser();
-        var author = new Author(request.Firstname, request.Lastname, request.Birthday, request.OrganizationId);
+        var author = new Author(request.Firstname, request.Lastname, request.Birthdate, request.OrganizationId);
 
         authorRepository.AddAuthor(author);
         await authorRepository.SaveChangesAsync();

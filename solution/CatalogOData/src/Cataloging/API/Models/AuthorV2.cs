@@ -7,7 +7,7 @@ public class AuthorV2
     public Guid Id { get; set; }
 
     [DataType(DataType.Date)]
-    public DateTime Birthday { get; set; }
+    public DateTime Birthdate { get; set; }
 
     [MaxLength(32)]
     public string FirstName { get; set; }

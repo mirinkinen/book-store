@@ -70,9 +70,9 @@ internal static class ODataConfiguration
 
         authorEntity.HasKey(author => author.Id);
 
-        var birthday = authorEntity.Property(e => e.Birthday);
-        birthday.IsRequired();
-        birthday.AsDate();
+        var birthdate = authorEntity.Property(e => e.Birthdate);
+        birthdate.IsRequired();
+        birthdate.AsDate();
 
         authorEntity.Property(e => e.CreatedAt);
         var firstName = authorEntity.Property(e => e.FirstName);
@@ -120,7 +120,7 @@ internal static class ODataConfiguration
 
         var authorEntity = modelBuilder.EntityType<Author>();
         authorEntity.HasKey(e => e.Id);
-        authorEntity.Property(e => e.Birthday);
+        authorEntity.Property(e => e.Birthdate);
         authorEntity.Ignore(e => e.CreatedAt);
         authorEntity.Property(e => e.FirstName);
         authorEntity.Property(e => e.LastName);

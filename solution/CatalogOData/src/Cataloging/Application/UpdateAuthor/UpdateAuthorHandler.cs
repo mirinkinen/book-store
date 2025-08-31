@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Cataloging.Application.UpdateAuthor;
 
-public record UpdateAuthorCommand(Guid AuthorId, DateTime Birthday, string FirstName, string LastName) : IAuthorCommand;
+public record UpdateAuthorCommand(Guid AuthorId, DateTime Birthdate, string FirstName, string LastName) : IAuthorCommand;
 
 public record AuthorUpdated(Guid AuthorId);
 
@@ -17,7 +17,7 @@ public static class UpdateAuthorHandler
     {
         var user = await userAccessor.GetUser();
 
-        author.Update(request.FirstName, request.LastName, request.Birthday);
+        author.Update(request.FirstName, request.LastName, request.Birthdate);
 
         await authorRepository.SaveChangesAsync();
 

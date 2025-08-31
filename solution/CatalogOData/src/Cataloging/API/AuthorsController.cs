@@ -61,7 +61,7 @@ public class AuthorsController : ApiODataController
     [Produces<AuthorV1>]
     public Task<Author> Post([FromBody] PostAuthorDtoV1 postAuthorDtoV1, [FromServices] IMessageBus bus)
     {
-        var command = new PostAuthorCommand(postAuthorDtoV1.FirstName, postAuthorDtoV1.LastName, postAuthorDtoV1.Birthday,
+        var command = new PostAuthorCommand(postAuthorDtoV1.FirstName, postAuthorDtoV1.LastName, postAuthorDtoV1.Birthdate,
             postAuthorDtoV1.OrganizationId);
 
         return bus.InvokeAsync<Author>(command);
@@ -71,7 +71,7 @@ public class AuthorsController : ApiODataController
     [Produces<AuthorV1>]
     public async Task<IActionResult> Put([FromRoute] Guid key, [FromBody] PutAuthorDtoV1 dto, [FromServices] IMessageBus bus)
     {
-        var command = new UpdateAuthorCommand(key, dto.Birthday, dto.FirstName, dto.LastName);
+        var command = new UpdateAuthorCommand(key, dto.Birthdate, dto.FirstName, dto.LastName);
 
         var author = await bus.InvokeAsync<Author?>(command);
 

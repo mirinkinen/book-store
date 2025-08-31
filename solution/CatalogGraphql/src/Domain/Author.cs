@@ -37,11 +37,11 @@ public class Author : Entity
         Validate();
     }
 
-    public void Update(string firstName, string lastName, DateTime birthday)
+    public void Update(string firstName, string lastName, DateTime birthdate)
     {
         FirstName = firstName;
         LastName = lastName;
-        Birthdate = birthday;
+        Birthdate = birthdate;
 
         Validate();
     }

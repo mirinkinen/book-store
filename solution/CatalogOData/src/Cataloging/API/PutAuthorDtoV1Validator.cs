@@ -15,7 +15,7 @@ public class PutAuthorDtoV1Validator : AbstractValidator<PutAuthorDtoV1>
             .NotEmpty().WithErrorCode("lastname-is-empty")
             .MaximumLength(32).WithErrorCode("lastname-is-too-long");
 
-        RuleFor(x => x.Birthday)
-            .NotEmpty().WithErrorCode("birthday-is-empty");
+        RuleFor(x => x.Birthdate)
+            .NotEmpty().WithErrorCode("birthdate-is-empty");
     }
 }

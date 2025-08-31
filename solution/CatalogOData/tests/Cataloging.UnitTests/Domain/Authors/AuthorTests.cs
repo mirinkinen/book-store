@@ -12,14 +12,14 @@ public class AuthorTests
     {
         var firstName = "First name";
         var lastName = "Last name";
-        var birthday = DateTime.UtcNow;
+        var birthdate = DateTime.UtcNow;
         var organizationId = Guid.NewGuid();
 
-        var author = new Author(firstName, lastName, birthday, organizationId);
+        var author = new Author(firstName, lastName, birthdate, organizationId);
 
         author.FirstName.Should().Be(firstName);
         author.LastName.Should().Be(lastName);
-        author.Birthday.Should().Be(birthday);
+        author.Birthdate.Should().Be(birthdate);
         author.OrganizationId.Should().Be(organizationId);
     }
 
@@ -31,10 +31,10 @@ public class AuthorTests
     {
         var userId = Guid.NewGuid();
         var lastName = "Last name";
-        var birthday = DateTime.UtcNow;
+        var birthdate = DateTime.UtcNow;
         var organizationId = Guid.NewGuid();
 
-        var constructor = () => new Author(firstName!, lastName, birthday, organizationId);
+        var constructor = () => new Author(firstName!, lastName, birthdate, organizationId);
 
         constructor.Should().Throw<ValidationException>();
     }
@@ -47,10 +47,10 @@ public class AuthorTests
     {
         var userId = Guid.NewGuid();
         var firstName = "First name";
-        var birthday = DateTime.UtcNow;
+        var birthdate = DateTime.UtcNow;
         var organizationId = Guid.NewGuid();
 
-        var constructor = () => new Author(firstName, lastName!, birthday, organizationId);
+        var constructor = () => new Author(firstName, lastName!, birthdate, organizationId);
 
         constructor.Should().Throw<ValidationException>();
     }
@@ -61,9 +61,9 @@ public class AuthorTests
         var userId = Guid.NewGuid();
         var firstName = "First name";
         var lastName = "Last name";
-        var birthday = DateTime.UtcNow;
+        var birthdate = DateTime.UtcNow;
 
-        var constructor = () => new Author(firstName, lastName, birthday, Guid.Empty);
+        var constructor = () => new Author(firstName, lastName, birthdate, Guid.Empty);
 
         constructor.Should().Throw<ValidationException>();
     }
