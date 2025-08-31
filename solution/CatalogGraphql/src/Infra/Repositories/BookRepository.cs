@@ -7,30 +7,33 @@ namespace Infra.Repositories;
 
 public class BookRepository : IBookRepository
 {
-    private readonly CatalogDbContext _context;
+    private readonly IDbContextFactory<CatalogDbContext> _contextFactory;
 
-    public BookRepository(CatalogDbContext context)
+    public BookRepository(IDbContextFactory<CatalogDbContext> contextFactory)
     {
-        _context = context;
+        _contextFactory = contextFactory;
     }
 
     public async Task<Book?> GetByIdAsync(Guid id)
     {
-        return await _context.Books
+        using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.Books
             .Include(b => b.Author)
             .FirstOrDefaultAsync(b => b.Id == id);
     }
 
     public async Task<IEnumerable<Book>> GetAllAsync()
     {
-        return await _context.Books
+        using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.Books
             .Include(b => b.Author)
             .ToListAsync();
     }
 
     public async Task<IEnumerable<Book>> GetByAuthorIdAsync(Guid authorId)
     {
-        return await _context.Books
+        using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.Books
             .Include(b => b.Author)
             .Where(b => b.AuthorId == authorId)
             .ToListAsync();
@@ -38,26 +41,29 @@ public class BookRepository : IBookRepository
 
     public async Task<Book> AddAsync(Book book)
     {
-        _context.Books.Add(book);
-        await _context.SaveChangesAsync();
+        using var context = await _contextFactory.CreateDbContextAsync();
+        context.Books.Add(book);
+        await context.SaveChangesAsync();
         return book;
     }
 
     public async Task<Book> UpdateAsync(Book book)
     {
-        _context.Entry(book).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
+        using var context = await _contextFactory.CreateDbContextAsync();
+        context.Entry(book).State = EntityState.Modified;
+        await context.SaveChangesAsync();
         return book;
     }
 
     public async Task<bool> DeleteAsync(Guid id)
     {
-        var book = await _context.Books.FindAsync(id);
+        using var context = await _contextFactory.CreateDbContextAsync();
+        var book = await context.Books.FindAsync(id);
         if (book == null)
             return false;
 
-        _context.Books.Remove(book);
-        await _context.SaveChangesAsync();
+        context.Books.Remove(book);
+        await context.SaveChangesAsync();
         return true;
     }
 }

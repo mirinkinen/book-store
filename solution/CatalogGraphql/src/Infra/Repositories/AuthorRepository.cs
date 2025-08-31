@@ -7,49 +7,54 @@ namespace Infra.Repositories;
 
 public class AuthorRepository : IAuthorRepository
 {
-    private readonly CatalogDbContext _context;
+    private readonly IDbContextFactory<CatalogDbContext> _contextFactory;
 
-    public AuthorRepository(CatalogDbContext context)
+    public AuthorRepository(IDbContextFactory<CatalogDbContext> contextFactory)
     {
-        _context = context;
+        _contextFactory = contextFactory;
     }
 
     public async Task<Author?> GetByIdAsync(Guid id)
     {
-        return await _context.Authors
+        using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.Authors
             .Include(a => a.Books)
             .FirstOrDefaultAsync(a => a.Id == id);
     }
 
     public async Task<IEnumerable<Author>> GetAllAsync()
     {
-        return await _context.Authors
+        using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.Authors
             .Include(a => a.Books)
             .ToListAsync();
     }
 
     public async Task<Author> AddAsync(Author author)
     {
-        _context.Authors.Add(author);
-        await _context.SaveChangesAsync();
+        using var context = await _contextFactory.CreateDbContextAsync();
+        context.Authors.Add(author);
+        await context.SaveChangesAsync();
         return author;
     }
 
     public async Task<Author> UpdateAsync(Author author)
     {
-        _context.Entry(author).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
+        using var context = await _contextFactory.CreateDbContextAsync();
+        context.Entry(author).State = EntityState.Modified;
+        await context.SaveChangesAsync();
         return author;
     }
 
     public async Task<bool> DeleteAsync(Guid id)
     {
-        var author = await _context.Authors.FindAsync(id);
+        using var context = await _contextFactory.CreateDbContextAsync();
+        var author = await context.Authors.FindAsync(id);
         if (author == null)
             return false;
 
-        _context.Authors.Remove(author);
-        await _context.SaveChangesAsync();
+        context.Authors.Remove(author);
+        await context.SaveChangesAsync();
         return true;
     }
 }
