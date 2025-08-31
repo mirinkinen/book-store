@@ -1,12 +1,10 @@
 using Application.Repositories;
 using Domain;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace API.Types;
+namespace API.Operations;
 
-[QueryType]
-public class Query
+[ExtendObjectType("Query")]
+public class BookQueries
 {
     public async Task<Book?> GetBook(Guid id, IBookRepository bookRepository)
     {
@@ -23,13 +21,4 @@ public class Query
         return await bookRepository.GetByAuthorIdAsync(authorId);
     }
 
-    public async Task<Author?> GetAuthor(Guid id, IAuthorRepository authorRepository)
-    {
-        return await authorRepository.GetByIdAsync(id);
-    }
-
-    public async Task<IEnumerable<Author>> GetAuthors(IAuthorRepository authorRepository)
-    {
-        return await authorRepository.GetAllAsync();
-    }
 }

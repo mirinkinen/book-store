@@ -1,3 +1,4 @@
+using API.Operations;
 using Application.Repositories;
 using Infra.Data;
 using Infra.Repositories;
@@ -12,7 +13,12 @@ public static class ServiceConfigurator
         builder.AddGraphQL()
             .AddGraphQLServer()
             .RegisterDbContextFactory<CatalogDbContext>()
-            .AddTypes();
+            .AddQueryType(q => q.Name("Query"))
+            .AddType<AuthorQueries>()
+            .AddType<BookQueries>()
+            .AddMutationType(m => m.Name("Mutation"))
+            .AddType<AuthorMutations>()
+            .AddType<BookMutations>();
     }
     
     internal static void ConfigureEFCore(this WebApplicationBuilder builder)

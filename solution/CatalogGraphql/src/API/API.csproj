@@ -30,7 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Types\Queries\" />
+    <Compile Remove="Operations\BookOperations.cs" />
+    <Compile Remove="Operations\AuthorOperations.cs" />
   </ItemGroup>
 
 </Project>
