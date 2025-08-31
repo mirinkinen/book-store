@@ -3,7 +3,7 @@ using Domain;
 
 namespace API.Operations;
 
-[ExtendObjectType("Query")]
+[ExtendObjectType(OperationTypeNames.Query)]
 public class AuthorQueries
 {
     public async Task<Author?> GetAuthor(Guid id, IAuthorRepository authorRepository)

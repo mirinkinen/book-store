@@ -3,7 +3,7 @@ using Domain;
 
 namespace API.Operations;
 
-[ExtendObjectType("Query")]
+[ExtendObjectType(OperationTypeNames.Query)]
 public class BookQueries
 {
     public async Task<Book?> GetBook(Guid id, IBookRepository bookRepository)

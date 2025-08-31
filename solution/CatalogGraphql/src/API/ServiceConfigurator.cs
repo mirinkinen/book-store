@@ -12,15 +12,12 @@ public static class ServiceConfigurator
     {
         builder.AddGraphQL()
             .AddGraphQLServer()
-            .RegisterDbContextFactory<CatalogDbContext>()
-            .AddQueryType(q => q.Name("Query"))
-            .AddType<AuthorQueries>()
-            .AddType<BookQueries>()
-            .AddMutationType(m => m.Name("Mutation"))
-            .AddType<AuthorMutations>()
-            .AddType<BookMutations>();
+            .AddQueryType()
+            .AddMutationType()
+            .AddTypes()
+            .RegisterDbContextFactory<CatalogDbContext>();
     }
-    
+
     internal static void ConfigureEFCore(this WebApplicationBuilder builder)
     {
         builder.Services

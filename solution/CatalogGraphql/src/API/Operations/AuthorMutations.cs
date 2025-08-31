@@ -3,7 +3,7 @@ using Domain;
 
 namespace API.Operations;
 
-[ExtendObjectType("Mutation")]
+[ExtendObjectType(OperationTypeNames.Mutation)]
 public class AuthorMutations
 {
     public async Task<Author> CreateAuthor(Author input, IAuthorRepository authorRepository)
