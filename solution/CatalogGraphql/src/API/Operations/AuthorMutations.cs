@@ -8,7 +8,7 @@ namespace API.Operations;
 [ExtendObjectType(OperationTypeNames.Mutation)]
 public class AuthorMutations
 {
-    public async Task<AuthorCreatedPayload> CreateAuthor(CreateAuthorInput input, IMediator mediator)
+    public async Task<AuthorCreatedOutput> CreateAuthor(CreateAuthorInput input, IMediator mediator)
     {
         return await mediator.Send(input);
     }

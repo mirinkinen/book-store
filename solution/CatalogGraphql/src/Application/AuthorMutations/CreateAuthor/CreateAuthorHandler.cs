@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.AuthorMutations.CreateAuthor;
 
-public class CreateAuthorInput : IRequest<AuthorCreatedPayload>
+public class CreateAuthorInput : IRequest<AuthorCreatedOutput>
 {
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
@@ -12,7 +12,7 @@ public class CreateAuthorInput : IRequest<AuthorCreatedPayload>
     public required Guid OrganizationId { get; set; }
 }
 
-public class AuthorCreatedPayload : IRequest<Author>
+public class AuthorCreatedOutput : IRequest<Author>
 {
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
@@ -20,7 +20,7 @@ public class AuthorCreatedPayload : IRequest<Author>
     public required Guid OrganizationId { get; set; }
 }
 
-public class CreateAuthorHandler : IRequestHandler<CreateAuthorInput, AuthorCreatedPayload>
+public class CreateAuthorHandler : IRequestHandler<CreateAuthorInput, AuthorCreatedOutput>
 {
     private readonly IAuthorRepository _authorRepository;
 
@@ -29,13 +29,13 @@ public class CreateAuthorHandler : IRequestHandler<CreateAuthorInput, AuthorCrea
         _authorRepository = authorRepository;
     }
     
-    public async Task<AuthorCreatedPayload> Handle(CreateAuthorInput request, CancellationToken cancellationToken)
+    public async Task<AuthorCreatedOutput> Handle(CreateAuthorInput input, CancellationToken cancellationToken)
     {
-        var author = new Author(request.FirstName, request.LastName, request.Birthdate, request.OrganizationId);
+        var author = new Author(input.FirstName, input.LastName, input.Birthdate, input.OrganizationId);
         
         await _authorRepository.AddAsync(author);
 
-        return new AuthorCreatedPayload
+        return new AuthorCreatedOutput
         {
             FirstName = author.FirstName,
             LastName = author.LastName,
