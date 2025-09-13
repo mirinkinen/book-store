@@ -1,6 +1,12 @@
+using Application.AuthorMutations.CreateAuthor;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure GraphQL with a single Query type containing all operations
+builder.Services.AddMediatR(conf =>
+{
+    conf.RegisterServicesFromAssemblyContaining<CreateAuthorHandler>();
+});
 builder.ConfigureGraphQL();
 builder.ConfigureEFCore();
 builder.ConfigureInfraServices();

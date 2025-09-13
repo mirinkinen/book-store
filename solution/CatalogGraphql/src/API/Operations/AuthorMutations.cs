@@ -1,16 +1,16 @@
+using Application.AuthorMutations.CreateAuthor;
 using Application.Repositories;
 using Domain;
+using MediatR;
 
 namespace API.Operations;
 
 [ExtendObjectType(OperationTypeNames.Mutation)]
 public class AuthorMutations
 {
-    public async Task<Author> CreateAuthor(Author input, IAuthorRepository authorRepository)
+    public async Task<AuthorCreatedPayload> CreateAuthor(CreateAuthorInput input, IMediator mediator)
     {
-        var author = new Author(input.FirstName, input.LastName, input.Birthdate, input.OrganizationId);
-        var createdAuthor = await authorRepository.AddAsync(author);
-        return createdAuthor;
+        return await mediator.Send(input);
     }
 
     public async Task<Author> UpdateAuthor(Guid id, string firstName, string lastName, DateTime birthdate, IAuthorRepository authorRepository)
