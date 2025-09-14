@@ -1,6 +1,7 @@
 using Application.AuthorCommands;
 using Application.AuthorQueries.GetAuthor;
 using Application.AuthorQueries.GetAuthors;
+using Application.Types;
 using MediatR;
 
 namespace API.Operations;

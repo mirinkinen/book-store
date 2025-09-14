@@ -1,4 +1,3 @@
-using Application.Repositories;
 using Domain;
 using Infra.Data;
 using Microsoft.EntityFrameworkCore;

@@ -1,6 +1,6 @@
 using HotChocolate.Types;
 
-namespace Application.AuthorCommands;
+namespace Application.Types;
 
 [ObjectType("Author")]
 public class AuthorOutputType

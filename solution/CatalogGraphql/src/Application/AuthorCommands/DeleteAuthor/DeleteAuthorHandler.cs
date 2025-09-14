@@ -1,4 +1,4 @@
-using Application.Repositories;
+using Domain;
 using MediatR;
 
 namespace Application.AuthorCommands.DeleteAuthor;

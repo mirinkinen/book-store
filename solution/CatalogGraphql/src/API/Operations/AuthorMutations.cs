@@ -1,7 +1,7 @@
-using Application.AuthorCommands;
 using Application.AuthorCommands.CreateAuthor;
 using Application.AuthorCommands.DeleteAuthor;
 using Application.AuthorCommands.UpdateAuthor;
+using Application.Types;
 using MediatR;
 
 namespace API.Operations;

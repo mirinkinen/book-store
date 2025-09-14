@@ -1,5 +1,5 @@
-using Application.BookMutations.CreateBook;
-using Application.Repositories;
+using Application.Types;
+using Domain;
 using MediatR;
 
 namespace Application.BookQueries.GetBooks;

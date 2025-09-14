@@ -1,6 +1,6 @@
 using Application.AuthorCommands;
 using Application.AuthorQueries.GetAuthor;
-using Application.Repositories;
+using Application.Types;
 using Domain;
 using MediatR;
 

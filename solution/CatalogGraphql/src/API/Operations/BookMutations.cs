@@ -1,6 +1,7 @@
-using Application.BookMutations.CreateBook;
-using Application.BookMutations.DeleteBook;
-using Application.BookMutations.UpdateBook;
+using Application.BookCommands.CreateBook;
+using Application.BookCommands.DeleteBook;
+using Application.BookCommands.UpdateBook;
+using Application.Types;
 using MediatR;
 
 namespace API.Operations;

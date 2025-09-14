@@ -1,6 +1,6 @@
-using Application.BookMutations.CreateBook;
 using Application.BookQueries.GetBook;
 using Application.BookQueries.GetBooks;
+using Application.Types;
 using MediatR;
 
 namespace API.Operations;

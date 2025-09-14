@@ -1,7 +1,7 @@
-using Application.Repositories;
+using Domain;
 using MediatR;
 
-namespace Application.BookMutations.DeleteBook;
+namespace Application.BookCommands.DeleteBook;
 
 public class DeleteBookCommand : IRequest<DeleteBookOutput>
 {

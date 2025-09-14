@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Domain;
-
-namespace Application.Repositories
+namespace Domain
 {
     /// <summary>
     /// Repository interface for Book entity

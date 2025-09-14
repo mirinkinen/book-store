@@ -1,5 +1,5 @@
 using Application.AuthorCommands.CreateAuthor;
-using Application.Repositories;
+using Domain;
 using Infra.Data;
 using Infra.Repositories;
 using Microsoft.EntityFrameworkCore;

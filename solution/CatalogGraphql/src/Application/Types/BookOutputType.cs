@@ -1,6 +1,6 @@
 using HotChocolate.Types;
 
-namespace Application.BookMutations.CreateBook;
+namespace Application.Types;
 
 [ObjectType("Book")]
 public class BookOutputType

@@ -1,8 +1,8 @@
-using Application.Repositories;
+using Application.Types;
 using Domain;
 using MediatR;
 
-namespace Application.BookMutations.CreateBook;
+namespace Application.BookCommands.CreateBook;
 
 public class CreateBookCommand : IRequest<BookOutputType>
 {

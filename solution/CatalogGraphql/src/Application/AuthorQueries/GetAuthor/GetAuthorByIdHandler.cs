@@ -1,5 +1,6 @@
 using Application.AuthorCommands;
-using Application.Repositories;
+using Application.Types;
+using Domain;
 using MediatR;
 using System.Diagnostics.CodeAnalysis;
 

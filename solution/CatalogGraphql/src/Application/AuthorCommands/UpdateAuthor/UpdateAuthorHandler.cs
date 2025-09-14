@@ -1,4 +1,5 @@
-using Application.Repositories;
+using Application.Types;
+using Domain;
 using MediatR;
 
 namespace Application.AuthorCommands.UpdateAuthor;
