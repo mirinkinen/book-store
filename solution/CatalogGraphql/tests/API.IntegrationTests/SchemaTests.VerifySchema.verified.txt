@@ -1,0 +1,138 @@
+﻿schema {
+  query: Query
+  mutation: Mutation
+}
+
+type AuthorCreatedOutput {
+  firstName: String!
+  lastName: String!
+  birthdate: DateTime!
+  organizationId: UUID!
+}
+
+type AuthorUpdatedOutput {
+  id: UUID!
+  firstName: String!
+  lastName: String!
+  birthdate: DateTime!
+}
+
+type BookCreatedOutput {
+  id: UUID!
+  authorId: UUID!
+  title: String!
+  datePublished: DateTime!
+  price: Decimal!
+}
+
+type BookUpdatedOutput {
+  id: UUID!
+  title: String!
+  datePublished: DateTime!
+  price: Decimal!
+}
+
+type DeleteAuthorOutput {
+  success: Boolean!
+  id: UUID!
+}
+
+type DeleteBookOutput {
+  success: Boolean!
+  id: UUID!
+}
+
+type GetAuthorOutput {
+  id: UUID!
+  firstName: String!
+  lastName: String!
+  birthdate: DateTime!
+  organizationId: UUID!
+}
+
+type GetBookOutput {
+  id: UUID!
+  authorId: UUID!
+  title: String!
+  datePublished: DateTime!
+  price: Decimal!
+}
+
+type Mutation {
+  createAuthor(input: CreateAuthorInput!): AuthorCreatedOutput! @cost(weight: "10")
+  updateAuthor(input: UpdateAuthorInput!): AuthorUpdatedOutput! @cost(weight: "10")
+  deleteAuthor(input: DeleteAuthorInput!): DeleteAuthorOutput! @cost(weight: "10")
+  createBook(input: CreateBookInput!): BookCreatedOutput! @cost(weight: "10")
+  updateBook(input: UpdateBookInput!): BookUpdatedOutput! @cost(weight: "10")
+  deleteBook(input: DeleteBookInput!): DeleteBookOutput! @cost(weight: "10")
+}
+
+type Query {
+  author(input: GetAuthorInput!): GetAuthorOutput @cost(weight: "10")
+  authors: [GetAuthorOutput!]! @cost(weight: "10")
+  book(input: GetBookInput!): GetBookOutput @cost(weight: "10")
+  books: [GetBookOutput!]! @cost(weight: "10")
+  booksByAuthor(input: GetBooksByAuthorInput!): [GetBookOutput!]! @cost(weight: "10")
+}
+
+input CreateAuthorInput {
+  firstName: String!
+  lastName: String!
+  birthdate: DateTime!
+  organizationId: UUID!
+}
+
+input CreateBookInput {
+  authorId: UUID!
+  title: String!
+  datePublished: DateTime!
+  price: Decimal!
+}
+
+input DeleteAuthorInput {
+  id: UUID!
+}
+
+input DeleteBookInput {
+  id: UUID!
+}
+
+input GetAuthorInput {
+  id: UUID!
+}
+
+input GetBookInput {
+  id: UUID!
+}
+
+input GetBooksByAuthorInput {
+  authorId: UUID!
+}
+
+input UpdateAuthorInput {
+  id: UUID!
+  firstName: String!
+  lastName: String!
+  birthdate: DateTime!
+}
+
+input UpdateBookInput {
+  id: UUID!
+  title: String!
+  datePublished: DateTime!
+  price: Decimal!
+}
+
+"The purpose of the `cost` directive is to define a `weight` for GraphQL types, fields, and arguments. Static analysis can use these weights when calculating the overall cost of a query or response."
+directive @cost("The `weight` argument defines what value to add to the overall cost for every appearance, or possible appearance, of a type, field, argument, etc." weight: String!) on SCALAR | OBJECT | FIELD_DEFINITION | ARGUMENT_DEFINITION | ENUM | INPUT_FIELD_DEFINITION
+
+"The `@specifiedBy` directive is used within the type system definition language to provide a URL for specifying the behavior of custom scalar definitions."
+directive @specifiedBy("The specifiedBy URL points to a human-readable specification. This field will only read a result for scalar types." url: String!) on SCALAR
+
+"The `DateTime` scalar represents an ISO-8601 compliant date time type."
+scalar DateTime @specifiedBy(url: "https:\/\/www.graphql-scalars.com\/date-time")
+
+"The `Decimal` scalar type represents a decimal floating-point number."
+scalar Decimal
+
+scalar UUID @specifiedBy(url: "https:\/\/tools.ietf.org\/html\/rfc4122")

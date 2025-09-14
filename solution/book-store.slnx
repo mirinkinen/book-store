@@ -1,4 +1,6 @@
 <Solution>
+  <Folder Name="/CatalogGraphql/" />
+  <Folder Name="/CatalogGraphql/tests/" />
   <Folder Name="/Common/" />
   <Folder Name="/Common/src/">
     <Project Path="Common/src/Common/Common.csproj" />
@@ -16,6 +18,9 @@
     <Project Path="CatalogGraphql/src/Application/Application.csproj" />
     <Project Path="CatalogGraphql/src/Domain/Domain.csproj" />
     <Project Path="CatalogGraphql/src/Infra/Infra.csproj" />
+  </Folder>
+  <Folder Name="/Subdomains/CatalogGraphql/tests/">
+    <Project Path="CatalogGraphql\tests\API.IntegrationTests\API.IntegrationTests.csproj" Type="C#" />
   </Folder>
   <Folder Name="/Subdomains/CatalogOData/">
     <File Path="CatalogOData/README.md" />

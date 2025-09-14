@@ -5,7 +5,7 @@
 /// </summary>
 public abstract class Entity : IIdentifiable, ITimestamped
 {
-    public Guid Id { get; protected set; }
+    public Guid Id { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
