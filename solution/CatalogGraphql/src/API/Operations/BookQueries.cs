@@ -1,24 +1,26 @@
-using Application.Repositories;
-using Domain;
+using Application.BookQueries.GetBook;
+using Application.BookQueries.GetBooks;
+using Application.BookQueries.GetBooksByAuthor;
+using MediatR;
 
 namespace API.Operations;
 
 [ExtendObjectType(OperationTypeNames.Query)]
 public class BookQueries
 {
-    public async Task<Book?> GetBook(Guid id, IBookRepository bookRepository)
+    public async Task<GetBookOutput?> GetBook(GetBookInput input, IMediator mediator)
     {
-        return await bookRepository.GetByIdAsync(id);
+        return await mediator.Send(input);
     }
 
-    public async Task<IEnumerable<Book>> GetBooks(IBookRepository bookRepository)
+    public async Task<IEnumerable<GetBookOutput>> GetBooks(IMediator mediator)
     {
-        return await bookRepository.GetAllAsync();
+        return await mediator.Send(new GetBooksInput());
     }
 
-    public async Task<IEnumerable<Book>> GetBooksByAuthor(Guid authorId, IBookRepository bookRepository)
+    public async Task<IEnumerable<GetBookOutput>> GetBooksByAuthor(GetBooksByAuthorInput input, IMediator mediator)
     {
-        return await bookRepository.GetByAuthorIdAsync(authorId);
+        return await mediator.Send(input);
     }
 
 }

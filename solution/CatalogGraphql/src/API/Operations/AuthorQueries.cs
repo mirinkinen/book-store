@@ -1,18 +1,19 @@
-using Application.Repositories;
-using Domain;
+using Application.AuthorQueries.GetAuthor;
+using Application.AuthorQueries.GetAuthors;
+using MediatR;
 
 namespace API.Operations;
 
 [ExtendObjectType(OperationTypeNames.Query)]
 public class AuthorQueries
 {
-    public async Task<Author?> GetAuthor(Guid id, IAuthorRepository authorRepository)
+    public async Task<GetAuthorOutput?> GetAuthor(GetAuthorInput input, IMediator mediator)
     {
-        return await authorRepository.GetByIdAsync(id);
+        return await mediator.Send(input);
     }
 
-    public async Task<IEnumerable<Author>> GetAuthors(IAuthorRepository authorRepository)
+    public async Task<IEnumerable<GetAuthorOutput>> GetAuthors(IMediator mediator)
     {
-        return await authorRepository.GetAllAsync();
+        return await mediator.Send(new GetAuthorsInput());
     }
 }

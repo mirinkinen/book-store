@@ -1,45 +1,25 @@
-using Application.Repositories;
-using Common.Domain;
-using Domain;
+using Application.BookMutations.CreateBook;
+using Application.BookMutations.DeleteBook;
+using Application.BookMutations.UpdateBook;
+using MediatR;
 
 namespace API.Operations;
 
 [ExtendObjectType(OperationTypeNames.Mutation)]
 public class BookMutations
 {
-    public async Task<Book> CreateBook(Book input, IAuthorRepository authorRepository, IBookRepository bookRepository)
+    public async Task<BookCreatedOutput> CreateBook(CreateBookInput input, IMediator mediator)
     {
-        var author = await authorRepository.GetByIdAsync(input.AuthorId);
-        if (author == null)
-        {
-            throw new ArgumentException($"Author with ID {input.AuthorId} not found");
-        }
-
-        var book = new Book(input.AuthorId, input.Title, input.DatePublished, input.Price);
-        book.SetAuthor(author);
-        
-        var createdBook = await bookRepository.AddAsync(book);
-        return createdBook;
+        return await mediator.Send(input);
     }
 
-    public async Task<Book> UpdateBook(Guid id, string title, DateTime datePublished, decimal price, IBookRepository bookRepository)
+    public async Task<BookUpdatedOutput> UpdateBook(UpdateBookInput input, IMediator mediator)
     {
-        var book = await bookRepository.GetByIdAsync(id);
-        if (book == null)
-        {
-            throw new ArgumentException($"Book with ID {id} not found");
-        }
-
-        book.Title = title;
-        book.DatePublished = datePublished;
-        book.Price = price;
-
-        var updatedBook = await bookRepository.UpdateAsync(book);
-        return updatedBook;
+        return await mediator.Send(input);
     }
 
-    public async Task<bool> DeleteBook(Guid id, IBookRepository bookRepository)
+    public async Task<DeleteBookOutput> DeleteBook(DeleteBookInput input, IMediator mediator)
     {
-        return await bookRepository.DeleteAsync(id);
+        return await mediator.Send(input);
     }
 }

@@ -1,6 +1,6 @@
 using Application.AuthorMutations.CreateAuthor;
-using Application.Repositories;
-using Domain;
+using Application.AuthorMutations.DeleteAuthor;
+using Application.AuthorMutations.UpdateAuthor;
 using MediatR;
 
 namespace API.Operations;
@@ -13,23 +13,13 @@ public class AuthorMutations
         return await mediator.Send(input);
     }
 
-    public async Task<Author> UpdateAuthor(Guid id, string firstName, string lastName, DateTime birthdate, IAuthorRepository authorRepository)
+    public async Task<AuthorUpdatedOutput> UpdateAuthor(UpdateAuthorInput input, IMediator mediator)
     {
-        var author = await authorRepository.GetByIdAsync(id);
-        if (author == null)
-        {
-            throw new ArgumentException($"Author with ID {id} not found");
-        }
-        
-        author.Update(firstName, lastName, birthdate);
-        var updatedAuthor = await authorRepository.UpdateAsync(author);
-        return updatedAuthor;
+        return await mediator.Send(input);
     }
 
-    public async Task<bool> DeleteAuthor(Guid id, IAuthorRepository authorRepository)
+    public async Task<DeleteAuthorOutput> DeleteAuthor(DeleteAuthorInput input, IMediator mediator)
     {
-        return await authorRepository.DeleteAsync(id);
+        return await mediator.Send(input);
     }
-
-
 }
