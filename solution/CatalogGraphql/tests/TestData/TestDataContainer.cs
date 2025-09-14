@@ -2,9 +2,9 @@
 using Domain;
 using System.Security.Cryptography;
 
-namespace Infra.Data.Seed;
+namespace TestData;
 
-public static class MockDataContainer
+public static class TestDataContainer
 {
     public static Guid SystemUserId => Guid.Parse("11111111-1111-1111-1111-111111111111");
 

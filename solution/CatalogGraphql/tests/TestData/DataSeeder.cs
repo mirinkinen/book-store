@@ -1,4 +1,6 @@
-﻿namespace Infra.Data.Seed;
+﻿using Infra.Data;
+
+namespace TestData;
 
 public static class DataSeeder
 {
@@ -6,7 +8,7 @@ public static class DataSeeder
     {
         ArgumentNullException.ThrowIfNull(catalogDbContext);
 
-        var authors = MockDataContainer.GetAuthors().ToList();
+        var authors = TestDataContainer.GetAuthors().ToList();
 
         // If not already seeded.
         if (!catalogDbContext.Authors.Any())
@@ -18,7 +20,7 @@ public static class DataSeeder
         // If not already seeded.
         if (!catalogDbContext.Books.Any())
         {
-            var books = MockDataContainer.GetBooks(authors);
+            var books = TestDataContainer.GetBooks(authors);
             await catalogDbContext.AddRangeAsync(books);
             await catalogDbContext.SaveChangesAsync();
         }

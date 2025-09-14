@@ -21,6 +21,7 @@
   </Folder>
   <Folder Name="/Subdomains/CatalogGraphql/tests/">
     <Project Path="CatalogGraphql\tests\API.IntegrationTests\API.IntegrationTests.csproj" Type="C#" />
+    <Project Path="CatalogGraphql\tests\TestData\TestData.csproj" Type="Classic C#" />
   </Folder>
   <Folder Name="/Subdomains/CatalogOData/">
     <File Path="CatalogOData/README.md" />

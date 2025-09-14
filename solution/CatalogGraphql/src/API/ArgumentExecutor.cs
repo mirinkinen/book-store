@@ -1,5 +1,5 @@
 using Infra.Data;
-using Infra.Data.Seed;
+using TestData;
 
 namespace API;
 
