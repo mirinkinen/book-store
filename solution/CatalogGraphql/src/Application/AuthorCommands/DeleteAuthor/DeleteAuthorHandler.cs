@@ -1,9 +1,9 @@
 using Application.Repositories;
 using MediatR;
 
-namespace Application.AuthorMutations.DeleteAuthor;
+namespace Application.AuthorCommands.DeleteAuthor;
 
-public class DeleteAuthorInput : IRequest<DeleteAuthorOutput>
+public class DeleteAuthorCommand : IRequest<DeleteAuthorOutput>
 {
     public required Guid Id { get; set; }
 }
@@ -14,7 +14,7 @@ public class DeleteAuthorOutput
     public required Guid Id { get; set; }
 }
 
-public class DeleteAuthorHandler : IRequestHandler<DeleteAuthorInput, DeleteAuthorOutput>
+public class DeleteAuthorHandler : IRequestHandler<DeleteAuthorCommand, DeleteAuthorOutput>
 {
     private readonly IAuthorRepository _authorRepository;
 
@@ -23,14 +23,14 @@ public class DeleteAuthorHandler : IRequestHandler<DeleteAuthorInput, DeleteAuth
         _authorRepository = authorRepository;
     }
     
-    public async Task<DeleteAuthorOutput> Handle(DeleteAuthorInput input, CancellationToken cancellationToken)
+    public async Task<DeleteAuthorOutput> Handle(DeleteAuthorCommand command, CancellationToken cancellationToken)
     {
-        var success = await _authorRepository.DeleteAsync(input.Id);
+        var success = await _authorRepository.DeleteAsync(command.Id);
         
         return new DeleteAuthorOutput
         {
             Success = success,
-            Id = input.Id
+            Id = command.Id
         };
     }
 }

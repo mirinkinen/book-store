@@ -1,4 +1,4 @@
-using Application.AuthorMutations.CreateAuthor;
+using Application.AuthorCommands.CreateAuthor;
 using Application.Repositories;
 using Infra.Data;
 using Infra.Repositories;

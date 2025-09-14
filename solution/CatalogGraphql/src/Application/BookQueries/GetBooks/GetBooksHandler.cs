@@ -1,14 +1,14 @@
-using Application.BookQueries.GetBook;
+using Application.BookMutations.CreateBook;
 using Application.Repositories;
 using MediatR;
 
 namespace Application.BookQueries.GetBooks;
 
-public class GetBooksInput : IRequest<IEnumerable<GetBookOutput>>
+public class GetBooksQuery : IRequest<IEnumerable<BookOutputType>>
 {
 }
 
-public class GetBooksHandler : IRequestHandler<GetBooksInput, IEnumerable<GetBookOutput>>
+public class GetBooksHandler : IRequestHandler<GetBooksQuery, IEnumerable<BookOutputType>>
 {
     private readonly IBookRepository _bookRepository;
 
@@ -16,12 +16,12 @@ public class GetBooksHandler : IRequestHandler<GetBooksInput, IEnumerable<GetBoo
     {
         _bookRepository = bookRepository;
     }
-    
-    public async Task<IEnumerable<GetBookOutput>> Handle(GetBooksInput request, CancellationToken cancellationToken)
+
+    public async Task<IEnumerable<BookOutputType>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
     {
         var books = await _bookRepository.GetAllAsync();
-        
-        return books.Select(book => new GetBookOutput
+
+        return books.Select(book => new BookOutputType
         {
             Id = book.Id,
             AuthorId = book.AuthorId,

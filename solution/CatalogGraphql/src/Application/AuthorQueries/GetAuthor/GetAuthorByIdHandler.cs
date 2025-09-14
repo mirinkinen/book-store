@@ -1,31 +1,22 @@
+using Application.AuthorCommands;
 using Application.Repositories;
-using Domain;
 using MediatR;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Application.AuthorQueries.GetAuthor;
 
-public class GetAuthorByIdInput : IRequest<GetAuthorOutput?>
+public class GetAuthorByIdQuery : IRequest<AuthorOutputType?>
 {
     [SetsRequiredMembers]
-    public GetAuthorByIdInput(Guid id)
+    public GetAuthorByIdQuery(Guid id)
     {
         Id = id;
-    }   
-    
+    }
+
     public required Guid Id { get; set; }
 }
 
-public class GetAuthorOutput
-{
-    public required Guid Id { get; set; }
-    public required string FirstName { get; set; }
-    public required string LastName { get; set; }
-    public required DateTime Birthdate { get; set; }
-    public required Guid OrganizationId { get; set; }
-}
-
-public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdInput, GetAuthorOutput?>
+public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, AuthorOutputType?>
 {
     private readonly IAuthorRepository _authorRepository;
 
@@ -33,15 +24,15 @@ public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdInput, GetAutho
     {
         _authorRepository = authorRepository;
     }
-    
-    public async Task<GetAuthorOutput?> Handle(GetAuthorByIdInput request, CancellationToken cancellationToken)
+
+    public async Task<AuthorOutputType?> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
     {
         var author = await _authorRepository.GetByIdAsync(request.Id);
-        
+
         if (author == null)
             return null;
-            
-        return new GetAuthorOutput
+
+        return new AuthorOutputType
         {
             Id = author.Id,
             FirstName = author.FirstName,

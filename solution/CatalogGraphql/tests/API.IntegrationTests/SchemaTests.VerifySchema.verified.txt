@@ -3,30 +3,17 @@
   mutation: Mutation
 }
 
-type AuthorCreatedOutput {
+type Author {
+  id: UUID!
   firstName: String!
   lastName: String!
   birthdate: DateTime!
   organizationId: UUID!
 }
 
-type AuthorUpdatedOutput {
-  id: UUID!
-  firstName: String!
-  lastName: String!
-  birthdate: DateTime!
-}
-
-type BookCreatedOutput {
+type Book {
   id: UUID!
   authorId: UUID!
-  title: String!
-  datePublished: DateTime!
-  price: Decimal!
-}
-
-type BookUpdatedOutput {
-  id: UUID!
   title: String!
   datePublished: DateTime!
   price: Decimal!
@@ -42,77 +29,52 @@ type DeleteBookOutput {
   id: UUID!
 }
 
-type GetAuthorOutput {
-  id: UUID!
-  firstName: String!
-  lastName: String!
-  birthdate: DateTime!
-  organizationId: UUID!
-}
-
-type GetBookOutput {
-  id: UUID!
-  authorId: UUID!
-  title: String!
-  datePublished: DateTime!
-  price: Decimal!
-}
-
 type Mutation {
-  createAuthor(input: CreateAuthorInput!): AuthorCreatedOutput! @cost(weight: "10")
-  updateAuthor(input: UpdateAuthorInput!): AuthorUpdatedOutput! @cost(weight: "10")
-  deleteAuthor(input: DeleteAuthorInput!): DeleteAuthorOutput! @cost(weight: "10")
-  createBook(input: CreateBookInput!): BookCreatedOutput! @cost(weight: "10")
-  updateBook(input: UpdateBookInput!): BookUpdatedOutput! @cost(weight: "10")
-  deleteBook(input: DeleteBookInput!): DeleteBookOutput! @cost(weight: "10")
+  createAuthor(command: CreateAuthorCommandInput!): Author! @cost(weight: "10")
+  updateAuthor(command: UpdateAuthorCommandInput!): Author! @cost(weight: "10")
+  deleteAuthor(command: DeleteAuthorCommandInput!): DeleteAuthorOutput! @cost(weight: "10")
+  createBook(command: CreateBookCommandInput!): Book! @cost(weight: "10")
+  updateBook(command: UpdateBookCommandInput!): Book! @cost(weight: "10")
+  deleteBook(command: DeleteBookCommandInput!): DeleteBookOutput! @cost(weight: "10")
 }
 
 type Query {
-  authorById(id: UUID!): GetAuthorOutput @cost(weight: "10")
-  authors: [GetAuthorOutput!]! @cost(weight: "10")
-  book(input: GetBookInput!): GetBookOutput @cost(weight: "10")
-  books: [GetBookOutput!]! @cost(weight: "10")
-  booksByAuthor(input: GetBooksByAuthorInput!): [GetBookOutput!]! @cost(weight: "10")
+  authorById(id: UUID!): Author @cost(weight: "10")
+  authors: [Author!]! @cost(weight: "10")
+  bookById(id: UUID!): Book @cost(weight: "10")
+  books: [Book!]! @cost(weight: "10")
 }
 
-input CreateAuthorInput {
+input CreateAuthorCommandInput {
   firstName: String!
   lastName: String!
   birthdate: DateTime!
   organizationId: UUID!
 }
 
-input CreateBookInput {
+input CreateBookCommandInput {
   authorId: UUID!
   title: String!
   datePublished: DateTime!
   price: Decimal!
 }
 
-input DeleteAuthorInput {
+input DeleteAuthorCommandInput {
   id: UUID!
 }
 
-input DeleteBookInput {
+input DeleteBookCommandInput {
   id: UUID!
 }
 
-input GetBookInput {
-  id: UUID!
-}
-
-input GetBooksByAuthorInput {
-  authorId: UUID!
-}
-
-input UpdateAuthorInput {
+input UpdateAuthorCommandInput {
   id: UUID!
   firstName: String!
   lastName: String!
   birthdate: DateTime!
 }
 
-input UpdateBookInput {
+input UpdateBookCommandInput {
   id: UUID!
   title: String!
   datePublished: DateTime!

@@ -1,4 +1,3 @@
-using Application.AuthorMutations.CreateAuthor;
 using System.Collections.Immutable;
 
 namespace API;

@@ -1,6 +1,6 @@
+using Application.BookMutations.CreateBook;
 using Application.BookQueries.GetBook;
 using Application.BookQueries.GetBooks;
-using Application.BookQueries.GetBooksByAuthor;
 using MediatR;
 
 namespace API.Operations;
@@ -8,19 +8,13 @@ namespace API.Operations;
 [ExtendObjectType(OperationTypeNames.Query)]
 public class BookQueries
 {
-    public async Task<GetBookOutput?> GetBook(GetBookInput input, IMediator mediator)
+    public async Task<BookOutputType?> GetBookById(Guid id, IMediator mediator)
     {
-        return await mediator.Send(input);
+        return await mediator.Send(new GetBookByIdQuery(id));
     }
 
-    public async Task<IEnumerable<GetBookOutput>> GetBooks(IMediator mediator)
+    public async Task<IEnumerable<BookOutputType>> GetBooks(IMediator mediator)
     {
-        return await mediator.Send(new GetBooksInput());
+        return await mediator.Send(new GetBooksQuery());
     }
-
-    public async Task<IEnumerable<GetBookOutput>> GetBooksByAuthor(GetBooksByAuthorInput input, IMediator mediator)
-    {
-        return await mediator.Send(input);
-    }
-
 }

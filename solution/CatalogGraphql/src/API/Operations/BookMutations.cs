@@ -8,18 +8,18 @@ namespace API.Operations;
 [ExtendObjectType(OperationTypeNames.Mutation)]
 public class BookMutations
 {
-    public async Task<BookCreatedOutput> CreateBook(CreateBookInput input, IMediator mediator)
+    public async Task<BookOutputType> CreateBook(CreateBookCommand command, IMediator mediator)
     {
-        return await mediator.Send(input);
+        return await mediator.Send(command);
     }
 
-    public async Task<BookUpdatedOutput> UpdateBook(UpdateBookInput input, IMediator mediator)
+    public async Task<BookOutputType> UpdateBook(UpdateBookCommand command, IMediator mediator)
     {
-        return await mediator.Send(input);
+        return await mediator.Send(command);
     }
 
-    public async Task<DeleteBookOutput> DeleteBook(DeleteBookInput input, IMediator mediator)
+    public async Task<DeleteBookOutput> DeleteBook(DeleteBookCommand command, IMediator mediator)
     {
-        return await mediator.Send(input);
+        return await mediator.Send(command);
     }
 }

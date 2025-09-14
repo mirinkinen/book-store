@@ -1,10 +1,11 @@
+using Application.BookMutations.CreateBook;
 using Application.Repositories;
 using Domain;
 using MediatR;
 
 namespace Application.BookMutations.UpdateBook;
 
-public class UpdateBookInput : IRequest<BookUpdatedOutput>
+public class UpdateBookCommand : IRequest<BookOutputType>
 {
     public required Guid Id { get; set; }
     public required string Title { get; set; }
@@ -12,15 +13,7 @@ public class UpdateBookInput : IRequest<BookUpdatedOutput>
     public required decimal Price { get; set; }
 }
 
-public class BookUpdatedOutput
-{
-    public required Guid Id { get; set; }
-    public required string Title { get; set; }
-    public required DateTime DatePublished { get; set; }
-    public required decimal Price { get; set; }
-}
-
-public class UpdateBookHandler : IRequestHandler<UpdateBookInput, BookUpdatedOutput>
+public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, BookOutputType>
 {
     private readonly IBookRepository _bookRepository;
 
@@ -29,23 +22,24 @@ public class UpdateBookHandler : IRequestHandler<UpdateBookInput, BookUpdatedOut
         _bookRepository = bookRepository;
     }
     
-    public async Task<BookUpdatedOutput> Handle(UpdateBookInput input, CancellationToken cancellationToken)
+    public async Task<BookOutputType> Handle(UpdateBookCommand command, CancellationToken cancellationToken)
     {
-        var book = await _bookRepository.GetByIdAsync(input.Id);
+        var book = await _bookRepository.GetByIdAsync(command.Id);
         if (book == null)
         {
-            throw new ArgumentException($"Book with ID {input.Id} not found");
+            throw new ArgumentException($"Book with ID {command.Id} not found");
         }
 
-        book.Title = input.Title;
-        book.DatePublished = input.DatePublished;
-        book.Price = input.Price;
+        book.Title = command.Title;
+        book.DatePublished = command.DatePublished;
+        book.Price = command.Price;
 
         var updatedBook = await _bookRepository.UpdateAsync(book);
         
-        return new BookUpdatedOutput
+        return new BookOutputType
         {
             Id = updatedBook.Id,
+            AuthorId = updatedBook.AuthorId,
             Title = updatedBook.Title,
             DatePublished = updatedBook.DatePublished,
             Price = updatedBook.Price

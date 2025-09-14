@@ -1,24 +1,22 @@
+using Application.BookMutations.CreateBook;
 using Application.Repositories;
-using Domain;
 using MediatR;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Application.BookQueries.GetBook;
 
-public class GetBookInput : IRequest<GetBookOutput?>
+public class GetBookByIdQuery : IRequest<BookOutputType?>
 {
+    [SetsRequiredMembers]
+    public GetBookByIdQuery(Guid id)
+    {
+        Id = id;
+    }
+
     public required Guid Id { get; set; }
 }
 
-public class GetBookOutput
-{
-    public required Guid Id { get; set; }
-    public required Guid AuthorId { get; set; }
-    public required string Title { get; set; }
-    public required DateTime DatePublished { get; set; }
-    public required decimal Price { get; set; }
-}
-
-public class GetBookHandler : IRequestHandler<GetBookInput, GetBookOutput?>
+public class GetBookHandler : IRequestHandler<GetBookByIdQuery, BookOutputType?>
 {
     private readonly IBookRepository _bookRepository;
 
@@ -26,15 +24,15 @@ public class GetBookHandler : IRequestHandler<GetBookInput, GetBookOutput?>
     {
         _bookRepository = bookRepository;
     }
-    
-    public async Task<GetBookOutput?> Handle(GetBookInput request, CancellationToken cancellationToken)
+
+    public async Task<BookOutputType?> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
     {
         var book = await _bookRepository.GetByIdAsync(request.Id);
-        
+
         if (book == null)
             return null;
-            
-        return new GetBookOutput
+
+        return new BookOutputType
         {
             Id = book.Id,
             AuthorId = book.AuthorId,

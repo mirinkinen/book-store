@@ -1,3 +1,4 @@
+using Application.AuthorCommands;
 using Application.AuthorQueries.GetAuthor;
 using Application.Repositories;
 using Domain;
@@ -5,11 +6,11 @@ using MediatR;
 
 namespace Application.AuthorQueries.GetAuthors;
 
-public class GetAuthorsInput : IRequest<IEnumerable<GetAuthorOutput>>
+public class GetAuthorsQuery : IRequest<IEnumerable<AuthorOutputType>>
 {
 }
 
-public class GetAuthorsHandler : IRequestHandler<GetAuthorsInput, IEnumerable<GetAuthorOutput>>
+public class GetAuthorsHandler : IRequestHandler<GetAuthorsQuery, IEnumerable<AuthorOutputType>>
 {
     private readonly IAuthorRepository _authorRepository;
 
@@ -18,11 +19,11 @@ public class GetAuthorsHandler : IRequestHandler<GetAuthorsInput, IEnumerable<Ge
         _authorRepository = authorRepository;
     }
     
-    public async Task<IEnumerable<GetAuthorOutput>> Handle(GetAuthorsInput request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<AuthorOutputType>> Handle(GetAuthorsQuery request, CancellationToken cancellationToken)
     {
         var authors = await _authorRepository.GetAllAsync();
         
-        var authorOutputs = authors.Select(author => new GetAuthorOutput
+        var authorOutputs = authors.Select(author => new AuthorOutputType
         {
             Id = author.Id,
             FirstName = author.FirstName,
