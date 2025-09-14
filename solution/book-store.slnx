@@ -10,7 +10,8 @@
     <File Path="README.md" />
   </Folder>
   <Folder Name="/Subdomains/" />
-  <Folder Name="/Subdomains/CatalogGraphql/">
+  <Folder Name="/Subdomains/CatalogGraphql/" />
+  <Folder Name="/Subdomains/CatalogGraphql/src/">
     <Project Path="CatalogGraphql/src/API/API.csproj" />
     <Project Path="CatalogGraphql/src/Application/Application.csproj" />
     <Project Path="CatalogGraphql/src/Domain/Domain.csproj" />
@@ -23,10 +24,10 @@
     <Project Path="CatalogOData/src/Cataloging/Cataloging.csproj" />
   </Folder>
   <Folder Name="/Subdomains/CatalogOData/tests/">
-    <File Path="CatalogOData/tests/.editorconfig" />
     <Project Path="CatalogOData/tests/Cataloging.ArchitectureTests/Cataloging.ArchitectureTests.csproj" />
     <Project Path="CatalogOData/tests/Cataloging.IntegrationTests/Cataloging.IntegrationTests.csproj" />
     <Project Path="CatalogOData/tests/Cataloging.UnitTests/Cataloging.UnitTests.csproj" />
+    <File Path="CatalogOData/tests/.editorconfig" />
   </Folder>
   <Folder Name="/Subdomains/Inventory/">
     <File Path="Inventory/README.md" />
