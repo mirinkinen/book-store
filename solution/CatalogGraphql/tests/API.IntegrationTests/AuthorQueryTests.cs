@@ -1,22 +1,14 @@
-using API.Operations;
 using HotChocolate;
-using HotChocolate.Execution;
-using HotChocolate.Language;
-using Infra.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using TestData;
 
 namespace API.IntegrationTests;
 
-public class AuthorQueryTests : IClassFixture<TestContainerFixture>
+public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
 {
-    private readonly TestContainerFixture _fixture;
+    private readonly RequestExecutorProxyFixture _requestExecutor;
 
-    public AuthorQueryTests(TestContainerFixture fixture)
+    public AuthorQueryTests(RequestExecutorProxyFixture requestExecutor)
     {
-        _fixture = fixture;
+        _requestExecutor = requestExecutor;
     }
 
     [Fact]
@@ -36,44 +28,10 @@ public class AuthorQueryTests : IClassFixture<TestContainerFixture>
                     }
                     """;
 
-        var executor = await GetRequestExecutor();
+        var result = await _requestExecutor.ExecuteOperationAsync(query);
 
-        OperationRequestBuilder builder = new();
-        builder.SetDocument(query);
-        var operation = builder.Build();
-
-        // Act
-        var result = await executor.ExecuteAsync(operation, cancellationToken: TestContext.Current.CancellationToken);
-        
         // Assert
         var json = result.ToJson();
         await VerifyJson(json);
-    }
-
-    private async Task<RequestExecutorProxy> GetRequestExecutor()
-    {
-        var configuration = new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string?>
-            {
-                { "ConnectionStrings:DefaultConnection", _fixture.ConnectionString }
-            })
-            .Build();
-
-        
-        var serviceProvider = new ServiceCollection()
-            .RegisterServices(configuration)
-            .AddSingleton(sp =>
-                new RequestExecutorProxy(sp.GetRequiredService<IRequestExecutorResolver>(), Schema.DefaultName))
-            .BuildServiceProvider();
-
-        var requestExecutor = serviceProvider.GetRequiredService<RequestExecutorProxy>();
-
-        using var scope = serviceProvider.CreateScope();
-        var dbContextFactory = serviceProvider.GetRequiredService<IDbContextFactory<CatalogDbContext>>();
-        var dbContext = await dbContextFactory.CreateDbContextAsync();
-        await dbContext.Database.EnsureCreatedAsync();
-        await DataSeeder.SeedDataAsync(dbContext);
-
-        return requestExecutor;
     }
 }

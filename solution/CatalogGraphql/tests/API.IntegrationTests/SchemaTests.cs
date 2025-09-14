@@ -15,10 +15,6 @@ public class SchemaTests
         var schema = await new ServiceCollection()
             .RegisterServices(inMemoryConfiguration)
             .AddGraphQLServer()
-            .AddQueryType()
-            .AddMutationType()
-            .AddTypes()
-            .RegisterDbContextFactory<CatalogDbContext>()
             .BuildSchemaAsync(cancellationToken: TestContext.Current.CancellationToken);
 
         var s = schema.ToString();
