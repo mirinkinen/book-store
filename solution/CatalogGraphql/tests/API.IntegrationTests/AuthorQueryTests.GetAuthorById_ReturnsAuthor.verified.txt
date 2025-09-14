@@ -1,0 +1,12 @@
+﻿{
+  data: {
+    authorById: {
+      __typename: GetAuthorOutput,
+      id: Guid_1,
+      firstName: Stephen,
+      lastName: King,
+      birthdate: DateTimeOffset_1,
+      organizationId: Guid_2
+    }
+  }
+}

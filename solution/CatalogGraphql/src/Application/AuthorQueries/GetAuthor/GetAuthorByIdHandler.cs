@@ -1,11 +1,18 @@
 using Application.Repositories;
 using Domain;
 using MediatR;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Application.AuthorQueries.GetAuthor;
 
-public class GetAuthorInput : IRequest<GetAuthorOutput?>
+public class GetAuthorByIdInput : IRequest<GetAuthorOutput?>
 {
+    [SetsRequiredMembers]
+    public GetAuthorByIdInput(Guid id)
+    {
+        Id = id;
+    }   
+    
     public required Guid Id { get; set; }
 }
 
@@ -18,16 +25,16 @@ public class GetAuthorOutput
     public required Guid OrganizationId { get; set; }
 }
 
-public class GetAuthorHandler : IRequestHandler<GetAuthorInput, GetAuthorOutput?>
+public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdInput, GetAuthorOutput?>
 {
     private readonly IAuthorRepository _authorRepository;
 
-    public GetAuthorHandler(IAuthorRepository authorRepository)
+    public GetAuthorByIdHandler(IAuthorRepository authorRepository)
     {
         _authorRepository = authorRepository;
     }
     
-    public async Task<GetAuthorOutput?> Handle(GetAuthorInput request, CancellationToken cancellationToken)
+    public async Task<GetAuthorOutput?> Handle(GetAuthorByIdInput request, CancellationToken cancellationToken)
     {
         var author = await _authorRepository.GetByIdAsync(request.Id);
         

@@ -68,7 +68,7 @@ type Mutation {
 }
 
 type Query {
-  author(input: GetAuthorInput!): GetAuthorOutput @cost(weight: "10")
+  authorById(id: UUID!): GetAuthorOutput @cost(weight: "10")
   authors: [GetAuthorOutput!]! @cost(weight: "10")
   book(input: GetBookInput!): GetBookOutput @cost(weight: "10")
   books: [GetBookOutput!]! @cost(weight: "10")
@@ -94,10 +94,6 @@ input DeleteAuthorInput {
 }
 
 input DeleteBookInput {
-  id: UUID!
-}
-
-input GetAuthorInput {
   id: UUID!
 }
 

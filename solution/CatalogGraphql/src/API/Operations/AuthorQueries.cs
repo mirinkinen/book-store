@@ -7,9 +7,9 @@ namespace API.Operations;
 [ExtendObjectType(OperationTypeNames.Query)]
 public class AuthorQueries
 {
-    public async Task<GetAuthorOutput?> GetAuthor(GetAuthorInput input, IMediator mediator)
+    public async Task<GetAuthorOutput?> GetAuthorById(Guid id, IMediator mediator)
     {
-        return await mediator.Send(input);
+        return await mediator.Send(new GetAuthorByIdInput(id));
     }
 
     public async Task<IEnumerable<GetAuthorOutput>> GetAuthors(IMediator mediator)
