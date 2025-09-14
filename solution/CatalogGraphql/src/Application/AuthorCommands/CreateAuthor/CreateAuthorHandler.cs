@@ -29,6 +29,7 @@ public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, AuthorOu
 
         return new AuthorOutputType
         {
+            Id = author.Id,
             FirstName = author.FirstName,
             LastName = author.LastName,
             Birthdate = author.Birthdate,
