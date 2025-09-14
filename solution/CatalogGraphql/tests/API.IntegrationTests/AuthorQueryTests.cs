@@ -1,23 +1,32 @@
-using Application.AuthorQueries.GetAuthor;
-using AwesomeAssertions;
+using API.Operations;
 using HotChocolate;
 using HotChocolate.Execution;
-using HotChocolate.Execution.Configuration;
+using HotChocolate.Language;
 using Infra.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TestData;
 
 namespace API.IntegrationTests;
 
-public class AuthorQueryTests
+public class AuthorQueryTests : IClassFixture<TestContainerFixture>
 {
+    private readonly TestContainerFixture _fixture;
+
+    public AuthorQueryTests(TestContainerFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
     [Fact]
-    public async Task GetAuthor_WithValidId_ReturnsAuthor()
+    public async Task GetAuthors_ReturnsAuthors()
     {
         // Arrange
         var query = """
                     query {
-                      author(input: { id: "8E6A9434-87F5-46B2-A6C3-522DC35D8EEF" }) {
+                      authors {
+                        __typename
                         id
                         firstName
                         lastName
@@ -26,30 +35,45 @@ public class AuthorQueryTests
                       }
                     }
                     """;
-        
-        var executor = GetRequestExecutor();
+
+        var executor = await GetRequestExecutor();
+
+        OperationRequestBuilder builder = new();
+        builder.SetDocument(query);
+        var operation = builder.Build();
 
         // Act
-        var result = await executor.ExecuteRequestAsync(query, cancellationToken: TestContext.Current.CancellationToken);
-
+        var result = await executor.ExecuteAsync(operation, cancellationToken: TestContext.Current.CancellationToken);
+        
         // Assert
+        var json = result.ToJson();
+        await VerifyJson(json);
     }
 
-    private static IRequestExecutorBuilder GetRequestExecutor()
+    private async Task<RequestExecutorProxy> GetRequestExecutor()
     {
-        var inMemoryConfiguration = new ConfigurationBuilder()
+        var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string?>
             {
-                {"ConnectionStrings:DefaultConnection", "Data Source=InMemoryDatabase"}
+                { "ConnectionStrings:DefaultConnection", _fixture.ConnectionString }
             })
             .Build();
+
         
-        return new ServiceCollection()
-            .RegisterServices(inMemoryConfiguration)
-            .AddGraphQLServer()
-            .AddQueryType()
-            .AddMutationType()
-            .AddTypes()
-            .RegisterDbContextFactory<CatalogDbContext>();
+        var serviceProvider = new ServiceCollection()
+            .RegisterServices(configuration)
+            .AddSingleton(sp =>
+                new RequestExecutorProxy(sp.GetRequiredService<IRequestExecutorResolver>(), Schema.DefaultName))
+            .BuildServiceProvider();
+
+        var requestExecutor = serviceProvider.GetRequiredService<RequestExecutorProxy>();
+
+        using var scope = serviceProvider.CreateScope();
+        var dbContextFactory = serviceProvider.GetRequiredService<IDbContextFactory<CatalogDbContext>>();
+        var dbContext = await dbContextFactory.CreateDbContextAsync();
+        await dbContext.Database.EnsureCreatedAsync();
+        await DataSeeder.SeedDataAsync(dbContext);
+
+        return requestExecutor;
     }
 }

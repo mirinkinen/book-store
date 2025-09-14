@@ -1,0 +1,46 @@
+﻿{
+  data: {
+    authors: [
+      {
+        __typename: GetAuthorOutput,
+        id: Guid_1,
+        firstName: William,
+        lastName: Shakespeare,
+        birthdate: DateTimeOffset_1,
+        organizationId: Guid_2
+      },
+      {
+        __typename: GetAuthorOutput,
+        id: Guid_3,
+        firstName: Stephen,
+        lastName: King,
+        birthdate: DateTimeOffset_2,
+        organizationId: Guid_4
+      },
+      {
+        __typename: GetAuthorOutput,
+        id: Guid_5,
+        firstName: J.K.,
+        lastName: Rowling,
+        birthdate: DateTimeOffset_3,
+        organizationId: Guid_2
+      },
+      {
+        __typename: GetAuthorOutput,
+        id: Guid_6,
+        firstName: Dan,
+        lastName: Brown,
+        birthdate: DateTimeOffset_4,
+        organizationId: Guid_4
+      },
+      {
+        __typename: GetAuthorOutput,
+        id: Guid_7,
+        firstName: Ernest.,
+        lastName: Hemingway,
+        birthdate: DateTimeOffset_5,
+        organizationId: Guid_8
+      }
+    ]
+  }
+}
