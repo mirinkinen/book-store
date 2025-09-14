@@ -1,0 +1,42 @@
+<Solution>
+  <Folder Name="/Common/" />
+  <Folder Name="/Common/src/">
+    <Project Path="Common/src/Common/Common.csproj" />
+  </Folder>
+  <Folder Name="/Common/tests/" />
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/Subdomains/" />
+  <Folder Name="/Subdomains/CatalogGraphql/">
+    <Project Path="CatalogGraphql/src/API/API.csproj" />
+    <Project Path="CatalogGraphql/src/Application/Application.csproj" />
+    <Project Path="CatalogGraphql/src/Domain/Domain.csproj" />
+    <Project Path="CatalogGraphql/src/Infra/Infra.csproj" />
+  </Folder>
+  <Folder Name="/Subdomains/CatalogOData/">
+    <File Path="CatalogOData/README.md" />
+  </Folder>
+  <Folder Name="/Subdomains/CatalogOData/src/">
+    <Project Path="CatalogOData/src/Cataloging/Cataloging.csproj" />
+  </Folder>
+  <Folder Name="/Subdomains/CatalogOData/tests/">
+    <File Path="CatalogOData/tests/.editorconfig" />
+    <Project Path="CatalogOData/tests/Cataloging.ArchitectureTests/Cataloging.ArchitectureTests.csproj" />
+    <Project Path="CatalogOData/tests/Cataloging.IntegrationTests/Cataloging.IntegrationTests.csproj" />
+    <Project Path="CatalogOData/tests/Cataloging.UnitTests/Cataloging.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/Subdomains/Inventory/">
+    <File Path="Inventory/README.md" />
+  </Folder>
+  <Folder Name="/Subdomains/Order/">
+    <File Path="Order/README.md" />
+  </Folder>
+  <Folder Name="/Subdomains/Order/src/" />
+  <Folder Name="/Subdomains/Order/tests/" />
+  <Folder Name="/Subdomains/User/" />
+  <Folder Name="/Subdomains/User/src/" />
+  <Folder Name="/Subdomains/User/tests/" />
+</Solution>
