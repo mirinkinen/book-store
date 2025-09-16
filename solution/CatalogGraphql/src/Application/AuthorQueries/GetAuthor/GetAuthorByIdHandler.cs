@@ -1,21 +1,10 @@
-using Application.AuthorCommands;
 using Application.Types;
 using Domain;
 using MediatR;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Application.AuthorQueries.GetAuthor;
 
-public class GetAuthorByIdQuery : IRequest<AuthorDto?>
-{
-    [SetsRequiredMembers]
-    public GetAuthorByIdQuery(Guid id)
-    {
-        Id = id;
-    }
-
-    public required Guid Id { get; set; }
-}
+public record GetAuthorByIdQuery(Guid Id) : IRequest<AuthorDto?>;
 
 public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, AuthorDto?>
 {

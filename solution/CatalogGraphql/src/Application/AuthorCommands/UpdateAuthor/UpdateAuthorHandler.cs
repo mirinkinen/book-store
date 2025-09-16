@@ -4,13 +4,11 @@ using MediatR;
 
 namespace Application.AuthorCommands.UpdateAuthor;
 
-public class UpdateAuthorCommand : IRequest<AuthorDto>
-{
-    public required Guid Id { get; set; }
-    public required string FirstName { get; set; }
-    public required string LastName { get; set; }
-    public required DateTime Birthdate { get; set; }
-}
+public record UpdateAuthorCommand(
+    Guid Id,
+    string FirstName,
+    string LastName,
+    DateTime Birthdate) : IRequest<AuthorDto>;
 
 public class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, AuthorDto>
 {

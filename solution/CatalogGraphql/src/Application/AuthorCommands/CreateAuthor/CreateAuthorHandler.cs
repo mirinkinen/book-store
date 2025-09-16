@@ -4,13 +4,11 @@ using MediatR;
 
 namespace Application.AuthorCommands.CreateAuthor;
 
-public class CreateAuthorCommand : IRequest<AuthorDto>
-{
-    public required string FirstName { get; set; }
-    public required string LastName { get; set; }
-    public required DateTime Birthdate { get; set; }
-    public required Guid OrganizationId { get; set; }
-}
+public record CreateAuthorCommand(
+    string FirstName,
+    string LastName,
+    DateTime Birthdate,
+    Guid OrganizationId) : IRequest<AuthorDto>;
 
 public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, AuthorDto>
 {

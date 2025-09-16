@@ -9,7 +9,6 @@ type Author {
   lastName: String!
   birthdate: DateTime!
   organizationId: UUID!
-  books: [Book!]!
 }
 
 type Book {

@@ -4,13 +4,11 @@ using MediatR;
 
 namespace Application.BookCommands.CreateBook;
 
-public class CreateBookCommand : IRequest<BookDto>
-{
-    public required Guid AuthorId { get; set; }
-    public required string Title { get; set; }
-    public required DateTime DatePublished { get; set; }
-    public required decimal Price { get; set; }
-}
+public record CreateBookCommand(
+    Guid AuthorId,
+    string Title,
+    DateTime DatePublished,
+    decimal Price) : IRequest<BookDto>;
 
 public class CreateBookHandler : IRequestHandler<CreateBookCommand, BookDto>
 {

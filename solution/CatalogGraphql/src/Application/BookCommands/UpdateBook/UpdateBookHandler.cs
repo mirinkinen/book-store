@@ -4,13 +4,11 @@ using MediatR;
 
 namespace Application.BookCommands.UpdateBook;
 
-public class UpdateBookCommand : IRequest<BookDto>
-{
-    public required Guid Id { get; set; }
-    public required string Title { get; set; }
-    public required DateTime DatePublished { get; set; }
-    public required decimal Price { get; set; }
-}
+public record UpdateBookCommand(
+    Guid Id,
+    string Title,
+    DateTime DatePublished,
+    decimal Price) : IRequest<BookDto>;
 
 public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, BookDto>
 {

@@ -1,20 +1,10 @@
 using Application.Types;
 using Domain;
 using MediatR;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Application.BookQueries.GetBook;
 
-public class GetBookByIdQuery : IRequest<BookDto?>
-{
-    [SetsRequiredMembers]
-    public GetBookByIdQuery(Guid id)
-    {
-        Id = id;
-    }
-
-    public required Guid Id { get; set; }
-}
+public record GetBookByIdQuery(Guid Id) : IRequest<BookDto?>;
 
 public class GetBookHandler : IRequestHandler<GetBookByIdQuery, BookDto?>
 {

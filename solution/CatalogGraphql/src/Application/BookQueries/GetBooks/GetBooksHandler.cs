@@ -4,9 +4,7 @@ using MediatR;
 
 namespace Application.BookQueries.GetBooks;
 
-public class GetBooksQuery : IRequest<IEnumerable<BookDto>>
-{
-}
+public record GetBooksQuery : IRequest<IEnumerable<BookDto>>;
 
 public class GetBooksHandler : IRequestHandler<GetBooksQuery, IEnumerable<BookDto>>
 {

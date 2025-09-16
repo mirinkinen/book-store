@@ -4,9 +4,7 @@ using MediatR;
 
 namespace Application.AuthorQueries.GetAuthors;
 
-public class GetAuthorsQuery : IRequest<IQueryable<AuthorDto>>
-{
-}
+public record GetAuthorsQuery : IRequest<IQueryable<AuthorDto>>;
 
 public class GetAuthorsHandler : IRequestHandler<GetAuthorsQuery, IQueryable<AuthorDto>>
 {
