@@ -1,16 +1,14 @@
-using Application.AuthorCommands;
-using Application.AuthorQueries.GetAuthor;
 using Application.Types;
 using Domain;
 using MediatR;
 
 namespace Application.AuthorQueries.GetAuthors;
 
-public class GetAuthorsQuery : IRequest<IEnumerable<AuthorOutputType>>
+public class GetAuthorsQuery : IRequest<IQueryable<AuthorDto>>
 {
 }
 
-public class GetAuthorsHandler : IRequestHandler<GetAuthorsQuery, IEnumerable<AuthorOutputType>>
+public class GetAuthorsHandler : IRequestHandler<GetAuthorsQuery, IQueryable<AuthorDto>>
 {
     private readonly IAuthorRepository _authorRepository;
 
@@ -18,20 +16,11 @@ public class GetAuthorsHandler : IRequestHandler<GetAuthorsQuery, IEnumerable<Au
     {
         _authorRepository = authorRepository;
     }
-    
-    public async Task<IEnumerable<AuthorOutputType>> Handle(GetAuthorsQuery request, CancellationToken cancellationToken)
+
+    public async Task<IQueryable<AuthorDto>> Handle(GetAuthorsQuery request, CancellationToken cancellationToken)
     {
         var authors = await _authorRepository.GetAllAsync();
-        
-        var authorOutputs = authors.Select(author => new AuthorOutputType
-        {
-            Id = author.Id,
-            FirstName = author.FirstName,
-            LastName = author.LastName,
-            Birthdate = author.Birthdate,
-            OrganizationId = author.OrganizationId
-        });
 
-        return authorOutputs;
+        return authors.Select(author => author.ToDto());
     }
 }

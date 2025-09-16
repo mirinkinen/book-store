@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Application.AuthorQueries.GetAuthor;
 
-public class GetAuthorByIdQuery : IRequest<AuthorOutputType?>
+public class GetAuthorByIdQuery : IRequest<AuthorDto?>
 {
     [SetsRequiredMembers]
     public GetAuthorByIdQuery(Guid id)
@@ -17,7 +17,7 @@ public class GetAuthorByIdQuery : IRequest<AuthorOutputType?>
     public required Guid Id { get; set; }
 }
 
-public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, AuthorOutputType?>
+public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, AuthorDto?>
 {
     private readonly IAuthorRepository _authorRepository;
 
@@ -26,20 +26,13 @@ public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, AuthorOu
         _authorRepository = authorRepository;
     }
 
-    public async Task<AuthorOutputType?> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
+    public async Task<AuthorDto?> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
     {
         var author = await _authorRepository.GetByIdAsync(request.Id);
 
         if (author == null)
             return null;
 
-        return new AuthorOutputType
-        {
-            Id = author.Id,
-            FirstName = author.FirstName,
-            LastName = author.LastName,
-            Birthdate = author.Birthdate,
-            OrganizationId = author.OrganizationId
-        };
+        return author.ToDto();
     }
 }

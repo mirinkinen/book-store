@@ -9,12 +9,12 @@ namespace API.Operations;
 [ExtendObjectType(OperationTypeNames.Mutation)]
 public class BookMutations
 {
-    public async Task<BookOutputType> CreateBook(CreateBookCommand command, IMediator mediator)
+    public async Task<BookDto> CreateBook(CreateBookCommand command, IMediator mediator)
     {
         return await mediator.Send(command);
     }
 
-    public async Task<BookOutputType> UpdateBook(UpdateBookCommand command, IMediator mediator)
+    public async Task<BookDto> UpdateBook(UpdateBookCommand command, IMediator mediator)
     {
         return await mediator.Send(command);
     }

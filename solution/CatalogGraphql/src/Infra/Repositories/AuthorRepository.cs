@@ -21,12 +21,10 @@ public class AuthorRepository : IAuthorRepository
             .FirstOrDefaultAsync(a => a.Id == id);
     }
 
-    public async Task<IEnumerable<Author>> GetAllAsync()
+    public async Task<IQueryable<Author>> GetAllAsync()
     {
-        using var context = await _contextFactory.CreateDbContextAsync();
-        return await context.Authors
-            .Include(a => a.Books)
-            .ToListAsync();
+        var context = await _contextFactory.CreateDbContextAsync();
+        return context.Authors.Include(a => a.Books);
     }
 
     public async Task<Author> AddAsync(Author author)

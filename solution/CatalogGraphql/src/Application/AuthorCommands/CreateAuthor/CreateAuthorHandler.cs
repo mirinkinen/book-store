@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.AuthorCommands.CreateAuthor;
 
-public class CreateAuthorCommand : IRequest<AuthorOutputType>
+public class CreateAuthorCommand : IRequest<AuthorDto>
 {
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
@@ -12,7 +12,7 @@ public class CreateAuthorCommand : IRequest<AuthorOutputType>
     public required Guid OrganizationId { get; set; }
 }
 
-public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, AuthorOutputType>
+public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, AuthorDto>
 {
     private readonly IAuthorRepository _authorRepository;
 
@@ -21,19 +21,12 @@ public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, AuthorOu
         _authorRepository = authorRepository;
     }
     
-    public async Task<AuthorOutputType> Handle(CreateAuthorCommand command, CancellationToken cancellationToken)
+    public async Task<AuthorDto> Handle(CreateAuthorCommand command, CancellationToken cancellationToken)
     {
         var author = new Author(command.FirstName, command.LastName, command.Birthdate, command.OrganizationId);
         
         await _authorRepository.AddAsync(author);
 
-        return new AuthorOutputType
-        {
-            Id = author.Id,
-            FirstName = author.FirstName,
-            LastName = author.LastName,
-            Birthdate = author.Birthdate,
-            OrganizationId = author.OrganizationId
-        };
+        return author.ToDto();
     }
 }

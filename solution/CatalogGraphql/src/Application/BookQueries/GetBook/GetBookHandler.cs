@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Application.BookQueries.GetBook;
 
-public class GetBookByIdQuery : IRequest<BookOutputType?>
+public class GetBookByIdQuery : IRequest<BookDto?>
 {
     [SetsRequiredMembers]
     public GetBookByIdQuery(Guid id)
@@ -16,7 +16,7 @@ public class GetBookByIdQuery : IRequest<BookOutputType?>
     public required Guid Id { get; set; }
 }
 
-public class GetBookHandler : IRequestHandler<GetBookByIdQuery, BookOutputType?>
+public class GetBookHandler : IRequestHandler<GetBookByIdQuery, BookDto?>
 {
     private readonly IBookRepository _bookRepository;
 
@@ -25,20 +25,10 @@ public class GetBookHandler : IRequestHandler<GetBookByIdQuery, BookOutputType?>
         _bookRepository = bookRepository;
     }
 
-    public async Task<BookOutputType?> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
+    public async Task<BookDto?> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
     {
         var book = await _bookRepository.GetByIdAsync(request.Id);
 
-        if (book == null)
-            return null;
-
-        return new BookOutputType
-        {
-            Id = book.Id,
-            AuthorId = book.AuthorId,
-            Title = book.Title,
-            DatePublished = book.DatePublished,
-            Price = book.Price
-        };
+        return book?.ToDto();
     }
 }

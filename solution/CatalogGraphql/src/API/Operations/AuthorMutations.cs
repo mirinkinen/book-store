@@ -9,12 +9,12 @@ namespace API.Operations;
 [ExtendObjectType(OperationTypeNames.Mutation)]
 public class AuthorMutations
 {
-    public async Task<AuthorOutputType> CreateAuthor(CreateAuthorCommand command, IMediator mediator)
+    public async Task<AuthorDto> CreateAuthor(CreateAuthorCommand command, IMediator mediator)
     {
         return await mediator.Send(command);
     }
 
-    public async Task<AuthorOutputType> UpdateAuthor(UpdateAuthorCommand command, IMediator mediator)
+    public async Task<AuthorDto> UpdateAuthor(UpdateAuthorCommand command, IMediator mediator)
     {
         return await mediator.Send(command);
     }

@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.AuthorCommands.UpdateAuthor;
 
-public class UpdateAuthorCommand : IRequest<AuthorOutputType>
+public class UpdateAuthorCommand : IRequest<AuthorDto>
 {
     public required Guid Id { get; set; }
     public required string FirstName { get; set; }
@@ -12,7 +12,7 @@ public class UpdateAuthorCommand : IRequest<AuthorOutputType>
     public required DateTime Birthdate { get; set; }
 }
 
-public class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, AuthorOutputType>
+public class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, AuthorDto>
 {
     private readonly IAuthorRepository _authorRepository;
 
@@ -21,7 +21,7 @@ public class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, AuthorOu
         _authorRepository = authorRepository;
     }
     
-    public async Task<AuthorOutputType> Handle(UpdateAuthorCommand command, CancellationToken cancellationToken)
+    public async Task<AuthorDto> Handle(UpdateAuthorCommand command, CancellationToken cancellationToken)
     {
         var author = await _authorRepository.GetByIdAsync(command.Id);
         if (author == null)
@@ -30,15 +30,10 @@ public class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, AuthorOu
         }
         
         author.Update(command.FirstName, command.LastName, command.Birthdate);
-        var updatedAuthor = await _authorRepository.UpdateAsync(author);
         
-        return new AuthorOutputType
-        {
-            Id = updatedAuthor.Id,
-            FirstName = updatedAuthor.FirstName,
-            LastName = updatedAuthor.LastName,
-            Birthdate = updatedAuthor.Birthdate,
-            OrganizationId = updatedAuthor.OrganizationId
-        };
+        var updatedAuthor = await _authorRepository.UpdateAsync(author);
+
+        return updatedAuthor.ToDto();
+        
     }
 }

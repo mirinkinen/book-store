@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.BookCommands.UpdateBook;
 
-public class UpdateBookCommand : IRequest<BookOutputType>
+public class UpdateBookCommand : IRequest<BookDto>
 {
     public required Guid Id { get; set; }
     public required string Title { get; set; }
@@ -12,7 +12,7 @@ public class UpdateBookCommand : IRequest<BookOutputType>
     public required decimal Price { get; set; }
 }
 
-public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, BookOutputType>
+public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, BookDto>
 {
     private readonly IBookRepository _bookRepository;
 
@@ -21,7 +21,7 @@ public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, BookOutputTy
         _bookRepository = bookRepository;
     }
     
-    public async Task<BookOutputType> Handle(UpdateBookCommand command, CancellationToken cancellationToken)
+    public async Task<BookDto> Handle(UpdateBookCommand command, CancellationToken cancellationToken)
     {
         var book = await _bookRepository.GetByIdAsync(command.Id);
         if (book == null)
@@ -34,14 +34,7 @@ public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, BookOutputTy
         book.Price = command.Price;
 
         var updatedBook = await _bookRepository.UpdateAsync(book);
-        
-        return new BookOutputType
-        {
-            Id = updatedBook.Id,
-            AuthorId = updatedBook.AuthorId,
-            Title = updatedBook.Title,
-            DatePublished = updatedBook.DatePublished,
-            Price = updatedBook.Price
-        };
+
+        return updatedBook.ToDto();
     }
 }

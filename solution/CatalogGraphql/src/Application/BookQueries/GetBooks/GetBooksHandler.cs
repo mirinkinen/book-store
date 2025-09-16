@@ -4,11 +4,11 @@ using MediatR;
 
 namespace Application.BookQueries.GetBooks;
 
-public class GetBooksQuery : IRequest<IEnumerable<BookOutputType>>
+public class GetBooksQuery : IRequest<IEnumerable<BookDto>>
 {
 }
 
-public class GetBooksHandler : IRequestHandler<GetBooksQuery, IEnumerable<BookOutputType>>
+public class GetBooksHandler : IRequestHandler<GetBooksQuery, IEnumerable<BookDto>>
 {
     private readonly IBookRepository _bookRepository;
 
@@ -17,17 +17,10 @@ public class GetBooksHandler : IRequestHandler<GetBooksQuery, IEnumerable<BookOu
         _bookRepository = bookRepository;
     }
 
-    public async Task<IEnumerable<BookOutputType>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<BookDto>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
     {
         var books = await _bookRepository.GetAllAsync();
 
-        return books.Select(book => new BookOutputType
-        {
-            Id = book.Id,
-            AuthorId = book.AuthorId,
-            Title = book.Title,
-            DatePublished = book.DatePublished,
-            Price = book.Price
-        });
+        return books.Select(book => book.ToDto());
     }
 }

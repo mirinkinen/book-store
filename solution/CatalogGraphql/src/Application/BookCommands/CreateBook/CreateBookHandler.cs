@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.BookCommands.CreateBook;
 
-public class CreateBookCommand : IRequest<BookOutputType>
+public class CreateBookCommand : IRequest<BookDto>
 {
     public required Guid AuthorId { get; set; }
     public required string Title { get; set; }
@@ -12,7 +12,7 @@ public class CreateBookCommand : IRequest<BookOutputType>
     public required decimal Price { get; set; }
 }
 
-public class CreateBookHandler : IRequestHandler<CreateBookCommand, BookOutputType>
+public class CreateBookHandler : IRequestHandler<CreateBookCommand, BookDto>
 {
     private readonly IAuthorRepository _authorRepository;
     private readonly IBookRepository _bookRepository;
@@ -23,7 +23,7 @@ public class CreateBookHandler : IRequestHandler<CreateBookCommand, BookOutputTy
         _bookRepository = bookRepository;
     }
     
-    public async Task<BookOutputType> Handle(CreateBookCommand command, CancellationToken cancellationToken)
+    public async Task<BookDto> Handle(CreateBookCommand command, CancellationToken cancellationToken)
     {
         var author = await _authorRepository.GetByIdAsync(command.AuthorId);
         if (author == null)
@@ -36,13 +36,6 @@ public class CreateBookHandler : IRequestHandler<CreateBookCommand, BookOutputTy
         
         var createdBook = await _bookRepository.AddAsync(book);
         
-        return new BookOutputType
-        {
-            Id = createdBook.Id,
-            AuthorId = createdBook.AuthorId,
-            Title = createdBook.Title,
-            DatePublished = createdBook.DatePublished,
-            Price = createdBook.Price
-        };
+        return createdBook.ToDto();
     }
 }

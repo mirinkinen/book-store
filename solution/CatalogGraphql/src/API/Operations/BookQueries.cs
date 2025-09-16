@@ -8,12 +8,12 @@ namespace API.Operations;
 [ExtendObjectType(OperationTypeNames.Query)]
 public class BookQueries
 {
-    public async Task<BookOutputType?> GetBookById(Guid id, IMediator mediator)
+    public async Task<BookDto?> GetBookById(Guid id, IMediator mediator)
     {
         return await mediator.Send(new GetBookByIdQuery(id));
     }
 
-    public async Task<IEnumerable<BookOutputType>> GetBooks(IMediator mediator)
+    public async Task<IEnumerable<BookDto>> GetBooks(IMediator mediator)
     {
         return await mediator.Send(new GetBooksQuery());
     }
