@@ -15,10 +15,10 @@ public class GetAuthorsHandler : IRequestHandler<GetAuthorsQuery, IQueryable<Aut
         _authorRepository = authorRepository;
     }
 
-    public async Task<IQueryable<AuthorDto>> Handle(GetAuthorsQuery request, CancellationToken cancellationToken)
+    public Task<IQueryable<AuthorDto>> Handle(GetAuthorsQuery request, CancellationToken cancellationToken)
     {
-        var authors = await _authorRepository.GetAllAsync();
+        var authors = _authorRepository.GetQuery();
 
-        return authors.Select(author => author.ToDto());
+        return Task.FromResult(authors.Select(author => author.ToDto()));
     }
 }

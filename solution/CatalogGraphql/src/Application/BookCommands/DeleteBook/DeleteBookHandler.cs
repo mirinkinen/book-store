@@ -3,11 +3,11 @@ using MediatR;
 
 namespace Application.BookCommands.DeleteBook;
 
-public record DeleteBookCommand(Guid Id) : IRequest<DeleteBookOutput>;
+public record DeleteBookCommand(Guid Id) : IRequest<DeleteBookPayload>;
 
-public record DeleteBookOutput(bool Success, Guid Id);
+public record DeleteBookPayload(bool Success, Guid Id);
 
-public class DeleteBookHandler : IRequestHandler<DeleteBookCommand, DeleteBookOutput>
+public class DeleteBookHandler : IRequestHandler<DeleteBookCommand, DeleteBookPayload>
 {
     private readonly IBookRepository _bookRepository;
 
@@ -16,10 +16,10 @@ public class DeleteBookHandler : IRequestHandler<DeleteBookCommand, DeleteBookOu
         _bookRepository = bookRepository;
     }
     
-    public async Task<DeleteBookOutput> Handle(DeleteBookCommand command, CancellationToken cancellationToken)
+    public async Task<DeleteBookPayload> Handle(DeleteBookCommand command, CancellationToken cancellationToken)
     {
         var success = await _bookRepository.DeleteAsync(command.Id);
 
-        return new DeleteBookOutput(success, command.Id);
+        return new DeleteBookPayload(success, command.Id);
     }
 }

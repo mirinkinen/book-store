@@ -1,4 +1,5 @@
 using Application.AuthorCommands.CreateAuthor;
+using Common.Domain;
 using Domain;
 using Infra.Data;
 using Infra.Repositories;
@@ -26,7 +27,18 @@ public static class ServiceCollectionExtensions
             .AddQueryType()
             .AddMutationType()
             .AddTypes()
-            .RegisterDbContextFactory<CatalogDbContext>();
+            .RegisterDbContextFactory<CatalogDbContext>()
+            .AddQueryConventions()
+            .AddMutationConventions(new MutationConventionOptions
+            {
+                ApplyToAllMutations = true,
+                InputArgumentName = "command",
+                InputTypeNamePattern = "{MutationName}Command",
+                PayloadTypeNamePattern = "{MutationName}Dto",
+                PayloadErrorsFieldName = "errors",
+                PayloadErrorTypeNamePattern = "{MutationName}Error"
+            })
+            .AddErrorInterfaceType<IUserError>();
     }
 
     private static void ConfigureInfraServices(this IServiceCollection services, IConfiguration configuration)

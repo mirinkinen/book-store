@@ -1,6 +1,8 @@
 using Application.Types;
+using Common.Domain;
 using Domain;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.AuthorCommands.CreateAuthor;
 
@@ -22,6 +24,14 @@ public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, AuthorDt
     public async Task<AuthorDto> Handle(CreateAuthorCommand command, CancellationToken cancellationToken)
     {
         var author = new Author(command.FirstName, command.LastName, command.Birthdate, command.OrganizationId);
+
+        var authorExists = await _authorRepository.GetQuery()
+            .AnyAsync(a => a.FirstName == command.FirstName && a.LastName == command.LastName, CancellationToken.None);
+
+        if (authorExists)
+        {
+            throw new DomainRuleException("Author already exists with given name.", "author-already-exists-with-given-name");
+        }
         
         await _authorRepository.AddAsync(author);
 

@@ -21,9 +21,9 @@ public class AuthorRepository : IAuthorRepository
             .FirstOrDefaultAsync(a => a.Id == id);
     }
 
-    public async Task<IQueryable<Author>> GetAllAsync()
+    public IQueryable<Author> GetQuery()
     {
-        var context = await _contextFactory.CreateDbContextAsync();
+        var context = _contextFactory.CreateDbContext();
         return context.Authors.Include(a => a.Books);
     }
 

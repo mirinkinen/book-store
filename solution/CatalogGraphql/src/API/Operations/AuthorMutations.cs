@@ -2,6 +2,7 @@ using Application.AuthorCommands.CreateAuthor;
 using Application.AuthorCommands.DeleteAuthor;
 using Application.AuthorCommands.UpdateAuthor;
 using Application.Types;
+using Common.Domain;
 using MediatR;
 
 namespace API.Operations;
@@ -9,18 +10,24 @@ namespace API.Operations;
 [ExtendObjectType(OperationTypeNames.Mutation)]
 public class AuthorMutations
 {
-    public async Task<AuthorDto> CreateAuthor(CreateAuthorCommand command, IMediator mediator)
+    [Error<DomainRuleException>]
+    public async Task<AuthorDto> CreateAuthor(string firstName, string lastName, DateTime birthdate, Guid organizationId, 
+        IMediator mediator)
     {
-        return await mediator.Send(command);
+        return await mediator.Send(new CreateAuthorCommand(firstName, lastName, birthdate, organizationId));
     }
 
-    public async Task<AuthorDto> UpdateAuthor(UpdateAuthorCommand command, IMediator mediator)
+    [Error<DomainRuleException>]
+    [Error<EntityNotFoundException>]
+    public async Task<AuthorDto> UpdateAuthor(Guid id, string firstName, string lastName, DateTime birthdate, IMediator mediator)
     {
-        return await mediator.Send(command);
+        return await mediator.Send(new UpdateAuthorCommand(id, firstName, lastName, birthdate));
     }
 
-    public async Task<DeleteAuthorOutput> DeleteAuthor(DeleteAuthorCommand command, IMediator mediator)
+    [Error<DomainRuleException>]
+    [Error<EntityNotFoundException>]
+    public async Task<DeleteAuthorPayload> DeleteAuthor(Guid Id, IMediator mediator)
     {
-        return await mediator.Send(command);
+        return await mediator.Send(new DeleteAuthorCommand(Id));
     }
 }

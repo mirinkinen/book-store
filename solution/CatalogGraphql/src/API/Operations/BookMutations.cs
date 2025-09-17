@@ -2,6 +2,7 @@ using Application.BookCommands.CreateBook;
 using Application.BookCommands.DeleteBook;
 using Application.BookCommands.UpdateBook;
 using Application.Types;
+using Common.Domain;
 using MediatR;
 
 namespace API.Operations;
@@ -9,18 +10,22 @@ namespace API.Operations;
 [ExtendObjectType(OperationTypeNames.Mutation)]
 public class BookMutations
 {
-    public async Task<BookDto> CreateBook(CreateBookCommand command, IMediator mediator)
+    [Error<DomainRuleException>]
+    public async Task<BookDto> CreateBook(Guid authorId, string title, DateTime datePublished, decimal price, IMediator mediator)
     {
-        return await mediator.Send(command);
+        return await mediator.Send(new CreateBookCommand(authorId, title, datePublished, price));
     }
 
-    public async Task<BookDto> UpdateBook(UpdateBookCommand command, IMediator mediator)
+    [Error<DomainRuleException>]
+    [Error<EntityNotFoundException>]
+    public async Task<BookDto> UpdateBook(Guid id, string title, DateTime datePublished, decimal price, IMediator mediator)
     {
-        return await mediator.Send(command);
+        return await mediator.Send(new UpdateBookCommand(id, title, datePublished, price));
     }
-
-    public async Task<DeleteBookOutput> DeleteBook(DeleteBookCommand command, IMediator mediator)
+    
+    [Error<EntityNotFoundException>]
+    public async Task<DeleteBookPayload> DeleteBook(Guid id, IMediator mediator)
     {
-        return await mediator.Send(command);
+        return await mediator.Send(new DeleteBookCommand(id));
     }
 }

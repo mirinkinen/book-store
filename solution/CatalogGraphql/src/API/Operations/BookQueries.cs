@@ -1,6 +1,7 @@
 using Application.BookQueries.GetBook;
 using Application.BookQueries.GetBooks;
 using Application.Types;
+using Common.Domain;
 using MediatR;
 
 namespace API.Operations;
@@ -8,7 +9,8 @@ namespace API.Operations;
 [ExtendObjectType(OperationTypeNames.Query)]
 public class BookQueries
 {
-    public async Task<BookDto?> GetBookById(Guid id, IMediator mediator)
+    [Error<EntityNotFoundException>]
+    public async Task<BookDto> GetBookById(Guid id, IMediator mediator)
     {
         return await mediator.Send(new GetBookByIdQuery(id));
     }

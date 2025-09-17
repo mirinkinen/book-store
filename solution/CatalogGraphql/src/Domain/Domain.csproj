@@ -10,4 +10,8 @@
     <ProjectReference Include="..\..\..\Common\src\Common\Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="HotChocolate.Abstractions" Version="15.1.8" />
+  </ItemGroup>
+
 </Project>

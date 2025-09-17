@@ -6,7 +6,7 @@ namespace Domain
     public interface IAuthorRepository
     {
         Task<Author?> GetByIdAsync(Guid id);
-        Task<IQueryable<Author>> GetAllAsync();
+        IQueryable<Author> GetQuery();
         Task<Author> AddAsync(Author author);
         Task<Author> UpdateAsync(Author author);
         Task<bool> DeleteAsync(Guid id);

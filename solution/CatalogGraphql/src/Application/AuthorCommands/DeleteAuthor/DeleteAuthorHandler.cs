@@ -3,11 +3,11 @@ using MediatR;
 
 namespace Application.AuthorCommands.DeleteAuthor;
 
-public record DeleteAuthorCommand(Guid Id) : IRequest<DeleteAuthorOutput>;
+public record DeleteAuthorCommand(Guid Id) : IRequest<DeleteAuthorPayload>;
 
-public record DeleteAuthorOutput(bool Success, Guid Id);
+public record DeleteAuthorPayload(bool Success, Guid Id);
 
-public class DeleteAuthorHandler : IRequestHandler<DeleteAuthorCommand, DeleteAuthorOutput>
+public class DeleteAuthorHandler : IRequestHandler<DeleteAuthorCommand, DeleteAuthorPayload>
 {
     private readonly IAuthorRepository _authorRepository;
 
@@ -16,10 +16,10 @@ public class DeleteAuthorHandler : IRequestHandler<DeleteAuthorCommand, DeleteAu
         _authorRepository = authorRepository;
     }
     
-    public async Task<DeleteAuthorOutput> Handle(DeleteAuthorCommand command, CancellationToken cancellationToken)
+    public async Task<DeleteAuthorPayload> Handle(DeleteAuthorCommand command, CancellationToken cancellationToken)
     {
         var success = await _authorRepository.DeleteAsync(command.Id);
 
-        return new DeleteAuthorOutput(success, command.Id);
+        return new DeleteAuthorPayload(success, command.Id);
     }
 }
