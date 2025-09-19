@@ -1,0 +1,14 @@
+﻿{
+  data: {
+    authors: {
+      nodes: [
+        {
+          id: Guid_1
+        },
+        {
+          id: Guid_2
+        }
+      ]
+    }
+  }
+}

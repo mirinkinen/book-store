@@ -16,6 +16,7 @@ public class AuthorQueries
         return await mediator.Send(new GetAuthorByIdQuery(id));
     }
 
+    [UsePaging(MaxPageSize = 10)]
     public async Task<IQueryable<AuthorDto>> GetAuthors(IMediator mediator)
     {
         return await mediator.Send(new GetAuthorsQuery());

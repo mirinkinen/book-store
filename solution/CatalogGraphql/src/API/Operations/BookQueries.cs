@@ -15,7 +15,8 @@ public class BookQueries
         return await mediator.Send(new GetBookByIdQuery(id));
     }
 
-    public async Task<IEnumerable<BookDto>> GetBooks(IMediator mediator)
+    [UsePaging(MaxPageSize = 10)]
+    public async Task<IQueryable<BookDto>> GetBooks(IMediator mediator)
     {
         return await mediator.Send(new GetBooksQuery());
     }

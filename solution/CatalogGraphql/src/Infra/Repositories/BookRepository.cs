@@ -21,12 +21,10 @@ public class BookRepository : IBookRepository
             .FirstOrDefaultAsync(b => b.Id == id);
     }
 
-    public async Task<IEnumerable<Book>> GetAllAsync()
+    public async Task<IQueryable<Book>> GetQueryAsync()
     {
-        using var context = await _contextFactory.CreateDbContextAsync();
-        return await context.Books
-            .Include(b => b.Author)
-            .ToListAsync();
+        var context = await _contextFactory.CreateDbContextAsync();
+        return context.Books.OrderBy(b => b.Id).AsQueryable();
     }
 
     public async Task<IEnumerable<Book>> GetByAuthorIdAsync(Guid authorId)

@@ -18,12 +18,14 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
         var query = """
                     query {
                       authors {
-                        __typename
-                        id
-                        firstName
-                        lastName
-                        birthdate
-                        organizationId
+                        nodes {
+                          __typename
+                          id
+                          firstName
+                          lastName
+                          birthdate
+                          organizationId
+                        }
                       }
                     }
                     """;
@@ -49,6 +51,27 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
                           lastName
                           birthdate
                           organizationId
+                        }
+                      }
+                    }
+                    """;
+
+        var result = await _requestExecutor.ExecuteOperationAsync(query);
+
+        // Assert
+        var json = result.ToJson();
+        await VerifyJson(json);
+    }
+    
+    [Fact]
+    public async Task GetAuthors_First2_Returns2Authors()
+    {
+        // Arrange
+        var query = """
+                    query {
+                      authors(first: 2) {
+                        nodes {
+                          id
                         }
                       }
                     }
