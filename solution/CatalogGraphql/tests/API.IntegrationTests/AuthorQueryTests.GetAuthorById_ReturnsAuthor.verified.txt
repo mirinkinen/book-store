@@ -5,7 +5,7 @@
       id: Guid_1,
       firstName: Stephen,
       lastName: King,
-      birthdate: DateTimeOffset_1,
+      birthdate: 1947-09-21,
       organizationId: Guid_2
     }
   }

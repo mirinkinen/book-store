@@ -19,7 +19,7 @@ type Author {
   id: UUID!
   firstName: String!
   lastName: String!
-  birthdate: DateTime!
+  birthdate: LocalDate!
   organizationId: UUID!
 }
 
@@ -45,7 +45,7 @@ type Book {
   id: UUID!
   authorId: UUID!
   title: String!
-  datePublished: DateTime!
+  datePublished: LocalDate!
   price: Decimal!
 }
 
@@ -179,14 +179,14 @@ union UpdateBookError = DomainRuleError | EntityNotFoundError
 input CreateAuthorCommand {
   firstName: String!
   lastName: String!
-  birthdate: DateTime!
+  birthdate: LocalDate!
   organizationId: UUID!
 }
 
 input CreateBookCommand {
   authorId: UUID!
   title: String!
-  datePublished: DateTime!
+  datePublished: LocalDate!
   price: Decimal!
 }
 
@@ -202,13 +202,13 @@ input UpdateAuthorCommand {
   id: UUID!
   firstName: String!
   lastName: String!
-  birthdate: DateTime!
+  birthdate: LocalDate!
 }
 
 input UpdateBookCommand {
   id: UUID!
   title: String!
-  datePublished: DateTime!
+  datePublished: LocalDate!
   price: Decimal!
 }
 
@@ -221,10 +221,10 @@ directive @listSize("The `assumedSize` argument can be used to statically define
 "The `@specifiedBy` directive is used within the type system definition language to provide a URL for specifying the behavior of custom scalar definitions."
 directive @specifiedBy("The specifiedBy URL points to a human-readable specification. This field will only read a result for scalar types." url: String!) on SCALAR
 
-"The `DateTime` scalar represents an ISO-8601 compliant date time type."
-scalar DateTime @specifiedBy(url: "https:\/\/www.graphql-scalars.com\/date-time")
-
 "The `Decimal` scalar type represents a decimal floating-point number."
 scalar Decimal
+
+"The `LocalDate` scalar type represents a ISO date string, represented as UTF-8 character sequences YYYY-MM-DD. The scalar follows the specification defined in RFC3339"
+scalar LocalDate
 
 scalar UUID @specifiedBy(url: "https:\/\/tools.ietf.org\/html\/rfc4122")

@@ -7,7 +7,7 @@ namespace Application.BookCommands.UpdateBook;
 public record UpdateBookCommand(
     Guid Id,
     string Title,
-    DateTime DatePublished,
+    DateOnly DatePublished,
     decimal Price) : IRequest<BookDto>;
 
 public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, BookDto>

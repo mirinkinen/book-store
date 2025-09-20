@@ -9,7 +9,7 @@ public record AuthorDto(
     [GraphQLType<IdType>] Guid Id,
     string FirstName,
     string LastName,
-    DateTime Birthdate,
+    DateOnly Birthdate,
     Guid OrganizationId)
 {
     /// <summary>

@@ -7,7 +7,7 @@ namespace Application.BookCommands.CreateBook;
 public record CreateBookCommand(
     Guid AuthorId,
     string Title,
-    DateTime DatePublished,
+    DateOnly DatePublished,
     decimal Price) : IRequest<BookDto>;
 
 public class CreateBookHandler : IRequestHandler<CreateBookCommand, BookDto>

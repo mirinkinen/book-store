@@ -8,7 +8,7 @@ public record UpdateAuthorCommand(
     Guid Id,
     string FirstName,
     string LastName,
-    DateTime Birthdate) : IRequest<AuthorDto>;
+    DateOnly Birthdate) : IRequest<AuthorDto>;
 
 public class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, AuthorDto>
 {

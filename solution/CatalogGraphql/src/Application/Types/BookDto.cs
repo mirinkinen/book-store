@@ -7,6 +7,6 @@ public record BookDto(
     Guid Id,
     Guid AuthorId,
     string Title,
-    DateTime DatePublished,
+    DateOnly DatePublished,
     decimal Price
 );

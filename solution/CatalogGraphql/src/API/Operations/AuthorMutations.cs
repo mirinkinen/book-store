@@ -14,7 +14,7 @@ namespace API.Operations;
 public class AuthorMutations
 {
     [Error<DomainRuleException>]
-    public async Task<AuthorDto> CreateAuthor(string firstName, string lastName, DateTime birthdate, Guid organizationId, 
+    public async Task<AuthorDto> CreateAuthor(string firstName, string lastName, DateOnly birthdate, Guid organizationId, 
         IMediator mediator, CancellationToken cancellationToken)
     {
         var author = await mediator.Send(new CreateAuthorCommand(firstName, lastName, birthdate, organizationId), cancellationToken);
@@ -23,7 +23,7 @@ public class AuthorMutations
 
     [Error<DomainRuleException>]
     [Error<EntityNotFoundException>]
-    public async Task<AuthorDto> UpdateAuthor(Guid id, string firstName, string lastName, DateTime birthdate, IMediator mediator)
+    public async Task<AuthorDto> UpdateAuthor(Guid id, string firstName, string lastName, DateOnly birthdate, IMediator mediator)
     {
         return await mediator.Send(new UpdateAuthorCommand(id, firstName, lastName, birthdate));
     }

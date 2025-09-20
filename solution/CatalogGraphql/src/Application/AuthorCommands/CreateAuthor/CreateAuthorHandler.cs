@@ -10,7 +10,7 @@ namespace Application.AuthorCommands.CreateAuthor;
 public record CreateAuthorCommand(
     string FirstName,
     string LastName,
-    DateTime Birthdate,
+    DateOnly Birthdate,
     Guid OrganizationId) : IRequest<AuthorDto>;
 
 public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, AuthorDto>

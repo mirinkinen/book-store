@@ -7,7 +7,7 @@
           id: Guid_1,
           firstName: William,
           lastName: Shakespeare,
-          birthdate: DateTimeOffset_1,
+          birthdate: 1564-04-15,
           organizationId: Guid_2
         },
         {
@@ -15,7 +15,7 @@
           id: Guid_3,
           firstName: Stephen,
           lastName: King,
-          birthdate: DateTimeOffset_2,
+          birthdate: 1947-09-21,
           organizationId: Guid_4
         },
         {
@@ -23,7 +23,7 @@
           id: Guid_5,
           firstName: J.K.,
           lastName: Rowling,
-          birthdate: DateTimeOffset_3,
+          birthdate: 1965-07-31,
           organizationId: Guid_2
         },
         {
@@ -31,7 +31,7 @@
           id: Guid_6,
           firstName: Dan,
           lastName: Brown,
-          birthdate: DateTimeOffset_4,
+          birthdate: 1964-06-22,
           organizationId: Guid_4
         },
         {
@@ -39,7 +39,7 @@
           id: Guid_7,
           firstName: Ernest.,
           lastName: Hemingway,
-          birthdate: DateTimeOffset_5,
+          birthdate: 1899-07-21,
           organizationId: Guid_8
         }
       ]

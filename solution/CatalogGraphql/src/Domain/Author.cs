@@ -7,7 +7,7 @@ namespace Domain;
 
 public class Author : Entity
 {
-    public required DateTime Birthdate { get; set; }
+    public required DateOnly Birthdate { get; set; }
 
     // Private backing field for the Books collection
     private readonly List<Book> _books = new();
@@ -27,7 +27,7 @@ public class Author : Entity
     }
 
     [SetsRequiredMembers]
-    public Author(string firstName, string lastName, DateTime birthdate, Guid organizationId)
+    public Author(string firstName, string lastName, DateOnly birthdate, Guid organizationId)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -37,7 +37,7 @@ public class Author : Entity
         Validate();
     }
 
-    public void Update(string firstName, string lastName, DateTime birthdate)
+    public void Update(string firstName, string lastName, DateOnly birthdate)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -77,12 +77,12 @@ public class Author : Entity
             failures.Add(new ValidationFailure(nameof(LastName), $"'{nameof(LastName)}' cannot be null or whitespace."));
         }
 
-        if (Birthdate == DateTime.MinValue)
+        if (Birthdate == DateOnly.MinValue)
         {
             failures.Add(new ValidationFailure(nameof(Birthdate), $"'{nameof(Birthdate)}' cannot be min value."));
         }
 
-        if (Birthdate > DateTime.UtcNow)
+        if (Birthdate.ToDateTime(TimeOnly.MinValue) > DateTime.UtcNow)
         {
             failures.Add(new ValidationFailure(nameof(Birthdate), $"'{nameof(Birthdate)}' cannot be in future."));
         }

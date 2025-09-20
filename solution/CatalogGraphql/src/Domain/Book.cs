@@ -6,7 +6,7 @@ public class Book : Entity
 {
     public string Title { get; set; }
 
-    public DateTime DatePublished { get; set; }
+    public DateOnly DatePublished { get; set; }
 
     public Author Author { get; set; }
 
@@ -25,7 +25,7 @@ public class Book : Entity
         AuthorId = author.Id;
     }
 
-    public Book(Guid authorId, string title, DateTime datePublished, decimal price)
+    public Book(Guid authorId, string title, DateOnly datePublished, decimal price)
     {
         AuthorId = authorId;
         Title = title;

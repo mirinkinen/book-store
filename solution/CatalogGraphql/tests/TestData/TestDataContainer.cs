@@ -23,12 +23,12 @@ public static class TestDataContainer
 
         var authors = new Author[]
         {
-            new Author("Stephen", "King", new DateTime(1947, 9, 21), AuthorizedOrganization1).SetId(StephenKingId),
-            new Author("Dan", "Brown", new DateTime(1964, 6, 22), AuthorizedOrganization1).SetId(DanBrownId),
-            new Author("J.K.", "Rowling", new DateTime(1965, 7, 31), AuthorizedOrganization2).SetId(JkRowlingId),
-            new Author("William", "Shakespeare", new DateTime(1564, 4, 15), AuthorizedOrganization2).SetId(
+            new Author("Stephen", "King", new DateOnly(1947, 9, 21), AuthorizedOrganization1).SetId(StephenKingId),
+            new Author("Dan", "Brown", new DateOnly(1964, 6, 22), AuthorizedOrganization1).SetId(DanBrownId),
+            new Author("J.K.", "Rowling", new DateOnly(1965, 7, 31), AuthorizedOrganization2).SetId(JkRowlingId),
+            new Author("William", "Shakespeare", new DateOnly(1564, 4, 15), AuthorizedOrganization2).SetId(
                 WilliamShakeSpeareId),
-            new Author("Ernest.", "Hemingway", new DateTime(1899, 7, 21), unauthorizedOrganization).SetId(
+            new Author("Ernest.", "Hemingway", new DateOnly(1899, 7, 21), unauthorizedOrganization).SetId(
                 ErnestHemingwayId)
         };
 
@@ -42,26 +42,26 @@ public static class TestDataContainer
         var books = new List<Book>();
 
         // Add books with known IDs for easier testing.
-        var theShining = new Book(StephenKingId, "The Shining", new DateTime(1977, 1, 28), 20);
+        var theShining = new Book(StephenKingId, "The Shining", new DateOnly(1977, 1, 28), 20);
         theShining.SetId(Guid.Parse("A125C5BD-4F8E-4794-9C36-76E401FB4F24"));
 
         books.AddRange(new[]
         {
             theShining,
-            new Book(StephenKingId, "The Green Mile", new DateTime(1996, 3, 28), 20),
-            new Book(StephenKingId, "End of Watch", new DateTime(2016, 6, 7), 25),
+            new Book(StephenKingId, "The Green Mile", new DateOnly(1996, 3, 28), 20),
+            new Book(StephenKingId, "End of Watch", new DateOnly(2016, 6, 7), 25),
 
-            new Book(DanBrownId, "Angels and Demons", new DateTime(2000, 5, 15), 30),
-            new Book(DanBrownId, "The Da Vinci Code", new DateTime(2003, 3, 18), 35),
-            new Book(DanBrownId, "Inferno", new DateTime(2013, 5, 14), 33),
+            new Book(DanBrownId, "Angels and Demons", new DateOnly(2000, 5, 15), 30),
+            new Book(DanBrownId, "The Da Vinci Code", new DateOnly(2003, 3, 18), 35),
+            new Book(DanBrownId, "Inferno", new DateOnly(2013, 5, 14), 33),
 
-            new Book(JkRowlingId, "Harry Potter and the Philosopher's Stone", new DateTime(1997, 6, 26), 15),
-            new Book(JkRowlingId, "Fantastic Beasts and Where to Find Them", new DateTime(2001, 3, 15), 17),
-            new Book(JkRowlingId, "Harry Potter and the Deathly Hallows", new DateTime(2007, 7, 21), 21),
+            new Book(JkRowlingId, "Harry Potter and the Philosopher's Stone", new DateOnly(1997, 6, 26), 15),
+            new Book(JkRowlingId, "Fantastic Beasts and Where to Find Them", new DateOnly(2001, 3, 15), 17),
+            new Book(JkRowlingId, "Harry Potter and the Deathly Hallows", new DateOnly(2007, 7, 21), 21),
 
-            new Book(ErnestHemingwayId, "The Old Man and The Sea", new DateTime(1952, 1, 1), 15),
-            new Book(ErnestHemingwayId, "For Whom the Bell Tolls", new DateTime(1940, 1, 1), 14),
-            new Book(ErnestHemingwayId, "A Farewell to Arms", new DateTime(1929, 1, 1), 13),
+            new Book(ErnestHemingwayId, "The Old Man and The Sea", new DateOnly(1952, 1, 1), 15),
+            new Book(ErnestHemingwayId, "For Whom the Bell Tolls", new DateOnly(1940, 1, 1), 14),
+            new Book(ErnestHemingwayId, "A Farewell to Arms", new DateOnly(1929, 1, 1), 13),
         });
 
         // Generate some random books for all authors.
@@ -83,8 +83,8 @@ public static class TestDataContainer
         return authors[RandomNumberGenerator.GetInt32(0, 4)];
     }
 
-    private static DateTime GetRandomPublishedDate()
+    private static DateOnly GetRandomPublishedDate()
     {
-        return DateTime.UtcNow - TimeSpan.FromDays(RandomNumberGenerator.GetInt32(0, 10000));
+        return DateOnly.FromDateTime(DateTime.UtcNow - TimeSpan.FromDays(RandomNumberGenerator.GetInt32(0, 10000)));
     }
 }
