@@ -3,10 +3,10 @@
     authors: {
       nodes: [
         {
-          id: Guid_1
+          id: QXV0aG9yOoXFIVMtm3JKoQUSKEPkDnU=
         },
         {
-          id: Guid_2
+          id: QXV0aG9yOjSUao71h7JGpsNSLcNdju8=
         }
       ]
     }

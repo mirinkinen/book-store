@@ -2,11 +2,9 @@ using Common.Domain;
 
 namespace Domain;
 
-public interface IRepository<TEntity> where TEntity : Entity
+public interface IWriteRepository<TEntity> where TEntity : Entity
 {
     public Task<TEntity?> FirstOrDefaultAsync(Guid id);
-
-    public IQueryable<TEntity> GetQuery();
 
     public void Add(TEntity entity);
 

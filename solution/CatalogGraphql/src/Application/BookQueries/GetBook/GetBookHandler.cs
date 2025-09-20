@@ -9,16 +9,16 @@ public record GetBookByIdQuery(Guid Id) : IRequest<BookDto>;
 
 public class GetBookHandler : IRequestHandler<GetBookByIdQuery, BookDto>
 {
-    private readonly IBookRepository _bookRepository;
+    private readonly IBookWriteRepository _bookWriteRepository;
 
-    public GetBookHandler(IBookRepository bookRepository)
+    public GetBookHandler(IBookWriteRepository bookWriteRepository)
     {
-        _bookRepository = bookRepository;
+        _bookWriteRepository = bookWriteRepository;
     }
 
     public async Task<BookDto> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
     {
-        var book = await _bookRepository.FirstOrDefaultAsync(request.Id);
+        var book = await _bookWriteRepository.FirstOrDefaultAsync(request.Id);
 
         if (book is null)
         {

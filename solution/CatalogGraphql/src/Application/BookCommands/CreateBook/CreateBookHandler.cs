@@ -12,18 +12,18 @@ public record CreateBookCommand(
 
 public class CreateBookHandler : IRequestHandler<CreateBookCommand, BookDto>
 {
-    private readonly IAuthorRepository _authorRepository;
-    private readonly IBookRepository _bookRepository;
+    private readonly IAuthorWriteRepository _authorWriteRepository;
+    private readonly IBookWriteRepository _bookWriteRepository;
 
-    public CreateBookHandler(IAuthorRepository authorRepository, IBookRepository bookRepository)
+    public CreateBookHandler(IAuthorWriteRepository authorWriteRepository, IBookWriteRepository bookWriteRepository)
     {
-        _authorRepository = authorRepository;
-        _bookRepository = bookRepository;
+        _authorWriteRepository = authorWriteRepository;
+        _bookWriteRepository = bookWriteRepository;
     }
     
     public async Task<BookDto> Handle(CreateBookCommand command, CancellationToken cancellationToken)
     {
-        var author = await _authorRepository.FirstOrDefaultAsync(command.AuthorId);
+        var author = await _authorWriteRepository.FirstOrDefaultAsync(command.AuthorId);
         if (author == null)
         {
             throw new ArgumentException($"Author with ID {command.AuthorId} not found");
@@ -32,8 +32,8 @@ public class CreateBookHandler : IRequestHandler<CreateBookCommand, BookDto>
         var book = new Book(command.AuthorId, command.Title, command.DatePublished, command.Price);
         book.SetAuthor(author);
         
-        _bookRepository.Add(book);
-        await _bookRepository.SaveChangesAsync(cancellationToken);
+        _bookWriteRepository.Add(book);
+        await _bookWriteRepository.SaveChangesAsync(cancellationToken);
         
         return book.ToDto();
     }

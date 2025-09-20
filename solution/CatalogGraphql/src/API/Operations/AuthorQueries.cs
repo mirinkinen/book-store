@@ -1,4 +1,3 @@
-using Application.AuthorCommands;
 using Application.AuthorQueries.GetAuthor;
 using Application.AuthorQueries.GetAuthors;
 using Application.Types;
@@ -10,6 +9,7 @@ namespace API.Operations;
 [ExtendObjectType(OperationTypeNames.Query)]
 public class AuthorQueries
 {
+    [NodeResolver]
     [Error<EntityNotFoundException>]
     public async Task<AuthorDto> GetAuthorById(Guid id, IMediator mediator)
     {
@@ -17,6 +17,7 @@ public class AuthorQueries
     }
 
     [UsePaging(MaxPageSize = 10)]
+    [UseProjection]
     public async Task<IQueryable<AuthorDto>> GetAuthors(IMediator mediator)
     {
         return await mediator.Send(new GetAuthorsQuery());

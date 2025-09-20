@@ -12,16 +12,16 @@ public record UpdateBookCommand(
 
 public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, BookDto>
 {
-    private readonly IBookRepository _bookRepository;
+    private readonly IBookWriteRepository _bookWriteRepository;
 
-    public UpdateBookHandler(IBookRepository bookRepository)
+    public UpdateBookHandler(IBookWriteRepository bookWriteRepository)
     {
-        _bookRepository = bookRepository;
+        _bookWriteRepository = bookWriteRepository;
     }
     
     public async Task<BookDto> Handle(UpdateBookCommand command, CancellationToken cancellationToken)
     {
-        var book = await _bookRepository.FirstOrDefaultAsync(command.Id);
+        var book = await _bookWriteRepository.FirstOrDefaultAsync(command.Id);
         if (book == null)
         {
             throw new ArgumentException($"Book with ID {command.Id} not found");
@@ -31,7 +31,7 @@ public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, BookDto>
         book.DatePublished = command.DatePublished;
         book.Price = command.Price;
 
-        await _bookRepository.SaveChangesAsync(cancellationToken);
+        await _bookWriteRepository.SaveChangesAsync(cancellationToken);
 
         return book.ToDto();
     }

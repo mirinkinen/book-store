@@ -10,13 +10,13 @@ public class MutationWithMultipleRepositoriesCommand : IRequest<string>
 
 public class MutationWithMultipleRepositoriesHandler : IRequestHandler<MutationWithMultipleRepositoriesCommand, string>
 {
-    private readonly IBookRepository _bookRepository;
-    private readonly IAuthorRepository _authorRepository;
+    private readonly IBookWriteRepository _bookWriteRepository;
+    private readonly IAuthorWriteRepository _authorWriteRepository;
 
-    public MutationWithMultipleRepositoriesHandler(IBookRepository bookRepository, IAuthorRepository authorRepository)
+    public MutationWithMultipleRepositoriesHandler(IBookWriteRepository bookWriteRepository, IAuthorWriteRepository authorWriteRepository)
     {
-        _bookRepository = bookRepository;
-        _authorRepository = authorRepository;
+        _bookWriteRepository = bookWriteRepository;
+        _authorWriteRepository = authorWriteRepository;
     }
     
     public Task<string> Handle(MutationWithMultipleRepositoriesCommand request, CancellationToken cancellationToken)

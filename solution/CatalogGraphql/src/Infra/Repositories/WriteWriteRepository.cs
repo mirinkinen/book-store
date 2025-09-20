@@ -5,18 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Repositories;
 
-public abstract class Repository<TEntity>(CatalogDbContext dbContext) : IRepository<TEntity> where TEntity : Entity
+public abstract class WriteWriteRepository<TEntity>(CatalogDbContext dbContext) : IWriteRepository<TEntity> where TEntity : Entity
 {
     protected CatalogDbContext DbContext { get; } = dbContext;
 
     public async Task<TEntity?> FirstOrDefaultAsync(Guid id)
     {
         return await DbContext.Set<TEntity>().FirstOrDefaultAsync(a => a.Id == id);
-    }
-
-    public IQueryable<TEntity> GetQuery()
-    {
-        return DbContext.Set<TEntity>().AsQueryable();
     }
 
     public void Add(TEntity entity)

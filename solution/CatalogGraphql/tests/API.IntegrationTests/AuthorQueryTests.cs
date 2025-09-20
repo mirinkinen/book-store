@@ -43,7 +43,7 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
         // Arrange
         var query = """
                     query {
-                      authorById(id: "8E6A9434-87F5-46B2-A6C3-522DC35D8EEF") {    
+                      authorById(id: "QXV0aG9yOjSUao71h7JGpsNSLcNdju8=") {    
                         __typename
                         ... on Author {
                           id

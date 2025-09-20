@@ -12,16 +12,16 @@ public record UpdateAuthorCommand(
 
 public class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, AuthorDto>
 {
-    private readonly IAuthorRepository _authorRepository;
+    private readonly IAuthorWriteRepository _authorWriteRepository;
 
-    public UpdateAuthorHandler(IAuthorRepository authorRepository)
+    public UpdateAuthorHandler(IAuthorWriteRepository authorWriteRepository)
     {
-        _authorRepository = authorRepository;
+        _authorWriteRepository = authorWriteRepository;
     }
     
     public async Task<AuthorDto> Handle(UpdateAuthorCommand command, CancellationToken cancellationToken)
     {
-        var author = await _authorRepository.FirstOrDefaultAsync(command.Id);
+        var author = await _authorWriteRepository.FirstOrDefaultAsync(command.Id);
         if (author == null)
         {
             throw new ArgumentException($"Author with ID {command.Id} not found");
@@ -29,7 +29,7 @@ public class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, AuthorDt
         
         author.Update(command.FirstName, command.LastName, command.Birthdate);
         
-        await _authorRepository.SaveChangesAsync(cancellationToken);
+        await _authorWriteRepository.SaveChangesAsync(cancellationToken);
 
         return author.ToDto();
         

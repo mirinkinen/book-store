@@ -26,11 +26,12 @@ public static class ServiceCollectionExtensions
     {
         services.AddGraphQLServer()
             .AddGraphQLServer()
+            // Types
             .AddQueryType()
             .AddMutationType()
             .AddSubscriptionType<Subscriptions>()
             .AddTypes()
-            .RegisterDbContextFactory<CatalogDbContext>()
+            // Conventions
             .AddQueryConventions()
             .AddMutationConventions(new MutationConventionOptions
             {
@@ -42,13 +43,20 @@ public static class ServiceCollectionExtensions
                 PayloadErrorTypeNamePattern = "{MutationName}Error"
             })
             .AddErrorInterfaceType<IUserError>()
+            // Relay convention
+            .AddGlobalObjectIdentification()
+            .AddProjections()
+            // Data store
+            .RegisterDbContextFactory<CatalogDbContext>()
             .AddInMemorySubscriptions();
     }
 
     private static void ConfigureInfraServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<IBookRepository, BookRepository>();
-        services.AddScoped<IAuthorRepository, AuthorRepository>();
+        services.AddScoped<IBookWriteRepository, BookWriteWriteRepository>();
+        services.AddScoped<IAuthorWriteRepository, AuthorWriteRepository>();
+        services.AddSingleton<IReadRepository<Author>, ReadRepository<Author>>();
+        services.AddSingleton<IReadRepository<Book>, ReadRepository<Book>>();
 
         services.AddScoped<ScopedService>();
 

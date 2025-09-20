@@ -9,16 +9,16 @@ public record DeleteBookPayload(bool Success, Guid Id);
 
 public class DeleteBookHandler : IRequestHandler<DeleteBookCommand, DeleteBookPayload>
 {
-    private readonly IBookRepository _bookRepository;
+    private readonly IBookWriteRepository _bookWriteRepository;
 
-    public DeleteBookHandler(IBookRepository bookRepository)
+    public DeleteBookHandler(IBookWriteRepository bookWriteRepository)
     {
-        _bookRepository = bookRepository;
+        _bookWriteRepository = bookWriteRepository;
     }
     
     public async Task<DeleteBookPayload> Handle(DeleteBookCommand command, CancellationToken cancellationToken)
     {
-        var success = await _bookRepository.DeleteAsync(command.Id);
+        var success = await _bookWriteRepository.DeleteAsync(command.Id);
 
         return new DeleteBookPayload(success, command.Id);
     }

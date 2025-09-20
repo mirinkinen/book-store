@@ -9,6 +9,7 @@ namespace API.Operations;
 [ExtendObjectType(OperationTypeNames.Query)]
 public class BookQueries
 {
+    [NodeResolver]
     [Error<EntityNotFoundException>]
     public async Task<BookDto> GetBookById(Guid id, IMediator mediator)
     {
@@ -16,6 +17,7 @@ public class BookQueries
     }
 
     [UsePaging(MaxPageSize = 10)]
+    [UseProjection]
     public async Task<IQueryable<BookDto>> GetBooks(IMediator mediator)
     {
         return await mediator.Send(new GetBooksQuery());

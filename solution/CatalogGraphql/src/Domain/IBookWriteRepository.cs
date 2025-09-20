@@ -3,7 +3,7 @@ namespace Domain
     /// <summary>
     /// Repository interface for Book entity
     /// </summary>
-    public interface IBookRepository : IRepository<Book>
+    public interface IBookWriteRepository : IWriteRepository<Book>
     {
     }
 }
