@@ -1,6 +1,7 @@
 using Application.AuthorCommands.CreateAuthor;
 using Application.AuthorCommands.DeleteAuthor;
 using Application.AuthorCommands.UpdateAuthor;
+using Application.AuthorQueries.GetAuthors;
 using Application.Types;
 using Common.Domain;
 using HotChocolate.Subscriptions;
@@ -32,5 +33,21 @@ public class AuthorMutations
     public async Task<DeleteAuthorPayload> DeleteAuthor(Guid Id, IMediator mediator)
     {
         return await mediator.Send(new DeleteAuthorCommand(Id));
+    }
+
+    /// <summary>
+    /// Example that shows that scoped services are shared between concurrent mutations.
+    /// </summary>
+    public Task<string> MutationTest(ScopedService scopedService)
+    {
+        return scopedService.GetHelloWorld();
+    }
+    
+    /// <summary>
+    /// Example that shows that scoped services are shared between concurrent mutations.
+    /// </summary>
+    public Task<string> AnotherMutationTest(ScopedService scopedService)
+    {
+        return scopedService.GetHelloWorld();
     }
 }

@@ -1,5 +1,6 @@
 using API.Operations;
 using Application.AuthorCommands.CreateAuthor;
+using Application.AuthorQueries.GetAuthors;
 using Common.Domain;
 using Domain;
 using Infra.Data;
@@ -49,7 +50,9 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IBookRepository, BookRepository>();
         services.AddSingleton<IAuthorRepository, AuthorRepository>();
 
-        services.AddDbContextFactory<CatalogDbContext>(options =>
+        services.AddScoped<ScopedService>();
+
+        services.AddPooledDbContextFactory<CatalogDbContext>(options =>
         {
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             options.EnableDetailedErrors();
