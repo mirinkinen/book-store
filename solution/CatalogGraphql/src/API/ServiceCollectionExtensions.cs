@@ -47,11 +47,17 @@ public static class ServiceCollectionExtensions
 
     private static void ConfigureInfraServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSingleton<IBookRepository, BookRepository>();
-        services.AddSingleton<IAuthorRepository, AuthorRepository>();
+        services.AddScoped<IBookRepository, BookRepository>();
+        services.AddScoped<IAuthorRepository, AuthorRepository>();
 
         services.AddScoped<ScopedService>();
 
+        services.AddDbContextPool<CatalogDbContext>(options =>
+        {
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            options.EnableDetailedErrors();
+            options.EnableSensitiveDataLogging();
+        });
         services.AddPooledDbContextFactory<CatalogDbContext>(options =>
         {
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));

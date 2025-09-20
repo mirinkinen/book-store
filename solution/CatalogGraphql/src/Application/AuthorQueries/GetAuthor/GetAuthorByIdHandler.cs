@@ -18,7 +18,7 @@ public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, AuthorDt
 
     public async Task<AuthorDto> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
     {
-        var author = await _authorRepository.GetByIdAsync(request.Id);
+        var author = await _authorRepository.FirstOrDefaultAsync(request.Id);
 
         if (author is null)
         {

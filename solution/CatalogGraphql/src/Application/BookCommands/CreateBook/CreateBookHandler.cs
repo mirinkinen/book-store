@@ -23,7 +23,7 @@ public class CreateBookHandler : IRequestHandler<CreateBookCommand, BookDto>
     
     public async Task<BookDto> Handle(CreateBookCommand command, CancellationToken cancellationToken)
     {
-        var author = await _authorRepository.GetByIdAsync(command.AuthorId);
+        var author = await _authorRepository.FirstOrDefaultAsync(command.AuthorId);
         if (author == null)
         {
             throw new ArgumentException($"Author with ID {command.AuthorId} not found");
@@ -32,8 +32,9 @@ public class CreateBookHandler : IRequestHandler<CreateBookCommand, BookDto>
         var book = new Book(command.AuthorId, command.Title, command.DatePublished, command.Price);
         book.SetAuthor(author);
         
-        var createdBook = await _bookRepository.AddAsync(book);
+        _bookRepository.Add(book);
+        await _bookRepository.SaveChangesAsync(cancellationToken);
         
-        return createdBook.ToDto();
+        return book.ToDto();
     }
 }

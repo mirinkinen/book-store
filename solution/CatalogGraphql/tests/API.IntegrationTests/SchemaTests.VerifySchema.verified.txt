@@ -113,12 +113,17 @@ type Mutation {
   deleteAuthor(command: DeleteAuthorCommand!): DeleteAuthorDto! @cost(weight: "10")
   mutationTest: MutationTestDto! @cost(weight: "10")
   anotherMutationTest: AnotherMutationTestDto! @cost(weight: "10")
+  mutationWithMultipleRepositories: MutationWithMultipleRepositoriesDto! @cost(weight: "10")
   createBook(command: CreateBookCommand!): CreateBookDto! @cost(weight: "10")
   updateBook(command: UpdateBookCommand!): UpdateBookDto! @cost(weight: "10")
   deleteBook(command: DeleteBookCommand!): DeleteBookDto! @cost(weight: "10")
 }
 
 type MutationTestDto {
+  string: String
+}
+
+type MutationWithMultipleRepositoriesDto {
   string: String
 }
 

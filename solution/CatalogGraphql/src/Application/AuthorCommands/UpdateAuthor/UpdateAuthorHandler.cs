@@ -21,7 +21,7 @@ public class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, AuthorDt
     
     public async Task<AuthorDto> Handle(UpdateAuthorCommand command, CancellationToken cancellationToken)
     {
-        var author = await _authorRepository.GetByIdAsync(command.Id);
+        var author = await _authorRepository.FirstOrDefaultAsync(command.Id);
         if (author == null)
         {
             throw new ArgumentException($"Author with ID {command.Id} not found");
@@ -29,9 +29,9 @@ public class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, AuthorDt
         
         author.Update(command.FirstName, command.LastName, command.Birthdate);
         
-        var updatedAuthor = await _authorRepository.UpdateAsync(author);
+        await _authorRepository.SaveChangesAsync(cancellationToken);
 
-        return updatedAuthor.ToDto();
+        return author.ToDto();
         
     }
 }

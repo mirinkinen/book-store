@@ -1,5 +1,6 @@
 using Application.AuthorCommands.CreateAuthor;
 using Application.AuthorCommands.DeleteAuthor;
+using Application.AuthorCommands.MediatorHandlerWithMultipleRepositories;
 using Application.AuthorCommands.UpdateAuthor;
 using Application.AuthorQueries.GetAuthors;
 using Application.Types;
@@ -14,10 +15,9 @@ public class AuthorMutations
 {
     [Error<DomainRuleException>]
     public async Task<AuthorDto> CreateAuthor(string firstName, string lastName, DateTime birthdate, Guid organizationId, 
-        IMediator mediator, ITopicEventSender eventSender, CancellationToken cancellationToken)
+        IMediator mediator, CancellationToken cancellationToken)
     {
         var author = await mediator.Send(new CreateAuthorCommand(firstName, lastName, birthdate, organizationId), cancellationToken);
-        await eventSender.SendAsync(nameof(CreateAuthor), author, cancellationToken);
         return author;
     }
 
@@ -49,5 +49,10 @@ public class AuthorMutations
     public Task<string> AnotherMutationTest(ScopedService scopedService)
     {
         return scopedService.GetHelloWorld();
+    }
+
+    public Task<string> MutationWithMultipleRepositories(IMediator mediator)
+    {
+        return mediator.Send(new MutationWithMultipleRepositoriesCommand());
     }
 }

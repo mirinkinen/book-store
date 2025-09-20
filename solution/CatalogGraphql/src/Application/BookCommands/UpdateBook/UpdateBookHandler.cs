@@ -21,7 +21,7 @@ public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, BookDto>
     
     public async Task<BookDto> Handle(UpdateBookCommand command, CancellationToken cancellationToken)
     {
-        var book = await _bookRepository.GetByIdAsync(command.Id);
+        var book = await _bookRepository.FirstOrDefaultAsync(command.Id);
         if (book == null)
         {
             throw new ArgumentException($"Book with ID {command.Id} not found");
@@ -31,8 +31,8 @@ public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, BookDto>
         book.DatePublished = command.DatePublished;
         book.Price = command.Price;
 
-        var updatedBook = await _bookRepository.UpdateAsync(book);
+        await _bookRepository.SaveChangesAsync(cancellationToken);
 
-        return updatedBook.ToDto();
+        return book.ToDto();
     }
 }

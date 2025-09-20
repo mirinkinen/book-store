@@ -1,6 +1,7 @@
 using Application.Types;
 using Common.Domain;
 using Domain;
+using HotChocolate.Subscriptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,25 +16,28 @@ public record CreateAuthorCommand(
 public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, AuthorDto>
 {
     private readonly IAuthorRepository _authorRepository;
+    private readonly ITopicEventSender _eventSender;
 
-    public CreateAuthorHandler(IAuthorRepository authorRepository)
+    public CreateAuthorHandler(IAuthorRepository authorRepository, ITopicEventSender eventSender)
     {
         _authorRepository = authorRepository;
+        _eventSender = eventSender;
     }
     
     public async Task<AuthorDto> Handle(CreateAuthorCommand command, CancellationToken cancellationToken)
     {
-        var authorExists = await _authorRepository.GetQuery()
-            .AnyAsync(a => a.FirstName == command.FirstName && a.LastName == command.LastName, CancellationToken.None);
-
+        var authorExists = await _authorRepository.AuthorWithNameExists(command.FirstName, command.LastName, cancellationToken);
         if (authorExists)
         {
             throw new DomainRuleException("Author already exists with given name.", "author-already-exists-with-given-name");
         }
         
         var author = new Author(command.FirstName, command.LastName, command.Birthdate, command.OrganizationId);
+        _authorRepository.Add(author);
+        await _authorRepository.SaveChangesAsync();
         
-        await _authorRepository.AddAsync(author);
+        
+        await _eventSender.SendAsync(nameof(CreateAuthor), author, cancellationToken);
 
         return author.ToDto();
     }

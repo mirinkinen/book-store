@@ -15,10 +15,10 @@ public class GetBooksHandler : IRequestHandler<GetBooksQuery, IQueryable<BookDto
         _bookRepository = bookRepository;
     }
 
-    public async Task<IQueryable<BookDto>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
+    public Task<IQueryable<BookDto>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
     {
-        var books = await _bookRepository.GetQueryAsync();
+        var books = _bookRepository.GetQuery();
 
-        return books.Select(book => book.ToDto());
+        return Task.FromResult(books.Select(book => book.ToDto()));
     }
 }
