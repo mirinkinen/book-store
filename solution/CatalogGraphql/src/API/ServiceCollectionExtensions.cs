@@ -1,3 +1,4 @@
+using API.Operations;
 using Application.AuthorCommands.CreateAuthor;
 using Common.Domain;
 using Domain;
@@ -26,6 +27,7 @@ public static class ServiceCollectionExtensions
             .AddGraphQLServer()
             .AddQueryType()
             .AddMutationType()
+            .AddSubscriptionType<Subscriptions>()
             .AddTypes()
             .RegisterDbContextFactory<CatalogDbContext>()
             .AddQueryConventions()
@@ -38,7 +40,8 @@ public static class ServiceCollectionExtensions
                 PayloadErrorsFieldName = "errors",
                 PayloadErrorTypeNamePattern = "{MutationName}Error"
             })
-            .AddErrorInterfaceType<IUserError>();
+            .AddErrorInterfaceType<IUserError>()
+            .AddInMemorySubscriptions();
     }
 
     private static void ConfigureInfraServices(this IServiceCollection services, IConfiguration configuration)

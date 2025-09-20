@@ -3,6 +3,7 @@ using Application.AuthorCommands.DeleteAuthor;
 using Application.AuthorCommands.UpdateAuthor;
 using Application.Types;
 using Common.Domain;
+using HotChocolate.Subscriptions;
 using MediatR;
 
 namespace API.Operations;
@@ -12,9 +13,11 @@ public class AuthorMutations
 {
     [Error<DomainRuleException>]
     public async Task<AuthorDto> CreateAuthor(string firstName, string lastName, DateTime birthdate, Guid organizationId, 
-        IMediator mediator)
+        IMediator mediator, ITopicEventSender eventSender, CancellationToken cancellationToken)
     {
-        return await mediator.Send(new CreateAuthorCommand(firstName, lastName, birthdate, organizationId));
+        var author = await mediator.Send(new CreateAuthorCommand(firstName, lastName, birthdate, organizationId), cancellationToken);
+        await eventSender.SendAsync(nameof(CreateAuthor), author, cancellationToken);
+        return author;
     }
 
     [Error<DomainRuleException>]
