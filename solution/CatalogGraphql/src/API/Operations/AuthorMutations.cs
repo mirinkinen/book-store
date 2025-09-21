@@ -10,7 +10,7 @@ using MediatR;
 
 namespace API.Operations;
 
-[ExtendObjectType(OperationTypeNames.Mutation)]
+[MutationType]
 public class AuthorMutations
 {
     [Error<DomainRuleException>]

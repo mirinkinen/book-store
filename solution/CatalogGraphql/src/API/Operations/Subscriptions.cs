@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace API.Operations;
 
+[SubscriptionType]
 public class Subscriptions
 {
     public async IAsyncEnumerable<AuthorDto> OnAuthorCreatedStream(ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)

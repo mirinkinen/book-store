@@ -1,7 +1,7 @@
 ﻿schema {
   query: Query
   mutation: Mutation
-  subscription: Subscriptions
+  subscription: Subscription
 }
 
 "The node interface is implemented by entities that have a global unique identifier."
@@ -155,7 +155,7 @@ type Query {
   books("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String): BooksConnection @listSize(assumedSize: 10, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
 }
 
-type Subscriptions {
+type Subscription {
   onAuthorCreated: Author!
 }
 

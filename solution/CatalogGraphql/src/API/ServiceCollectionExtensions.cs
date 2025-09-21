@@ -27,9 +27,6 @@ public static class ServiceCollectionExtensions
         services.AddGraphQLServer()
             .AddGraphQLServer()
             // Types
-            .AddQueryType()
-            .AddMutationType()
-            .AddSubscriptionType<Subscriptions>()
             .AddTypes()
             // Conventions
             .AddQueryConventions()

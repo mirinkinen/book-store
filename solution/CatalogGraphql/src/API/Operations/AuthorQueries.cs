@@ -6,7 +6,7 @@ using MediatR;
 
 namespace API.Operations;
 
-[ExtendObjectType(OperationTypeNames.Query)]
+[QueryType]
 public class AuthorQueries
 {
     [NodeResolver]
