@@ -17,7 +17,7 @@ public class AuthorQueries
         return await sender.Send(new GetAuthorByIdQuery(id));
     }
 
-    [UsePaging(MaxPageSize = 10)]
+    [UsePaging(MaxPageSize = 10, DefaultPageSize = 10, IncludeTotalCount = true)]
     [UseProjection]
     [UseFiltering]
     [UseSorting]
