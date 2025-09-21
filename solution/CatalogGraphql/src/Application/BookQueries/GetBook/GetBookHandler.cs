@@ -5,9 +5,9 @@ using MediatR;
 
 namespace Application.BookQueries.GetBook;
 
-public record GetBookByIdQuery(Guid Id) : IRequest<BookDto>;
+public record GetBookByIdQuery(Guid Id) : IRequest<Book>;
 
-public class GetBookHandler : IRequestHandler<GetBookByIdQuery, BookDto>
+public class GetBookHandler : IRequestHandler<GetBookByIdQuery, Book>
 {
     private readonly IBookWriteRepository _bookWriteRepository;
 
@@ -16,7 +16,7 @@ public class GetBookHandler : IRequestHandler<GetBookByIdQuery, BookDto>
         _bookWriteRepository = bookWriteRepository;
     }
 
-    public async Task<BookDto> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Book> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
     {
         var book = await _bookWriteRepository.FirstOrDefaultAsync(request.Id);
 
@@ -25,6 +25,6 @@ public class GetBookHandler : IRequestHandler<GetBookByIdQuery, BookDto>
             throw new EntityNotFoundException("Book");
         }
 
-        return book.ToDto();
+        return book;
     }
 }

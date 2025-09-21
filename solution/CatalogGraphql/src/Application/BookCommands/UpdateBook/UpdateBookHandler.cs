@@ -8,9 +8,9 @@ public record UpdateBookCommand(
     Guid Id,
     string Title,
     DateOnly DatePublished,
-    decimal Price) : IRequest<BookDto>;
+    decimal Price) : IRequest<Book>;
 
-public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, BookDto>
+public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, Book>
 {
     private readonly IBookWriteRepository _bookWriteRepository;
 
@@ -19,7 +19,7 @@ public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, BookDto>
         _bookWriteRepository = bookWriteRepository;
     }
     
-    public async Task<BookDto> Handle(UpdateBookCommand command, CancellationToken cancellationToken)
+    public async Task<Book> Handle(UpdateBookCommand command, CancellationToken cancellationToken)
     {
         var book = await _bookWriteRepository.FirstOrDefaultAsync(command.Id);
         if (book == null)
@@ -33,6 +33,6 @@ public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, BookDto>
 
         await _bookWriteRepository.SaveChangesAsync(cancellationToken);
 
-        return book.ToDto();
+        return book;
     }
 }

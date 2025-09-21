@@ -11,9 +11,9 @@ public record CreateAuthorCommand(
     string FirstName,
     string LastName,
     DateOnly Birthdate,
-    Guid OrganizationId) : IRequest<AuthorDto>;
+    Guid OrganizationId) : IRequest<Author>;
 
-public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, AuthorDto>
+public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, Author>
 {
     private readonly IAuthorWriteRepository _authorWriteRepository;
     private readonly ITopicEventSender _eventSender;
@@ -24,7 +24,7 @@ public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, AuthorDt
         _eventSender = eventSender;
     }
     
-    public async Task<AuthorDto> Handle(CreateAuthorCommand command, CancellationToken cancellationToken)
+    public async Task<Author> Handle(CreateAuthorCommand command, CancellationToken cancellationToken)
     {
         var authorExists = await _authorWriteRepository.AuthorWithNameExists(command.FirstName, command.LastName, cancellationToken);
         if (authorExists)
@@ -34,11 +34,11 @@ public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, AuthorDt
         
         var author = new Author(command.FirstName, command.LastName, command.Birthdate, command.OrganizationId);
         _authorWriteRepository.Add(author);
-        await _authorWriteRepository.SaveChangesAsync();
+        await _authorWriteRepository.SaveChangesAsync(cancellationToken);
         
         
         await _eventSender.SendAsync(nameof(CreateAuthor), author, cancellationToken);
 
-        return author.ToDto();
+        return author;
     }
 }

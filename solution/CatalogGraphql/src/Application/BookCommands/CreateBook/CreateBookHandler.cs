@@ -8,9 +8,9 @@ public record CreateBookCommand(
     Guid AuthorId,
     string Title,
     DateOnly DatePublished,
-    decimal Price) : IRequest<BookDto>;
+    decimal Price) : IRequest<Book>;
 
-public class CreateBookHandler : IRequestHandler<CreateBookCommand, BookDto>
+public class CreateBookHandler : IRequestHandler<CreateBookCommand, Book>
 {
     private readonly IAuthorWriteRepository _authorWriteRepository;
     private readonly IBookWriteRepository _bookWriteRepository;
@@ -21,7 +21,7 @@ public class CreateBookHandler : IRequestHandler<CreateBookCommand, BookDto>
         _bookWriteRepository = bookWriteRepository;
     }
     
-    public async Task<BookDto> Handle(CreateBookCommand command, CancellationToken cancellationToken)
+    public async Task<Book> Handle(CreateBookCommand command, CancellationToken cancellationToken)
     {
         var author = await _authorWriteRepository.FirstOrDefaultAsync(command.AuthorId);
         if (author == null)
@@ -35,6 +35,6 @@ public class CreateBookHandler : IRequestHandler<CreateBookCommand, BookDto>
         _bookWriteRepository.Add(book);
         await _bookWriteRepository.SaveChangesAsync(cancellationToken);
         
-        return book.ToDto();
+        return book;
     }
 }

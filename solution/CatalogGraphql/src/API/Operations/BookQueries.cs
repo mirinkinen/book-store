@@ -2,6 +2,7 @@ using Application.BookQueries.GetBook;
 using Application.BookQueries.GetBooks;
 using Application.Types;
 using Common.Domain;
+using Domain;
 using MediatR;
 
 namespace API.Operations;
@@ -11,14 +12,14 @@ public class BookQueries
 {
     [NodeResolver]
     [Error<EntityNotFoundException>]
-    public async Task<BookDto> GetBookById(Guid id, ISender sender)
+    public async Task<Book> GetBookById(Guid id, ISender sender)
     {
         return await sender.Send(new GetBookByIdQuery(id));
     }
 
     [UsePaging(MaxPageSize = 10)]
     [UseProjection]
-    public async Task<IQueryable<BookDto>> GetBooks(ISender sender)
+    public async Task<IQueryable<Book>> GetBooks(ISender sender)
     {
         return await sender.Send(new GetBooksQuery());
     }

@@ -4,9 +4,9 @@ using MediatR;
 
 namespace Application.AuthorQueries.GetAuthors;
 
-public record GetAuthorsQuery : IRequest<IQueryable<AuthorDto>>;
+public record GetAuthorsQuery : IRequest<IQueryable<Author>>;
 
-public class GetAuthorsHandler : IRequestHandler<GetAuthorsQuery, IQueryable<AuthorDto>>
+public class GetAuthorsHandler : IRequestHandler<GetAuthorsQuery, IQueryable<Author>>
 {
     private readonly IQueryRepository<Author> _queryRepository;
 
@@ -15,10 +15,10 @@ public class GetAuthorsHandler : IRequestHandler<GetAuthorsQuery, IQueryable<Aut
         _queryRepository = queryRepository;
     }
 
-    public Task<IQueryable<AuthorDto>> Handle(GetAuthorsQuery request, CancellationToken cancellationToken)
+    public Task<IQueryable<Author>> Handle(GetAuthorsQuery request, CancellationToken cancellationToken)
     {
         var authors = _queryRepository.GetQuery();
 
-        return Task.FromResult(authors.Select(author => author.ToDto()));
+        return Task.FromResult(authors);
     }
 }
