@@ -11,15 +11,15 @@ public class BookQueries
 {
     [NodeResolver]
     [Error<EntityNotFoundException>]
-    public async Task<BookDto> GetBookById(Guid id, IMediator mediator)
+    public async Task<BookDto> GetBookById(Guid id, ISender sender)
     {
-        return await mediator.Send(new GetBookByIdQuery(id));
+        return await sender.Send(new GetBookByIdQuery(id));
     }
 
     [UsePaging(MaxPageSize = 10)]
     [UseProjection]
-    public async Task<IQueryable<BookDto>> GetBooks(IMediator mediator)
+    public async Task<IQueryable<BookDto>> GetBooks(ISender sender)
     {
-        return await mediator.Send(new GetBooksQuery());
+        return await sender.Send(new GetBooksQuery());
     }
 }

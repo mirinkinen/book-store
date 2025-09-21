@@ -11,15 +11,15 @@ public class AuthorQueries
 {
     [NodeResolver]
     [Error<EntityNotFoundException>]
-    public async Task<AuthorDto> GetAuthorById(Guid id, IMediator mediator)
+    public async Task<AuthorDto> GetAuthorById(Guid id, ISender sender)
     {
-        return await mediator.Send(new GetAuthorByIdQuery(id));
+        return await sender.Send(new GetAuthorByIdQuery(id));
     }
 
     [UsePaging(MaxPageSize = 10)]
     [UseProjection]
-    public async Task<IQueryable<AuthorDto>> GetAuthors(IMediator mediator)
+    public async Task<IQueryable<AuthorDto>> GetAuthors(ISender sender)
     {
-        return await mediator.Send(new GetAuthorsQuery());
+        return await sender.Send(new GetAuthorsQuery());
     }
 }

@@ -15,24 +15,24 @@ public class AuthorMutations
 {
     [Error<DomainRuleException>]
     public async Task<AuthorDto> CreateAuthor(string firstName, string lastName, DateOnly birthdate, Guid organizationId, 
-        IMediator mediator, CancellationToken cancellationToken)
+        ISender sender, CancellationToken cancellationToken)
     {
-        var author = await mediator.Send(new CreateAuthorCommand(firstName, lastName, birthdate, organizationId), cancellationToken);
+        var author = await sender.Send(new CreateAuthorCommand(firstName, lastName, birthdate, organizationId), cancellationToken);
         return author;
     }
 
     [Error<DomainRuleException>]
     [Error<EntityNotFoundException>]
-    public async Task<AuthorDto> UpdateAuthor(Guid id, string firstName, string lastName, DateOnly birthdate, IMediator mediator)
+    public async Task<AuthorDto> UpdateAuthor(Guid id, string firstName, string lastName, DateOnly birthdate, ISender sender)
     {
-        return await mediator.Send(new UpdateAuthorCommand(id, firstName, lastName, birthdate));
+        return await sender.Send(new UpdateAuthorCommand(id, firstName, lastName, birthdate));
     }
 
     [Error<DomainRuleException>]
     [Error<EntityNotFoundException>]
-    public async Task<DeleteAuthorPayload> DeleteAuthor(Guid Id, IMediator mediator)
+    public async Task<DeleteAuthorPayload> DeleteAuthor(Guid Id, ISender sender)
     {
-        return await mediator.Send(new DeleteAuthorCommand(Id));
+        return await sender.Send(new DeleteAuthorCommand(Id));
     }
 
     /// <summary>
@@ -51,8 +51,8 @@ public class AuthorMutations
         return scopedService.GetHelloWorld();
     }
 
-    public Task<string> MutationWithMultipleRepositories(IMediator mediator)
+    public Task<string> MutationWithMultipleRepositories(ISender sender)
     {
-        return mediator.Send(new MutationWithMultipleRepositoriesCommand());
+        return sender.Send(new MutationWithMultipleRepositoriesCommand());
     }
 }

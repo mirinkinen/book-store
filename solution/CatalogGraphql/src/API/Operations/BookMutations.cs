@@ -11,21 +11,21 @@ namespace API.Operations;
 public class BookMutations
 {
     [Error<DomainRuleException>]
-    public async Task<BookDto> CreateBook(Guid authorId, string title, DateOnly datePublished, decimal price, IMediator mediator)
+    public async Task<BookDto> CreateBook(Guid authorId, string title, DateOnly datePublished, decimal price, ISender sender)
     {
-        return await mediator.Send(new CreateBookCommand(authorId, title, datePublished, price));
+        return await sender.Send(new CreateBookCommand(authorId, title, datePublished, price));
     }
 
     [Error<DomainRuleException>]
     [Error<EntityNotFoundException>]
-    public async Task<BookDto> UpdateBook(Guid id, string title, DateOnly datePublished, decimal price, IMediator mediator)
+    public async Task<BookDto> UpdateBook(Guid id, string title, DateOnly datePublished, decimal price, ISender sender)
     {
-        return await mediator.Send(new UpdateBookCommand(id, title, datePublished, price));
+        return await sender.Send(new UpdateBookCommand(id, title, datePublished, price));
     }
     
     [Error<EntityNotFoundException>]
-    public async Task<DeleteBookPayload> DeleteBook(Guid id, IMediator mediator)
+    public async Task<DeleteBookPayload> DeleteBook(Guid id, ISender sender)
     {
-        return await mediator.Send(new DeleteBookCommand(id));
+        return await sender.Send(new DeleteBookCommand(id));
     }
 }
