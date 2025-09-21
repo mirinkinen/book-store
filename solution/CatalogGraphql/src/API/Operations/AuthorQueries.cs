@@ -19,6 +19,7 @@ public class AuthorQueries
 
     [UsePaging(MaxPageSize = 10)]
     [UseProjection]
+    [UseFiltering]
     public async Task<IQueryable<Author>> GetAuthors(ISender sender)
     {
         return await sender.Send(new GetAuthorsQuery());

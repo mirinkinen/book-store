@@ -1,6 +1,5 @@
 using Application.BookQueries.GetBook;
 using Application.BookQueries.GetBooks;
-using Application.Types;
 using Common.Domain;
 using Domain;
 using MediatR;
@@ -19,6 +18,7 @@ public class BookQueries
 
     [UsePaging(MaxPageSize = 10)]
     [UseProjection]
+    [UseFiltering]
     public async Task<IQueryable<Book>> GetBooks(ISender sender)
     {
         return await sender.Send(new GetBooksQuery());

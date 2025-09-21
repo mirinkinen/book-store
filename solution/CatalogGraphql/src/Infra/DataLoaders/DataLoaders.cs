@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infra.DataLoaders;
 
-public class DataLoaders
+public static class DataLoaders
 {
     [DataLoader]
     internal static async Task<ILookup<Guid, Book>> GetBooksByAuthorIdAsync(
