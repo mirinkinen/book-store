@@ -15,6 +15,6 @@ public class QueryRepository<TEntity> : IQueryRepository<TEntity> where TEntity 
 
     public IQueryable<TEntity> GetQuery()
     {
-        return _dbContext.Set<TEntity>().OrderBy(e => e.Id);
+        return _dbContext.Set<TEntity>();
     }
 }

@@ -41,8 +41,10 @@ public static class ServiceCollectionExtensions
             })
             .AddErrorInterfaceType<IUserError>()
             .AddGlobalObjectIdentification()
+            // Query capabilities
             .AddProjections()
             .AddFiltering()
+            .AddSorting()
             // Data store
             .RegisterDbContextFactory<CatalogDbContext>()
             .AddInMemorySubscriptions();
