@@ -53,10 +53,17 @@ public static class ServiceCollectionExtensions
 
     private static void ConfigureInfraServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<IBookWriteRepository, BookWriteWriteRepository>();
-        services.AddScoped<IAuthorWriteRepository, AuthorWriteRepository>();
+        // Query
         services.AddSingleton<IReadRepository<Author>, ReadRepository<Author>>();
         services.AddSingleton<IReadRepository<Book>, ReadRepository<Book>>();
+        
+        // Queryable - Hot chocolate will dispose of the DbContext.
+        services.AddScoped<IQueryRepository<Author>, QueryRepository<Author>>();
+        services.AddScoped<IQueryRepository<Book>, QueryRepository<Book>>();
+        
+        // Command
+        services.AddScoped<IBookWriteRepository, BookWriteWriteRepository>();
+        services.AddScoped<IAuthorWriteRepository, AuthorWriteRepository>();
 
         services.AddScoped<ScopedService>();
 

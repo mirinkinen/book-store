@@ -8,16 +8,16 @@ public record GetAuthorsQuery : IRequest<IQueryable<AuthorDto>>;
 
 public class GetAuthorsHandler : IRequestHandler<GetAuthorsQuery, IQueryable<AuthorDto>>
 {
-    private readonly IReadRepository<Author> _readRepository;
+    private readonly IQueryRepository<Author> _queryRepository;
 
-    public GetAuthorsHandler(IReadRepository<Author> readRepository)
+    public GetAuthorsHandler(IQueryRepository<Author> queryRepository)
     {
-        _readRepository = readRepository;
+        _queryRepository = queryRepository;
     }
 
     public Task<IQueryable<AuthorDto>> Handle(GetAuthorsQuery request, CancellationToken cancellationToken)
     {
-        var authors = _readRepository.GetQuery();
+        var authors = _queryRepository.GetQuery();
 
         return Task.FromResult(authors.Select(author => author.ToDto()));
     }

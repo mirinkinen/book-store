@@ -14,12 +14,6 @@ public class ReadRepository<TEntity> : IReadRepository<TEntity> where TEntity : 
         _dbContextFactory = dbContextFactory;
     }
 
-    public IQueryable<TEntity> GetQuery()
-    {
-        var dbContext = _dbContextFactory.CreateDbContext();
-        return dbContext.Set<TEntity>().OrderBy(e => e.Id);
-    }
-
     public async Task<TEntity?> FirstOrDefaultAsync(Guid id, CancellationToken cancellationToken = default)
     {
         await using var dbContext = await _dbContextFactory.CreateDbContextAsync(cancellationToken);

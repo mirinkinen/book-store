@@ -8,16 +8,16 @@ public record GetBooksQuery : IRequest<IQueryable<BookDto>>;
 
 public class GetBooksHandler : IRequestHandler<GetBooksQuery, IQueryable<BookDto>>
 {
-    private readonly IReadRepository<Book> _readRepository;
+    private readonly IQueryRepository<Book> _queryRepository;
 
-    public GetBooksHandler(IReadRepository<Book> readRepository)
+    public GetBooksHandler(IQueryRepository<Book> queryRepository)
     {
-        _readRepository = readRepository;
+        _queryRepository = queryRepository;
     }
 
     public Task<IQueryable<BookDto>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
     {
-        var books = _readRepository.GetQuery();
+        var books = _queryRepository.GetQuery();
 
         return Task.FromResult(books.Select(book => book.ToDto()));
     }
