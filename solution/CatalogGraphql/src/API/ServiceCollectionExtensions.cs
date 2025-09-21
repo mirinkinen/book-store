@@ -40,7 +40,6 @@ public static class ServiceCollectionExtensions
                 PayloadErrorTypeNamePattern = "{MutationName}Error"
             })
             .AddErrorInterfaceType<IUserError>()
-            // Relay convention
             .AddGlobalObjectIdentification()
             .AddProjections()
             // Data store
