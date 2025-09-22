@@ -27,7 +27,7 @@ public class GetBooksHandler : IRequestHandler<GetBooksQuery, IQueryable<Book>>
 
     public Task<IQueryable<Book>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
     {
-        var books = _queryRepository.With(request.QueryContext).OrderBy(e => e.Id).Select(e => e);
+        var books = _queryRepository.With(request.QueryContext);
 
         return Task.FromResult(books);
     }

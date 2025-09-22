@@ -18,6 +18,8 @@ public class BookQueries
     }
 
     [UsePaging(MaxPageSize = 10, DefaultPageSize = 10, IncludeTotalCount = true)]
+    [UseFiltering]
+    [UseSorting]
     public async Task<IQueryable<Book>> GetBooks(QueryContext<Book> queryContext, ISender sender)
     {
         return await sender.Send(new GetBooksQuery(queryContext));
