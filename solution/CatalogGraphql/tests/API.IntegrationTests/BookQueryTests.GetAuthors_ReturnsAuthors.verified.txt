@@ -4,43 +4,43 @@
       nodes: [
         {
           __typename: Author,
-          id: Guid_1,
+          id: QXV0aG9yOoXFIVMtm3JKoQUSKEPkDnU=,
           firstName: William,
           lastName: Shakespeare,
           birthdate: 1564-04-15,
-          organizationId: Guid_2
+          organizationId: Guid_1
         },
         {
           __typename: Author,
-          id: Guid_3,
+          id: QXV0aG9yOjSUao71h7JGpsNSLcNdju8=,
           firstName: Stephen,
           lastName: King,
           birthdate: 1947-09-21,
-          organizationId: Guid_4
-        },
-        {
-          __typename: Author,
-          id: Guid_5,
-          firstName: J.K.,
-          lastName: Rowling,
-          birthdate: 1965-07-31,
           organizationId: Guid_2
         },
         {
           __typename: Author,
-          id: Guid_6,
-          firstName: Dan,
-          lastName: Brown,
-          birthdate: 1964-06-22,
-          organizationId: Guid_4
+          id: QXV0aG9yOk+MC1Lxcs5OseKN0dyjR2o=,
+          firstName: J.K.,
+          lastName: Rowling,
+          birthdate: 1965-07-31,
+          organizationId: Guid_1
         },
         {
           __typename: Author,
-          id: Guid_7,
+          id: QXV0aG9yOsVr5xMsv9tPv0KODKZup84=,
+          firstName: Dan,
+          lastName: Brown,
+          birthdate: 1964-06-22,
+          organizationId: Guid_2
+        },
+        {
+          __typename: Author,
+          id: QXV0aG9yOhXBaBayI+9AuszPt59tw5E=,
           firstName: Ernest.,
           lastName: Hemingway,
           birthdate: 1899-07-21,
-          organizationId: Guid_8
+          organizationId: Guid_3
         }
       ]
     }

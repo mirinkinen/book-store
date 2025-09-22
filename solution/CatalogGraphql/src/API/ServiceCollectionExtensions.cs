@@ -39,7 +39,6 @@ public static class ServiceCollectionExtensions
                 PayloadErrorTypeNamePattern = "{MutationName}Error"
             })
             .AddErrorInterfaceType<IUserError>()
-            .AddGlobalObjectIdentification()
             // Query capabilities
             .AddProjections()
             .AddFiltering()

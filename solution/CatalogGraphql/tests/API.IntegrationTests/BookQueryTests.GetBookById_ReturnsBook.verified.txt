@@ -1,0 +1,8 @@
+﻿{
+  data: {
+    bookById: {
+      id: Guid_1,
+      title: Harry Potter and the Deathly Hallows
+    }
+  }
+}

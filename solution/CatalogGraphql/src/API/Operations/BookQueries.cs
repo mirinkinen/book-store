@@ -1,4 +1,4 @@
-using Application.BookQueries.GetBook;
+using Application.BookQueries.GetBookById;
 using Application.BookQueries.GetBooks;
 using Common.Domain;
 using Domain;

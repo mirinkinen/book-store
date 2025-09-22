@@ -1,5 +1,6 @@
 ﻿using Common.Infra;
 using Domain;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 
 namespace TestData;
@@ -16,6 +17,8 @@ public static class TestDataContainer
     public static Guid JkRowlingId => Guid.Parse("520B8C4F-72F1-4ECE-B1E2-8DD1DCA3476A");
     public static Guid WilliamShakeSpeareId => Guid.Parse("5321C585-9B2D-4A72-A105-122843E40E75");
     public static Guid ErnestHemingwayId => Guid.Parse("1668C115-23B2-40EF-BACC-CFB79F6DC391");
+    
+    public static Guid HarryPotterAndTheDeathlyHallows = Guid.Parse("6F6D9786-074C-4828-8DDD-5852A9530203");
 
     public static IEnumerable<Author> GetAuthors()
     {
@@ -57,7 +60,8 @@ public static class TestDataContainer
 
             new Book(JkRowlingId, "Harry Potter and the Philosopher's Stone", new DateOnly(1997, 6, 26), 15),
             new Book(JkRowlingId, "Fantastic Beasts and Where to Find Them", new DateOnly(2001, 3, 15), 17),
-            new Book(JkRowlingId, "Harry Potter and the Deathly Hallows", new DateOnly(2007, 7, 21), 21),
+            new Book(JkRowlingId, "Harry Potter and the Deathly Hallows", new DateOnly(2007, 7, 21), 21)
+                .SetId(HarryPotterAndTheDeathlyHallows),
 
             new Book(ErnestHemingwayId, "The Old Man and The Sea", new DateOnly(1952, 1, 1), 15),
             new Book(ErnestHemingwayId, "For Whom the Bell Tolls", new DateOnly(1940, 1, 1), 14),

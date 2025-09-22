@@ -2,33 +2,29 @@ using HotChocolate;
 
 namespace API.IntegrationTests;
 
-public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
+public class BookQueryTests : IClassFixture<RequestExecutorProxyFixture>
 {
     private readonly RequestExecutorProxyFixture _requestExecutor;
 
-    public AuthorQueryTests(RequestExecutorProxyFixture requestExecutor)
+    public BookQueryTests(RequestExecutorProxyFixture requestExecutor)
     {
         _requestExecutor = requestExecutor;
     }
 
     [Fact]
-    public async Task GetAuthors_ReturnsAuthors()
+    public async Task GetBooks_ReturnsBooks()
     {
         // Arrange
         var query = """
                     query {
-                      authors(order: [{ id: ASC }]) {
+                      books(order: [{ title: ASC }]) {
                         nodes {
                           __typename
                           id
-                          firstName
-                          lastName
-                          birthdate
-                          organizationId
+                          title
                         }
                       }
                     }
-                    
                     """;
 
         var result = await _requestExecutor.ExecuteOperationAsync(query);
@@ -39,19 +35,15 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
     }
     
     [Fact]
-    public async Task GetAuthorById_ReturnsAuthor()
+    public async Task GetBookById_ReturnsBook()
     {
         // Arrange
         var query = """
                     query {
-                      authorById(id: "8E6A9434-87F5-46B2-A6C3-522DC35D8EEF") {    
-                        __typename
-                        ... on Author {
+                       bookById(id: "6F6D9786-074C-4828-8DDD-5852A9530203") {
+                        ... on Book {
                           id
-                          firstName
-                          lastName
-                          birthdate
-                          organizationId
+                          title
                         }
                       }
                     }
@@ -65,18 +57,17 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
     }
     
     [Fact]
-    public async Task GetAuthors_First2_Returns2Authors()
+    public async Task GetBooks_First2_Returns2Books()
     {
         // Arrange
         var query = """
                     query {
-                      authors(first: 2, order: [{ id: ASC }]) {
+                      books(first: 2, order: [{ id: ASC }]) {
                         nodes {
                           id
                         }
                       }
                     }
-                    
                     """;
 
         var result = await _requestExecutor.ExecuteOperationAsync(query);

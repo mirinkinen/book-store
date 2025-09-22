@@ -1,6 +1,6 @@
 ﻿{
   data: {
-    authors: {
+    books: {
       nodes: [
         {
           id: Guid_1

@@ -2,7 +2,7 @@ using Common.Domain;
 using Domain;
 using MediatR;
 
-namespace Application.AuthorQueries.GetAuthor;
+namespace Application.AuthorQueries.GetAuthorById;
 
 public record GetAuthorByIdQuery(Guid Id) : IRequest<Author>;
 

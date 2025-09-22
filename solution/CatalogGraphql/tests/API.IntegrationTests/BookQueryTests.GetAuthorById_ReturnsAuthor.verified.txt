@@ -2,11 +2,11 @@
   data: {
     authorById: {
       __typename: Author,
-      id: Guid_1,
+      id: QXV0aG9yOjSUao71h7JGpsNSLcNdju8=,
       firstName: Stephen,
       lastName: King,
       birthdate: 1947-09-21,
-      organizationId: Guid_2
+      organizationId: Guid_1
     }
   }
 }

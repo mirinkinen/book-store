@@ -1,4 +1,4 @@
-using Application.AuthorQueries.GetAuthor;
+using Application.AuthorQueries.GetAuthorById;
 using Application.AuthorQueries.GetAuthors;
 using Application.Types;
 using Common.Domain;
