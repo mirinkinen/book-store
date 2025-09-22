@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="GreenDonut.Data.EntityFramework" Version="15.1.10" />
     <PackageReference Include="HotChocolate.Data.EntityFramework" Version="15.1.10" />
     <PackageReference Include="HotChocolate.Types.Analyzers" Version="15.1.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.8" />
