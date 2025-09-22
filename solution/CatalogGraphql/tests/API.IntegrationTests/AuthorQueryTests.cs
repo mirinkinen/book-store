@@ -17,7 +17,7 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
         // Arrange
         var query = """
                     query {
-                      authors {
+                      authors(order: [{ id: ASC }]) {
                         nodes {
                           __typename
                           id
@@ -28,6 +28,7 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
                         }
                       }
                     }
+                    
                     """;
 
         var result = await _requestExecutor.ExecuteOperationAsync(query);
@@ -69,12 +70,13 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
         // Arrange
         var query = """
                     query {
-                      authors(first: 2) {
+                      authors(first: 2, order: [{ id: ASC }]) {
                         nodes {
                           id
                         }
                       }
                     }
+                    
                     """;
 
         var result = await _requestExecutor.ExecuteOperationAsync(query);

@@ -19,13 +19,16 @@ type AnotherMutationTestDto {
 }
 
 type Author implements Node {
-  additionalField: String! @cost(weight: "10")
-  anotherField: String! @cost(weight: "10")
-  id: ID!
+  removeBook(bookId: UUID!): Book!
+  birthdate: LocalDate!
+  books: [Book!] @cost(weight: "10")
   firstName: String!
   lastName: String!
-  birthdate: LocalDate!
   organizationId: UUID!
+  id: ID!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  modifiedBy: UUID!
 }
 
 "A connection to a list of items."
@@ -36,6 +39,8 @@ type AuthorsConnection {
   edges: [AuthorsEdge!]
   "A flattened list of the nodes."
   nodes: [Author!]
+  "Identifies the total count of items in the connection."
+  totalCount: Int! @cost(weight: "10")
 }
 
 "An edge in a connection."
@@ -47,11 +52,15 @@ type AuthorsEdge {
 }
 
 type Book implements Node {
-  id: ID!
-  authorId: ID!
   title: String!
   datePublished: LocalDate!
+  author: Author!
+  authorId: UUID!
   price: Decimal!
+  id: ID!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  modifiedBy: UUID!
 }
 
 "A connection to a list of items."
@@ -62,6 +71,8 @@ type BooksConnection {
   edges: [BooksEdge!]
   "A flattened list of the nodes."
   nodes: [Book!]
+  "Identifies the total count of items in the connection."
+  totalCount: Int! @cost(weight: "10")
 }
 
 "An edge in a connection."
@@ -150,9 +161,9 @@ type Query {
   "Lookup nodes by a list of IDs."
   nodes("The list of node IDs." ids: [ID!]!): [Node]! @cost(weight: "10")
   authorById(id: ID!): AuthorByIdResult! @cost(weight: "10")
-  authors("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String): AuthorsConnection @listSize(assumedSize: 10, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
+  authors("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AuthorFilterInput @cost(weight: "10") order: [AuthorSortInput!] @cost(weight: "10")): AuthorsConnection @listSize(assumedSize: 10, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
   bookById(id: ID!): BookByIdResult! @cost(weight: "10")
-  books("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String): BooksConnection @listSize(assumedSize: 10, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
+  books("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: BookFilterInput @cost(weight: "10") order: [BookSortInput!] @cost(weight: "10")): BooksConnection @listSize(assumedSize: 10, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
 }
 
 type Subscription {
@@ -185,6 +196,57 @@ union UpdateAuthorError = DomainRuleError | EntityNotFoundError
 
 union UpdateBookError = DomainRuleError | EntityNotFoundError
 
+input AuthorFilterInput {
+  and: [AuthorFilterInput!]
+  or: [AuthorFilterInput!]
+  birthdate: LocalDateOperationFilterInput
+  books: ListFilterInputTypeOfBookFilterInput
+  firstName: StringOperationFilterInput
+  lastName: StringOperationFilterInput
+  organizationId: UuidOperationFilterInput
+  id: UuidOperationFilterInput
+  createdAt: DateTimeOperationFilterInput
+  modifiedAt: DateTimeOperationFilterInput
+  modifiedBy: UuidOperationFilterInput
+}
+
+input AuthorSortInput {
+  birthdate: SortEnumType @cost(weight: "10")
+  firstName: SortEnumType @cost(weight: "10")
+  lastName: SortEnumType @cost(weight: "10")
+  organizationId: SortEnumType @cost(weight: "10")
+  id: SortEnumType @cost(weight: "10")
+  createdAt: SortEnumType @cost(weight: "10")
+  modifiedAt: SortEnumType @cost(weight: "10")
+  modifiedBy: SortEnumType @cost(weight: "10")
+}
+
+input BookFilterInput {
+  and: [BookFilterInput!]
+  or: [BookFilterInput!]
+  title: StringOperationFilterInput
+  datePublished: LocalDateOperationFilterInput
+  author: AuthorFilterInput
+  authorId: UuidOperationFilterInput
+  price: DecimalOperationFilterInput
+  id: UuidOperationFilterInput
+  createdAt: DateTimeOperationFilterInput
+  modifiedAt: DateTimeOperationFilterInput
+  modifiedBy: UuidOperationFilterInput
+}
+
+input BookSortInput {
+  title: SortEnumType @cost(weight: "10")
+  datePublished: SortEnumType @cost(weight: "10")
+  author: AuthorSortInput @cost(weight: "10")
+  authorId: SortEnumType @cost(weight: "10")
+  price: SortEnumType @cost(weight: "10")
+  id: SortEnumType @cost(weight: "10")
+  createdAt: SortEnumType @cost(weight: "10")
+  modifiedAt: SortEnumType @cost(weight: "10")
+  modifiedBy: SortEnumType @cost(weight: "10")
+}
+
 input CreateAuthorCommand {
   firstName: String!
   lastName: String!
@@ -199,12 +261,79 @@ input CreateBookCommand {
   price: Decimal!
 }
 
+input DateTimeOperationFilterInput {
+  eq: DateTime @cost(weight: "10")
+  neq: DateTime @cost(weight: "10")
+  in: [DateTime] @cost(weight: "10")
+  nin: [DateTime] @cost(weight: "10")
+  gt: DateTime @cost(weight: "10")
+  ngt: DateTime @cost(weight: "10")
+  gte: DateTime @cost(weight: "10")
+  ngte: DateTime @cost(weight: "10")
+  lt: DateTime @cost(weight: "10")
+  nlt: DateTime @cost(weight: "10")
+  lte: DateTime @cost(weight: "10")
+  nlte: DateTime @cost(weight: "10")
+}
+
+input DecimalOperationFilterInput {
+  eq: Decimal @cost(weight: "10")
+  neq: Decimal @cost(weight: "10")
+  in: [Decimal] @cost(weight: "10")
+  nin: [Decimal] @cost(weight: "10")
+  gt: Decimal @cost(weight: "10")
+  ngt: Decimal @cost(weight: "10")
+  gte: Decimal @cost(weight: "10")
+  ngte: Decimal @cost(weight: "10")
+  lt: Decimal @cost(weight: "10")
+  nlt: Decimal @cost(weight: "10")
+  lte: Decimal @cost(weight: "10")
+  nlte: Decimal @cost(weight: "10")
+}
+
 input DeleteAuthorCommand {
   id: UUID!
 }
 
 input DeleteBookCommand {
   id: UUID!
+}
+
+input ListFilterInputTypeOfBookFilterInput {
+  all: BookFilterInput @cost(weight: "10")
+  none: BookFilterInput @cost(weight: "10")
+  some: BookFilterInput @cost(weight: "10")
+  any: Boolean @cost(weight: "10")
+}
+
+input LocalDateOperationFilterInput {
+  eq: LocalDate @cost(weight: "10")
+  neq: LocalDate @cost(weight: "10")
+  in: [LocalDate] @cost(weight: "10")
+  nin: [LocalDate] @cost(weight: "10")
+  gt: LocalDate @cost(weight: "10")
+  ngt: LocalDate @cost(weight: "10")
+  gte: LocalDate @cost(weight: "10")
+  ngte: LocalDate @cost(weight: "10")
+  lt: LocalDate @cost(weight: "10")
+  nlt: LocalDate @cost(weight: "10")
+  lte: LocalDate @cost(weight: "10")
+  nlte: LocalDate @cost(weight: "10")
+}
+
+input StringOperationFilterInput {
+  and: [StringOperationFilterInput!]
+  or: [StringOperationFilterInput!]
+  eq: String @cost(weight: "10")
+  neq: String @cost(weight: "10")
+  contains: String @cost(weight: "20")
+  ncontains: String @cost(weight: "20")
+  in: [String] @cost(weight: "10")
+  nin: [String] @cost(weight: "10")
+  startsWith: String @cost(weight: "20")
+  nstartsWith: String @cost(weight: "20")
+  endsWith: String @cost(weight: "20")
+  nendsWith: String @cost(weight: "20")
 }
 
 input UpdateAuthorCommand {
@@ -221,6 +350,26 @@ input UpdateBookCommand {
   price: Decimal!
 }
 
+input UuidOperationFilterInput {
+  eq: UUID @cost(weight: "10")
+  neq: UUID @cost(weight: "10")
+  in: [UUID] @cost(weight: "10")
+  nin: [UUID] @cost(weight: "10")
+  gt: UUID @cost(weight: "10")
+  ngt: UUID @cost(weight: "10")
+  gte: UUID @cost(weight: "10")
+  ngte: UUID @cost(weight: "10")
+  lt: UUID @cost(weight: "10")
+  nlt: UUID @cost(weight: "10")
+  lte: UUID @cost(weight: "10")
+  nlte: UUID @cost(weight: "10")
+}
+
+enum SortEnumType {
+  ASC
+  DESC
+}
+
 "The purpose of the `cost` directive is to define a `weight` for GraphQL types, fields, and arguments. Static analysis can use these weights when calculating the overall cost of a query or response."
 directive @cost("The `weight` argument defines what value to add to the overall cost for every appearance, or possible appearance, of a type, field, argument, etc." weight: String!) on SCALAR | OBJECT | FIELD_DEFINITION | ARGUMENT_DEFINITION | ENUM | INPUT_FIELD_DEFINITION
 
@@ -229,6 +378,9 @@ directive @listSize("The `assumedSize` argument can be used to statically define
 
 "The `@specifiedBy` directive is used within the type system definition language to provide a URL for specifying the behavior of custom scalar definitions."
 directive @specifiedBy("The specifiedBy URL points to a human-readable specification. This field will only read a result for scalar types." url: String!) on SCALAR
+
+"The `DateTime` scalar represents an ISO-8601 compliant date time type."
+scalar DateTime @specifiedBy(url: "https:\/\/www.graphql-scalars.com\/date-time")
 
 "The `Decimal` scalar type represents a decimal floating-point number."
 scalar Decimal
