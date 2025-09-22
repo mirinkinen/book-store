@@ -1,4 +1,3 @@
-using API.Operations;
 using Application.AuthorCommands.CreateAuthor;
 using Application.AuthorQueries.GetAuthors;
 using Common.Domain;
@@ -45,6 +44,13 @@ public static class ServiceCollectionExtensions
             .AddProjections()
             .AddFiltering()
             .AddSorting()
+            .ModifyPagingOptions(options =>
+            {
+                options.MaxPageSize = 10;
+                options.DefaultPageSize = 10;
+                options.IncludeTotalCount = true;
+            })
+            .AddDbContextCursorPagingProvider()
             // Data store
             .RegisterDbContextFactory<CatalogDbContext>()
             .AddInMemorySubscriptions();
@@ -55,11 +61,11 @@ public static class ServiceCollectionExtensions
         // Query
         services.AddSingleton<IReadRepository<Author>, ReadRepository<Author>>();
         services.AddSingleton<IReadRepository<Book>, ReadRepository<Book>>();
-        
+
         // Queryable - Hot chocolate will dispose of the DbContext.
         services.AddScoped<IQueryRepository<Author>, QueryRepository<Author>>();
         services.AddScoped<IQueryRepository<Book>, QueryRepository<Book>>();
-        
+
         // Command
         services.AddScoped<IBookWriteRepository, BookWriteWriteRepository>();
         services.AddScoped<IAuthorWriteRepository, AuthorWriteRepository>();
