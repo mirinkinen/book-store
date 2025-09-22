@@ -3,6 +3,7 @@ using Application.AuthorQueries.GetAuthors;
 using Application.Types;
 using Common.Domain;
 using Domain;
+using GreenDonut.Data;
 using MediatR;
 
 namespace API.Operations;
@@ -18,11 +19,10 @@ public class AuthorQueries
     }
 
     [UsePaging(MaxPageSize = 10, DefaultPageSize = 10, IncludeTotalCount = true)]
-    [UseProjection]
     [UseFiltering]
     [UseSorting]
-    public async Task<IQueryable<Author>> GetAuthors(ISender sender)
+    public async Task<IQueryable<Author>> GetAuthors(QueryContext<Author> queryContext, ISender sender)
     {
-        return await sender.Send(new GetAuthorsQuery());
+        return await sender.Send(new GetAuthorsQuery(queryContext));
     }
 }
