@@ -3,25 +3,31 @@ using Application.BookQueries.GetBooks;
 using Common.Domain;
 using Domain;
 using GreenDonut.Data;
+using HotChocolate.Types.Pagination;
 using MediatR;
 
 namespace API.Operations;
 
 [QueryType]
-public class BookQueries
+public static partial class BookQueries
 {
     [NodeResolver]
     [Error<EntityNotFoundException>]
-    public async Task<Book> GetBookById(Guid id, ISender sender)
+    public static async Task<Book> GetBookById(Guid id, ISender sender)
     {
         return await sender.Send(new GetBookByIdQuery(id));
     }
 
-    [UsePaging(MaxPageSize = 10, DefaultPageSize = 10, IncludeTotalCount = true)]
+    [UseConnection]
     [UseFiltering]
     [UseSorting]
-    public async Task<IQueryable<Book>> GetBooks(QueryContext<Book> queryContext, ISender sender)
+    public static async Task<PageConnection<Book>> GetBooks(
+        PagingArguments pagingArguments, 
+        QueryContext<Book> queryContext, 
+        ISender sender, 
+        CancellationToken cancellationToken)
     {
-        return await sender.Send(new GetBooksQuery(queryContext));
+        var page = await sender.Send(new GetBooksQuery(pagingArguments, queryContext), cancellationToken);
+        return new PageConnection<Book>(page);
     }
 }

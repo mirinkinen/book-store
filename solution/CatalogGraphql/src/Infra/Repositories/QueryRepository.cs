@@ -19,9 +19,11 @@ public class QueryRepository<TEntity> : IQueryRepository<TEntity> where TEntity 
         return _dbContext.Set<TEntity>();
     }
     
-    public IQueryable<TEntity> With(QueryContext<TEntity> queryContext)
+    public async ValueTask<Page<TEntity>> With(PagingArguments pagingArguments, QueryContext<TEntity>? queryContext)
     {
-        return _dbContext.Set<TEntity>().With(queryContext, DefaultOrder);
+        return await _dbContext.Set<TEntity>()
+            .With(queryContext, DefaultOrder)
+            .ToPageAsync(pagingArguments);
     }
     
     private static SortDefinition<TEntity> DefaultOrder(SortDefinition<TEntity> sort)

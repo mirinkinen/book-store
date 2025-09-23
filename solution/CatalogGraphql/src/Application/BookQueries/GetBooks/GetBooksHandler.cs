@@ -6,17 +6,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.BookQueries.GetBooks;
 
-public record GetBooksQuery : IRequest<IQueryable<Book>>
+public record GetBooksQuery : IRequest<Page<Book>>
 {
+    public PagingArguments PagingArguments { get; }
     public QueryContext<Book> QueryContext { get; }
 
-    public GetBooksQuery(QueryContext<Book> queryContext)
+    public GetBooksQuery(PagingArguments pagingArguments, QueryContext<Book> queryContext)
     {
+        PagingArguments = pagingArguments;
         QueryContext = queryContext;
     }
 }
 
-public class GetBooksHandler : IRequestHandler<GetBooksQuery, IQueryable<Book>>
+public class GetBooksHandler : IRequestHandler<GetBooksQuery, Page<Book>>
 {
     private readonly IQueryRepository<Book> _queryRepository;
 
@@ -25,10 +27,8 @@ public class GetBooksHandler : IRequestHandler<GetBooksQuery, IQueryable<Book>>
         _queryRepository = queryRepository;
     }
 
-    public Task<IQueryable<Book>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
+    public Task<Page<Book>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
     {
-        var books = _queryRepository.With(request.QueryContext);
-
-        return Task.FromResult(books);
+        return _queryRepository.With(request.PagingArguments, request.QueryContext).AsTask();
     }
 }

@@ -43,13 +43,13 @@ public static class ServiceCollectionExtensions
             .AddProjections()
             .AddFiltering()
             .AddSorting()
+            .AddPagingArguments()
             .ModifyPagingOptions(options =>
             {
                 options.MaxPageSize = 10;
                 options.DefaultPageSize = 10;
                 options.IncludeTotalCount = true;
             })
-            .AddDbContextCursorPagingProvider()
             // Data store
             .RegisterDbContextFactory<CatalogDbContext>()
             .AddInMemorySubscriptions();
