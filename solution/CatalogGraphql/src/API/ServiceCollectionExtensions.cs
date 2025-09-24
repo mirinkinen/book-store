@@ -1,10 +1,13 @@
 using Application.AuthorCommands.CreateAuthor;
 using Application.AuthorQueries.GetAuthors;
+using Application.Types;
 using Common.Domain;
 using Domain;
+using HotChocolate.Execution;
 using Infra.Data;
 using Infra.Repositories;
 using Microsoft.EntityFrameworkCore;
+using BookType = API.Types.BookType;
 
 namespace API;
 
@@ -26,6 +29,7 @@ public static class ServiceCollectionExtensions
         services.AddGraphQLServer()
             .AddGraphQLServer()
             // Types
+            .AddType<BookType>()
             .AddTypes()
             // Conventions
             .AddQueryConventions()
@@ -53,7 +57,10 @@ public static class ServiceCollectionExtensions
             //.AddGlobalObjectIdentification()
             // Data store
             .RegisterDbContextFactory<CatalogDbContext>()
-            .AddInMemorySubscriptions();
+            .AddInMemorySubscriptions()
+            // Performance
+            .InitializeOnStartup(
+                warmup: async (executor, cancellationToken) => { await executor.ExecuteAsync("{ __typename }", cancellationToken); });
     }
 
     private static void ConfigureInfraServices(this IServiceCollection services, IConfiguration configuration)

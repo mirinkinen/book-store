@@ -14,16 +14,12 @@ type AnotherMutationTestDto {
 }
 
 type Author {
-  removeBook(bookId: UUID!): Book!
+  id: UUID!
   birthdate: LocalDate!
   books: [Book!] @cost(weight: "10")
   firstName: String!
   lastName: String!
   organizationId: UUID!
-  id: UUID!
-  createdAt: DateTime!
-  modifiedAt: DateTime!
-  modifiedBy: UUID!
 }
 
 "A connection to a list of items."
@@ -46,15 +42,12 @@ type AuthorEdge {
 }
 
 type Book {
+  id: UUID!
+  authorId: UUID!
   title: String!
   datePublished: LocalDate!
-  author: Author!
-  authorId: UUID!
   price: Decimal!
-  id: UUID!
-  createdAt: DateTime!
-  modifiedAt: DateTime!
-  modifiedBy: UUID!
+  author: Author!
 }
 
 "A connection to a list of items."
