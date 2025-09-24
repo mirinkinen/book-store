@@ -50,6 +50,7 @@ public static class ServiceCollectionExtensions
                 options.DefaultPageSize = 10;
                 options.IncludeTotalCount = true;
             })
+            //.AddGlobalObjectIdentification()
             // Data store
             .RegisterDbContextFactory<CatalogDbContext>()
             .AddInMemorySubscriptions();
