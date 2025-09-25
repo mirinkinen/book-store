@@ -4,18 +4,18 @@ using MediatR;
 
 namespace Application.BookQueries.GetBookById;
 
-public record GetBookByIdQuery(Guid Id) : IRequest<Book>;
+public record GetBookByIdQuery(Guid Id) : IRequest<BookDto>;
 
-public class GetBookByIdHandler : IRequestHandler<GetBookByIdQuery, Book>
+public class GetBookByIdHandler : IRequestHandler<GetBookByIdQuery, BookDto>
 {
-    private readonly IReadRepository<Book> _bookReadRepository;
+    private readonly IBookReadRepository _bookReadRepository;
 
-    public GetBookByIdHandler(IReadRepository<Book> bookReadRepository)
+    public GetBookByIdHandler(IBookReadRepository bookReadRepository)
     {
         _bookReadRepository = bookReadRepository;
     }
 
-    public async Task<Book> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
+    public async Task<BookDto> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
     {
         var book = await _bookReadRepository.FirstOrDefaultAsync(request.Id, cancellationToken);
 
@@ -23,7 +23,7 @@ public class GetBookByIdHandler : IRequestHandler<GetBookByIdQuery, Book>
         {
             throw new EntityNotFoundException("Book not found", "book-not-found");
         }
-
+        
         return book;
     }
 }

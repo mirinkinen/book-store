@@ -1,4 +1,4 @@
-using Application.Types;
+using Application.AuthorQueries;
 using Common.Domain;
 using Domain;
 using HotChocolate.Subscriptions;
@@ -11,9 +11,9 @@ public record CreateAuthorCommand(
     string FirstName,
     string LastName,
     DateOnly Birthdate,
-    Guid OrganizationId) : IRequest<Author>;
+    Guid OrganizationId) : IRequest<AuthorDto>;
 
-public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, Author>
+public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, AuthorDto>
 {
     private readonly IAuthorWriteRepository _authorWriteRepository;
     private readonly ITopicEventSender _eventSender;
@@ -24,7 +24,7 @@ public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, Author>
         _eventSender = eventSender;
     }
     
-    public async Task<Author> Handle(CreateAuthorCommand command, CancellationToken cancellationToken)
+    public async Task<AuthorDto> Handle(CreateAuthorCommand command, CancellationToken cancellationToken)
     {
         var authorExists = await _authorWriteRepository.AuthorWithNameExists(command.FirstName, command.LastName, cancellationToken);
         if (authorExists)
@@ -39,6 +39,6 @@ public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, Author>
         
         await _eventSender.SendAsync(nameof(CreateAuthor), author, cancellationToken);
 
-        return author;
+        return author.ToDto();
     }
 }

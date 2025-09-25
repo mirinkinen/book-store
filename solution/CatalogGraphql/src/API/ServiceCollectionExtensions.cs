@@ -1,13 +1,14 @@
+using Application;
 using Application.AuthorCommands.CreateAuthor;
+using Application.AuthorQueries;
 using Application.AuthorQueries.GetAuthors;
-using Application.Types;
+using Application.BookQueries;
 using Common.Domain;
 using Domain;
 using HotChocolate.Execution;
 using Infra.Data;
 using Infra.Repositories;
 using Microsoft.EntityFrameworkCore;
-using BookType = API.Types.BookType;
 
 namespace API;
 
@@ -29,7 +30,6 @@ public static class ServiceCollectionExtensions
         services.AddGraphQLServer()
             .AddGraphQLServer()
             // Types
-            .AddType<BookType>()
             .AddTypes()
             // Conventions
             .AddQueryConventions()
@@ -65,16 +65,12 @@ public static class ServiceCollectionExtensions
 
     private static void ConfigureInfraServices(this IServiceCollection services, IConfiguration configuration)
     {
-        // Query
-        services.AddSingleton<IReadRepository<Author>, ReadRepository<Author>>();
-        services.AddSingleton<IReadRepository<Book>, ReadRepository<Book>>();
-
         // Queryable - Hot chocolate will dispose of the DbContext.
-        services.AddScoped<IQueryRepository<Author>, QueryRepository<Author>>();
-        services.AddScoped<IQueryRepository<Book>, QueryRepository<Book>>();
+        services.AddScoped<IBookReadRepository, BookReadRepository>();
+        services.AddScoped<IAuthorReadRepository, AuthorReadRepository>();
 
         // Command
-        services.AddScoped<IBookWriteRepository, BookWriteWriteRepository>();
+        services.AddScoped<IBookWriteRepository, BookWriteRepository>();
         services.AddScoped<IAuthorWriteRepository, AuthorWriteRepository>();
 
         services.AddScoped<ScopedService>();

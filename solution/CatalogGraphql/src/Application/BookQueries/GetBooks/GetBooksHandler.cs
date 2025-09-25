@@ -1,34 +1,31 @@
-using Application.Types;
-using Domain;
 using GreenDonut.Data;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.BookQueries.GetBooks;
 
-public record GetBooksQuery : IRequest<Page<Book>>
+public record GetBooksQuery : IRequest<Page<BookDto>>
 {
     public PagingArguments PagingArguments { get; }
-    public QueryContext<Book> QueryContext { get; }
+    public QueryContext<BookDto> QueryContext { get; }
 
-    public GetBooksQuery(PagingArguments pagingArguments, QueryContext<Book> queryContext)
+    public GetBooksQuery(PagingArguments pagingArguments, QueryContext<BookDto> queryContext)
     {
         PagingArguments = pagingArguments;
         QueryContext = queryContext;
     }
 }
 
-public class GetBooksHandler : IRequestHandler<GetBooksQuery, Page<Book>>
+public class GetBooksHandler : IRequestHandler<GetBooksQuery, Page<BookDto>>
 {
-    private readonly IQueryRepository<Book> _queryRepository;
+    private readonly IBookReadRepository _readRepository;
 
-    public GetBooksHandler(IQueryRepository<Book> queryRepository)
+    public GetBooksHandler(IBookReadRepository readRepository)
     {
-        _queryRepository = queryRepository;
+        _readRepository = readRepository;
     }
 
-    public Task<Page<Book>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
+    public Task<Page<BookDto>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
     {
-        return _queryRepository.With(request.PagingArguments, request.QueryContext).AsTask();
+        return _readRepository.With(request.PagingArguments, request.QueryContext).AsTask();
     }
 }

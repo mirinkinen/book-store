@@ -4,29 +4,29 @@ using MediatR;
 
 namespace Application.AuthorQueries.GetAuthors;
 
-public record GetAuthorsQuery : IRequest<Page<Author>>
+public record GetAuthorsQuery : IRequest<Page<AuthorDto>>
 {
     public PagingArguments PagingArguments { get; }
-    public QueryContext<Author> QueryContext { get; }
+    public QueryContext<AuthorDto> QueryContext { get; }
 
-    public GetAuthorsQuery(PagingArguments pagingArguments, QueryContext<Author> queryContext)
+    public GetAuthorsQuery(PagingArguments pagingArguments, QueryContext<AuthorDto> queryContext)
     {
         PagingArguments = pagingArguments;
         QueryContext = queryContext;
     }
 }
 
-public class GetAuthorsHandler : IRequestHandler<GetAuthorsQuery, Page<Author>>
+public class GetAuthorsHandler : IRequestHandler<GetAuthorsQuery, Page<AuthorDto>>
 {
-    private readonly IQueryRepository<Author> _queryRepository;
+    private readonly IAuthorReadRepository _readRepository;
 
-    public GetAuthorsHandler(IQueryRepository<Author> queryRepository)
+    public GetAuthorsHandler(IAuthorReadRepository readRepository)
     {
-        _queryRepository = queryRepository;
+        _readRepository = readRepository;
     }
 
-    public Task<Page<Author>> Handle(GetAuthorsQuery request, CancellationToken cancellationToken)
+    public Task<Page<AuthorDto>> Handle(GetAuthorsQuery request, CancellationToken cancellationToken)
     {
-        return _queryRepository.With(request.PagingArguments, request.QueryContext).AsTask();
+        return _readRepository.With(request.PagingArguments, request.QueryContext).AsTask();
     }
 }

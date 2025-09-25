@@ -2,8 +2,8 @@ using Application.AuthorCommands.CreateAuthor;
 using Application.AuthorCommands.DeleteAuthor;
 using Application.AuthorCommands.MediatorHandlerWithMultipleRepositories;
 using Application.AuthorCommands.UpdateAuthor;
+using Application.AuthorQueries;
 using Application.AuthorQueries.GetAuthors;
-using Application.Types;
 using Common.Domain;
 using Domain;
 using HotChocolate.Subscriptions;
@@ -15,7 +15,7 @@ namespace API.Operations;
 public class AuthorMutations
 {
     [Error<DomainRuleException>]
-    public async Task<Author> CreateAuthor(string firstName, string lastName, DateOnly birthdate, Guid organizationId, 
+    public async Task<AuthorDto> CreateAuthor(string firstName, string lastName, DateOnly birthdate, Guid organizationId, 
         ISender sender, CancellationToken cancellationToken)
     {
         var author = await sender.Send(new CreateAuthorCommand(firstName, lastName, birthdate, organizationId), cancellationToken);
@@ -24,7 +24,7 @@ public class AuthorMutations
 
     [Error<DomainRuleException>]
     [Error<EntityNotFoundException>]
-    public async Task<Author> UpdateAuthor(Guid id, string firstName, string lastName, DateOnly birthdate, ISender sender)
+    public async Task<AuthorDto> UpdateAuthor(Guid id, string firstName, string lastName, DateOnly birthdate, ISender sender)
     {
         return await sender.Send(new UpdateAuthorCommand(id, firstName, lastName, birthdate));
     }

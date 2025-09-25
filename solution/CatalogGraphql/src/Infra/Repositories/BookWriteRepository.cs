@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Repositories;
 
-public class BookWriteWriteRepository : WriteWriteRepository<Book>, IBookWriteRepository
+public class BookWriteRepository : WriteRepository<Book>, IBookWriteRepository
 {
-    public BookWriteWriteRepository(CatalogDbContext dbContext) : base(dbContext)
+    public BookWriteRepository(CatalogDbContext dbContext) : base(dbContext)
     {
     }
 

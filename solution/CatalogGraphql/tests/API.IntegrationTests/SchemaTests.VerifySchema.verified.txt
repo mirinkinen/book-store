@@ -43,11 +43,11 @@ type AuthorEdge {
 
 type Book {
   id: UUID!
-  authorId: UUID!
   title: String!
   datePublished: LocalDate!
-  price: Decimal!
+  authorId: UUID!
   author: Author!
+  price: Decimal!
 }
 
 "A connection to a list of items."
@@ -193,52 +193,40 @@ union UpdateBookError = DomainRuleError | EntityNotFoundError
 input AuthorFilterInput {
   and: [AuthorFilterInput!]
   or: [AuthorFilterInput!]
+  id: UuidOperationFilterInput
   birthdate: LocalDateOperationFilterInput
   books: ListFilterInputTypeOfBookFilterInput
   firstName: StringOperationFilterInput
   lastName: StringOperationFilterInput
   organizationId: UuidOperationFilterInput
-  id: UuidOperationFilterInput
-  createdAt: DateTimeOperationFilterInput
-  modifiedAt: DateTimeOperationFilterInput
-  modifiedBy: UuidOperationFilterInput
 }
 
 input AuthorSortInput {
+  id: SortEnumType @cost(weight: "10")
   birthdate: SortEnumType @cost(weight: "10")
   firstName: SortEnumType @cost(weight: "10")
   lastName: SortEnumType @cost(weight: "10")
   organizationId: SortEnumType @cost(weight: "10")
-  id: SortEnumType @cost(weight: "10")
-  createdAt: SortEnumType @cost(weight: "10")
-  modifiedAt: SortEnumType @cost(weight: "10")
-  modifiedBy: SortEnumType @cost(weight: "10")
 }
 
 input BookFilterInput {
   and: [BookFilterInput!]
   or: [BookFilterInput!]
+  id: UuidOperationFilterInput
   title: StringOperationFilterInput
   datePublished: LocalDateOperationFilterInput
-  author: AuthorFilterInput
   authorId: UuidOperationFilterInput
+  author: AuthorFilterInput
   price: DecimalOperationFilterInput
-  id: UuidOperationFilterInput
-  createdAt: DateTimeOperationFilterInput
-  modifiedAt: DateTimeOperationFilterInput
-  modifiedBy: UuidOperationFilterInput
 }
 
 input BookSortInput {
+  id: SortEnumType @cost(weight: "10")
   title: SortEnumType @cost(weight: "10")
   datePublished: SortEnumType @cost(weight: "10")
-  author: AuthorSortInput @cost(weight: "10")
   authorId: SortEnumType @cost(weight: "10")
+  author: AuthorSortInput @cost(weight: "10")
   price: SortEnumType @cost(weight: "10")
-  id: SortEnumType @cost(weight: "10")
-  createdAt: SortEnumType @cost(weight: "10")
-  modifiedAt: SortEnumType @cost(weight: "10")
-  modifiedBy: SortEnumType @cost(weight: "10")
 }
 
 input CreateAuthorCommand {
@@ -253,21 +241,6 @@ input CreateBookCommand {
   title: String!
   datePublished: LocalDate!
   price: Decimal!
-}
-
-input DateTimeOperationFilterInput {
-  eq: DateTime @cost(weight: "10")
-  neq: DateTime @cost(weight: "10")
-  in: [DateTime] @cost(weight: "10")
-  nin: [DateTime] @cost(weight: "10")
-  gt: DateTime @cost(weight: "10")
-  ngt: DateTime @cost(weight: "10")
-  gte: DateTime @cost(weight: "10")
-  ngte: DateTime @cost(weight: "10")
-  lt: DateTime @cost(weight: "10")
-  nlt: DateTime @cost(weight: "10")
-  lte: DateTime @cost(weight: "10")
-  nlte: DateTime @cost(weight: "10")
 }
 
 input DecimalOperationFilterInput {
@@ -372,9 +345,6 @@ directive @listSize("The `assumedSize` argument can be used to statically define
 
 "The `@specifiedBy` directive is used within the type system definition language to provide a URL for specifying the behavior of custom scalar definitions."
 directive @specifiedBy("The specifiedBy URL points to a human-readable specification. This field will only read a result for scalar types." url: String!) on SCALAR
-
-"The `DateTime` scalar represents an ISO-8601 compliant date time type."
-scalar DateTime @specifiedBy(url: "https:\/\/www.graphql-scalars.com\/date-time")
 
 "The `Decimal` scalar type represents a decimal floating-point number."
 scalar Decimal

@@ -1,21 +1,22 @@
+using Application.AuthorQueries.GetAuthors;
 using Common.Domain;
 using Domain;
 using MediatR;
 
 namespace Application.AuthorQueries.GetAuthorById;
 
-public record GetAuthorByIdQuery(Guid Id) : IRequest<Author>;
+public record GetAuthorByIdQuery(Guid Id) : IRequest<AuthorDto>;
 
-public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, Author>
+public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, AuthorDto>
 {
-    private readonly IReadRepository<Author> _readRepository;
+    private readonly IAuthorReadRepository _readRepository;
 
-    public GetAuthorByIdHandler(IReadRepository<Author> readRepository)
+    public GetAuthorByIdHandler(IAuthorReadRepository readRepository)
     {
         _readRepository = readRepository;
     }
 
-    public async Task<Author> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
+    public async Task<AuthorDto> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
     {
         var author = await _readRepository.FirstOrDefaultAsync(request.Id, cancellationToken);
 

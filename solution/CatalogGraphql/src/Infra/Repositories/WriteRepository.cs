@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Repositories;
 
-public abstract class WriteWriteRepository<TEntity>(CatalogDbContext dbContext) : IWriteRepository<TEntity> where TEntity : Entity
+public abstract class WriteRepository<TEntity>(CatalogDbContext dbContext) : IWriteRepository<TEntity> where TEntity : Entity
 {
     protected CatalogDbContext DbContext { get; } = dbContext;
 

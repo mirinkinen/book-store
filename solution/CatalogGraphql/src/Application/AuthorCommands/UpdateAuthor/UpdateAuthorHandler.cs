@@ -1,3 +1,4 @@
+using Application.AuthorQueries;
 using Domain;
 using MediatR;
 
@@ -7,9 +8,9 @@ public record UpdateAuthorCommand(
     Guid Id,
     string FirstName,
     string LastName,
-    DateOnly Birthdate) : IRequest<Author>;
+    DateOnly Birthdate) : IRequest<AuthorDto>;
 
-public class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, Author>
+public class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, AuthorDto>
 {
     private readonly IAuthorWriteRepository _authorWriteRepository;
 
@@ -18,7 +19,7 @@ public class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, Author>
         _authorWriteRepository = authorWriteRepository;
     }
 
-    public async Task<Author> Handle(UpdateAuthorCommand command, CancellationToken cancellationToken)
+    public async Task<AuthorDto> Handle(UpdateAuthorCommand command, CancellationToken cancellationToken)
     {
         var author = await _authorWriteRepository.FirstOrDefaultAsync(command.Id);
         if (author == null)
@@ -30,6 +31,6 @@ public class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, Author>
 
         await _authorWriteRepository.SaveChangesAsync(cancellationToken);
 
-        return author;
+        return author.ToDto();
     }
 }

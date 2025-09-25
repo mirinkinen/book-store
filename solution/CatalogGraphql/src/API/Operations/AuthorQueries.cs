@@ -1,7 +1,7 @@
+using Application.AuthorQueries;
 using Application.AuthorQueries.GetAuthorById;
 using Application.AuthorQueries.GetAuthors;
 using Common.Domain;
-using Domain;
 using GreenDonut.Data;
 using HotChocolate.Types.Pagination;
 using MediatR;
@@ -13,7 +13,7 @@ public static partial class AuthorQueries
 {
     [NodeResolver]
     [Error<EntityNotFoundException>]
-    public static async Task<Author> GetAuthorById(Guid id, ISender sender)
+    public static async Task<AuthorDto> GetAuthorById(Guid id, ISender sender)
     {
         return await sender.Send(new GetAuthorByIdQuery(id));
     }
@@ -21,13 +21,13 @@ public static partial class AuthorQueries
     [UseConnection]
     [UseFiltering]
     [UseSorting]
-    public static async Task<PageConnection<Author>> GetAuthors(
-        PagingArguments pagingArguments, 
-        QueryContext<Author> queryContext, 
-        ISender sender, 
+    public static async Task<PageConnection<AuthorDto>> GetAuthors(
+        PagingArguments pagingArguments,
+        QueryContext<AuthorDto> queryContext,
+        ISender sender,
         CancellationToken cancellationToken)
     {
         var page = await sender.Send(new GetAuthorsQuery(pagingArguments, queryContext), cancellationToken);
-        return new PageConnection<Author>(page);
+        return new PageConnection<AuthorDto>(page);
     }
 }

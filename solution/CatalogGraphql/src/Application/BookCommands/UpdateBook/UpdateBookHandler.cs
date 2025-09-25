@@ -1,4 +1,4 @@
-using Application.Types;
+using Application.BookQueries;
 using Domain;
 using MediatR;
 
@@ -8,9 +8,9 @@ public record UpdateBookCommand(
     Guid Id,
     string Title,
     DateOnly DatePublished,
-    decimal Price) : IRequest<Book>;
+    decimal Price) : IRequest<BookDto>;
 
-public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, Book>
+public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, BookDto>
 {
     private readonly IBookWriteRepository _bookWriteRepository;
 
@@ -19,7 +19,7 @@ public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, Book>
         _bookWriteRepository = bookWriteRepository;
     }
     
-    public async Task<Book> Handle(UpdateBookCommand command, CancellationToken cancellationToken)
+    public async Task<BookDto> Handle(UpdateBookCommand command, CancellationToken cancellationToken)
     {
         var book = await _bookWriteRepository.FirstOrDefaultAsync(command.Id);
         if (book == null)
@@ -33,6 +33,6 @@ public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, Book>
 
         await _bookWriteRepository.SaveChangesAsync(cancellationToken);
 
-        return book;
+        return book.ToDto();
     }
 }
