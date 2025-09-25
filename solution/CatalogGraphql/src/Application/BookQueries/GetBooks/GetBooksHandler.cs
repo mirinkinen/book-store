@@ -26,6 +26,6 @@ public class GetBooksHandler : IRequestHandler<GetBooksQuery, Page<BookDto>>
 
     public Task<Page<BookDto>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
     {
-        return _readRepository.With(request.PagingArguments, request.QueryContext).AsTask();
+        return _readRepository.With(request.PagingArguments, request.QueryContext, cancellationToken).AsTask();
     }
 }

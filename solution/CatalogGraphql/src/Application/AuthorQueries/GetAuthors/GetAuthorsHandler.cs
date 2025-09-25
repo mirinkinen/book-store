@@ -27,6 +27,6 @@ public class GetAuthorsHandler : IRequestHandler<GetAuthorsQuery, Page<AuthorDto
 
     public Task<Page<AuthorDto>> Handle(GetAuthorsQuery request, CancellationToken cancellationToken)
     {
-        return _readRepository.With(request.PagingArguments, request.QueryContext).AsTask();
+        return _readRepository.With(request.PagingArguments, request.QueryContext, cancellationToken).AsTask();
     }
 }
