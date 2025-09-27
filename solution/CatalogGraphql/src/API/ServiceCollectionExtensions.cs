@@ -6,6 +6,7 @@ using Common.Domain;
 using Domain;
 using HotChocolate.Execution;
 using Infra.Data;
+using Infra.DataLoaders;
 using Infra.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -55,12 +56,18 @@ public static class ServiceCollectionExtensions
             })
             .AddMaxExecutionDepthRule(4)
             //.AddGlobalObjectIdentification()
+            .AddDataLoader<CustomBooksByAuthorIdsDataLoader>()
             // Data store
             .RegisterDbContextFactory<CatalogDbContext>()
             .AddInMemorySubscriptions()
             // Performance
             .InitializeOnStartup(
                 warmup: async (executor, cancellationToken) => { await executor.ExecuteAsync("{ __typename }", cancellationToken); });
+
+        services.AddScoped<DataLoaderOptions>(sp => new DataLoaderOptions
+        {
+            MaxBatchSize = 2
+        });
     }
 
     private static void ConfigureInfraServices(this IServiceCollection services, IConfiguration configuration)

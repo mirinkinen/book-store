@@ -9,7 +9,7 @@ namespace Infra.DataLoaders;
 public static class DataLoaders
 {
     [DataLoader]
-    internal static async Task<ILookup<Guid, BookDto>> GetBooksByAuthorIdAsync(
+    internal static async Task<ILookup<Guid, BookDto>> GetBooksByAuthorIdsAsync(
         IReadOnlyList<Guid> authorIds,
         CatalogDbContext dbContext,
         CancellationToken cancellationToken)
