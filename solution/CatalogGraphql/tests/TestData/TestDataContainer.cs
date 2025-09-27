@@ -1,6 +1,5 @@
 ﻿using Common.Infra;
 using Domain;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 
 namespace TestData;

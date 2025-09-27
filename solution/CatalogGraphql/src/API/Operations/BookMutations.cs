@@ -3,7 +3,6 @@ using Application.BookCommands.DeleteBook;
 using Application.BookCommands.UpdateBook;
 using Application.BookQueries;
 using Common.Domain;
-using Domain;
 using MediatR;
 
 namespace API.Operations;

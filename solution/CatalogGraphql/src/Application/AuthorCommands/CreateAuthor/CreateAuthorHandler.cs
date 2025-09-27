@@ -3,7 +3,6 @@ using Common.Domain;
 using Domain;
 using HotChocolate.Subscriptions;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.AuthorCommands.CreateAuthor;
 

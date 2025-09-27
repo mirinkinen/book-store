@@ -1,5 +1,4 @@
 using HotChocolate.Execution;
-using Infra.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

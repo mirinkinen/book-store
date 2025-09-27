@@ -1,7 +1,6 @@
 using Application.AuthorQueries;
 using Domain;
 using HotChocolate;
-using System.Runtime.InteropServices;
 
 namespace Application.BookQueries;
 

@@ -1,4 +1,3 @@
-using Application;
 using Infra.Data;
 using Microsoft.EntityFrameworkCore;
 

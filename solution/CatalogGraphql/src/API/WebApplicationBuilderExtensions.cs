@@ -1,5 +1,3 @@
-using Infra.Data;
-
 namespace API;
 
 public static class WebApplicationBuilderExtensions

@@ -5,8 +5,6 @@ using Application.AuthorCommands.UpdateAuthor;
 using Application.AuthorQueries;
 using Application.AuthorQueries.GetAuthors;
 using Common.Domain;
-using Domain;
-using HotChocolate.Subscriptions;
 using MediatR;
 
 namespace API.Operations;

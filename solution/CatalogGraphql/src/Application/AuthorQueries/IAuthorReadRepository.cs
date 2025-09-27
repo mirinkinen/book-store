@@ -1,6 +1,6 @@
 using GreenDonut.Data;
 
-namespace Application.AuthorQueries.GetAuthors;
+namespace Application.AuthorQueries;
 
 public interface IAuthorReadRepository
 {

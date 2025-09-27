@@ -4,19 +4,40 @@ using HotChocolate;
 
 namespace Application.AuthorQueries;
 
+/// <summary>
+/// Represents an author.
+/// </summary>
 [GraphQLName("Author")]
 public class AuthorDto
 {
+    /// <summary>
+    /// ID of the author.
+    /// </summary>
     public Guid Id { get; set; }
     
+    /// <summary>
+    /// Birthdate of the author.
+    /// </summary>
     public DateOnly Birthdate { get; set; }
 
+    /// <summary>
+    /// Books written by the author.
+    /// </summary>
     public List<BookDto> Books { get; set; }
 
+    /// <summary>
+    /// First name of the author.
+    /// </summary>
     public string FirstName { get; set; }
 
+    /// <summary>
+    /// Last name of the author. 
+    /// </summary>
     public string LastName { get; set; }
 
+    /// <summary>
+    /// Identifier of the organization associated with the author.
+    /// </summary>
     public Guid OrganizationId { get; set; }
 }
 

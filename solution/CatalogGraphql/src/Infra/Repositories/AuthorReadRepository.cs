@@ -1,5 +1,4 @@
 using Application.AuthorQueries;
-using Application.AuthorQueries.GetAuthors;
 using Domain;
 using GreenDonut.Data;
 using Infra.Data;

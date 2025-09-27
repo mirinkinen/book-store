@@ -1,6 +1,4 @@
-using Application.AuthorQueries.GetAuthors;
 using Common.Domain;
-using Domain;
 using MediatR;
 
 namespace Application.AuthorQueries.GetAuthorById;

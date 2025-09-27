@@ -1,4 +1,3 @@
-using Application;
 using Application.AuthorCommands.CreateAuthor;
 using Application.AuthorQueries;
 using Application.AuthorQueries.GetAuthors;
