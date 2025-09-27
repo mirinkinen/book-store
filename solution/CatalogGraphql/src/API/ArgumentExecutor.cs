@@ -25,11 +25,10 @@ public partial class ArgumentExecutor
                     var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
                     await DataSeeder.SeedDataAsync(dbContext);
                     LogDone(logger);
+                    Environment.Exit(0);
                 }
                 break;
         }
-        
-        Environment.Exit(0);
     }
 
     [LoggerMessage(LogLevel.Information, "Seeding data...")]
