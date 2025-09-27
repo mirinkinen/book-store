@@ -9,6 +9,7 @@ using Infra.Data;
 using Infra.DataLoaders;
 using Infra.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.ApplicationInsights.Extensibility;
 
 namespace API;
 
@@ -16,6 +17,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection RegisterServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.ConfigureLogging(configuration);
         services.ConfigureGraphql();
         services.ConfigureInfraServices(configuration);
 
@@ -23,6 +25,15 @@ public static class ServiceCollectionExtensions
         services.AddMediatR(conf => { conf.RegisterServicesFromAssemblyContaining<CreateAuthorHandler>(); });
 
         return services;
+    }
+
+    private static void ConfigureLogging(this IServiceCollection services, IConfiguration configuration)
+    {
+        // Add Application Insights telemetry
+        services.AddApplicationInsightsTelemetry(configuration);
+        
+        // Configure telemetry initializer
+        services.AddSingleton<ITelemetryInitializer, GraphQLTelemetryInitializer>();
     }
 
     private static void ConfigureGraphql(this IServiceCollection services)
@@ -43,6 +54,8 @@ public static class ServiceCollectionExtensions
                 PayloadErrorTypeNamePattern = "{MutationName}Error"
             })
             .AddErrorInterfaceType<IUserError>()
+            // Error handling and logging
+            .AddErrorFilter<GraphQLErrorFilter>()
             // Query capabilities
             .AddProjections()
             .AddFiltering()
