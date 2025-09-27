@@ -2,6 +2,7 @@ using Application.AuthorCommands.CreateAuthor;
 using Application.AuthorQueries;
 using Application.AuthorQueries.GetAuthors;
 using Application.BookQueries;
+using Azure.Monitor.OpenTelemetry.Exporter;
 using Common.Domain;
 using Domain;
 using HotChocolate.Diagnostics;
@@ -11,6 +12,8 @@ using Infra.DataLoaders;
 using Infra.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.ApplicationInsights.Extensibility;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
 
 namespace API;
 
@@ -35,6 +38,31 @@ public static class ServiceCollectionExtensions
         
         // Configure telemetry initializer
         services.AddSingleton<ITelemetryInitializer, GraphQLTelemetryInitializer>();
+        
+        var connectionString = configuration.GetValue<string>("APPLICATIONINSIGHTS_CONNECTION_STRING");
+        
+        services.AddOpenTelemetry()
+            .WithTracing(b =>
+            {
+                b.AddHttpClientInstrumentation();
+                b.AddAspNetCoreInstrumentation();
+                b.AddHotChocolateInstrumentation();
+                b.AddSource("*");
+
+                if (!string.IsNullOrWhiteSpace(connectionString))
+                {
+                    b.AddAzureMonitorTraceExporter();
+                }
+            }).WithMetrics(b =>
+            {
+                b.AddHttpClientInstrumentation();
+                b.AddAspNetCoreInstrumentation();
+                // Add Azure Monitor exporter for metrics
+                if (!string.IsNullOrWhiteSpace(connectionString))
+                {
+                    b.AddAzureMonitorMetricExporter();
+                }
+            });
     }
 
     private static void ConfigureGraphql(this IServiceCollection services)

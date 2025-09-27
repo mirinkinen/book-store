@@ -24,30 +24,7 @@ public static class WebApplicationBuilderExtensions
                 }
             }
         );
-
-        builder.Services.AddOpenTelemetry()
-            .WithTracing(b =>
-            {
-                b.AddHttpClientInstrumentation();
-                b.AddAspNetCoreInstrumentation();
-                b.AddHotChocolateInstrumentation();
-                b.AddSource("*");
-
-                if (!string.IsNullOrWhiteSpace(connectionString))
-                {
-                    b.AddAzureMonitorTraceExporter();
-                }
-            }).WithMetrics(b =>
-            {
-                b.AddHttpClientInstrumentation();
-                b.AddAspNetCoreInstrumentation();
-                // Add Azure Monitor exporter for metrics
-                if (!string.IsNullOrWhiteSpace(connectionString))
-                {
-                    b.AddAzureMonitorMetricExporter();
-                }
-            });
-
+        
         builder.Services.RegisterServices(builder.Configuration);
 
         return builder;

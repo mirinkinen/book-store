@@ -53,7 +53,7 @@ type Book {
   title: String!
   datePublished: LocalDate!
   authorId: UUID!
-  author: Author!
+  author: Author @cost(weight: "10")
   price: Decimal!
 }
 

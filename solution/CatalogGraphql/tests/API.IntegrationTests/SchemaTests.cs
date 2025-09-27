@@ -1,5 +1,4 @@
 using HotChocolate.Execution;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace API.IntegrationTests;
@@ -9,10 +8,9 @@ public class SchemaTests
     [Fact]
     public async Task VerifySchema()
     {
-        var inMemoryConfiguration = new ConfigurationBuilder().Build();
-        
-        var schema = await new ServiceCollection()
-            .RegisterServices(inMemoryConfiguration)
+        var configuration = TestConfigurationHelper.CreateTestConfiguration();
+
+        var schema = await TestConfigurationHelper.ConfigureTestServices(configuration)
             .AddGraphQLServer()
             .BuildSchemaAsync(cancellationToken: TestContext.Current.CancellationToken);
 

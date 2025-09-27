@@ -52,13 +52,27 @@ public class RequestExecutorProxyFixture : IAsyncLifetime
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string?>
             {
-                { "ConnectionStrings:DefaultConnection", _sqlContainer.GetConnectionString() }
+                { "ConnectionStrings:DefaultConnection", _sqlContainer.GetConnectionString() },
+                { "Environment", "Test" },
+                // Disable Application Insights for tests
+                { "ApplicationInsights:ConnectionString", "" }
             })
             .Build();
 
 
         var serviceProvider = new ServiceCollection()
             .RegisterServices(configuration)
+            // Add both hosting environment interfaces for Application Insights compatibility
+            .AddSingleton<Microsoft.AspNetCore.Hosting.IWebHostEnvironment>(provider =>
+            {
+                var mockEnv = new MockWebHostEnvironment();
+                return mockEnv;
+            })
+            .AddSingleton<Microsoft.AspNetCore.Hosting.IHostingEnvironment>(provider =>
+            {
+                var webHostEnv = provider.GetRequiredService<Microsoft.AspNetCore.Hosting.IWebHostEnvironment>();
+                return new MockHostingEnvironment(webHostEnv);
+            })
             .AddSingleton(sp =>
                 new RequestExecutorProxy(sp.GetRequiredService<IRequestExecutorResolver>(), Schema.DefaultName))
             .BuildServiceProvider();
