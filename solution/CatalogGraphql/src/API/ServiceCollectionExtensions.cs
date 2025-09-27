@@ -4,6 +4,7 @@ using Application.AuthorQueries.GetAuthors;
 using Application.BookQueries;
 using Common.Domain;
 using Domain;
+using HotChocolate.Diagnostics;
 using HotChocolate.Execution;
 using Infra.Data;
 using Infra.DataLoaders;
@@ -39,7 +40,6 @@ public static class ServiceCollectionExtensions
     private static void ConfigureGraphql(this IServiceCollection services)
     {
         services.AddGraphQLServer()
-            .AddGraphQLServer()
             // Types
             .AddTypes()
             // Conventions
@@ -55,6 +55,10 @@ public static class ServiceCollectionExtensions
             })
             .AddErrorInterfaceType<IUserError>()
             // Error handling and logging
+            .AddInstrumentation(options =>
+            {
+                options.Scopes = ActivityScopes.All;
+            })
             .AddErrorFilter<GraphQLErrorFilter>()
             // Query capabilities
             .AddProjections()

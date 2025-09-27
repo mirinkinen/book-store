@@ -13,9 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Monitor.OpenTelemetry.Exporter" Version="1.4.0" />
     <PackageReference Include="HotChocolate.AspNetCore" Version="15.1.10" />
     <PackageReference Include="HotChocolate.AspNetCore.CommandLine" Version="15.1.10" />
     <PackageReference Include="HotChocolate.Data.EntityFramework" Version="15.1.10" />
+    <PackageReference Include="HotChocolate.Diagnostics" Version="15.1.10" />
     <PackageReference Include="HotChocolate.Types.Analyzers" Version="15.1.10">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -25,6 +27,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.12.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.12.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.12.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.12.0" />
   </ItemGroup>
 
   <ItemGroup>
