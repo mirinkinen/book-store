@@ -5,12 +5,15 @@ using Common.Domain;
 using GreenDonut.Data;
 using HotChocolate.Types.Pagination;
 using MediatR;
+using System.Diagnostics;
 
 namespace API.Operations;
 
 [QueryType]
 public static partial class BookQueries
 {
+    private static readonly ActivitySource _activity = new(nameof(BookQueries));
+
     [NodeResolver]
     [Error<EntityNotFoundException>]
     public static async Task<BookDto> GetBookById(Guid id, ISender sender)
@@ -27,6 +30,8 @@ public static partial class BookQueries
         ISender sender,
         CancellationToken cancellationToken)
     {
+        using var activity = _activity.StartActivity();
+
         var page = await sender.Send(new GetBooksQuery(pagingArguments, queryContext), cancellationToken);
         return new PageConnection<BookDto>(page);
     }

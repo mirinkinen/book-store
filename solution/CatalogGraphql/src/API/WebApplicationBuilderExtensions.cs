@@ -31,6 +31,7 @@ public static class WebApplicationBuilderExtensions
                 b.AddHttpClientInstrumentation();
                 b.AddAspNetCoreInstrumentation();
                 b.AddHotChocolateInstrumentation();
+                b.AddSource("*");
 
                 if (!string.IsNullOrWhiteSpace(connectionString))
                 {
@@ -46,7 +47,6 @@ public static class WebApplicationBuilderExtensions
                     b.AddAzureMonitorMetricExporter();
                 }
             });
-
 
         builder.Services.RegisterServices(builder.Configuration);
 
