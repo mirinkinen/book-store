@@ -1,3 +1,4 @@
+using Application.AuthorQueries;
 using Application.BookQueries;
 using GreenDonut;
 using Infra.Data;
@@ -18,5 +19,20 @@ public static class DataLoaders
                 .Select(b => b.ToDto())
                 .ToListAsync(cancellationToken))
             .ToLookup(b => b.AuthorId);
+    }
+    
+    [DataLoader]
+    internal static async Task<Dictionary<Guid, AuthorDto>> GetAuthorByIdAsync(
+        IReadOnlyList<Guid> authorIds,
+        CatalogDbContext dbContext,
+        CancellationToken cancellationToken)
+    {
+        var authors = await dbContext.Authors
+            .Where(a => authorIds.Contains(a.Id))
+            .Select(a => a.ToDto())
+            .Distinct()
+            .ToDictionaryAsync(a => a.Id, cancellationToken);
+        
+        return authors;
     }
 }
