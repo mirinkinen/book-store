@@ -13,12 +13,19 @@ type AnotherMutationTestDto {
   string: String
 }
 
+"Represents an author."
 type Author {
+  "ID of the author."
   id: UUID!
+  "Birthdate of the author."
   birthdate: LocalDate!
+  "Books written by the author."
   books: [Book!] @cost(weight: "10")
+  "First name of the author."
   firstName: String!
+  "Last name of the author."
   lastName: String!
+  "Identifier of the organization associated with the author."
   organizationId: UUID!
 }
 
@@ -113,7 +120,9 @@ type Mutation {
   createAuthor(command: CreateAuthorCommand!): CreateAuthorDto! @cost(weight: "10")
   updateAuthor(command: UpdateAuthorCommand!): UpdateAuthorDto! @cost(weight: "10")
   deleteAuthor(command: DeleteAuthorCommand!): DeleteAuthorDto! @cost(weight: "10")
+  "Example that shows that scoped services are shared between concurrent mutations."
   mutationTest: MutationTestDto! @cost(weight: "10")
+  "Example that shows that scoped services are shared between concurrent mutations."
   anotherMutationTest: AnotherMutationTestDto! @cost(weight: "10")
   mutationWithMultipleRepositories: MutationWithMultipleRepositoriesDto! @cost(weight: "10")
   createBook(command: CreateBookCommand!): CreateBookDto! @cost(weight: "10")
@@ -190,22 +199,35 @@ union UpdateAuthorError = DomainRuleError | EntityNotFoundError
 
 union UpdateBookError = DomainRuleError | EntityNotFoundError
 
+"Represents an author."
 input AuthorFilterInput {
   and: [AuthorFilterInput!]
   or: [AuthorFilterInput!]
+  "ID of the author."
   id: UuidOperationFilterInput
+  "Birthdate of the author."
   birthdate: LocalDateOperationFilterInput
+  "Books written by the author."
   books: ListFilterInputTypeOfBookFilterInput
+  "First name of the author."
   firstName: StringOperationFilterInput
+  "Last name of the author."
   lastName: StringOperationFilterInput
+  "Identifier of the organization associated with the author."
   organizationId: UuidOperationFilterInput
 }
 
+"Represents an author."
 input AuthorSortInput {
+  "ID of the author."
   id: SortEnumType @cost(weight: "10")
+  "Birthdate of the author."
   birthdate: SortEnumType @cost(weight: "10")
+  "First name of the author."
   firstName: SortEnumType @cost(weight: "10")
+  "Last name of the author."
   lastName: SortEnumType @cost(weight: "10")
+  "Identifier of the organization associated with the author."
   organizationId: SortEnumType @cost(weight: "10")
 }
 
