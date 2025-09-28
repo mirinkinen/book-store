@@ -106,10 +106,11 @@ public static class ServiceCollectionExtensions
             .InitializeOnStartup(
                 warmup: async (executor, cancellationToken) => { await executor.ExecuteAsync("{ __typename }", cancellationToken); });
 
-        services.AddScoped<DataLoaderOptions>(sp => new DataLoaderOptions
-        {
-            MaxBatchSize = 2
-        });
+        // Enable to demo batching.
+        // services.AddScoped<DataLoaderOptions>(sp => new DataLoaderOptions
+        // {
+        //     MaxBatchSize = 2
+        // });
     }
 
     private static void ConfigureInfraServices(this IServiceCollection services, IConfiguration configuration)
