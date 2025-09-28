@@ -67,27 +67,30 @@ public static class TestDataContainer
             new Book(ErnestHemingwayId, "A Farewell to Arms", new DateOnly(1929, 1, 1), 13),
         });
 
-        // Generate some random books for all authors.
+        // Generate deterministic books for all authors.
         books.AddRange(Enumerable
             .Range(1, 1000)
-            .Select(id => new Book(GetRandomAuthor(authorsList).Id, $"Book #{id}", GetRandomPublishedDate(),
-                GetRandomPrice())));
+            .Select(id => new Book(GetDeterministicAuthor(authorsList, id).Id, $"Book #{id}", GetDeterministicPublishedDate(id),
+                GetDeterministicPrice(id))));
 
         return books;
     }
 
-    private static decimal GetRandomPrice()
+    private static decimal GetDeterministicPrice(int bookId)
     {
-        return RandomNumberGenerator.GetInt32(10, 50);
+        // Use modulo to create deterministic price between 10 and 49
+        return 10 + (bookId % 40);
     }
 
-    private static Author GetRandomAuthor(List<Author> authors)
+    private static Author GetDeterministicAuthor(List<Author> authors, int bookId)
     {
-        return authors[RandomNumberGenerator.GetInt32(0, 4)];
+        // Use modulo to deterministically assign authors based on book ID
+        return authors[bookId % authors.Count];
     }
 
-    private static DateOnly GetRandomPublishedDate()
+    private static DateOnly GetDeterministicPublishedDate(int bookId)
     {
-        return DateOnly.FromDateTime(DateTime.UtcNow - TimeSpan.FromDays(RandomNumberGenerator.GetInt32(0, 10000)));
+        // Use modulo to create deterministic dates, cycling through past 10000 days
+        return DateOnly.FromDateTime(DateTime.UtcNow - TimeSpan.FromDays(bookId % 10000));
     }
 }
