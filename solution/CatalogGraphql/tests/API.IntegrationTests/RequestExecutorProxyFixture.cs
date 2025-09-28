@@ -59,20 +59,7 @@ public class RequestExecutorProxyFixture : IAsyncLifetime
             })
             .Build();
 
-
-        var serviceProvider = new ServiceCollection()
-            .RegisterServices(configuration)
-            // Add both hosting environment interfaces for Application Insights compatibility
-            .AddSingleton<Microsoft.AspNetCore.Hosting.IWebHostEnvironment>(provider =>
-            {
-                var mockEnv = new MockWebHostEnvironment();
-                return mockEnv;
-            })
-            .AddSingleton<Microsoft.AspNetCore.Hosting.IHostingEnvironment>(provider =>
-            {
-                var webHostEnv = provider.GetRequiredService<Microsoft.AspNetCore.Hosting.IWebHostEnvironment>();
-                return new MockHostingEnvironment(webHostEnv);
-            })
+        var serviceProvider = TestConfigurationHelper.ConfigureTestServices(configuration)
             .AddSingleton(sp =>
                 new RequestExecutorProxy(sp.GetRequiredService<IRequestExecutorResolver>(), Schema.DefaultName))
             .BuildServiceProvider();

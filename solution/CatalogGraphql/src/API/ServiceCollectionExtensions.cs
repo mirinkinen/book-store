@@ -1,7 +1,9 @@
+using API.Operations;
 using Application.AuthorCommands.CreateAuthor;
 using Application.AuthorQueries;
 using Application.AuthorQueries.GetAuthors;
 using Application.BookQueries;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Azure.Monitor.OpenTelemetry.Exporter;
 using Common.Domain;
 using Domain;
@@ -10,8 +12,8 @@ using HotChocolate.Execution;
 using Infra.Data;
 using Infra.DataLoaders;
 using Infra.Repositories;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 
@@ -19,9 +21,13 @@ namespace API;
 
 public static class ServiceCollectionExtensions
 {
+    /// <summary>
+    /// Configures services for the application.
+    /// </summary>
+    /// <remarks>This method is also called in integration tests. Place everything here that should be used both in production and
+    /// integration tests.</remarks>
     public static IServiceCollection RegisterServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.ConfigureLogging(configuration);
         services.ConfigureGraphql();
         services.ConfigureInfraServices(configuration);
 
@@ -31,37 +37,31 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    private static void ConfigureLogging(this IServiceCollection services, IConfiguration configuration)
+    public static void ConfigureLogging(this IServiceCollection services, IConfiguration configuration)
     {
         // Add Application Insights telemetry
         services.AddApplicationInsightsTelemetry(configuration);
-        
+
         // Configure telemetry initializer
         services.AddSingleton<ITelemetryInitializer, GraphQLTelemetryInitializer>();
-        
+
         var connectionString = configuration.GetValue<string>("APPLICATIONINSIGHTS_CONNECTION_STRING");
-        
+
         services.AddOpenTelemetry()
             .WithTracing(b =>
             {
                 b.AddHttpClientInstrumentation();
                 b.AddAspNetCoreInstrumentation();
                 b.AddHotChocolateInstrumentation();
-                b.AddSource("*");
-
-                if (!string.IsNullOrWhiteSpace(connectionString))
-                {
-                    b.AddAzureMonitorTraceExporter();
-                }
+                b.AddSource(nameof(BookQueries));
             }).WithMetrics(b =>
             {
                 b.AddHttpClientInstrumentation();
                 b.AddAspNetCoreInstrumentation();
-                // Add Azure Monitor exporter for metrics
-                if (!string.IsNullOrWhiteSpace(connectionString))
-                {
-                    b.AddAzureMonitorMetricExporter();
-                }
+            }).UseAzureMonitor(c =>
+            {
+                c.ConnectionString = connectionString;
+                c.EnableLiveMetrics = true;
             });
     }
 
@@ -83,10 +83,7 @@ public static class ServiceCollectionExtensions
             })
             .AddErrorInterfaceType<IUserError>()
             // Error handling and logging
-            .AddInstrumentation(options =>
-            {
-                options.Scopes = ActivityScopes.All;
-            })
+            .AddInstrumentation(options => { options.Scopes = ActivityScopes.All; })
             .AddErrorFilter<GraphQLErrorFilter>()
             // Query capabilities
             .AddProjections()

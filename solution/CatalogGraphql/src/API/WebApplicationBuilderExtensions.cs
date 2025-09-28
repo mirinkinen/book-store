@@ -1,7 +1,5 @@
 using Azure.Monitor.OpenTelemetry.Exporter;
-using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
-using OpenTelemetry.Trace;
 
 namespace API;
 
@@ -20,12 +18,13 @@ public static class WebApplicationBuilderExtensions
 
                 if (!string.IsNullOrWhiteSpace(connectionString))
                 {
-                    b.AddAzureMonitorLogExporter();
+                    b.AddAzureMonitorLogExporter(c => c.ConnectionString = connectionString);
                 }
             }
         );
-        
+
         builder.Services.RegisterServices(builder.Configuration);
+        builder.Services.ConfigureLogging(builder.Configuration);
 
         return builder;
     }
