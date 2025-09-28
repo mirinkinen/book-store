@@ -53,9 +53,6 @@ public class RequestExecutorProxyFixture : IAsyncLifetime
             .AddInMemoryCollection(new Dictionary<string, string?>
             {
                 { "ConnectionStrings:DefaultConnection", _sqlContainer.GetConnectionString() },
-                { "Environment", "Test" },
-                // Disable Application Insights for tests
-                { "ApplicationInsights:ConnectionString", "" }
             })
             .Build();
 
