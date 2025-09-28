@@ -1,0 +1,53 @@
+﻿{
+  data: {
+    books: {
+      nodes: [
+        {
+          id: Guid_1,
+          title: A Farewell to Arms,
+          authorId: Guid_2,
+          author: {
+            firstName: Ernest.,
+            lastName: Hemingway
+          }
+        },
+        {
+          id: Guid_3,
+          title: Angels and Demons,
+          authorId: Guid_4,
+          author: {
+            firstName: Dan,
+            lastName: Brown
+          }
+        },
+        {
+          id: Guid_5,
+          title: Book #1,
+          authorId: Guid_6,
+          author: {
+            firstName: Stephen,
+            lastName: King
+          }
+        },
+        {
+          id: Guid_7,
+          title: Book #10,
+          authorId: Guid_6,
+          author: {
+            firstName: Stephen,
+            lastName: King
+          }
+        },
+        {
+          id: Guid_8,
+          title: Book #100,
+          authorId: Guid_9,
+          author: {
+            firstName: J.K.,
+            lastName: Rowling
+          }
+        }
+      ]
+    }
+  }
+}

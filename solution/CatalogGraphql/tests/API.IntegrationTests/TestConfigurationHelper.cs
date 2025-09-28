@@ -25,7 +25,11 @@ public static class TestConfigurationHelper
     {
         var services = new ServiceCollection();
 
-        services.AddLogging(c => { c.AddDebug().SetMinimumLevel(LogLevel.Warning); });
+        services.AddLogging(c =>
+        {
+            c.AddDebug().SetMinimumLevel(LogLevel.Debug);
+            c.AddConsole().SetMinimumLevel(LogLevel.Debug);
+        });
 
         // Add mock TelemetryClient for tests
         services.AddSingleton<TelemetryClient>();

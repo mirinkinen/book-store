@@ -35,4 +35,20 @@ public static class DataLoaders
         
         return authors;
     }
+    
+    [DataLoader]
+    internal static async Task<Dictionary<Guid, AuthorDto>> GetAuthorByBookIdAsync(
+        IReadOnlyList<Guid> bookIds,
+        CatalogDbContext dbContext,
+        CancellationToken cancellationToken)
+    {
+        return await dbContext.Books
+            .Where(b => bookIds.Contains(b.Id))
+            .Join(dbContext.Authors, 
+                  book => book.AuthorId, 
+                  author => author.Id, 
+                  (book, author) => new { BookId = book.Id, AuthorId = book.AuthorId, Author = author.ToDto() })
+            .OrderBy(x => x.BookId)
+            .ToDictionaryAsync(x => x.BookId, x => x.Author, cancellationToken);
+    }
 }

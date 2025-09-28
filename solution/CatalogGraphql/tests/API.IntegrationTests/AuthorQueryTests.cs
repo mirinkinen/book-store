@@ -85,4 +85,59 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
         var json = result.ToJson();
         await VerifyJson(json);
     }
+    
+    [Fact]
+    public async Task GetBooksWithAuthorAndAuthorId()
+    {
+        // Arrange
+        var query = @"
+            query {
+              books(first: 5, order: [{ title: ASC }]) {
+                nodes {
+                  id
+                  title
+                  authorId
+                  author {
+                    firstName
+                    lastName
+                  }
+                }
+              }
+            }
+            ";
+
+        // Act
+        var result = await _requestExecutor.ExecuteOperationAsync(query);
+
+        // Assert
+        var json = result.ToJson();
+        await VerifyJson(json);
+    }
+
+    [Fact]
+    public async Task GetBooksWithAuthorWithoutAuthorId()
+    {
+        // Arrange
+        var query = @"
+            query {
+              books(first: 5, order: [{ title: ASC }]) {
+                nodes {
+                  id
+                  title
+                  author {
+                    firstName
+                    lastName
+                  }
+                }
+              }
+            }
+            ";
+
+        // Act
+        var result = await _requestExecutor.ExecuteOperationAsync(query);
+
+        // Assert
+        var json = result.ToJson();
+        await VerifyJson(json);
+    }
 }

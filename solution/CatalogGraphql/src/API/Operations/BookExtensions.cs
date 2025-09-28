@@ -7,9 +7,9 @@ namespace API.Operations;
 [ExtendObjectType<BookDto>]
 public class BookExtensions
 {
-    public async Task<AuthorDto?> GetAuthor([Parent] BookDto book, AuthorByIdDataLoader dataLoader)
+    public async Task<AuthorDto?> GetAuthor([Parent] BookDto book, AuthorByBookIdDataLoader dataLoader)
     {
-        var author = await dataLoader.LoadAsync(book.AuthorId);
+        var author = await dataLoader.LoadAsync(book.Id);
         return author;
     }
 }
