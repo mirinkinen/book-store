@@ -1,13 +1,13 @@
 using Application.BookQueries;
 using Domain;
 using HotChocolate;
+using System.Linq.Expressions;
 
 namespace Application.AuthorQueries;
 
 /// <summary>
 /// Represents an author.
 /// </summary>
-[GraphQLName("Author")]
 public class AuthorDto
 {
     /// <summary>
@@ -46,6 +46,19 @@ public static class AuthorExtensions
     public static AuthorDto ToDto(this Author author)
     {
         return new AuthorDto
+        {
+            Id = author.Id,
+            Birthdate = author.Birthdate,
+            FirstName = author.FirstName,
+            LastName = author.LastName,
+            OrganizationId = author.OrganizationId
+        };
+    }
+
+    // Expression-based projection for EF Core
+    public static Expression<Func<Author, AuthorDto>> ToDtoExpression()
+    {
+        return author => new AuthorDto
         {
             Id = author.Id,
             Birthdate = author.Birthdate,

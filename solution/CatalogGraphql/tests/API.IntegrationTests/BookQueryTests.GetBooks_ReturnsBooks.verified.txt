@@ -3,52 +3,52 @@
     books: {
       nodes: [
         {
-          __typename: Book,
+          __typename: BookDto,
           id: Guid_1,
           title: A Farewell to Arms
         },
         {
-          __typename: Book,
+          __typename: BookDto,
           id: Guid_2,
           title: Angels and Demons
         },
         {
-          __typename: Book,
+          __typename: BookDto,
           id: Guid_3,
           title: Book #1
         },
         {
-          __typename: Book,
+          __typename: BookDto,
           id: Guid_4,
           title: Book #10
         },
         {
-          __typename: Book,
+          __typename: BookDto,
           id: Guid_5,
           title: Book #100
         },
         {
-          __typename: Book,
+          __typename: BookDto,
           id: Guid_6,
           title: Book #1000
         },
         {
-          __typename: Book,
+          __typename: BookDto,
           id: Guid_7,
           title: Book #101
         },
         {
-          __typename: Book,
+          __typename: BookDto,
           id: Guid_8,
           title: Book #102
         },
         {
-          __typename: Book,
+          __typename: BookDto,
           id: Guid_9,
           title: Book #103
         },
         {
-          __typename: Book,
+          __typename: BookDto,
           id: Guid_10,
           title: Book #104
         }

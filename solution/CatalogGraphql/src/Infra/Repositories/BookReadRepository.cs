@@ -24,14 +24,7 @@ public class BookReadRepository : ReadRepository, IBookReadRepository
     {
         await using var dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
         return await dbContext.Books
-            .Select(e => new BookDto
-            {
-                Id = e.Id,
-                Title = e.Title,
-                AuthorId = e.AuthorId,
-                DatePublished = e.DatePublished,
-                Price = e.Price
-            })
+            .Select(BookExtensions.ToDtoExpression())
             .With(queryContext, DefaultOrder)
             .ToPageAsync(pagingArguments, cancellationToken);
     }
@@ -41,14 +34,7 @@ public class BookReadRepository : ReadRepository, IBookReadRepository
         await using var dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
         return dbContext.Books
             .Where(b => ids.Contains(b.AuthorId))
-            .Select(e => new BookDto
-            {
-                Id = e.Id,
-                Title = e.Title,
-                AuthorId = e.AuthorId,
-                DatePublished = e.DatePublished,
-                Price = e.Price
-            })
+            .Select(BookExtensions.ToDtoExpression())
             .ToLookup(b => b.AuthorId);
     }
 

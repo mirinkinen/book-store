@@ -25,14 +25,7 @@ public class AuthorReadRepository : ReadRepository, IAuthorReadRepository
     {
         await using var dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
         return await dbContext.Set<Author>()
-            .Select(e => new AuthorDto
-            {
-                Id = e.Id,
-                Birthdate = e.Birthdate,
-                FirstName = e.FirstName,
-                LastName = e.LastName,
-                OrganizationId = e.OrganizationId
-            })
+            .Select(AuthorExtensions.ToDtoExpression())
             .With(queryContext, DefaultOrder)
             .ToPageAsync(pagingArguments, cancellationToken);
     }
