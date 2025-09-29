@@ -9,11 +9,7 @@ public class Author : Entity
 {
     public required DateOnly Birthdate { get; set; }
 
-    // Private backing field for the Books collection
-    private readonly List<Book> _books = new();
-
-    // Public read-only access to books
-    public IReadOnlyList<Book> Books => _books;
+    public List<Book> Books { get; set; } = new();
 
     public required string FirstName { get; set; }
 
@@ -48,18 +44,18 @@ public class Author : Entity
 
     public void AddBook(Book book)
     {
-        _books.Add(book);
+        Books.Add(book);
     }
 
     public Book RemoveBook(Guid bookId)
     {
-        var book = _books.FirstOrDefault(b => b.Id == bookId);
+        var book = Books.FirstOrDefault(b => b.Id == bookId);
         if (book == null)
         {
             throw new KeyNotFoundException($"Book with ID '{bookId}' not found for this author.");
         }
         
-        _books.Remove(book);
+        Books.Remove(book);
         return book;
     }
 

@@ -12,6 +12,7 @@ public class CatalogDbContext : DbContext
 
     public DbSet<Book> Books { get; set; }
     public DbSet<Author> Authors { get; set; }
+    public DbSet<Review> Reviews { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -19,6 +20,7 @@ public class CatalogDbContext : DbContext
 
         modelBuilder.ApplyConfiguration(new BookConfiguration());
         modelBuilder.ApplyConfiguration(new AuthorConfiguration());
+        modelBuilder.ApplyConfiguration(new ReviewConfiguration());
     }
 }
 
@@ -26,6 +28,7 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
 {
     public void Configure(EntityTypeBuilder<Book> builder)
     {
+        builder.ToTable("Books");
         builder.HasKey(b => b.Id);
 
         builder.Property(b => b.Title)
@@ -50,6 +53,7 @@ public class AuthorConfiguration : IEntityTypeConfiguration<Author>
 {
     public void Configure(EntityTypeBuilder<Author> builder)
     {
+        builder.ToTable("Authors");
         builder.HasKey(a => a.Id);
 
         builder.Property(a => a.FirstName)
@@ -65,5 +69,27 @@ public class AuthorConfiguration : IEntityTypeConfiguration<Author>
 
         builder.Property(a => a.OrganizationId)
             .IsRequired();
+    }
+}
+
+
+public class ReviewConfiguration : IEntityTypeConfiguration<Review>
+{
+    public void Configure(EntityTypeBuilder<Review> builder)
+    {
+        builder.ToTable("Reviews");
+        builder.HasKey(a => a.Id);
+
+        builder.Property(a => a.Title)
+            .IsRequired()
+            .HasMaxLength(100);
+
+        builder.Property(a => a.Body)
+            .IsRequired();
+
+        builder.HasOne(r => r.Book)
+            .WithMany(b => b.Reviews)
+            .HasForeignKey(r => r.BookId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

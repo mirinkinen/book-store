@@ -13,6 +13,8 @@ public class Book : Entity
     public Guid AuthorId { get; set; }
 
     public decimal Price { get; set; }
+    
+    public List<Review> Reviews { get; set; } = new();
 
     [Obsolete("Only for serialization", true)]
     public Book()

@@ -51,8 +51,9 @@ public static partial class BookQueries
         using var activity = _activity.StartActivity();
 
         await using var dbContext = await dbContextFactory.CreateDbContextAsync(cancellationToken);
+        
         var page = await dbContext.Books
-            .With(queryContext, sort => sort.IfEmpty(o => o.AddDescending(t => t.Id)))
+            .With(queryContext, sort => sort.IfEmpty(s => s.AddDescending(b => b.Id)))
             .ToPageAsync(pagingArguments, cancellationToken);
         
         return new PageConnection<Book>(page);

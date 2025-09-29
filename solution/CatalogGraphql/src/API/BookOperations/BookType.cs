@@ -15,5 +15,6 @@ public class BookType : ObjectType<Book>
         descriptor.Field(b => b.DatePublished);
         descriptor.Field(b => b.Author);
         descriptor.Field(b => b.AuthorId);
+        descriptor.Field(b => b.Reviews);
     }
 }
