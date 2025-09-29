@@ -8,13 +8,7 @@ public class BookType : ObjectType<Book>
     {
         base.Configure(descriptor);
 
-        descriptor.BindFieldsExplicitly();
-        descriptor.Field(b => b.Id);
-        descriptor.Field(b => b.Title);
-        descriptor.Field(b => b.Price);
-        descriptor.Field(b => b.DatePublished);
-        descriptor.Field(b => b.Author);
-        descriptor.Field(b => b.AuthorId);
-        descriptor.Field(b => b.Reviews);
+        descriptor.BindFieldsImplicitly();
+
     }
 }

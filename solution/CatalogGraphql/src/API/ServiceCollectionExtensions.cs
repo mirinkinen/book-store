@@ -1,15 +1,9 @@
-using Application.AuthorCommands.CreateAuthor;
-using Application.AuthorQueries;
-using Application.AuthorQueries.GetAuthors;
-using Application.BookQueries;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Common.Domain;
 using Domain;
 using HotChocolate.Diagnostics;
 using HotChocolate.Execution;
 using Infra.Data;
-using Infra.DataLoaders;
-using Infra.Repositories;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Metrics;
@@ -29,9 +23,6 @@ public static class ServiceCollectionExtensions
     {
         services.ConfigureGraphql();
         services.ConfigureInfraServices(configuration);
-
-        // Configure GraphQL with a single Query type containing all operations
-        services.AddMediatR(conf => { conf.RegisterServicesFromAssemblyContaining<CreateAuthorHandler>(); });
 
         return services;
     }
@@ -97,7 +88,6 @@ public static class ServiceCollectionExtensions
             })
             // .AddMaxExecutionDepthRule(4)
             //.AddGlobalObjectIdentification()
-            .AddDataLoader<CustomBooksByAuthorIdsDataLoader>()
             // Data store
             .RegisterDbContextFactory<CatalogDbContext>()
             .AddInMemorySubscriptions()
@@ -114,16 +104,6 @@ public static class ServiceCollectionExtensions
 
     private static void ConfigureInfraServices(this IServiceCollection services, IConfiguration configuration)
     {
-        // Queryable - Hot chocolate will dispose of the DbContext.
-        services.AddScoped<IBookReadRepository, BookReadRepository>();
-        services.AddScoped<IAuthorReadRepository, AuthorReadRepository>();
-
-        // Command
-        services.AddScoped<IBookWriteRepository, BookWriteRepository>();
-        services.AddScoped<IAuthorWriteRepository, AuthorWriteRepository>();
-
-        services.AddScoped<ScopedService>();
-
         services.AddDbContextPool<CatalogDbContext>(options =>
         {
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));

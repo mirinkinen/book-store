@@ -26,7 +26,7 @@ public static partial class ReviewQueries
         await using var dbContext = await dbContextFactory.CreateDbContextAsync(cancellationToken);
         
         var page = await dbContext.Reviews
-            .With(queryContext, sort => sort.IfEmpty(s => s.AddDescending(b => b.Id)))
+            .With(queryContext, sort => sort.IfEmpty(s => s.AddDescending(r => r.Id)))
             .ToPageAsync(pagingArguments, cancellationToken);
         
         return new PageConnection<Review>(page);
