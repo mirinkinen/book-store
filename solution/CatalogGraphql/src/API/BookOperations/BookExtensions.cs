@@ -2,7 +2,7 @@ using Application.AuthorQueries;
 using Application.BookQueries;
 using Infra.DataLoaders;
 
-namespace API.Operations;
+namespace API.BookOperations;
 
 [ExtendObjectType<BookDto>]
 public class BookExtensions

@@ -7,7 +7,7 @@ using Application.AuthorQueries.GetAuthors;
 using Common.Domain;
 using MediatR;
 
-namespace API.Operations;
+namespace API.AuthorOperations;
 
 [MutationType]
 public class AuthorMutations

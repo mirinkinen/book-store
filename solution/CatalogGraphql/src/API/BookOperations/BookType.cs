@@ -1,6 +1,6 @@
 using Domain;
 
-namespace API.Types;
+namespace API.BookOperations;
 
 public class BookType : ObjectType<Book>
 {

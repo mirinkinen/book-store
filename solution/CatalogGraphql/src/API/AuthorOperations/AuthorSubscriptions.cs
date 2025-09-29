@@ -3,10 +3,10 @@ using Domain;
 using HotChocolate.Subscriptions;
 using System.Runtime.CompilerServices;
 
-namespace API.Operations;
+namespace API.AuthorOperations;
 
 [SubscriptionType]
-public class Subscriptions
+public class AuthorSubscriptions
 {
     public async IAsyncEnumerable<AuthorDto> OnAuthorCreatedStream(ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
     {

@@ -10,7 +10,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
-namespace API.Operations;
+namespace API.BookOperations;
 
 [QueryType]
 public static partial class BookQueries

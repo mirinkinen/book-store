@@ -5,7 +5,7 @@ using Application.BookQueries;
 using Common.Domain;
 using MediatR;
 
-namespace API.Operations;
+namespace API.BookOperations;
 
 [MutationType]
 public class BookMutations

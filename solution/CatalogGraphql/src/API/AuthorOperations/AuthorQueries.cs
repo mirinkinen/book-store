@@ -6,7 +6,7 @@ using GreenDonut.Data;
 using HotChocolate.Types.Pagination;
 using MediatR;
 
-namespace API.Operations;
+namespace API.AuthorOperations;
 
 [QueryType]
 public static partial class AuthorQueries

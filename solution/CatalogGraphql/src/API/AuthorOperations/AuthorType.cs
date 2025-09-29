@@ -1,6 +1,6 @@
 using Domain;
 
-namespace API.Types;
+namespace API.AuthorOperations;
 
 public class AuthorType : ObjectType<Author>
 {

@@ -1,10 +1,8 @@
-using API.Operations;
 using Application.AuthorCommands.CreateAuthor;
 using Application.AuthorQueries;
 using Application.AuthorQueries.GetAuthors;
 using Application.BookQueries;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
-using Azure.Monitor.OpenTelemetry.Exporter;
 using Common.Domain;
 using Domain;
 using HotChocolate.Diagnostics;
@@ -16,6 +14,7 @@ using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
+using BookQueries = API.BookOperations.BookQueries;
 
 namespace API;
 
