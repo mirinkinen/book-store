@@ -19,6 +19,7 @@ To seed development data, run
 
 ```
 dotnet run --project CatalogOData/src/Cataloging -- seed-dev-data
+dotnet run --project CatalogGraphql/src/API -- SEED-TEST-DATA
 ```
 
 ## Database migrations

@@ -20,7 +20,15 @@ public static class DataSeeder
         // If not already seeded.
         if (!catalogDbContext.Books.Any())
         {
-            var books = TestDataContainer.GetBooks(authors);
+            var books = TestDataContainer.GetBooks(catalogDbContext.Authors.ToList());
+            await catalogDbContext.AddRangeAsync(books);
+            await catalogDbContext.SaveChangesAsync();
+        }
+        
+        // If not already seeded.
+        if (!catalogDbContext.Reviews.Any())
+        {
+            var books = TestDataContainer.GetReviews(catalogDbContext.Books.ToList());
             await catalogDbContext.AddRangeAsync(books);
             await catalogDbContext.SaveChangesAsync();
         }
