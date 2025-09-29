@@ -41,7 +41,7 @@ public class BookQueryTests : IClassFixture<RequestExecutorProxyFixture>
         var query = """
                     query {
                        bookById(id: "6F6D9786-074C-4828-8DDD-5852A9530203") {
-                        ... on Book {
+                        ... on BookDto {
                           id
                           title
                         }
