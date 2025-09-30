@@ -13,7 +13,7 @@ public static partial class BookQueries
 {
     [NodeResolver]
     [Error<EntityNotFoundException>]
-    public static async Task<BookDto> GetBookById(Guid id, ISender sender)
+    public static async Task<BookNode> GetBookById(Guid id, ISender sender)
     {
         return await sender.Send(new GetBookByIdQuery(id));
     }
@@ -21,13 +21,13 @@ public static partial class BookQueries
     [UseConnection]
     [UseFiltering]
     [UseSorting]
-    public static async Task<PageConnection<BookDto>> GetBooks(
+    public static async Task<PageConnection<BookNode>> GetBooks(
         PagingArguments pagingArguments,
-        QueryContext<BookDto> queryContext,
+        QueryContext<BookNode> queryContext,
         ISender sender,
         CancellationToken cancellationToken)
     {
         var page = await sender.Send(new GetBooksQuery(pagingArguments, queryContext), cancellationToken);
-        return new PageConnection<BookDto>(page);
+        return new PageConnection<BookNode>(page);
     }
 }

@@ -3,9 +3,9 @@ using MediatR;
 
 namespace Application.BookQueries.GetBookById;
 
-public record GetBookByIdQuery(Guid Id) : IRequest<BookDto>;
+public record GetBookByIdQuery(Guid Id) : IRequest<BookNode>;
 
-public class GetBookByIdHandler : IRequestHandler<GetBookByIdQuery, BookDto>
+public class GetBookByIdHandler : IRequestHandler<GetBookByIdQuery, BookNode>
 {
     private readonly IBookReadRepository _bookReadRepository;
 
@@ -14,7 +14,7 @@ public class GetBookByIdHandler : IRequestHandler<GetBookByIdQuery, BookDto>
         _bookReadRepository = bookReadRepository;
     }
 
-    public async Task<BookDto> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
+    public async Task<BookNode> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
     {
         var book = await _bookReadRepository.FirstOrDefaultAsync(request.Id, cancellationToken);
 

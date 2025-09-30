@@ -8,9 +8,9 @@ public record UpdateAuthorCommand(
     Guid Id,
     string FirstName,
     string LastName,
-    DateOnly Birthdate) : IRequest<AuthorDto>;
+    DateOnly Birthdate) : IRequest<AuthorNode>;
 
-public class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, AuthorDto>
+public class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, AuthorNode>
 {
     private readonly IAuthorWriteRepository _authorWriteRepository;
 
@@ -19,7 +19,7 @@ public class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, AuthorDt
         _authorWriteRepository = authorWriteRepository;
     }
 
-    public async Task<AuthorDto> Handle(UpdateAuthorCommand command, CancellationToken cancellationToken)
+    public async Task<AuthorNode> Handle(UpdateAuthorCommand command, CancellationToken cancellationToken)
     {
         var author = await _authorWriteRepository.FirstOrDefaultAsync(command.Id);
         if (author == null)

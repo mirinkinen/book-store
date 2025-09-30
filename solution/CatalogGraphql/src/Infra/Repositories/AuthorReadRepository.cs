@@ -12,7 +12,7 @@ public class AuthorReadRepository : ReadRepository, IAuthorReadRepository
     {
     }
 
-    public async Task<AuthorDto?> FirstOrDefaultAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<AuthorNode?> FirstOrDefaultAsync(Guid id, CancellationToken cancellationToken = default)
     {
         await using var dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
         var entity = await dbContext.Set<Author>().FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
@@ -20,16 +20,23 @@ public class AuthorReadRepository : ReadRepository, IAuthorReadRepository
         return entity?.ToDto();
     }
 
-    public async ValueTask<Page<AuthorDto>> With(PagingArguments pagingArguments, QueryContext<AuthorDto> queryContext,
+    public async ValueTask<Page<AuthorNode>> With(PagingArguments pagingArguments, QueryContext<AuthorNode> queryContext,
         CancellationToken cancellationToken = default)
     {
         await using var dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
         return await dbContext.Set<Author>()
-            .Select(AuthorExtensions.ToDtoExpression())
+            .Select(a => new AuthorNode
+            {
+                Id = a.Id,
+                Birthdate = a.Birthdate,
+                FirstName = a.FirstName,
+                LastName = a.LastName,
+                OrganizationId = a.OrganizationId
+            })
             .With(queryContext, DefaultOrder)
             .ToPageAsync(pagingArguments, cancellationToken);
     }
 
-    private static SortDefinition<AuthorDto> DefaultOrder(SortDefinition<AuthorDto> sort)
+    private static SortDefinition<AuthorNode> DefaultOrder(SortDefinition<AuthorNode> sort)
         => sort.IfEmpty(o => o.AddDescending(t => t.Id));
 }

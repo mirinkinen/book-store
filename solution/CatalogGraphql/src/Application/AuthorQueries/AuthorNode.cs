@@ -1,14 +1,13 @@
 using Application.BookQueries;
 using Domain;
 using HotChocolate;
-using System.Linq.Expressions;
 
 namespace Application.AuthorQueries;
 
 /// <summary>
 /// Represents an author.
 /// </summary>
-public class AuthorDto
+public class AuthorNode
 {
     /// <summary>
     /// ID of the author.
@@ -23,7 +22,7 @@ public class AuthorDto
     /// <summary>
     /// Books written by the author.
     /// </summary>
-    public List<BookDto> Books { get; set; }
+    public List<BookNode> Books { get; set; }
 
     /// <summary>
     /// First name of the author.
@@ -43,22 +42,9 @@ public class AuthorDto
 
 public static class AuthorExtensions
 {
-    public static AuthorDto ToDto(this Author author)
+    public static AuthorNode ToDto(this Author author)
     {
-        return new AuthorDto
-        {
-            Id = author.Id,
-            Birthdate = author.Birthdate,
-            FirstName = author.FirstName,
-            LastName = author.LastName,
-            OrganizationId = author.OrganizationId
-        };
-    }
-
-    // Expression-based projection for EF Core
-    public static Expression<Func<Author, AuthorDto>> ToDtoExpression()
-    {
-        return author => new AuthorDto
+        return new AuthorNode
         {
             Id = author.Id,
             Birthdate = author.Birthdate,

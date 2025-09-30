@@ -3,9 +3,9 @@ using MediatR;
 
 namespace Application.AuthorQueries.GetAuthorById;
 
-public record GetAuthorByIdQuery(Guid Id) : IRequest<AuthorDto>;
+public record GetAuthorByIdQuery(Guid Id) : IRequest<AuthorNode>;
 
-public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, AuthorDto>
+public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, AuthorNode>
 {
     private readonly IAuthorReadRepository _readRepository;
 
@@ -14,7 +14,7 @@ public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, AuthorDt
         _readRepository = readRepository;
     }
 
-    public async Task<AuthorDto> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
+    public async Task<AuthorNode> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
     {
         var author = await _readRepository.FirstOrDefaultAsync(request.Id, cancellationToken);
 

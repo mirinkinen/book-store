@@ -11,7 +11,7 @@ public class BookReadRepository : ReadRepository, IBookReadRepository
     {
     }
 
-    public async Task<BookDto?> FirstOrDefaultAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<BookNode?> FirstOrDefaultAsync(Guid id, CancellationToken cancellationToken = default)
     {
         await using var dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
         var entity = await dbContext.Books.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
@@ -19,25 +19,39 @@ public class BookReadRepository : ReadRepository, IBookReadRepository
         return entity?.ToDto();
     }
 
-    public async ValueTask<Page<BookDto>> With(PagingArguments pagingArguments, QueryContext<BookDto> queryContext,
+    public async ValueTask<Page<BookNode>> With(PagingArguments pagingArguments, QueryContext<BookNode> queryContext,
         CancellationToken cancellationToken = default)
     {
         await using var dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
         return await dbContext.Books
-            .Select(BookExtensions.ToDtoExpression())
+            .Select(b => new BookNode
+            {
+                Id = b.Id,
+                Title = b.Title,
+                Price = b.Price,
+                AuthorId = b.AuthorId,
+                DatePublished = b.DatePublished
+            })
             .With(queryContext, DefaultOrder)
             .ToPageAsync(pagingArguments, cancellationToken);
     }
 
-    public async Task<ILookup<Guid, BookDto>> GetBooksByAuthorIds(IReadOnlyList<Guid> ids, CancellationToken cancellationToken = default)
+    public async Task<ILookup<Guid, BookNode>> GetBooksByAuthorIds(IReadOnlyList<Guid> ids, CancellationToken cancellationToken = default)
     {
         await using var dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
         return dbContext.Books
             .Where(b => ids.Contains(b.AuthorId))
-            .Select(BookExtensions.ToDtoExpression())
+            .Select(b => new BookNode
+            {
+                Id = b.Id,
+                Title = b.Title,
+                Price = b.Price,
+                AuthorId = b.AuthorId,
+                DatePublished = b.DatePublished
+            })
             .ToLookup(b => b.AuthorId);
     }
 
-    private static SortDefinition<BookDto> DefaultOrder(SortDefinition<BookDto> sort)
+    private static SortDefinition<BookNode> DefaultOrder(SortDefinition<BookNode> sort)
         => sort.IfEmpty(o => o.AddDescending(t => t.Id));
 }

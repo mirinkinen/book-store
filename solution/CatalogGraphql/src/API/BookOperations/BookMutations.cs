@@ -11,14 +11,14 @@ namespace API.BookOperations;
 public class BookMutations
 {
     [Error<DomainRuleException>]
-    public async Task<BookDto> CreateBook(Guid authorId, string title, DateOnly datePublished, decimal price, ISender sender)
+    public async Task<BookNode> CreateBook(Guid authorId, string title, DateOnly datePublished, decimal price, ISender sender)
     {
         return await sender.Send(new CreateBookCommand(authorId, title, datePublished, price));
     }
 
     [Error<DomainRuleException>]
     [Error<EntityNotFoundException>]
-    public async Task<BookDto> UpdateBook(Guid id, string title, DateOnly datePublished, decimal price, ISender sender)
+    public async Task<BookNode> UpdateBook(Guid id, string title, DateOnly datePublished, decimal price, ISender sender)
     {
         return await sender.Send(new UpdateBookCommand(id, title, datePublished, price));
     }

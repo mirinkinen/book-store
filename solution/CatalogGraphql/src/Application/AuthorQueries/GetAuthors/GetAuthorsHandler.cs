@@ -3,19 +3,19 @@ using MediatR;
 
 namespace Application.AuthorQueries.GetAuthors;
 
-public record GetAuthorsQuery : IRequest<Page<AuthorDto>>
+public record GetAuthorsQuery : IRequest<Page<AuthorNode>>
 {
     public PagingArguments PagingArguments { get; }
-    public QueryContext<AuthorDto> QueryContext { get; }
+    public QueryContext<AuthorNode> QueryContext { get; }
 
-    public GetAuthorsQuery(PagingArguments pagingArguments, QueryContext<AuthorDto> queryContext)
+    public GetAuthorsQuery(PagingArguments pagingArguments, QueryContext<AuthorNode> queryContext)
     {
         PagingArguments = pagingArguments;
         QueryContext = queryContext;
     }
 }
 
-public class GetAuthorsHandler : IRequestHandler<GetAuthorsQuery, Page<AuthorDto>>
+public class GetAuthorsHandler : IRequestHandler<GetAuthorsQuery, Page<AuthorNode>>
 {
     private readonly IAuthorReadRepository _readRepository;
 
@@ -24,7 +24,7 @@ public class GetAuthorsHandler : IRequestHandler<GetAuthorsQuery, Page<AuthorDto
         _readRepository = readRepository;
     }
 
-    public Task<Page<AuthorDto>> Handle(GetAuthorsQuery request, CancellationToken cancellationToken)
+    public Task<Page<AuthorNode>> Handle(GetAuthorsQuery request, CancellationToken cancellationToken)
     {
         return _readRepository.With(request.PagingArguments, request.QueryContext, cancellationToken).AsTask();
     }

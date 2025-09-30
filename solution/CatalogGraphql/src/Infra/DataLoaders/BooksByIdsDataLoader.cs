@@ -3,7 +3,7 @@ using GreenDonut;
 
 namespace Infra.DataLoaders;
 
-public class CustomBooksByAuthorIdsDataLoader : BatchDataLoader<Guid, IEnumerable<BookDto>>
+public class CustomBooksByAuthorIdsDataLoader : BatchDataLoader<Guid, IEnumerable<BookNode>>
 {
     private readonly IBookReadRepository _repository;
 
@@ -16,7 +16,7 @@ public class CustomBooksByAuthorIdsDataLoader : BatchDataLoader<Guid, IEnumerabl
         _repository = repository;
     }
 
-    protected override async Task<IReadOnlyDictionary<Guid, IEnumerable<BookDto>>> LoadBatchAsync(IReadOnlyList<Guid> keys,
+    protected override async Task<IReadOnlyDictionary<Guid, IEnumerable<BookNode>>> LoadBatchAsync(IReadOnlyList<Guid> keys,
         CancellationToken cancellationToken)
     {
         var lookup = await _repository.GetBooksByAuthorIds(keys, cancellationToken);

@@ -9,7 +9,7 @@ namespace Infra.DataLoaders;
 public static class DataLoaders
 {
     [DataLoader]
-    internal static async Task<ILookup<Guid, BookDto>> GetBooksByAuthorIdsAsync(
+    internal static async Task<ILookup<Guid, BookNode>> GetBooksByAuthorIdsAsync(
         IReadOnlyList<Guid> authorIds,
         CatalogDbContext dbContext,
         CancellationToken cancellationToken)
@@ -22,7 +22,7 @@ public static class DataLoaders
     }
     
     [DataLoader]
-    internal static async Task<Dictionary<Guid, AuthorDto>> GetAuthorByIdAsync(
+    internal static async Task<Dictionary<Guid, AuthorNode>> GetAuthorByIdAsync(
         IReadOnlyList<Guid> authorIds,
         CatalogDbContext dbContext,
         CancellationToken cancellationToken)
@@ -37,7 +37,7 @@ public static class DataLoaders
     }
     
     [DataLoader]
-    internal static async Task<Dictionary<Guid, AuthorDto>> GetAuthorByBookIdAsync(
+    internal static async Task<Dictionary<Guid, AuthorNode>> GetAuthorByBookIdAsync(
         IReadOnlyList<Guid> bookIds,
         CatalogDbContext dbContext,
         CancellationToken cancellationToken)

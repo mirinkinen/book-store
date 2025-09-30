@@ -10,9 +10,9 @@ public record CreateAuthorCommand(
     string FirstName,
     string LastName,
     DateOnly Birthdate,
-    Guid OrganizationId) : IRequest<AuthorDto>;
+    Guid OrganizationId) : IRequest<AuthorNode>;
 
-public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, AuthorDto>
+public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, AuthorNode>
 {
     private readonly IAuthorWriteRepository _authorWriteRepository;
     private readonly ITopicEventSender _eventSender;
@@ -23,7 +23,7 @@ public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, AuthorDt
         _eventSender = eventSender;
     }
     
-    public async Task<AuthorDto> Handle(CreateAuthorCommand command, CancellationToken cancellationToken)
+    public async Task<AuthorNode> Handle(CreateAuthorCommand command, CancellationToken cancellationToken)
     {
         var authorExists = await _authorWriteRepository.AuthorWithNameExists(command.FirstName, command.LastName, cancellationToken);
         if (authorExists)

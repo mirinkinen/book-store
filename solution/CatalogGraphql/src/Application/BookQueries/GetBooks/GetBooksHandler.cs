@@ -3,19 +3,19 @@ using MediatR;
 
 namespace Application.BookQueries.GetBooks;
 
-public record GetBooksQuery : IRequest<Page<BookDto>>
+public record GetBooksQuery : IRequest<Page<BookNode>>
 {
     public PagingArguments PagingArguments { get; }
-    public QueryContext<BookDto> QueryContext { get; }
+    public QueryContext<BookNode> QueryContext { get; }
 
-    public GetBooksQuery(PagingArguments pagingArguments, QueryContext<BookDto> queryContext)
+    public GetBooksQuery(PagingArguments pagingArguments, QueryContext<BookNode> queryContext)
     {
         PagingArguments = pagingArguments;
         QueryContext = queryContext;
     }
 }
 
-public class GetBooksHandler : IRequestHandler<GetBooksQuery, Page<BookDto>>
+public class GetBooksHandler : IRequestHandler<GetBooksQuery, Page<BookNode>>
 {
     private readonly IBookReadRepository _readRepository;
 
@@ -24,7 +24,7 @@ public class GetBooksHandler : IRequestHandler<GetBooksQuery, Page<BookDto>>
         _readRepository = readRepository;
     }
 
-    public Task<Page<BookDto>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
+    public Task<Page<BookNode>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
     {
         return _readRepository.With(request.PagingArguments, request.QueryContext, cancellationToken).AsTask();
     }
