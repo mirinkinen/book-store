@@ -38,5 +38,6 @@ public class AuthorReadRepository : ReadRepository, IAuthorReadRepository
     }
 
     private static SortDefinition<AuthorNode> DefaultOrder(SortDefinition<AuthorNode> sort)
-        => sort.IfEmpty(o => o.AddDescending(t => t.Id));
+        => sort.IfEmpty(o => o.AddAscending(a => a.FirstName).AddAscending(a => a.LastName))
+            .AddDescending(t => t.Id);
 }
