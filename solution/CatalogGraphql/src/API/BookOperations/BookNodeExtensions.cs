@@ -5,9 +5,9 @@ using Infra.DataLoaders;
 namespace API.BookOperations;
 
 [ExtendObjectType<BookNode>]
-public class BookExtensions
+public static class BookNodeExtensions
 {
-    public async Task<AuthorNode?> GetAuthor([Parent] BookNode book, AuthorByBookIdDataLoader dataLoader)
+    public static async Task<AuthorNode?> GetAuthorAsync([Parent] BookNode book, IAuthorByBookIdDataLoader dataLoader)
     {
         var author = await dataLoader.LoadAsync(book.Id);
         return author;

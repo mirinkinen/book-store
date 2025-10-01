@@ -1,6 +1,7 @@
 using Application.AuthorQueries;
 using Application.BookQueries;
 using GreenDonut;
+using GreenDonut.Data;
 using Infra.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,16 +10,27 @@ namespace Infra.DataLoaders;
 public static class DataLoaders
 {
     [DataLoader]
-    internal static async Task<ILookup<Guid, BookNode>> GetBooksByAuthorIdsAsync(
+    internal static async Task<Dictionary<Guid, Page<BookNode>>> GetBooksByAuthorIdsAsync(
         IReadOnlyList<Guid> authorIds,
+        PagingArguments pagingArguments,
         CatalogDbContext dbContext,
         CancellationToken cancellationToken)
     {
-        return (await dbContext.Books
+        var page = await dbContext.Books
                 .Where(b => authorIds.Contains(b.AuthorId))
-                .Select(b => b.ToDto())
-                .ToListAsync(cancellationToken))
-            .ToLookup(b => b.AuthorId);
+                .Select(b => new BookNode
+                {
+                    Id = b.Id,
+                    Title = b.Title,
+                    Price = b.Price,
+                    AuthorId = b.AuthorId,
+                    DatePublished = b.DatePublished
+                })
+                .OrderBy(b => b.Title)
+                .ThenBy(b => b.Id)
+                .ToBatchPageAsync(b => b.AuthorId, pagingArguments, cancellationToken);
+
+        return page;
     }
     
     [DataLoader]

@@ -1,6 +1,7 @@
 using Application.BookQueries;
 using Domain;
 using HotChocolate;
+using HotChocolate.Types;
 
 namespace Application.AuthorQueries;
 
@@ -18,11 +19,6 @@ public class AuthorNode
     /// Birthdate of the author.
     /// </summary>
     public DateOnly Birthdate { get; set; }
-
-    /// <summary>
-    /// Books written by the author.
-    /// </summary>
-    public List<BookNode> Books { get; set; }
 
     /// <summary>
     /// First name of the author.

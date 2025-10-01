@@ -13,8 +13,6 @@ public class BookNode
 
     public Guid AuthorId { get; set; }
 
-    public AuthorNode Author { get; set; }
-
     public decimal Price { get; set; }
 }
 
