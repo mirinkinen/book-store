@@ -15,14 +15,14 @@ public static partial class AuthorType
     //         CustomBooksByAuthorIdsDataLoader dataLoader)
    
     public static async Task<PageConnection<BookNode>> GetBooksAsync(
-        [Parent(requires: "Id")] AuthorNode author, 
+        [Parent] AuthorNode author, 
         PagingArguments pagingArguments,
         QueryContext<BookNode> query,
-        [Service] IBooksByAuthorIdDataLoader dataLoader,
+        IBooksByAuthorIdDataLoader dataLoader,
         CancellationToken cancellationToken)
     {
         var page = await dataLoader.With(pagingArguments, query).LoadAsync(author.Id, cancellationToken);
 
-        return new PageConnection<BookNode>(page);
+        return new PageConnection<BookNode>(page ?? Page<BookNode>.Empty);
     }
 }

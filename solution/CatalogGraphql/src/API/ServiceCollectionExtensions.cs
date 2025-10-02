@@ -100,6 +100,7 @@ public static class ServiceCollectionExtensions
             //.AddGlobalObjectIdentification()
             .AddDataLoader<CustomBooksByAuthorIdsDataLoader>()
             .AddDataLoader<IBooksByAuthorIdDataLoader, BooksByAuthorIdDataLoader>()
+            .AddDataLoader<IAuthorByBookIdDataLoader, AuthorByBookIdDataLoader>()
             // Data store
             .RegisterDbContextFactory<CatalogDbContext>()
             .AddInMemorySubscriptions()

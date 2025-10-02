@@ -1,7 +1,7 @@
 ﻿{
   data: {
     authorById: {
-      __typename: AuthorDto,
+      __typename: AuthorNode,
       id: Guid_1,
       firstName: Stephen,
       lastName: King,

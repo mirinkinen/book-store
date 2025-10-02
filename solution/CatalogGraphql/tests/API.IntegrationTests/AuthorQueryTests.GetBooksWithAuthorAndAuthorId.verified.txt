@@ -23,28 +23,28 @@
         {
           id: Guid_5,
           title: Book #1,
-          authorId: Guid_4,
+          authorId: Guid_6,
           author: {
-            firstName: Dan,
-            lastName: Brown
+            firstName: Stephen,
+            lastName: King
           }
         },
         {
-          id: Guid_6,
+          id: Guid_7,
           title: Book #10,
-          authorId: Guid_7,
+          authorId: Guid_8,
           author: {
-            firstName: Stephen,
-            lastName: King
+            firstName: William,
+            lastName: Shakespeare
           }
         },
         {
-          id: Guid_8,
+          id: Guid_9,
           title: Book #100,
-          authorId: Guid_7,
+          authorId: Guid_8,
           author: {
-            firstName: Stephen,
-            lastName: King
+            firstName: William,
+            lastName: Shakespeare
           }
         }
       ]

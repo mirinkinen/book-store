@@ -13,21 +13,9 @@ type AnotherMutationTestDto {
   string: String
 }
 
-type Author {
-  removeBook(bookId: UUID!): Book!
-  birthdate: LocalDate!
-  books: [Book!]!
-  firstName: String!
-  lastName: String!
-  organizationId: UUID!
-  id: UUID!
-  createdAt: DateTime!
-  modifiedAt: DateTime!
-  modifiedBy: UUID!
-}
-
 "Represents an author."
 type AuthorNode {
+  books("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String): BookNodeConnection! @listSize(assumedSize: 10, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
   "ID of the author."
   id: UUID!
   "Birthdate of the author."
@@ -38,7 +26,6 @@ type AuthorNode {
   lastName: String!
   "Identifier of the organization associated with the author."
   organizationId: UUID!
-  books: [BookNodeConnection!] @cost(weight: "10")
 }
 
 "A connection to a list of items."
@@ -60,26 +47,13 @@ type AuthorNodeEdge {
   cursor: String!
 }
 
-type Book {
-  title: String!
-  datePublished: LocalDate!
-  author: Author!
-  authorId: UUID!
-  price: Decimal!
-  reviews: [Review!]!
-  id: UUID!
-  createdAt: DateTime!
-  modifiedAt: DateTime!
-  modifiedBy: UUID!
-}
-
 type BookNode {
+  author: AuthorNode @cost(weight: "10")
   id: UUID!
   title: String!
   datePublished: LocalDate!
   authorId: UUID!
   price: Decimal!
-  author: AuthorNode @cost(weight: "10")
 }
 
 "A connection to a list of items."
@@ -192,34 +166,6 @@ type Query {
   authors("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AuthorNodeFilterInput @cost(weight: "10") order: [AuthorNodeSortInput!] @cost(weight: "10")): AuthorNodeConnection! @listSize(assumedSize: 50, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
   bookById(id: UUID!): BookByIdResult! @cost(weight: "10")
   books("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: BookNodeFilterInput @cost(weight: "10") order: [BookNodeSortInput!] @cost(weight: "10")): BookNodeConnection! @listSize(assumedSize: 50, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
-  reviewEntities("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: ReviewFilterInput @cost(weight: "10") order: [ReviewSortInput!] @cost(weight: "10")): ReviewConnection! @listSize(assumedSize: 50, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
-}
-
-type Review {
-  id: UUID!
-  title: String!
-  body: String!
-  bookId: UUID!
-  book: Book!
-}
-
-"A connection to a list of items."
-type ReviewConnection {
-  "A list of edges."
-  edges: [ReviewEdge!]
-  "A flattened list of the nodes"
-  nodes: [Review!]
-  "Information to aid in pagination."
-  pageInfo: PageInfo!
-  "Identifies the total count of items in the connection."
-  totalCount: Int! @cost(weight: "10")
-}
-
-type ReviewEdge {
-  "The item at the end of the edge."
-  node: Review!
-  "A cursor for use in pagination."
-  cursor: String!
 }
 
 type Subscription {
@@ -252,20 +198,6 @@ union UpdateAuthorError = DomainRuleError | EntityNotFoundError
 
 union UpdateBookError = DomainRuleError | EntityNotFoundError
 
-input AuthorFilterInput {
-  and: [AuthorFilterInput!]
-  or: [AuthorFilterInput!]
-  birthdate: LocalDateOperationFilterInput
-  books: ListFilterInputTypeOfBookFilterInput
-  firstName: StringOperationFilterInput
-  lastName: StringOperationFilterInput
-  organizationId: UuidOperationFilterInput
-  id: UuidOperationFilterInput
-  createdAt: DateTimeOperationFilterInput
-  modifiedAt: DateTimeOperationFilterInput
-  modifiedBy: UuidOperationFilterInput
-}
-
 "Represents an author."
 input AuthorNodeFilterInput {
   and: [AuthorNodeFilterInput!]
@@ -296,32 +228,6 @@ input AuthorNodeSortInput {
   organizationId: SortEnumType @cost(weight: "10")
 }
 
-input AuthorSortInput {
-  birthdate: SortEnumType @cost(weight: "10")
-  firstName: SortEnumType @cost(weight: "10")
-  lastName: SortEnumType @cost(weight: "10")
-  organizationId: SortEnumType @cost(weight: "10")
-  id: SortEnumType @cost(weight: "10")
-  createdAt: SortEnumType @cost(weight: "10")
-  modifiedAt: SortEnumType @cost(weight: "10")
-  modifiedBy: SortEnumType @cost(weight: "10")
-}
-
-input BookFilterInput {
-  and: [BookFilterInput!]
-  or: [BookFilterInput!]
-  title: StringOperationFilterInput
-  datePublished: LocalDateOperationFilterInput
-  author: AuthorFilterInput
-  authorId: UuidOperationFilterInput
-  price: DecimalOperationFilterInput
-  reviews: ListFilterInputTypeOfReviewFilterInput
-  id: UuidOperationFilterInput
-  createdAt: DateTimeOperationFilterInput
-  modifiedAt: DateTimeOperationFilterInput
-  modifiedBy: UuidOperationFilterInput
-}
-
 input BookNodeFilterInput {
   and: [BookNodeFilterInput!]
   or: [BookNodeFilterInput!]
@@ -340,18 +246,6 @@ input BookNodeSortInput {
   price: SortEnumType @cost(weight: "10")
 }
 
-input BookSortInput {
-  title: SortEnumType @cost(weight: "10")
-  datePublished: SortEnumType @cost(weight: "10")
-  author: AuthorSortInput @cost(weight: "10")
-  authorId: SortEnumType @cost(weight: "10")
-  price: SortEnumType @cost(weight: "10")
-  id: SortEnumType @cost(weight: "10")
-  createdAt: SortEnumType @cost(weight: "10")
-  modifiedAt: SortEnumType @cost(weight: "10")
-  modifiedBy: SortEnumType @cost(weight: "10")
-}
-
 input CreateAuthorCommand {
   firstName: String!
   lastName: String!
@@ -364,21 +258,6 @@ input CreateBookCommand {
   title: String!
   datePublished: LocalDate!
   price: Decimal!
-}
-
-input DateTimeOperationFilterInput {
-  eq: DateTime @cost(weight: "10")
-  neq: DateTime @cost(weight: "10")
-  in: [DateTime] @cost(weight: "10")
-  nin: [DateTime] @cost(weight: "10")
-  gt: DateTime @cost(weight: "10")
-  ngt: DateTime @cost(weight: "10")
-  gte: DateTime @cost(weight: "10")
-  ngte: DateTime @cost(weight: "10")
-  lt: DateTime @cost(weight: "10")
-  nlt: DateTime @cost(weight: "10")
-  lte: DateTime @cost(weight: "10")
-  nlte: DateTime @cost(weight: "10")
 }
 
 input DecimalOperationFilterInput {
@@ -404,20 +283,6 @@ input DeleteBookCommand {
   id: UUID!
 }
 
-input ListFilterInputTypeOfBookFilterInput {
-  all: BookFilterInput @cost(weight: "10")
-  none: BookFilterInput @cost(weight: "10")
-  some: BookFilterInput @cost(weight: "10")
-  any: Boolean @cost(weight: "10")
-}
-
-input ListFilterInputTypeOfReviewFilterInput {
-  all: ReviewFilterInput @cost(weight: "10")
-  none: ReviewFilterInput @cost(weight: "10")
-  some: ReviewFilterInput @cost(weight: "10")
-  any: Boolean @cost(weight: "10")
-}
-
 input LocalDateOperationFilterInput {
   eq: LocalDate @cost(weight: "10")
   neq: LocalDate @cost(weight: "10")
@@ -431,30 +296,6 @@ input LocalDateOperationFilterInput {
   nlt: LocalDate @cost(weight: "10")
   lte: LocalDate @cost(weight: "10")
   nlte: LocalDate @cost(weight: "10")
-}
-
-input ReviewFilterInput {
-  and: [ReviewFilterInput!]
-  or: [ReviewFilterInput!]
-  title: StringOperationFilterInput
-  body: StringOperationFilterInput
-  book: BookFilterInput
-  bookId: UuidOperationFilterInput
-  id: UuidOperationFilterInput
-  createdAt: DateTimeOperationFilterInput
-  modifiedAt: DateTimeOperationFilterInput
-  modifiedBy: UuidOperationFilterInput
-}
-
-input ReviewSortInput {
-  title: SortEnumType @cost(weight: "10")
-  body: SortEnumType @cost(weight: "10")
-  book: BookSortInput @cost(weight: "10")
-  bookId: SortEnumType @cost(weight: "10")
-  id: SortEnumType @cost(weight: "10")
-  createdAt: SortEnumType @cost(weight: "10")
-  modifiedAt: SortEnumType @cost(weight: "10")
-  modifiedBy: SortEnumType @cost(weight: "10")
 }
 
 input StringOperationFilterInput {
@@ -514,9 +355,6 @@ directive @listSize("The `assumedSize` argument can be used to statically define
 
 "The `@specifiedBy` directive is used within the type system definition language to provide a URL for specifying the behavior of custom scalar definitions."
 directive @specifiedBy("The specifiedBy URL points to a human-readable specification. This field will only read a result for scalar types." url: String!) on SCALAR
-
-"The `DateTime` scalar represents an ISO-8601 compliant date time type."
-scalar DateTime @specifiedBy(url: "https:\/\/www.graphql-scalars.com\/date-time")
 
 "The `Decimal` scalar type represents a decimal floating-point number."
 scalar Decimal
