@@ -12,7 +12,7 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
     }
 
     [Fact]
-    public async Task GetAuthors_ReturnsAuthors()
+    public async Task Get_authors()
     {
         // Arrange
         var query = """
@@ -39,7 +39,7 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
     }
     
     [Fact]
-    public async Task GetAuthorById_ReturnsAuthor()
+    public async Task Get_author_by_id()
     {
         // Arrange
         var query = """
@@ -65,7 +65,7 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
     }
     
     [Fact]
-    public async Task GetAuthors_First2_Returns2Authors()
+    public async Task Get_first_2_authors()
     {
         // Arrange
         var query = """
@@ -87,57 +87,31 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
     }
     
     [Fact]
-    public async Task GetBooksWithAuthorAndAuthorId()
+    public async Task Get_first_2_authors_with_first_2_books()
     {
         // Arrange
-        var query = @"
-            query {
-              books(first: 5, order: [{ title: ASC }]) {
-                nodes {
-                  id
-                  title
-                  authorId
-                  author {
-                    firstName
-                    lastName
-                  }
-                }
-              }
-            }
-            ";
+        var query = """
+                    query {
+                    authors(first: 2) {
+                      nodes {
+                        __typename
+                        id
+                        firstName      
+                        books(first: 2) {
+                          nodes {
+                            id
+                            title
+                          }
+                        }
+                      }        
+                    }
+                    """;
 
-        // Act
         var result = await _requestExecutor.ExecuteOperationAsync(query);
 
         // Assert
         var json = result.ToJson();
         await VerifyJson(json);
     }
-
-    [Fact]
-    public async Task GetBooksWithAuthorWithoutAuthorId()
-    {
-        // Arrange
-        var query = @"
-            query {
-              books(first: 5, order: [{ title: ASC }]) {
-                nodes {
-                  id
-                  title
-                  author {
-                    firstName
-                    lastName
-                  }
-                }
-              }
-            }
-            ";
-
-        // Act
-        var result = await _requestExecutor.ExecuteOperationAsync(query);
-
-        // Assert
-        var json = result.ToJson();
-        await VerifyJson(json);
-    }
+    
 }

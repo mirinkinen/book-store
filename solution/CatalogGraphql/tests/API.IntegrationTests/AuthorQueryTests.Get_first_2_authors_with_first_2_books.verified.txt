@@ -1,0 +1,16 @@
+﻿{
+  errors: [
+    {
+      message: Expected a `RightBrace`-token, but found a `EndOfFile`-token.,
+      locations: [
+        {
+          line: 14,
+          column: 2
+        }
+      ],
+      extensions: {
+        code: HC0014
+      }
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+﻿{
+  data: {
+    books: {
+      nodes: [
+        {
+          id: Guid_1,
+          title: A Farewell to Arms,
+          authorId: Guid_2,
+          author: {
+            firstName: Ernest.,
+            lastName: Hemingway
+          }
+        },
+        {
+          id: Guid_3,
+          title: Angels and Demons,
+          authorId: Guid_4,
+          author: {
+            firstName: Dan,
+            lastName: Brown
+          }
+        }
+      ]
+    }
+  }
+}

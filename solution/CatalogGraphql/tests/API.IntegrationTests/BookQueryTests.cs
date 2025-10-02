@@ -12,7 +12,7 @@ public class BookQueryTests : IClassFixture<RequestExecutorProxyFixture>
     }
 
     [Fact]
-    public async Task GetBooks_ReturnsBooks()
+    public async Task Get_books_without_limit_Returns_10_Books()
     {
         // Arrange
         var query = """
@@ -35,7 +35,7 @@ public class BookQueryTests : IClassFixture<RequestExecutorProxyFixture>
     }
     
     [Fact]
-    public async Task GetBookById_ReturnsBook()
+    public async Task Get_book_by_id()
     {
         // Arrange
         var query = """
@@ -57,7 +57,7 @@ public class BookQueryTests : IClassFixture<RequestExecutorProxyFixture>
     }
     
     [Fact]
-    public async Task GetBooks_First2_Returns2Books()
+    public async Task Get_first_2_Books()
     {
         // Arrange
         var query = """
@@ -70,6 +70,34 @@ public class BookQueryTests : IClassFixture<RequestExecutorProxyFixture>
                     }
                     """;
 
+        var result = await _requestExecutor.ExecuteOperationAsync(query);
+
+        // Assert
+        var json = result.ToJson();
+        await VerifyJson(json);
+    }
+    
+    [Fact]
+    public async Task Get_first_2_books_with_author()
+    {
+        // Arrange
+        var query = @"
+            query {
+              books(first: 2, order: [{ title: ASC }]) {
+                nodes {
+                  id
+                  title
+                  authorId
+                  author {
+                    firstName
+                    lastName
+                  }
+                }
+              }
+            }
+            ";
+
+        // Act
         var result = await _requestExecutor.ExecuteOperationAsync(query);
 
         // Assert
