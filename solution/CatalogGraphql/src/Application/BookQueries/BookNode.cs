@@ -1,4 +1,3 @@
-using Application.AuthorQueries;
 using Domain;
 
 namespace Application.BookQueries;

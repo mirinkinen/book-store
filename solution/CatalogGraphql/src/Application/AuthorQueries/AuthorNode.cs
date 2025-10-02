@@ -1,7 +1,4 @@
-using Application.BookQueries;
 using Domain;
-using HotChocolate;
-using HotChocolate.Types;
 
 namespace Application.AuthorQueries;
 

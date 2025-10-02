@@ -1,4 +1,3 @@
-using HotChocolate;
 using Microsoft.ApplicationInsights;
 
 namespace API;

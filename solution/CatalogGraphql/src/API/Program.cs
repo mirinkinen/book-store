@@ -1,6 +1,3 @@
-using HotChocolate.Resolvers;
-using System.Diagnostics;
-
 namespace API;
 
 public class Program

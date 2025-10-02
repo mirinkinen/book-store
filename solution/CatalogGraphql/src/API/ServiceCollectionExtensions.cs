@@ -2,6 +2,7 @@ using Application.AuthorCommands.CreateAuthor;
 using Application.AuthorQueries;
 using Application.AuthorQueries.GetAuthors;
 using Application.BookQueries;
+using Application.ReviewQueries;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Common.Domain;
 using Domain;
@@ -101,6 +102,8 @@ public static class ServiceCollectionExtensions
             .AddDataLoader<CustomBooksByAuthorIdsDataLoader>()
             .AddDataLoader<IBooksByAuthorIdDataLoader, BooksByAuthorIdDataLoader>()
             .AddDataLoader<IAuthorByBookIdDataLoader, AuthorByBookIdDataLoader>()
+            .AddDataLoader<IReviewsByBookIdDataLoader, ReviewsByBookIdDataLoader>()
+            .AddDataLoader<IBookByReviewIdDataLoader, BookByReviewIdDataLoader>()
             // Data store
             .RegisterDbContextFactory<CatalogDbContext>()
             .AddInMemorySubscriptions()
@@ -120,6 +123,7 @@ public static class ServiceCollectionExtensions
         // Queryable - Hot chocolate will dispose of the DbContext.
         services.AddScoped<IBookReadRepository, BookReadRepository>();
         services.AddScoped<IAuthorReadRepository, AuthorReadRepository>();
+        services.AddScoped<IReviewReadRepository, ReviewReadRepository>();
 
         // Command
         services.AddScoped<IBookWriteRepository, BookWriteRepository>();

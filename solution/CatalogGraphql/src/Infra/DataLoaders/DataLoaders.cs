@@ -1,5 +1,6 @@
 using Application.AuthorQueries;
 using Application.BookQueries;
+using Application.ReviewQueries;
 using GreenDonut;
 using GreenDonut.Data;
 using Infra.Data;
@@ -60,5 +61,42 @@ public static class DataLoaders
                 (book, author) => new { BookId = book.Id, AuthorId = book.AuthorId, Author = author.ToDto() })
             .OrderBy(x => x.BookId)
             .ToDictionaryAsync(x => x.BookId, x => x.Author, cancellationToken);
+    }
+    
+    [DataLoader]
+    public static async Task<Dictionary<Guid, Page<ReviewNode>>> GetReviewsByBookIdAsync(
+        IReadOnlyList<Guid> bookIds,
+        PagingArguments pagingArgs,
+        QueryContext<ReviewNode> query,
+        CatalogDbContext context,
+        CancellationToken cancellationToken)
+    {
+        return await context.Reviews
+            .Where(r => bookIds.Contains(r.BookId))
+            .Select(r => new ReviewNode()
+            {
+                Id = r.Id,
+                Body = r.Body,
+                BookId = r.BookId,
+                Title = r.Title
+            })
+            .With(query, sort => sort.IfEmpty(s => s.AddDescending(r => r.Id)))
+            .ToBatchPageAsync(b => b.BookId, pagingArgs, cancellationToken);
+    }
+
+    [DataLoader]
+    internal static async Task<Dictionary<Guid, BookNode>> GetBookByReviewIdAsync(
+        IReadOnlyList<Guid> reviewIds,
+        CatalogDbContext dbContext,
+        CancellationToken cancellationToken)
+    {
+        return await dbContext.Reviews
+            .Where(r => reviewIds.Contains(r.Id))
+            .Join(dbContext.Books,
+                review => review.BookId,
+                book => book.Id,
+                (review, book) => new { ReviewId = review.Id, Book = book.ToDto() })
+            .OrderBy(x => x.ReviewId)
+            .ToDictionaryAsync(x => x.ReviewId, x => x.Book, cancellationToken);
     }
 }
