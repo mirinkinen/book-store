@@ -15,7 +15,8 @@ type AnotherMutationTestDto {
 
 "Represents an author."
 type AuthorNode {
-  books("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String): BookNodeConnection! @listSize(assumedSize: 10, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
+  books("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: BookNodeFilterInput @cost(weight: "10") order: [BookNodeSortInput!] @cost(weight: "10")): BookNodeConnection! @listSize(assumedSize: 10, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
+  customBooks("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: BookNodeFilterInput @cost(weight: "10") order: [BookNodeSortInput!] @cost(weight: "10")): BookNodeConnection! @listSize(assumedSize: 10, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
   "ID of the author."
   id: UUID!
   "Birthdate of the author."
@@ -49,6 +50,7 @@ type AuthorNodeEdge {
 
 type BookNode {
   author: AuthorNode @cost(weight: "10")
+  reviews("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: ReviewNodeFilterInput @cost(weight: "10") order: [ReviewNodeSortInput!] @cost(weight: "10")): ReviewNodeConnection! @listSize(assumedSize: 10, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
   id: UUID!
   title: String!
   datePublished: LocalDate!
@@ -166,6 +168,35 @@ type Query {
   authors("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AuthorNodeFilterInput @cost(weight: "10") order: [AuthorNodeSortInput!] @cost(weight: "10")): AuthorNodeConnection! @listSize(assumedSize: 50, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
   bookById(id: UUID!): BookByIdResult! @cost(weight: "10")
   books("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: BookNodeFilterInput @cost(weight: "10") order: [BookNodeSortInput!] @cost(weight: "10")): BookNodeConnection! @listSize(assumedSize: 50, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
+  reviewById(id: UUID!): ReviewByIdResult! @cost(weight: "10")
+  reviews("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: ReviewNodeFilterInput @cost(weight: "10") order: [ReviewNodeSortInput!] @cost(weight: "10")): ReviewNodeConnection! @listSize(assumedSize: 50, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
+}
+
+type ReviewNode {
+  book: BookNode @cost(weight: "10")
+  id: UUID!
+  title: String!
+  body: String!
+  bookId: UUID!
+}
+
+"A connection to a list of items."
+type ReviewNodeConnection {
+  "A list of edges."
+  edges: [ReviewNodeEdge!]
+  "A flattened list of the nodes"
+  nodes: [ReviewNode!]
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  "Identifies the total count of items in the connection."
+  totalCount: Int! @cost(weight: "10")
+}
+
+type ReviewNodeEdge {
+  "The item at the end of the edge."
+  node: ReviewNode!
+  "A cursor for use in pagination."
+  cursor: String!
 }
 
 type Subscription {
@@ -193,6 +224,8 @@ union CreateBookError = DomainRuleError
 union DeleteAuthorError = DomainRuleError | EntityNotFoundError
 
 union DeleteBookError = EntityNotFoundError
+
+union ReviewByIdResult = ReviewNode | EntityNotFoundError
 
 union UpdateAuthorError = DomainRuleError | EntityNotFoundError
 
@@ -296,6 +329,22 @@ input LocalDateOperationFilterInput {
   nlt: LocalDate @cost(weight: "10")
   lte: LocalDate @cost(weight: "10")
   nlte: LocalDate @cost(weight: "10")
+}
+
+input ReviewNodeFilterInput {
+  and: [ReviewNodeFilterInput!]
+  or: [ReviewNodeFilterInput!]
+  id: UuidOperationFilterInput
+  title: StringOperationFilterInput
+  body: StringOperationFilterInput
+  bookId: UuidOperationFilterInput
+}
+
+input ReviewNodeSortInput {
+  id: SortEnumType @cost(weight: "10")
+  title: SortEnumType @cost(weight: "10")
+  body: SortEnumType @cost(weight: "10")
+  bookId: SortEnumType @cost(weight: "10")
 }
 
 input StringOperationFilterInput {
