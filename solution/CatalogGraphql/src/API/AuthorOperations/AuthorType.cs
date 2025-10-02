@@ -14,6 +14,8 @@ public static partial class AuthorType
     //         PagingArguments pagingArguments,
     //         CustomBooksByAuthorIdsDataLoader dataLoader)
    
+    [UseFiltering]
+    [UseSorting]
     public static async Task<PageConnection<BookNode>> GetBooksAsync(
         [Parent] AuthorNode author, 
         PagingArguments pagingArguments,

@@ -97,7 +97,12 @@ public static class ServiceCollectionExtensions
                 options.DefaultPageSize = 10;
                 options.IncludeTotalCount = true;
             })
-            // .AddMaxExecutionDepthRule(4)
+            //.AddMaxExecutionDepthRule(4)
+            .ModifyCostOptions(options =>
+            {
+                options.MaxTypeCost = 5000;
+                options.MaxFieldCost = 5000;
+            })
             //.AddGlobalObjectIdentification()
             .AddDataLoader<CustomBooksByAuthorIdsDataLoader>()
             .AddDataLoader<IBooksByAuthorIdDataLoader, BooksByAuthorIdDataLoader>()

@@ -16,6 +16,8 @@ public static partial class BookType
         return author;
     }
     
+    [UseFiltering]
+    [UseSorting]
     public static async Task<PageConnection<ReviewNode>> GetReviewsAsync(
         [Parent] BookNode book, 
         PagingArguments pagingArguments,
