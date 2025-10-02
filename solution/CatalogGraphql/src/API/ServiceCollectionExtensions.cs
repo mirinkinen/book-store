@@ -69,6 +69,7 @@ public static class ServiceCollectionExtensions
         services.AddGraphQLServer()
             // Types
             .AddTypes()
+            .AddType<BookNode>()
             // Conventions
             .AddQueryConventions()
             .AddMutationConventions(new MutationConventionOptions
@@ -98,6 +99,7 @@ public static class ServiceCollectionExtensions
             // .AddMaxExecutionDepthRule(4)
             //.AddGlobalObjectIdentification()
             .AddDataLoader<CustomBooksByAuthorIdsDataLoader>()
+            .AddDataLoader<IBooksByAuthorIdDataLoader, BooksByAuthorIdDataLoader>()
             // Data store
             .RegisterDbContextFactory<CatalogDbContext>()
             .AddInMemorySubscriptions()

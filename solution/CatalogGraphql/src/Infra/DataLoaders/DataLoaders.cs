@@ -10,29 +10,27 @@ namespace Infra.DataLoaders;
 public static class DataLoaders
 {
     [DataLoader]
-    internal static async Task<Dictionary<Guid, Page<BookNode>>> GetBooksByAuthorIdsAsync(
+    public static async Task<Dictionary<Guid, Page<BookNode>>> GetBooksByAuthorIdAsync(
         IReadOnlyList<Guid> authorIds,
-        PagingArguments pagingArguments,
-        CatalogDbContext dbContext,
+        PagingArguments pagingArgs,
+        QueryContext<BookNode> query,
+        CatalogDbContext context,
         CancellationToken cancellationToken)
     {
-        var page = await dbContext.Books
-                .Where(b => authorIds.Contains(b.AuthorId))
-                .Select(b => new BookNode
-                {
-                    Id = b.Id,
-                    Title = b.Title,
-                    Price = b.Price,
-                    AuthorId = b.AuthorId,
-                    DatePublished = b.DatePublished
-                })
-                .OrderBy(b => b.Title)
-                .ThenBy(b => b.Id)
-                .ToBatchPageAsync(b => b.AuthorId, pagingArguments, cancellationToken);
-
-        return page;
+        return await context.Books
+            .Where(b => authorIds.Contains(b.AuthorId))
+            .Select(b => new BookNode
+            {
+                Id = b.Id,
+                Title = b.Title,
+                Price = b.Price,
+                AuthorId = b.AuthorId,
+                DatePublished = b.DatePublished
+            })
+            .With(query, sort => sort.IfEmpty(o => o.AddDescending(t => t.Id)))
+            .ToBatchPageAsync(b => b.AuthorId, pagingArgs, cancellationToken);
     }
-    
+
     [DataLoader]
     internal static async Task<Dictionary<Guid, AuthorNode>> GetAuthorByIdAsync(
         IReadOnlyList<Guid> authorIds,
@@ -44,10 +42,10 @@ public static class DataLoaders
             .Select(a => a.ToDto())
             .Distinct()
             .ToDictionaryAsync(a => a.Id, cancellationToken);
-        
+
         return authors;
     }
-    
+
     [DataLoader]
     internal static async Task<Dictionary<Guid, AuthorNode>> GetAuthorByBookIdAsync(
         IReadOnlyList<Guid> bookIds,
@@ -56,10 +54,10 @@ public static class DataLoaders
     {
         return await dbContext.Books
             .Where(b => bookIds.Contains(b.Id))
-            .Join(dbContext.Authors, 
-                  book => book.AuthorId, 
-                  author => author.Id, 
-                  (book, author) => new { BookId = book.Id, AuthorId = book.AuthorId, Author = author.ToDto() })
+            .Join(dbContext.Authors,
+                book => book.AuthorId,
+                author => author.Id,
+                (book, author) => new { BookId = book.Id, AuthorId = book.AuthorId, Author = author.ToDto() })
             .OrderBy(x => x.BookId)
             .ToDictionaryAsync(x => x.BookId, x => x.Author, cancellationToken);
     }
