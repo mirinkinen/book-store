@@ -9,5 +9,5 @@ public interface IBookReadRepository
     public ValueTask<Page<BookNode>> With(PagingArguments pagingArguments, QueryContext<BookNode> queryContext,
         CancellationToken cancellationToken = default);
     
-    public Task<ILookup<Guid, BookNode>> GetBooksByAuthorIds(IReadOnlyList<Guid> ids, CancellationToken cancellationToken);
+    public Task<Dictionary<Guid, BookNode>> GetBooksByAuthorIds(IReadOnlyList<Guid> ids, CancellationToken cancellationToken);
 }

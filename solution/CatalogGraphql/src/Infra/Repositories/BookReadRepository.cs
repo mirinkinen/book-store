@@ -36,10 +36,10 @@ public class BookReadRepository : ReadRepository, IBookReadRepository
             .ToPageAsync(pagingArguments, cancellationToken);
     }
 
-    public async Task<ILookup<Guid, BookNode>> GetBooksByAuthorIds(IReadOnlyList<Guid> ids, CancellationToken cancellationToken = default)
+    public async Task<Dictionary<Guid, BookNode>> GetBooksByAuthorIds(IReadOnlyList<Guid> ids, CancellationToken cancellationToken = default)
     {
         await using var dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
-        return dbContext.Books
+        return await dbContext.Books
             .Where(b => ids.Contains(b.AuthorId))
             .Select(b => new BookNode
             {
@@ -49,7 +49,7 @@ public class BookReadRepository : ReadRepository, IBookReadRepository
                 AuthorId = b.AuthorId,
                 DatePublished = b.DatePublished
             })
-            .ToLookup(b => b.AuthorId);
+            .ToDictionaryAsync(b => b.AuthorId, cancellationToken);
     }
 
     private static SortDefinition<BookNode> DefaultOrder(SortDefinition<BookNode> sort)
