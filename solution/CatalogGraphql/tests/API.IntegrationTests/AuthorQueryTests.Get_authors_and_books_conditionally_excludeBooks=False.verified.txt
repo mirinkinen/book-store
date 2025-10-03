@@ -1,0 +1,22 @@
+﻿{
+  data: {
+    authors: {
+      nodes: [
+        {
+          firstName: Stephen,
+          lastName: King,
+          books: {
+            nodes: [
+              {
+                title: The Green Mile
+              },
+              {
+                title: The Shining
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

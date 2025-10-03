@@ -28,7 +28,6 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
                         }
                       }
                     }
-                    
                     """;
 
         var result = await _requestExecutor.ExecuteOperationAsync(query);
@@ -76,7 +75,6 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
                         }
                       }
                     }
-                    
                     """;
 
         var result = await _requestExecutor.ExecuteOperationAsync(query);
@@ -131,7 +129,6 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
                         }
                       }
                     }
-
                     """;
 
         var variables = new Dictionary<string, object?> { { "name", "ste" } };
@@ -142,5 +139,40 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
         var json = result.ToJson();
         await VerifyJson(json);
     }
-    
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task Get_authors_and_books_conditionally(bool excludeBooks)
+    {
+        // Arrange
+        var query = """
+                    query ($excludeBooks: Boolean!) {
+                      authors(where: { lastName: { contains: "King" } }) {
+                        nodes {
+                          firstName
+                          lastName
+                          books(where:  {
+                             title:  {
+                                contains: "The"
+                             }
+                          }) @skip(if: $excludeBooks) {
+                            nodes {
+                              title
+                            }
+                          }
+                        }
+                      }
+                    }
+                    """;
+
+        var variables = new Dictionary<string, object?> { { "excludeBooks", excludeBooks } };
+
+        var result = await _requestExecutor.ExecuteOperationAsync(query, variables);
+
+        // Assert
+        var json = result.ToJson();
+        await VerifyJson(json);
+    }
+
 }

@@ -28,7 +28,7 @@ public static class DataLoaders
                 AuthorId = b.AuthorId,
                 DatePublished = b.DatePublished
             })
-            .With(query, sort => sort.IfEmpty(o => o.AddDescending(t => t.Id)))
+            .With(query, sort => sort.IfEmpty(s => s.AddAscending(b => b.Title)).AddAscending(b => b.Id))
             .ToBatchPageAsync(b => b.AuthorId, pagingArgs, cancellationToken);
     }
 
