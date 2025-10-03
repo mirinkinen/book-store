@@ -21,7 +21,7 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
                         nodes {
                           __typename
                           id
-                          firstName
+                          firstName      
                           lastName
                           birthdate
                           organizationId
@@ -108,6 +108,35 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
                     """;
 
         var result = await _requestExecutor.ExecuteOperationAsync(query);
+
+        // Assert
+        var json = result.ToJson();
+        await VerifyJson(json);
+    }
+    
+    [Fact]
+    public async Task Get_authors_by_name_using_variable()
+    {
+        // Arrange
+        var query = """
+                    query($name: String!) {
+                      authors(where:  {
+                         firstName:  {
+                            contains: $name
+                         }
+                      }) {
+                        nodes {
+                          firstName      
+                          lastName
+                        }
+                      }
+                    }
+
+                    """;
+
+        var variables = new Dictionary<string, object?> { { "name", "ste" } };
+
+        var result = await _requestExecutor.ExecuteOperationAsync(query, variables);
 
         // Assert
         var json = result.ToJson();

@@ -34,12 +34,13 @@ public class RequestExecutorProxyFixture : IAsyncLifetime
         await _sqlContainer.DisposeAsync();
     }
 
-    public async Task<IExecutionResult> ExecuteOperationAsync(string query)
+    public async Task<IExecutionResult> ExecuteOperationAsync(string query, Dictionary<string, object?>? variables = null)
     {
         var executor = await GetRequestExecutor();
 
         OperationRequestBuilder builder = new();
         builder.SetDocument(query);
+        builder.AddVariableValues(variables!);
         var operation = builder.Build();
 
         // Act
