@@ -1,8 +1,10 @@
 using System.Runtime.InteropServices;
 using Domain;
+using HotChocolate;
 
 namespace Application.ReviewQueries;
 
+[GraphQLName("Review")]
 public class ReviewNode
 {
     public Guid Id { get; set; }

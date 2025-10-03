@@ -3,7 +3,7 @@
     authors: {
       nodes: [
         {
-          __typename: AuthorNode,
+          __typename: Author,
           id: Guid_1,
           firstName: William,
           lastName: Shakespeare,
@@ -11,7 +11,7 @@
           organizationId: Guid_2
         },
         {
-          __typename: AuthorNode,
+          __typename: Author,
           id: Guid_3,
           firstName: Stephen,
           lastName: King,
@@ -19,7 +19,7 @@
           organizationId: Guid_4
         },
         {
-          __typename: AuthorNode,
+          __typename: Author,
           id: Guid_5,
           firstName: J.K.,
           lastName: Rowling,
@@ -27,7 +27,7 @@
           organizationId: Guid_2
         },
         {
-          __typename: AuthorNode,
+          __typename: Author,
           id: Guid_6,
           firstName: Dan,
           lastName: Brown,
@@ -35,7 +35,7 @@
           organizationId: Guid_4
         },
         {
-          __typename: AuthorNode,
+          __typename: Author,
           id: Guid_7,
           firstName: Ernest.,
           lastName: Hemingway,

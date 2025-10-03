@@ -1,12 +1,20 @@
 ﻿{
-  data: {
-    authorById: {
-      __typename: AuthorNode,
-      id: Guid_1,
-      firstName: Stephen,
-      lastName: King,
-      birthdate: 1947-09-21,
-      organizationId: Guid_2
+  errors: [
+    {
+      message: Unknown type `AuthorNode`.,
+      locations: [
+        {
+          line: 4,
+          column: 5
+        }
+      ],
+      path: [
+        authorById
+      ],
+      extensions: {
+        typeCondition: AuthorNode,
+        specifiedBy: https://spec.graphql.org/October2021/#sec-Fragment-Spread-Type-Existence
+      }
     }
-  }
+  ]
 }

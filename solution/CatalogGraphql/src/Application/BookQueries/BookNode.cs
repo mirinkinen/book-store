@@ -1,7 +1,9 @@
 using Domain;
+using HotChocolate;
 
 namespace Application.BookQueries;
 
+[GraphQLName("Book")]
 public class BookNode
 {
     public Guid Id { get; set; }

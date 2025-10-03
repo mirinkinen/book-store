@@ -1,10 +1,12 @@
 using Domain;
+using HotChocolate;
 
 namespace Application.AuthorQueries;
 
 /// <summary>
 /// Represents an author.
 /// </summary>
+[GraphQLName("Author")]
 public class AuthorNode
 {
     /// <summary>

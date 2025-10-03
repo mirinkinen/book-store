@@ -70,7 +70,6 @@ public static class ServiceCollectionExtensions
         services.AddGraphQLServer()
             // Types
             .AddTypes()
-            .AddType<BookNode>()
             // Conventions
             .AddQueryConventions()
             .AddMutationConventions(new MutationConventionOptions

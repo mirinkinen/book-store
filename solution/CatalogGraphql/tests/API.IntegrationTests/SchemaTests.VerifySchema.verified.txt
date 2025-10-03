@@ -14,9 +14,9 @@ type AnotherMutationTestDto {
 }
 
 "Represents an author."
-type AuthorNode {
-  books("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: BookNodeFilterInput @cost(weight: "10") order: [BookNodeSortInput!] @cost(weight: "10")): BookNodeConnection! @listSize(assumedSize: 10, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
-  customBooks("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: BookNodeFilterInput @cost(weight: "10") order: [BookNodeSortInput!] @cost(weight: "10")): BookNodeConnection! @listSize(assumedSize: 10, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
+type Author {
+  books("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: BookFilterInput @cost(weight: "10") order: [BookSortInput!] @cost(weight: "10")): BookConnection! @listSize(assumedSize: 10, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
+  customBooks("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: BookFilterInput @cost(weight: "10") order: [BookSortInput!] @cost(weight: "10")): BookConnection! @listSize(assumedSize: 10, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
   "ID of the author."
   id: UUID!
   "Birthdate of the author."
@@ -30,27 +30,27 @@ type AuthorNode {
 }
 
 "A connection to a list of items."
-type AuthorNodeConnection {
+type AuthorConnection {
   "A list of edges."
-  edges: [AuthorNodeEdge!]
+  edges: [AuthorEdge!]
   "A flattened list of the nodes"
-  nodes: [AuthorNode!]
+  nodes: [Author!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
   "Identifies the total count of items in the connection."
   totalCount: Int! @cost(weight: "10")
 }
 
-type AuthorNodeEdge {
+type AuthorEdge {
   "The item at the end of the edge."
-  node: AuthorNode!
+  node: Author!
   "A cursor for use in pagination."
   cursor: String!
 }
 
-type BookNode {
-  author: AuthorNode @cost(weight: "10")
-  reviews("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: ReviewNodeFilterInput @cost(weight: "10") order: [ReviewNodeSortInput!] @cost(weight: "10")): ReviewNodeConnection! @listSize(assumedSize: 10, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
+type Book {
+  author: Author @cost(weight: "10")
+  reviews("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: ReviewFilterInput @cost(weight: "10") order: [ReviewSortInput!] @cost(weight: "10")): ReviewConnection! @listSize(assumedSize: 10, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
   id: UUID!
   title: String!
   datePublished: LocalDate!
@@ -59,31 +59,31 @@ type BookNode {
 }
 
 "A connection to a list of items."
-type BookNodeConnection {
+type BookConnection {
   "A list of edges."
-  edges: [BookNodeEdge!]
+  edges: [BookEdge!]
   "A flattened list of the nodes"
-  nodes: [BookNode!]
+  nodes: [Book!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
   "Identifies the total count of items in the connection."
   totalCount: Int! @cost(weight: "10")
 }
 
-type BookNodeEdge {
+type BookEdge {
   "The item at the end of the edge."
-  node: BookNode!
+  node: Book!
   "A cursor for use in pagination."
   cursor: String!
 }
 
 type CreateAuthorDto {
-  authorNode: AuthorNode
+  author: Author
   errors: [CreateAuthorError!]
 }
 
 type CreateBookDto {
-  bookNode: BookNode
+  book: Book
   errors: [CreateBookError!]
 }
 
@@ -165,15 +165,15 @@ type PageInfo {
 
 type Query {
   authorById(id: UUID!): AuthorByIdResult! @cost(weight: "10")
-  authors("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AuthorNodeFilterInput @cost(weight: "10") order: [AuthorNodeSortInput!] @cost(weight: "10")): AuthorNodeConnection! @listSize(assumedSize: 50, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
+  authors("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AuthorFilterInput @cost(weight: "10") order: [AuthorSortInput!] @cost(weight: "10")): AuthorConnection! @listSize(assumedSize: 50, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
   bookById(id: UUID!): BookByIdResult! @cost(weight: "10")
-  books("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: BookNodeFilterInput @cost(weight: "10") order: [BookNodeSortInput!] @cost(weight: "10")): BookNodeConnection! @listSize(assumedSize: 50, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
+  books("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: BookFilterInput @cost(weight: "10") order: [BookSortInput!] @cost(weight: "10")): BookConnection! @listSize(assumedSize: 50, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
   reviewById(id: UUID!): ReviewByIdResult! @cost(weight: "10")
-  reviews("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: ReviewNodeFilterInput @cost(weight: "10") order: [ReviewNodeSortInput!] @cost(weight: "10")): ReviewNodeConnection! @listSize(assumedSize: 50, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
+  reviews("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: ReviewFilterInput @cost(weight: "10") order: [ReviewSortInput!] @cost(weight: "10")): ReviewConnection! @listSize(assumedSize: 50, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
 }
 
-type ReviewNode {
-  book: BookNode @cost(weight: "10")
+type Review {
+  book: Book @cost(weight: "10")
   id: UUID!
   title: String!
   body: String!
@@ -181,41 +181,41 @@ type ReviewNode {
 }
 
 "A connection to a list of items."
-type ReviewNodeConnection {
+type ReviewConnection {
   "A list of edges."
-  edges: [ReviewNodeEdge!]
+  edges: [ReviewEdge!]
   "A flattened list of the nodes"
-  nodes: [ReviewNode!]
+  nodes: [Review!]
   "Information to aid in pagination."
   pageInfo: PageInfo!
   "Identifies the total count of items in the connection."
   totalCount: Int! @cost(weight: "10")
 }
 
-type ReviewNodeEdge {
+type ReviewEdge {
   "The item at the end of the edge."
-  node: ReviewNode!
+  node: Review!
   "A cursor for use in pagination."
   cursor: String!
 }
 
 type Subscription {
-  onAuthorCreated: AuthorNode!
+  onAuthorCreated: Author!
 }
 
 type UpdateAuthorDto {
-  authorNode: AuthorNode
+  author: Author
   errors: [UpdateAuthorError!]
 }
 
 type UpdateBookDto {
-  bookNode: BookNode
+  book: Book
   errors: [UpdateBookError!]
 }
 
-union AuthorByIdResult = AuthorNode | EntityNotFoundError
+union AuthorByIdResult = Author | EntityNotFoundError
 
-union BookByIdResult = BookNode | EntityNotFoundError
+union BookByIdResult = Book | EntityNotFoundError
 
 union CreateAuthorError = DomainRuleError
 
@@ -225,16 +225,16 @@ union DeleteAuthorError = DomainRuleError | EntityNotFoundError
 
 union DeleteBookError = EntityNotFoundError
 
-union ReviewByIdResult = ReviewNode | EntityNotFoundError
+union ReviewByIdResult = Review | EntityNotFoundError
 
 union UpdateAuthorError = DomainRuleError | EntityNotFoundError
 
 union UpdateBookError = DomainRuleError | EntityNotFoundError
 
 "Represents an author."
-input AuthorNodeFilterInput {
-  and: [AuthorNodeFilterInput!]
-  or: [AuthorNodeFilterInput!]
+input AuthorFilterInput {
+  and: [AuthorFilterInput!]
+  or: [AuthorFilterInput!]
   "ID of the author."
   id: UuidOperationFilterInput
   "Birthdate of the author."
@@ -248,7 +248,7 @@ input AuthorNodeFilterInput {
 }
 
 "Represents an author."
-input AuthorNodeSortInput {
+input AuthorSortInput {
   "ID of the author."
   id: SortEnumType @cost(weight: "10")
   "Birthdate of the author."
@@ -261,9 +261,9 @@ input AuthorNodeSortInput {
   organizationId: SortEnumType @cost(weight: "10")
 }
 
-input BookNodeFilterInput {
-  and: [BookNodeFilterInput!]
-  or: [BookNodeFilterInput!]
+input BookFilterInput {
+  and: [BookFilterInput!]
+  or: [BookFilterInput!]
   id: UuidOperationFilterInput
   title: StringOperationFilterInput
   datePublished: LocalDateOperationFilterInput
@@ -271,7 +271,7 @@ input BookNodeFilterInput {
   price: DecimalOperationFilterInput
 }
 
-input BookNodeSortInput {
+input BookSortInput {
   id: SortEnumType @cost(weight: "10")
   title: SortEnumType @cost(weight: "10")
   datePublished: SortEnumType @cost(weight: "10")
@@ -331,16 +331,16 @@ input LocalDateOperationFilterInput {
   nlte: LocalDate @cost(weight: "10")
 }
 
-input ReviewNodeFilterInput {
-  and: [ReviewNodeFilterInput!]
-  or: [ReviewNodeFilterInput!]
+input ReviewFilterInput {
+  and: [ReviewFilterInput!]
+  or: [ReviewFilterInput!]
   id: UuidOperationFilterInput
   title: StringOperationFilterInput
   body: StringOperationFilterInput
   bookId: UuidOperationFilterInput
 }
 
-input ReviewNodeSortInput {
+input ReviewSortInput {
   id: SortEnumType @cost(weight: "10")
   title: SortEnumType @cost(weight: "10")
   body: SortEnumType @cost(weight: "10")
