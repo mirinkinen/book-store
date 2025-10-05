@@ -143,11 +143,11 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
-    public async Task Get_authors_and_books_conditionally(bool excludeBooks)
+    public async Task Get_authors_and_books_conditionally(bool includeBooks)
     {
         // Arrange
         var query = """
-                    query ($excludeBooks: Boolean!) {
+                    query ($includeBooks: Boolean!) {
                       authors(where: { lastName: { contains: "King" } }) {
                         nodes {
                           firstName
@@ -156,7 +156,7 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
                              title:  {
                                 contains: "The"
                              }
-                          }) @skip(if: $excludeBooks) {
+                          }) @include(if: $includeBooks) {
                             nodes {
                               title
                             }
@@ -166,7 +166,7 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
                     }
                     """;
 
-        var variables = new Dictionary<string, object?> { { "excludeBooks", excludeBooks } };
+        var variables = new Dictionary<string, object?> { { "includeBooks", includeBooks } };
 
         var result = await _requestExecutor.ExecuteOperationAsync(query, variables);
 
