@@ -1,4 +1,5 @@
-services:
+name: "Book store"
+services:  
   sqlserver:
     image: "mcr.microsoft.com/mssql/server:latest"
     ports:
