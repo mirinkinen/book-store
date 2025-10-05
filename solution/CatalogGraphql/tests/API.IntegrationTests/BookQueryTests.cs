@@ -20,7 +20,6 @@ public class BookQueryTests : IClassFixture<RequestExecutorProxyFixture>
                       books(order: [{ title: ASC }]) {
                         nodes {
                           __typename
-                          id
                           title
                         }
                       }
@@ -40,7 +39,7 @@ public class BookQueryTests : IClassFixture<RequestExecutorProxyFixture>
         // Arrange
         var query = """
                     query {
-                       bookById(id: "6F6D9786-074C-4828-8DDD-5852A9530203") {
+                       bookById(id: "Qm9vazqGl21vTAcoSI3dWFKpUwID") {
                         ... on Book {
                           id
                           title
@@ -52,8 +51,10 @@ public class BookQueryTests : IClassFixture<RequestExecutorProxyFixture>
         var result = await _requestExecutor.ExecuteOperationAsync(query);
 
         // Assert
+        var settings = new VerifySettings();
+        settings.IgnoreMember("id");
         var json = result.ToJson();
-        await VerifyJson(json);
+        await VerifyJson(json, settings);
     }
     
     [Fact]
@@ -62,9 +63,9 @@ public class BookQueryTests : IClassFixture<RequestExecutorProxyFixture>
         // Arrange
         var query = """
                     query {
-                      books(first: 2, order: [{ id: ASC }]) {
+                      books(first: 2, order: [{ title: ASC }]) {
                         nodes {
-                          id
+                          title
                         }
                       }
                     }
@@ -85,7 +86,6 @@ public class BookQueryTests : IClassFixture<RequestExecutorProxyFixture>
             query {
               books(first: 2, order: [{ title: ASC }]) {
                 nodes {
-                  id
                   title
                   authorId
                   author {

@@ -20,7 +20,6 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
                       authors(order: [{ id: ASC }]) {
                         nodes {
                           __typename
-                          id
                           firstName      
                           lastName
                           birthdate
@@ -46,7 +45,6 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
                       authorById(id: "8E6A9434-87F5-46B2-A6C3-522DC35D8EEF") {    
                         __typename
                         ... on AuthorNode {
-                          id
                           firstName
                           lastName
                           birthdate
@@ -71,7 +69,8 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
                     query {
                       authors(first: 2, order: [{ id: ASC }]) {
                         nodes {
-                          id
+                          firstName
+                          lastName
                         }
                       }
                     }
@@ -93,8 +92,8 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
                     authors(first: 2) {
                       nodes {
                         __typename
-                        id
-                        firstName      
+                        firstName
+                        lastName      
                         books(first: 2) {
                           nodes {
                             id

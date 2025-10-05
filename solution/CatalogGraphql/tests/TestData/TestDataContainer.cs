@@ -10,15 +10,19 @@ public static class TestDataContainer
     public static Guid AuthorizedOrganization1 => Guid.Parse("5D8E6753-1479-408E-BB3D-CB3A02BE486C");
     public static Guid AuthorizedOrganization2 => Guid.Parse("284F633F-2D13-4F4D-8E37-1EE5C9F6B140");
 
+    // Author IDs.
     public static Guid StephenKingId => Guid.Parse("8E6A9434-87F5-46B2-A6C3-522DC35D8EEF");
     public static Guid DanBrownId => Guid.Parse("13E76BC5-BF2C-4FDB-BF42-8E0CA66EA7CE");
     public static Guid JkRowlingId => Guid.Parse("520B8C4F-72F1-4ECE-B1E2-8DD1DCA3476A");
     public static Guid WilliamShakeSpeareId => Guid.Parse("5321C585-9B2D-4A72-A105-122843E40E75");
     public static Guid ErnestHemingwayId => Guid.Parse("1668C115-23B2-40EF-BACC-CFB79F6DC391");
     
+    // Book IDs.
     public static Guid HarryPotterAndTheDeathlyHallows => Guid.Parse("6F6D9786-074C-4828-8DDD-5852A9530203");
+    
+    public static Guid TheShiningId => Guid.Parse("A125C5BD-4F8E-4794-9C36-76E401FB4F24");
 
-    // Review IDs for easier testing
+    // Review IDs.
     public static Guid ShiningReview1Id => Guid.Parse("B1234567-1234-1234-1234-123456789001");
     public static Guid ShiningReview2Id => Guid.Parse("B1234567-1234-1234-1234-123456789002");
     public static Guid DaVinciCodeReviewId => Guid.Parse("B1234567-1234-1234-1234-123456789003");
@@ -50,7 +54,7 @@ public static class TestDataContainer
 
         // Add books with known IDs for easier testing.
         var theShining = new Book(StephenKingId, "The Shining", new DateOnly(1977, 1, 28), 20);
-        theShining.SetId(Guid.Parse("A125C5BD-4F8E-4794-9C36-76E401FB4F24"));
+        theShining.SetId(TheShiningId);
 
         books.AddRange(new[]
         {

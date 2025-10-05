@@ -1,0 +1,14 @@
+﻿{
+  data: {
+    nodes: [
+      {
+        title: Harry Potter and the Deathly Hallows,
+        datePublished: 2007-07-21
+      },
+      {
+        firstName: J.K.,
+        lastName: Rowling
+      }
+    ]
+  }
+}

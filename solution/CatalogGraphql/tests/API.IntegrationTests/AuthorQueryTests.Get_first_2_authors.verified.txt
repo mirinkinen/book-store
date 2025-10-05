@@ -3,10 +3,12 @@
     authors: {
       nodes: [
         {
-          id: Guid_1
+          firstName: William,
+          lastName: Shakespeare
         },
         {
-          id: Guid_2
+          firstName: Stephen,
+          lastName: King
         }
       ]
     }

@@ -13,7 +13,7 @@ public static partial class BookQueries
 {
     [NodeResolver]
     [Error<EntityNotFoundException>]
-    public static async Task<BookNode> GetBookById(Guid id, ISender sender)
+    public static async Task<BookNode?> GetBookById(Guid id, ISender sender)
     {
         return await sender.Send(new GetBookByIdQuery(id));
     }

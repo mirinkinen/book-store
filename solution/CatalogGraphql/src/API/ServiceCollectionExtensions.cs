@@ -102,7 +102,7 @@ public static class ServiceCollectionExtensions
                 options.MaxTypeCost = 5000;
                 options.MaxFieldCost = 5000;
             })
-            //.AddGlobalObjectIdentification()
+            .AddGlobalObjectIdentification()
             .AddDataLoader<CustomBooksByAuthorIdsDataLoader>()
             .AddDataLoader<IBooksByAuthorIdDataLoader, BooksByAuthorIdDataLoader>()
             .AddDataLoader<IAuthorByBookIdDataLoader, AuthorByBookIdDataLoader>()

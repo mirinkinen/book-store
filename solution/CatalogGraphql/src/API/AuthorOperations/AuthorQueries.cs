@@ -11,6 +11,11 @@ namespace API.AuthorOperations;
 [QueryType]
 public static partial class AuthorQueries
 {
+    /// <summary>
+    /// Gets author by ID.
+    /// </summary>
+    /// <param name="id">The ID of the author</param>
+    /// <returns>Author</returns>
     [NodeResolver]
     [Error<EntityNotFoundException>]
     public static async Task<AuthorNode> GetAuthorById(Guid id, ISender sender)
@@ -18,6 +23,10 @@ public static partial class AuthorQueries
         return await sender.Send(new GetAuthorByIdQuery(id));
     }
 
+    /// <summary>
+    /// Gets authors by query parameters.
+    /// </summary>
+    /// <returns>List of authors</returns>
     [UseConnection]
     [UseFiltering]
     [UseSorting]
