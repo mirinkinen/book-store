@@ -39,4 +39,12 @@ public static partial class AuthorQueries
         var page = await sender.Send(new GetAuthorsQuery(pagingArguments, queryContext), cancellationToken);
         return new PageConnection<AuthorNode>(page);
     }
+
+    /// <summary>
+    /// Demonstrates how queries are executed in parallel.
+    /// </summary>
+    public static Task<string> ConcurrentQuery(ScopedService scopedService)
+    {
+        return scopedService.GetValue();
+    }
 }

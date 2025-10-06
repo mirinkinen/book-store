@@ -2,9 +2,9 @@ namespace Application.AuthorQueries.GetAuthors;
 
 public class ScopedService
 {
-    public async Task<string> GetHelloWorld()
+    public async Task<string> GetValue()
     {
         await Task.Delay(5000);
-        return "My hash code: " + GetHashCode();
+        return "HashCode: " + GetHashCode();
     }
 }

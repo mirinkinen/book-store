@@ -1,6 +1,5 @@
 using Application.AuthorCommands.CreateAuthor;
 using Application.AuthorCommands.DeleteAuthor;
-using Application.AuthorCommands.MediatorHandlerWithMultipleRepositories;
 using Application.AuthorCommands.UpdateAuthor;
 using Application.AuthorQueries;
 using Application.AuthorQueries.GetAuthors;
@@ -35,23 +34,10 @@ public class AuthorMutations
     }
 
     /// <summary>
-    /// Example that shows that scoped services are shared between concurrent mutations.
+    /// Demonstrates how mutations are executed in sequence.
     /// </summary>
-    public Task<string> MutationTest(ScopedService scopedService)
+    public Task<string> ConcurrentMutation(ScopedService scopedService)
     {
-        return scopedService.GetHelloWorld();
-    }
-    
-    /// <summary>
-    /// Example that shows that scoped services are shared between concurrent mutations.
-    /// </summary>
-    public Task<string> AnotherMutationTest(ScopedService scopedService)
-    {
-        return scopedService.GetHelloWorld();
-    }
-
-    public Task<string> MutationWithMultipleRepositories(ISender sender)
-    {
-        return sender.Send(new MutationWithMultipleRepositoriesCommand());
+        return scopedService.GetValue();
     }
 }

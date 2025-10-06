@@ -6,6 +6,9 @@
     <Project Path="Common/src/Common/Common.csproj" />
   </Folder>
   <Folder Name="/Common/tests/" />
+  <Folder Name="/Doc/">
+    <File Path="Doc\GraphQL-demo.md" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
     <File Path="Directory.Build.props" />
