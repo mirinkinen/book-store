@@ -14,10 +14,6 @@ interface UserError {
   code: String!
 }
 
-type AnotherMutationTestDto {
-  string: String
-}
-
 "Represents an author."
 type Author implements Node {
   books("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: BookFilterInput @cost(weight: "10") order: [BookSortInput!] @cost(weight: "10")): BookConnection! @listSize(assumedSize: 10, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
@@ -87,6 +83,10 @@ type BookEdge {
   cursor: String!
 }
 
+type ConcurrentMutationDto {
+  string: String
+}
+
 type CreateAuthorDto {
   author: Author
   errors: [CreateAuthorError!]
@@ -131,22 +131,11 @@ type Mutation {
   createAuthor(command: CreateAuthorCommand!): CreateAuthorDto! @cost(weight: "10")
   updateAuthor(command: UpdateAuthorCommand!): UpdateAuthorDto! @cost(weight: "10")
   deleteAuthor(command: DeleteAuthorCommand!): DeleteAuthorDto! @cost(weight: "10")
-  "Example that shows that scoped services are shared between concurrent mutations."
-  mutationTest: MutationTestDto! @cost(weight: "10")
-  "Example that shows that scoped services are shared between concurrent mutations."
-  anotherMutationTest: AnotherMutationTestDto! @cost(weight: "10")
-  mutationWithMultipleRepositories: MutationWithMultipleRepositoriesDto! @cost(weight: "10")
+  "Demonstrates how mutations are executed in sequence."
+  concurrentMutation: ConcurrentMutationDto! @cost(weight: "10")
   createBook(command: CreateBookCommand!): CreateBookDto! @cost(weight: "10")
   updateBook(command: UpdateBookCommand!): UpdateBookDto! @cost(weight: "10")
   deleteBook(command: DeleteBookCommand!): DeleteBookDto! @cost(weight: "10")
-}
-
-type MutationTestDto {
-  string: String
-}
-
-type MutationWithMultipleRepositoriesDto {
-  string: String
 }
 
 "A cursor that points to a specific page."
@@ -194,6 +183,8 @@ type Query {
   List of authors
   """
   authors("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: AuthorFilterInput @cost(weight: "10") order: [AuthorSortInput!] @cost(weight: "10")): AuthorConnection! @listSize(assumedSize: 50, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
+  "Demonstrates how queries are executed in parallel."
+  concurrentQuery: String! @cost(weight: "10")
   bookById(id: ID!): BookByIdResult! @cost(weight: "10")
   books("Returns the first _n_ elements from the list." first: Int "Returns the elements in the list that come after the specified cursor." after: String "Returns the last _n_ elements from the list." last: Int "Returns the elements in the list that come before the specified cursor." before: String where: BookFilterInput @cost(weight: "10") order: [BookSortInput!] @cost(weight: "10")): BookConnection! @listSize(assumedSize: 50, slicingArguments: [ "first", "last" ], slicingArgumentDefaultValue: 10, sizedFields: [ "edges", "nodes" ], requireOneSlicingArgument: false) @cost(weight: "10")
   reviewById(id: ID!): ReviewByIdResult! @cost(weight: "10")
