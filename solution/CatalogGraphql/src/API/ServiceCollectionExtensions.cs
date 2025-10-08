@@ -3,6 +3,7 @@ using Application.AuthorQueries;
 using Application.AuthorQueries.GetAuthors;
 using Application.BookQueries;
 using Application.ReviewQueries;
+using Application.Services;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Common.Domain;
 using Domain;

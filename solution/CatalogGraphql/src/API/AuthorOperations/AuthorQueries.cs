@@ -1,6 +1,7 @@
 using Application.AuthorQueries;
 using Application.AuthorQueries.GetAuthorById;
 using Application.AuthorQueries.GetAuthors;
+using Application.Services;
 using Common.Domain;
 using GreenDonut.Data;
 using HotChocolate.Types.Pagination;

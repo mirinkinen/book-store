@@ -1,4 +1,4 @@
-namespace Application.AuthorQueries.GetAuthors;
+namespace Application.Services;
 
 public class ScopedService
 {

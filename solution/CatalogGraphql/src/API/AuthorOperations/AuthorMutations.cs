@@ -3,6 +3,7 @@ using Application.AuthorCommands.DeleteAuthor;
 using Application.AuthorCommands.UpdateAuthor;
 using Application.AuthorQueries;
 using Application.AuthorQueries.GetAuthors;
+using Application.Services;
 using Common.Domain;
 using MediatR;
 
