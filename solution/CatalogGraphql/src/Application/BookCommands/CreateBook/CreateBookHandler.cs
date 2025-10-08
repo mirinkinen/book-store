@@ -20,7 +20,7 @@ public class CreateBookHandler : IRequestHandler<CreateBookCommand, BookNode>
         _authorWriteRepository = authorWriteRepository;
         _bookWriteRepository = bookWriteRepository;
     }
-    
+
     public async Task<BookNode> Handle(CreateBookCommand command, CancellationToken cancellationToken)
     {
         var author = await _authorWriteRepository.FirstOrDefaultAsync(command.AuthorId);
@@ -31,10 +31,10 @@ public class CreateBookHandler : IRequestHandler<CreateBookCommand, BookNode>
 
         var book = new Book(command.AuthorId, command.Title, command.DatePublished, command.Price);
         book.SetAuthor(author);
-        
+
         _bookWriteRepository.Add(book);
         await _bookWriteRepository.SaveChangesAsync(cancellationToken);
-        
+
         return book.ToDto();
     }
 }

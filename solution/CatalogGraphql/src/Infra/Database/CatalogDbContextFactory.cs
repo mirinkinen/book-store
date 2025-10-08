@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace Infra.Data;
+namespace Infra.Database;
 
 public class CatalogDbContextFactory : IDesignTimeDbContextFactory<CatalogDbContext>
 {

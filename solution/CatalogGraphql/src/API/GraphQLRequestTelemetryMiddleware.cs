@@ -1,7 +1,7 @@
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
-using System.Text.Json;
 using System.Text;
+using System.Text.Json;
 
 namespace API;
 
@@ -32,8 +32,8 @@ public class GraphQLRequestTelemetryMiddleware
 
         var (operationName, operationType, query) = await ExtractGraphQLOperationAsync(context);
 
-        var telemetryOperationName = string.IsNullOrEmpty(operationName) 
-            ? $"GraphQL {operationType}" 
+        var telemetryOperationName = string.IsNullOrEmpty(operationName)
+            ? $"GraphQL {operationType}"
             : $"GraphQL {operationType}: {operationName}";
 
         var operation = _telemetryClient.StartOperation<RequestTelemetry>(telemetryOperationName);
@@ -51,7 +51,7 @@ public class GraphQLRequestTelemetryMiddleware
             if (!string.IsNullOrEmpty(query))
                 operation.Telemetry.Properties["GraphQL.Query"] = TruncateQuery(query);
 
-            _logger.LogInformation("GraphQL {OperationType} started: {OperationName}", 
+            _logger.LogInformation("GraphQL {OperationType} started: {OperationName}",
                 operationType, operationName ?? "Anonymous");
 
             await _next(context);
@@ -59,7 +59,7 @@ public class GraphQLRequestTelemetryMiddleware
             operation.Telemetry.Success = context.Response.StatusCode < 400;
             operation.Telemetry.ResponseCode = context.Response.StatusCode.ToString();
 
-            _logger.LogInformation("GraphQL {OperationType} completed: {OperationName}, Status: {StatusCode}", 
+            _logger.LogInformation("GraphQL {OperationType} completed: {OperationName}, Status: {StatusCode}",
                 operationType, operationName ?? "Anonymous", context.Response.StatusCode);
         }
         catch (Exception ex)
@@ -70,7 +70,7 @@ public class GraphQLRequestTelemetryMiddleware
                 ["GraphQL.OperationType"] = operationType,
                 ["GraphQL.OperationName"] = operationName ?? "Anonymous"
             });
-            _logger.LogError(ex, "GraphQL {OperationType} failed: {OperationName}", 
+            _logger.LogError(ex, "GraphQL {OperationType} failed: {OperationName}",
                 operationType, operationName ?? "Anonymous");
             throw;
         }

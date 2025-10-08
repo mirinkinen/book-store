@@ -3,7 +3,7 @@ using Application.BookQueries;
 using Application.ReviewQueries;
 using GreenDonut;
 using GreenDonut.Data;
-using Infra.Data;
+using Infra.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.DataLoaders;
@@ -62,7 +62,7 @@ public static class DataLoaders
             .OrderBy(x => x.BookId)
             .ToDictionaryAsync(x => x.BookId, x => x.Author, cancellationToken);
     }
-    
+
     [DataLoader]
     public static async Task<Dictionary<Guid, Page<ReviewNode>>> GetReviewsByBookIdAsync(
         IReadOnlyList<Guid> bookIds,
@@ -73,7 +73,7 @@ public static class DataLoaders
     {
         return await context.Reviews
             .Where(r => bookIds.Contains(r.BookId))
-            .Select(r => new ReviewNode()
+            .Select(r => new ReviewNode
             {
                 Id = r.Id,
                 Body = r.Body,

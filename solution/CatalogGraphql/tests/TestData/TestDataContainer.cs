@@ -16,10 +16,10 @@ public static class TestDataContainer
     public static Guid JkRowlingId => Guid.Parse("520B8C4F-72F1-4ECE-B1E2-8DD1DCA3476A");
     public static Guid WilliamShakeSpeareId => Guid.Parse("5321C585-9B2D-4A72-A105-122843E40E75");
     public static Guid ErnestHemingwayId => Guid.Parse("1668C115-23B2-40EF-BACC-CFB79F6DC391");
-    
+
     // Book IDs.
     public static Guid HarryPotterAndTheDeathlyHallows => Guid.Parse("6F6D9786-074C-4828-8DDD-5852A9530203");
-    
+
     public static Guid TheShiningId => Guid.Parse("A125C5BD-4F8E-4794-9C36-76E401FB4F24");
 
     // Review IDs.
@@ -88,7 +88,7 @@ public static class TestDataContainer
     private static decimal GetDeterministicPrice(int bookId)
     {
         // Use modulo to create deterministic price between 10 and 49
-        return 10 + (bookId % 40);
+        return 10 + bookId % 40;
     }
 
     private static Author GetDeterministicAuthor(List<Author> authors, int bookId)
@@ -120,7 +120,8 @@ public static class TestDataContainer
                 Id = ShiningReview1Id,
                 BookId = theShiningId,
                 Title = "Terrifyingly Good",
-                Body = "Stephen King's masterpiece of horror. The psychological descent into madness is brilliantly portrayed. A must-read for horror fans.",
+                Body =
+                    "Stephen King's masterpiece of horror. The psychological descent into madness is brilliantly portrayed. A must-read for horror fans.",
                 CreatedAt = DateTime.UtcNow.AddDays(-30),
                 ModifiedAt = DateTime.UtcNow.AddDays(-30),
                 ModifiedBy = SystemUserId
@@ -218,6 +219,6 @@ public static class TestDataContainer
     private static int GetDeterministicDaysAgo(int reviewId)
     {
         // Use modulo to create deterministic review dates within the past year
-        return 1 + (reviewId % 365);
+        return 1 + reviewId % 365;
     }
 }

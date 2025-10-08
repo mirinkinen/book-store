@@ -1,6 +1,6 @@
 using HotChocolate;
 using HotChocolate.Execution;
-using Infra.Data;
+using Infra.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

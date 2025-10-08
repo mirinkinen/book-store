@@ -2,7 +2,7 @@ using Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infra.Data;
+namespace Infra.Database;
 
 public class CatalogDbContext : DbContext
 {
@@ -71,7 +71,6 @@ public class AuthorConfiguration : IEntityTypeConfiguration<Author>
             .IsRequired();
     }
 }
-
 
 public class ReviewConfiguration : IEntityTypeConfiguration<Review>
 {

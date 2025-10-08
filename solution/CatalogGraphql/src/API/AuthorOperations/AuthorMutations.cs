@@ -2,7 +2,6 @@ using Application.AuthorCommands.CreateAuthor;
 using Application.AuthorCommands.DeleteAuthor;
 using Application.AuthorCommands.UpdateAuthor;
 using Application.AuthorQueries;
-using Application.AuthorQueries.GetAuthors;
 using Application.Services;
 using Common.Domain;
 using MediatR;
@@ -13,7 +12,7 @@ namespace API.AuthorOperations;
 public class AuthorMutations
 {
     [Error<DomainRuleException>]
-    public async Task<AuthorNode> CreateAuthor(string firstName, string lastName, DateOnly birthdate, Guid organizationId, 
+    public async Task<AuthorNode> CreateAuthor(string firstName, string lastName, DateOnly birthdate, Guid organizationId,
         ISender sender, CancellationToken cancellationToken)
     {
         var author = await sender.Send(new CreateAuthorCommand(firstName, lastName, birthdate, organizationId), cancellationToken);

@@ -54,7 +54,7 @@ public class Author : Entity
         {
             throw new KeyNotFoundException($"Book with ID '{bookId}' not found for this author.");
         }
-        
+
         Books.Remove(book);
         return book;
     }

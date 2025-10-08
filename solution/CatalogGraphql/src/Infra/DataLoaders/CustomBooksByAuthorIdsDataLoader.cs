@@ -1,7 +1,7 @@
 using Application.BookQueries;
 using GreenDonut;
 using GreenDonut.Data;
-using Infra.Data;
+using Infra.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.DataLoaders;
@@ -27,7 +27,7 @@ public class CustomBooksByAuthorIdsDataLoader : BatchDataLoader<Guid, IEnumerabl
         CancellationToken cancellationToken)
     {
         await using var dbContext = await _contextFactory.CreateDbContextAsync(cancellationToken);
-        
+
         var books = await dbContext.Books
             .Where(b => authorIds.Contains(b.AuthorId))
             .Select(b => new BookNode
@@ -42,7 +42,7 @@ public class CustomBooksByAuthorIdsDataLoader : BatchDataLoader<Guid, IEnumerabl
             .ToListAsync(cancellationToken);
 
         return books.ToLookup(b => b.AuthorId)
-                   .ToDictionary(g => g.Key, g => g.AsEnumerable());
+            .ToDictionary(g => g.Key, g => g.AsEnumerable());
     }
 
     public async Task<Page<BookNode>> LoadPageAsync(
@@ -52,7 +52,7 @@ public class CustomBooksByAuthorIdsDataLoader : BatchDataLoader<Guid, IEnumerabl
         CancellationToken cancellationToken = default)
     {
         await using var dbContext = await _contextFactory.CreateDbContextAsync(cancellationToken);
-        
+
         return await dbContext.Books
             .Where(b => b.AuthorId == authorId)
             .Select(b => new BookNode

@@ -8,7 +8,8 @@ namespace API.AuthorOperations;
 [SubscriptionType]
 public class AuthorSubscriptions
 {
-    public async IAsyncEnumerable<AuthorNode> OnAuthorCreatedStream(ITopicEventReceiver eventReceiver, [EnumeratorCancellation] CancellationToken cancellationToken)
+    public async IAsyncEnumerable<AuthorNode> OnAuthorCreatedStream(ITopicEventReceiver eventReceiver,
+        [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         var sourceStream = await eventReceiver.SubscribeAsync<Author>(nameof(AuthorMutations.CreateAuthor), cancellationToken);
 

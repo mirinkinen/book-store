@@ -15,7 +15,7 @@ public class DeleteAuthorHandler : IRequestHandler<DeleteAuthorCommand, DeleteAu
     {
         _authorWriteRepository = authorWriteRepository;
     }
-    
+
     public async Task<DeleteAuthorPayload> Handle(DeleteAuthorCommand command, CancellationToken cancellationToken)
     {
         var success = await _authorWriteRepository.DeleteAsync(command.Id);

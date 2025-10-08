@@ -8,6 +8,6 @@ public interface IReviewReadRepository
 
     public ValueTask<Page<ReviewNode>> With(PagingArguments pagingArguments, QueryContext<ReviewNode> queryContext,
         CancellationToken cancellationToken = default);
-    
+
     public Task<ILookup<Guid, ReviewNode>> GetReviewsByBookIds(IReadOnlyList<Guid> ids, CancellationToken cancellationToken);
 }

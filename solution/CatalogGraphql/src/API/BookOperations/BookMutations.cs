@@ -22,7 +22,7 @@ public class BookMutations
     {
         return await sender.Send(new UpdateBookCommand(id, title, datePublished, price));
     }
-    
+
     [Error<EntityNotFoundException>]
     public async Task<DeleteBookPayload> DeleteBook(Guid id, ISender sender)
     {

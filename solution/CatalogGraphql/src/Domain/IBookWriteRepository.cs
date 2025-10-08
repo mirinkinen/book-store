@@ -1,9 +1,8 @@
-namespace Domain
+namespace Domain;
+
+/// <summary>
+/// Repository interface for Book entity
+/// </summary>
+public interface IBookWriteRepository : IWriteRepository<Book>
 {
-    /// <summary>
-    /// Repository interface for Book entity
-    /// </summary>
-    public interface IBookWriteRepository : IWriteRepository<Book>
-    {
-    }
 }

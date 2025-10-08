@@ -15,7 +15,7 @@ public class DeleteBookHandler : IRequestHandler<DeleteBookCommand, DeleteBookPa
     {
         _bookWriteRepository = bookWriteRepository;
     }
-    
+
     public async Task<DeleteBookPayload> Handle(DeleteBookCommand command, CancellationToken cancellationToken)
     {
         var success = await _bookWriteRepository.DeleteAsync(command.Id);

@@ -13,7 +13,7 @@ public class AuthorNode
     /// ID of the author.
     /// </summary>
     public Guid Id { get; set; }
-    
+
     /// <summary>
     /// Birthdate of the author.
     /// </summary>
@@ -25,7 +25,7 @@ public class AuthorNode
     public string FirstName { get; set; }
 
     /// <summary>
-    /// Last name of the author. 
+    /// Last name of the author.
     /// </summary>
     public string LastName { get; set; }
 

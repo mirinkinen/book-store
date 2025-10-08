@@ -18,7 +18,7 @@ public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, BookNode>
     {
         _bookWriteRepository = bookWriteRepository;
     }
-    
+
     public async Task<BookNode> Handle(UpdateBookCommand command, CancellationToken cancellationToken)
     {
         var book = await _bookWriteRepository.FirstOrDefaultAsync(command.Id);

@@ -35,7 +35,7 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
         var json = result.ToJson();
         await VerifyJson(json);
     }
-    
+
     [Fact]
     public async Task Get_author_by_id()
     {
@@ -60,7 +60,7 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
         var json = result.ToJson();
         await VerifyJson(json);
     }
-    
+
     [Fact]
     public async Task Get_first_2_authors()
     {
@@ -82,7 +82,7 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
         var json = result.ToJson();
         await VerifyJson(json);
     }
-    
+
     [Fact]
     public async Task Get_first_2_authors_with_first_2_books()
     {
@@ -110,7 +110,7 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
         var json = result.ToJson();
         await VerifyJson(json);
     }
-    
+
     [Fact]
     public async Task Get_authors_by_name_using_variable()
     {
@@ -173,5 +173,4 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
         var json = result.ToJson();
         await VerifyJson(json);
     }
-
 }

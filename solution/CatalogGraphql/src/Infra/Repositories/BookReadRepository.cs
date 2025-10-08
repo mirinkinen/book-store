@@ -1,6 +1,6 @@
 using Application.BookQueries;
 using GreenDonut.Data;
-using Infra.Data;
+using Infra.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Repositories;
@@ -36,7 +36,8 @@ public class BookReadRepository : ReadRepository, IBookReadRepository
             .ToPageAsync(pagingArguments, cancellationToken);
     }
 
-    public async Task<Dictionary<Guid, BookNode>> GetBooksByAuthorIds(IReadOnlyList<Guid> ids, CancellationToken cancellationToken = default)
+    public async Task<Dictionary<Guid, BookNode>> GetBooksByAuthorIds(IReadOnlyList<Guid> ids,
+        CancellationToken cancellationToken = default)
     {
         await using var dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
         return await dbContext.Books

@@ -15,11 +15,11 @@ public static partial class BookType
         var author = await dataLoader.LoadAsync(book.Id);
         return author;
     }
-    
+
     [UseFiltering]
     [UseSorting]
     public static async Task<PageConnection<ReviewNode>> GetReviewsAsync(
-        [Parent] BookNode book, 
+        [Parent] BookNode book,
         PagingArguments pagingArguments,
         QueryContext<ReviewNode> query,
         IReviewsByBookIdDataLoader dataLoader,

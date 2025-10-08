@@ -1,7 +1,7 @@
 using Application.AuthorQueries;
 using Domain;
 using GreenDonut.Data;
-using Infra.Data;
+using Infra.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Repositories;

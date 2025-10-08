@@ -1,4 +1,3 @@
-using Common.Domain;
 using MediatR;
 
 namespace Application.BookQueries.GetBookById;
@@ -22,7 +21,7 @@ public class GetBookByIdHandler : IRequestHandler<GetBookByIdQuery, BookNode?>
         // {
         //     throw new EntityNotFoundException("Book not found", "book-not-found");
         // }
-        
+
         return book;
     }
 }

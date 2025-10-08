@@ -10,7 +10,7 @@ public class BookNode
     /// ID of the book.
     /// </summary>
     public Guid Id { get; set; }
-    
+
     /// <summary>
     /// Title of the book.
     /// </summary>

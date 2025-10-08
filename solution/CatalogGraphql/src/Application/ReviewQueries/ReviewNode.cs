@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices;
 using Domain;
 using HotChocolate;
 
@@ -8,7 +7,7 @@ namespace Application.ReviewQueries;
 public class ReviewNode
 {
     public Guid Id { get; set; }
-    
+
     public string Title { get; set; }
 
     public string Body { get; set; }

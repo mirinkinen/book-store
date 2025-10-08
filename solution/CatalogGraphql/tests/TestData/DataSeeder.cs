@@ -1,4 +1,4 @@
-﻿using Infra.Data;
+﻿using Infra.Database;
 
 namespace TestData;
 
@@ -24,7 +24,7 @@ public static class DataSeeder
             await catalogDbContext.AddRangeAsync(books);
             await catalogDbContext.SaveChangesAsync();
         }
-        
+
         // If not already seeded.
         if (!catalogDbContext.Reviews.Any())
         {

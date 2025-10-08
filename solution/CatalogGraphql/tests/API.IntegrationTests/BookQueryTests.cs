@@ -32,7 +32,7 @@ public class BookQueryTests : IClassFixture<RequestExecutorProxyFixture>
         var json = result.ToJson();
         await VerifyJson(json);
     }
-    
+
     [Fact]
     public async Task Get_book_by_id()
     {
@@ -56,7 +56,7 @@ public class BookQueryTests : IClassFixture<RequestExecutorProxyFixture>
         var json = result.ToJson();
         await VerifyJson(json, settings);
     }
-    
+
     [Fact]
     public async Task Get_first_2_Books()
     {
@@ -77,7 +77,7 @@ public class BookQueryTests : IClassFixture<RequestExecutorProxyFixture>
         var json = result.ToJson();
         await VerifyJson(json);
     }
-    
+
     [Fact]
     public async Task Get_first_2_books_with_author()
     {

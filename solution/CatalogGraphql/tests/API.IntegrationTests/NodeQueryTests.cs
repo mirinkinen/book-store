@@ -30,7 +30,7 @@ public class NodeQueryTests : IClassFixture<RequestExecutorProxyFixture>
                         }
                       }
                     }
-                    
+
                     """;
 
         var result = await _requestExecutor.ExecuteOperationAsync(query);

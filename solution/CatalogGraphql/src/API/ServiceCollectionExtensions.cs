@@ -1,6 +1,5 @@
 using Application.AuthorCommands.CreateAuthor;
 using Application.AuthorQueries;
-using Application.AuthorQueries.GetAuthors;
 using Application.BookQueries;
 using Application.ReviewQueries;
 using Application.Services;
@@ -9,7 +8,7 @@ using Common.Domain;
 using Domain;
 using HotChocolate.Diagnostics;
 using HotChocolate.Execution;
-using Infra.Data;
+using Infra.Database;
 using Infra.DataLoaders;
 using Infra.Repositories;
 using Microsoft.ApplicationInsights.Extensibility;

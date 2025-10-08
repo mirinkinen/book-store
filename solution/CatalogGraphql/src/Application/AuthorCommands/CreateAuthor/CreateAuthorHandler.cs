@@ -22,7 +22,7 @@ public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, AuthorNo
         _authorWriteRepository = authorWriteRepository;
         _eventSender = eventSender;
     }
-    
+
     public async Task<AuthorNode> Handle(CreateAuthorCommand command, CancellationToken cancellationToken)
     {
         var authorExists = await _authorWriteRepository.AuthorWithNameExists(command.FirstName, command.LastName, cancellationToken);
@@ -30,12 +30,12 @@ public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, AuthorNo
         {
             throw new DomainRuleException("Author already exists with given name.", "author-already-exists-with-given-name");
         }
-        
+
         var author = new Author(command.FirstName, command.LastName, command.Birthdate, command.OrganizationId);
         _authorWriteRepository.Add(author);
         await _authorWriteRepository.SaveChangesAsync(cancellationToken);
-        
-        
+
+
         await _eventSender.SendAsync(nameof(CreateAuthor), author, cancellationToken);
 
         return author.ToDto();

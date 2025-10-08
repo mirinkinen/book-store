@@ -1,6 +1,6 @@
 using Common.Domain;
 using Domain;
-using Infra.Data;
+using Infra.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Repositories;

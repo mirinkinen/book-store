@@ -1,4 +1,4 @@
-using Infra.Data;
+using Infra.Database;
 using TestData;
 
 namespace API;
@@ -20,13 +20,14 @@ public partial class ArgumentExecutor
                 using (var scope = app.Services.CreateScope())
                 {
                     var logger = scope.ServiceProvider.GetRequiredService<ILogger<ArgumentExecutor>>();
-                    
+
                     LogSeedingData(logger);
                     var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
                     await DataSeeder.SeedDataAsync(dbContext);
                     LogDone(logger);
                     Environment.Exit(0);
                 }
+
                 break;
         }
     }

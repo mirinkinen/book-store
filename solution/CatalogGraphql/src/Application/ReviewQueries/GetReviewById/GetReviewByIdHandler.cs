@@ -22,7 +22,7 @@ public class GetReviewByIdHandler : IRequestHandler<GetReviewByIdQuery, ReviewNo
         {
             throw new EntityNotFoundException("Review not found", "review-not-found");
         }
-        
+
         return review;
     }
 }
