@@ -118,8 +118,11 @@ query {
 ```
 
 ## Relay
+- [GitHub](https://github.com/facebook/relay)
 - JavaScript framework
 - Global identifiers
+- Connections
+- Paging
 
 ```
 query {
@@ -143,9 +146,6 @@ query {
 # QXV0aG9yOjSUao71h7JGpsNSLcNdju8=  --> Author:4\x94j\x8Eõ\x87²F¦ÃR-Ã]\x8Eï
 # Qm9vazq9xSWhjk+UR5w2duQB+08k      --> Book:½Å%¡\x8EO\x94G\x9C6vä\x01ûO$
 ```
-
-- Connections
-- Paging
 
 ## Versioning
 
