@@ -36,7 +36,7 @@ query {
 ```
   
 
-#### Filtering, sorting
+#### Filtering
 
 ```
 query {
@@ -86,14 +86,61 @@ query ($includeBooks: Boolean!) {
 
 - Updates data
 
+```
+mutation {
+  createAuthor(
+    command: {
+      firstName: "Mikko"
+      lastName: "Mallikas"
+      birthdate: "1980-01-01"
+      organizationId: "5D8E6753-1479-408E-BB3D-CB3A02BE486C"
+    }
+  ) {
+    author {
+      id
+    }
+    errors {
+      ... on UserError {
+        message
+        code
+      }
+    }
+  }
+}
+```
+
 ### Subscriptions
 
 - Real-time messaging
 
+```
+subscription {
+  onAuthorCreated {
+    id    
+    firstName
+    lastName
+    birthdate
+    organizationId    
+  }
+}
+```
 
 ## Aligns with CQRS
 - Concurrent queries
 - Sequential mutations
+
+```
+query {
+  q1: concurrentQuery
+  q2: concurrentQuery
+  q3: concurrentQuery
+}
+
+mutation {
+  m1: concurrentMutation { string }
+  m2: concurrentMutation { string }
+}
+```
 
 ## Data loaders
 
@@ -120,9 +167,9 @@ query {
 ## Relay
 - [GitHub](https://github.com/facebook/relay)
 - JavaScript framework
-- Global identifiers
 - Connections
 - Paging
+- Global identifiers
 
 ```
 query {
@@ -142,9 +189,6 @@ query {
     }
   }
 }
-
-# QXV0aG9yOjSUao71h7JGpsNSLcNdju8=  --> Author:4\x94j\x8Eõ\x87²F¦ÃR-Ã]\x8Eï
-# Qm9vazq9xSWhjk+UR5w2duQB+08k      --> Book:½Å%¡\x8EO\x94G\x9C6vä\x01ûO$
 ```
 
 ## Versioning
