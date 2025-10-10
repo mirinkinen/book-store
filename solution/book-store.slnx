@@ -1,6 +1,4 @@
 <Solution>
-  <Folder Name="/CatalogGraphql/" />
-  <Folder Name="/CatalogGraphql/tests/" />
   <Folder Name="/Common/" />
   <Folder Name="/Common/src/">
     <Project Path="Common/src/Common/Common.csproj" />
