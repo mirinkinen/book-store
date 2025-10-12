@@ -11,7 +11,7 @@ public abstract class ReadRepository<TEntity, TNode> : IReadRepository<TEntity, 
     where TEntity : Entity
     where TNode : class
 {
-    protected readonly IDbContextFactory<CatalogDbContext> DbContextFactory;
+    protected IDbContextFactory<CatalogDbContext> DbContextFactory { get; }
     private readonly Lazy<Func<TEntity, TNode>> _compiledProjection;
 
     protected ReadRepository(IDbContextFactory<CatalogDbContext> dbContextFactory)
