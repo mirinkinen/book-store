@@ -1,6 +1,7 @@
 using Common.Domain;
+using Domain.Books;
 
-namespace Domain;
+namespace Domain.Reviews;
 
 public class Review : Entity
 {

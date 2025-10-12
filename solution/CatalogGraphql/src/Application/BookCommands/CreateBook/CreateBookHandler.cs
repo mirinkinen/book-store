@@ -1,5 +1,7 @@
 using Application.BookQueries;
 using Domain;
+using Domain.Authors;
+using Domain.Books;
 using MediatR;
 
 namespace Application.BookCommands.CreateBook;

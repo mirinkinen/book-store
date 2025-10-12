@@ -1,6 +1,7 @@
 using Application.AuthorQueries;
 using Common.Domain;
 using Domain;
+using Domain.Authors;
 using HotChocolate.Subscriptions;
 using MediatR;
 

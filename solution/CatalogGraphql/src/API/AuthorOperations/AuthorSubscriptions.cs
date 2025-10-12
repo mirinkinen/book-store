@@ -1,5 +1,6 @@
 using Application.AuthorQueries;
 using Domain;
+using Domain.Authors;
 using HotChocolate.Subscriptions;
 using System.Runtime.CompilerServices;
 

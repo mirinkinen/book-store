@@ -1,4 +1,6 @@
-namespace Domain;
+using Domain.Reviews;
+
+namespace Domain.Authors;
 
 /// <summary>
 /// Repository interface for Author entity

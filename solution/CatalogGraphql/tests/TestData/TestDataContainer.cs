@@ -1,5 +1,8 @@
 ﻿using Common.Infra;
 using Domain;
+using Domain.Authors;
+using Domain.Books;
+using Domain.Reviews;
 
 namespace TestData;
 

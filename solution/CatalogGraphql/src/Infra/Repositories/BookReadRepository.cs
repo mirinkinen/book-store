@@ -1,5 +1,6 @@
 using Application.BookQueries;
 using Domain;
+using Domain.Books;
 using GreenDonut.Data;
 using Infra.Database;
 using Microsoft.EntityFrameworkCore;

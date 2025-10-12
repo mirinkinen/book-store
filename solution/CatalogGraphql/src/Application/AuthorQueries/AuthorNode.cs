@@ -1,4 +1,5 @@
 using Domain;
+using Domain.Authors;
 using HotChocolate;
 using System.Linq.Expressions;
 

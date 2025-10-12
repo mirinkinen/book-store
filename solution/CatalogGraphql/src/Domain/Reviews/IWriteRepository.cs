@@ -1,6 +1,6 @@
 using Common.Domain;
 
-namespace Domain;
+namespace Domain.Reviews;
 
 public interface IWriteRepository<TEntity> where TEntity : Entity
 {

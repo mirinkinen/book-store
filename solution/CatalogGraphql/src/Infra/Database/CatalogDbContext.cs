@@ -1,4 +1,7 @@
 using Domain;
+using Domain.Authors;
+using Domain.Books;
+using Domain.Reviews;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -1,5 +1,6 @@
 using Common.Domain;
 using Domain;
+using Domain.Reviews;
 using Infra.Database;
 using Microsoft.EntityFrameworkCore;
 

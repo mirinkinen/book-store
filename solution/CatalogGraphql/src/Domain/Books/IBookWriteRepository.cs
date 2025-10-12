@@ -1,4 +1,6 @@
-namespace Domain;
+using Domain.Reviews;
+
+namespace Domain.Books;
 
 /// <summary>
 /// Repository interface for Book entity

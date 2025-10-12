@@ -1,5 +1,6 @@
 using Application.AuthorQueries;
 using Domain;
+using Domain.Authors;
 using MediatR;
 
 namespace Application.AuthorCommands.UpdateAuthor;

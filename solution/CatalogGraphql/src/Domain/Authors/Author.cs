@@ -1,9 +1,10 @@
 ﻿using Common.Domain;
+using Domain.Books;
 using FluentValidation;
 using FluentValidation.Results;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Domain;
+namespace Domain.Authors;
 
 public class Author : Entity
 {
