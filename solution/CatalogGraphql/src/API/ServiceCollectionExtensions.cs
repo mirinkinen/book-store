@@ -1,7 +1,6 @@
 using Application.AuthorCommands.CreateAuthor;
 using Application.AuthorQueries;
 using Application.BookQueries;
-using Application.Common;
 using Application.ReviewQueries;
 using Application.Services;
 using Azure.Monitor.OpenTelemetry.AspNetCore;

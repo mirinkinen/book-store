@@ -1,7 +1,7 @@
 using Common.Domain;
 using GreenDonut.Data;
 
-namespace Application.Common;
+namespace Application.Services;
 
 public interface IReadRepository<TEntity, TNode> 
     where TEntity : Entity
