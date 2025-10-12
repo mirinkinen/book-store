@@ -1,5 +1,6 @@
 using Domain;
 using HotChocolate;
+using System.Linq.Expressions;
 
 namespace Application.ReviewQueries;
 
@@ -17,9 +18,13 @@ public class ReviewNode
 
 public static class ReviewExtensions
 {
-    public static ReviewNode ToDto(this Review review)
+    /// <summary>
+    /// Maps a review to a review node.
+    /// </summary>
+    /// <remarks>Use when expression is required, for example in EF Core queries.</remarks>
+    public static Expression<Func<Review, ReviewNode>> ToNode()
     {
-        return new ReviewNode
+        return review => new ReviewNode
         {
             Id = review.Id,
             Title = review.Title,

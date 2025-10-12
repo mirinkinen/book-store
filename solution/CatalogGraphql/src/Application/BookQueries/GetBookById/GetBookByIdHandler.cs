@@ -15,7 +15,7 @@ public class GetBookByIdHandler : IRequestHandler<GetBookByIdQuery, BookNode?>
 
     public async Task<BookNode?> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
     {
-        var book = await _bookReadRepository.FirstOrDefaultAsync(request.Id, cancellationToken);
+        var book = await _bookReadRepository.GetFirstOrDefaultAsync(request.Id, cancellationToken);
 
         // if (book is null)
         // {

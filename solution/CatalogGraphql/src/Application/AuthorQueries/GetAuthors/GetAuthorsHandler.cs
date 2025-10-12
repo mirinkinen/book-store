@@ -1,3 +1,5 @@
+using Application.Common;
+using Domain;
 using GreenDonut.Data;
 using MediatR;
 
@@ -26,6 +28,6 @@ public class GetAuthorsHandler : IRequestHandler<GetAuthorsQuery, Page<AuthorNod
 
     public Task<Page<AuthorNode>> Handle(GetAuthorsQuery request, CancellationToken cancellationToken)
     {
-        return _readRepository.With(request.PagingArguments, request.QueryContext, cancellationToken).AsTask();
+        return _readRepository.GetPage(request.PagingArguments, request.QueryContext, cancellationToken).AsTask();
     }
 }

@@ -1,4 +1,6 @@
+using Application.Common;
 using Common.Domain;
+using Domain;
 using MediatR;
 
 namespace Application.AuthorQueries.GetAuthorById;
@@ -16,7 +18,7 @@ public class GetAuthorByIdHandler : IRequestHandler<GetAuthorByIdQuery, AuthorNo
 
     public async Task<AuthorNode> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
     {
-        var author = await _readRepository.FirstOrDefaultAsync(request.Id, cancellationToken);
+        var author = await _readRepository.GetFirstOrDefaultAsync(request.Id, cancellationToken);
 
         if (author is null)
         {

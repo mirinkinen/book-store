@@ -1,13 +1,8 @@
-using GreenDonut.Data;
+using Application.Common;
+using Domain;
 
 namespace Application.BookQueries;
 
-public interface IBookReadRepository
+public interface IBookReadRepository : IReadRepository<Book, BookNode>
 {
-    public Task<BookNode?> FirstOrDefaultAsync(Guid id, CancellationToken cancellationToken = default);
-
-    public ValueTask<Page<BookNode>> With(PagingArguments pagingArguments, QueryContext<BookNode> queryContext,
-        CancellationToken cancellationToken = default);
-
-    public Task<Dictionary<Guid, BookNode>> GetBooksByAuthorIds(IReadOnlyList<Guid> ids, CancellationToken cancellationToken);
 }

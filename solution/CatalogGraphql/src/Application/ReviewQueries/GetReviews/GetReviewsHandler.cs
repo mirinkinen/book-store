@@ -26,6 +26,6 @@ public class GetReviewsHandler : IRequestHandler<GetReviewsQuery, Page<ReviewNod
 
     public Task<Page<ReviewNode>> Handle(GetReviewsQuery request, CancellationToken cancellationToken)
     {
-        return _readRepository.With(request.PagingArguments, request.QueryContext, cancellationToken).AsTask();
+        return _readRepository.GetPage(request.PagingArguments, request.QueryContext, cancellationToken).AsTask();
     }
 }

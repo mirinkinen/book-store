@@ -1,11 +1,8 @@
-using GreenDonut.Data;
+using Application.Common;
+using Domain;
 
 namespace Application.AuthorQueries;
 
-public interface IAuthorReadRepository
+public interface IAuthorReadRepository : IReadRepository<Author, AuthorNode>
 {
-    public Task<AuthorNode?> FirstOrDefaultAsync(Guid id, CancellationToken cancellationToken = default);
-
-    public ValueTask<Page<AuthorNode>> With(PagingArguments pagingArguments, QueryContext<AuthorNode> queryContext,
-        CancellationToken cancellationToken = default);
 }

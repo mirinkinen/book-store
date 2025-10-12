@@ -1,5 +1,6 @@
 using Domain;
 using HotChocolate;
+using System.Linq.Expressions;
 
 namespace Application.AuthorQueries;
 
@@ -37,9 +38,29 @@ public class AuthorNode
 
 public static class AuthorExtensions
 {
+    /// <summary>
+    /// Maps an author to an author node.
+    /// </summary>
+    /// <remarks>Use when expression is not required.</remarks>
     public static AuthorNode ToDto(this Author author)
     {
         return new AuthorNode
+        {
+            Id = author.Id,
+            Birthdate = author.Birthdate,
+            FirstName = author.FirstName,
+            LastName = author.LastName,
+            OrganizationId = author.OrganizationId
+        };
+    }
+    
+    /// <summary>
+    /// Maps an author to an author node.
+    /// </summary>
+    /// <remarks>Use when expression is required, for example in EF Core queries.</remarks>
+    public static Expression<Func<Author, AuthorNode>> ToNode()
+    {
+        return author => new AuthorNode
         {
             Id = author.Id,
             Birthdate = author.Birthdate,

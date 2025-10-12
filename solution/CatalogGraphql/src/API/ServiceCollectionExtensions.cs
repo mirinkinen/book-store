@@ -1,6 +1,7 @@
 using Application.AuthorCommands.CreateAuthor;
 using Application.AuthorQueries;
 using Application.BookQueries;
+using Application.Common;
 using Application.ReviewQueries;
 using Application.Services;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
@@ -31,7 +32,6 @@ public static class ServiceCollectionExtensions
         services.ConfigureGraphql();
         services.ConfigureInfraServices(configuration);
 
-        // Configure GraphQL with a single Query type containing all operations
         services.AddMediatR(conf => { conf.RegisterServicesFromAssemblyContaining<CreateAuthorHandler>(); });
 
         return services;

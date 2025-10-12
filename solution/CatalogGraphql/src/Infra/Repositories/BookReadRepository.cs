@@ -1,58 +1,25 @@
 using Application.BookQueries;
+using Domain;
 using GreenDonut.Data;
 using Infra.Database;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Infra.Repositories;
 
-public class BookReadRepository : ReadRepository, IBookReadRepository
+public class BookReadRepository : ReadRepository<Book, BookNode>, IBookReadRepository
 {
     public BookReadRepository(IDbContextFactory<CatalogDbContext> dbContextFactory) : base(dbContextFactory)
     {
     }
 
-    public async Task<BookNode?> FirstOrDefaultAsync(Guid id, CancellationToken cancellationToken = default)
+    protected override Expression<Func<Book, BookNode>> GetProjection()
     {
-        await using var dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
-        var entity = await dbContext.Books.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
-
-        return entity?.ToDto();
+        return BookExtensions.ToNode();
     }
 
-    public async ValueTask<Page<BookNode>> With(PagingArguments pagingArguments, QueryContext<BookNode> queryContext,
-        CancellationToken cancellationToken = default)
+    protected override Func<SortDefinition<BookNode>, SortDefinition<BookNode>> GetDefaultOrder()
     {
-        await using var dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
-        return await dbContext.Books
-            .Select(b => new BookNode
-            {
-                Id = b.Id,
-                Title = b.Title,
-                Price = b.Price,
-                AuthorId = b.AuthorId,
-                DatePublished = b.DatePublished
-            })
-            .With(queryContext, DefaultOrder)
-            .ToPageAsync(pagingArguments, cancellationToken);
+        return sort => sort.IfEmpty(o => o.AddDescending(t => t.Id));
     }
-
-    public async Task<Dictionary<Guid, BookNode>> GetBooksByAuthorIds(IReadOnlyList<Guid> ids,
-        CancellationToken cancellationToken = default)
-    {
-        await using var dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
-        return await dbContext.Books
-            .Where(b => ids.Contains(b.AuthorId))
-            .Select(b => new BookNode
-            {
-                Id = b.Id,
-                Title = b.Title,
-                Price = b.Price,
-                AuthorId = b.AuthorId,
-                DatePublished = b.DatePublished
-            })
-            .ToDictionaryAsync(b => b.AuthorId, cancellationToken);
-    }
-
-    private static SortDefinition<BookNode> DefaultOrder(SortDefinition<BookNode> sort)
-        => sort.IfEmpty(o => o.AddDescending(t => t.Id));
 }

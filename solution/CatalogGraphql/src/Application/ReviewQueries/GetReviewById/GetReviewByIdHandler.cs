@@ -16,7 +16,7 @@ public class GetReviewByIdHandler : IRequestHandler<GetReviewByIdQuery, ReviewNo
 
     public async Task<ReviewNode> Handle(GetReviewByIdQuery request, CancellationToken cancellationToken)
     {
-        var review = await _reviewReadRepository.FirstOrDefaultAsync(request.Id, cancellationToken);
+        var review = await _reviewReadRepository.GetFirstOrDefaultAsync(request.Id, cancellationToken);
 
         if (review is null)
         {

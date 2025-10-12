@@ -8,17 +8,14 @@ namespace Infra.DataLoaders;
 
 public class CustomBooksByAuthorIdsDataLoader : BatchDataLoader<Guid, IEnumerable<BookNode>>
 {
-    private readonly IBookReadRepository _repository;
     private readonly IDbContextFactory<CatalogDbContext> _contextFactory;
 
     public CustomBooksByAuthorIdsDataLoader(
         IBatchScheduler batchScheduler,
-        IBookReadRepository repository,
         DataLoaderOptions? options,
         IDbContextFactory<CatalogDbContext> contextFactory)
         : base(batchScheduler, options)
     {
-        _repository = repository;
         _contextFactory = contextFactory;
     }
 
