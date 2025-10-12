@@ -10,9 +10,13 @@ namespace API.BookOperations;
 [ObjectType<BookNode>]
 public static partial class BookType
 {
-    public static async Task<AuthorNode?> GetAuthorAsync([Parent] BookNode book, IAuthorByBookIdDataLoader dataLoader)
+    
+    public static async Task<AuthorNode?> GetAuthorAsync(
+        [Parent] BookNode book, 
+        QueryContext<AuthorNode> query,
+        IAuthorByBookIdDataLoader dataLoader)
     {
-        var author = await dataLoader.LoadAsync(book.Id);
+        var author = await dataLoader.With(query).LoadAsync(book.Id);
         return author;
     }
 

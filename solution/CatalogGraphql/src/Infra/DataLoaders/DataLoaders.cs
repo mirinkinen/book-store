@@ -50,16 +50,18 @@ public static class DataLoaders
     [DataLoader]
     internal static async Task<Dictionary<Guid, AuthorNode>> GetAuthorByBookIdAsync(
         IReadOnlyList<Guid> bookIds,
+        QueryContext<AuthorNode> query,
         CatalogDbContext dbContext,
         CancellationToken cancellationToken)
     {
         return await dbContext.Books
             .Where(b => bookIds.Contains(b.Id))
-            .Join(dbContext.Authors,
+            .Join(dbContext.Authors
+                    .Select(AuthorExtensions.ProjectToNode())
+                    .With(query),
                 book => book.AuthorId,
                 author => author.Id,
-                (book, author) => new { BookId = book.Id, AuthorId = book.AuthorId, Author = author.MapToDto() })
-            .OrderBy(x => x.BookId)
+                (book, author) => new { BookId = book.Id, Author = author })
             .ToDictionaryAsync(x => x.BookId, x => x.Author, cancellationToken);
     }
 
@@ -87,16 +89,18 @@ public static class DataLoaders
     [DataLoader]
     internal static async Task<Dictionary<Guid, BookNode>> GetBookByReviewIdAsync(
         IReadOnlyList<Guid> reviewIds,
+        QueryContext<BookNode> query,
         CatalogDbContext dbContext,
         CancellationToken cancellationToken)
     {
         return await dbContext.Reviews
             .Where(r => reviewIds.Contains(r.Id))
-            .Join(dbContext.Books,
+            .Join(dbContext.Books
+                    .Select(BookExtensions.ProjectToNode())
+                    .With(query),
                 review => review.BookId,
                 book => book.Id,
-                (review, book) => new { ReviewId = review.Id, Book = book.MapToDto() })
-            .OrderBy(x => x.ReviewId)
+                (review, book) => new { ReviewId = review.Id, Book = book })
             .ToDictionaryAsync(x => x.ReviewId, x => x.Book, cancellationToken);
     }
 }
