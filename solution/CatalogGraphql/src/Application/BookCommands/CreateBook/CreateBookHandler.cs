@@ -1,5 +1,4 @@
 using Application.BookQueries;
-using Domain;
 using Domain.Authors;
 using Domain.Books;
 using MediatR;
@@ -16,7 +15,7 @@ public class CreateBookHandler : IRequestHandler<CreateBookCommand, BookNode>
 {
     private readonly IAuthorWriteRepository _authorWriteRepository;
     private readonly IBookWriteRepository _bookWriteRepository;
-    
+
     public CreateBookHandler(IAuthorWriteRepository authorWriteRepository, IBookWriteRepository bookWriteRepository)
     {
         _authorWriteRepository = authorWriteRepository;

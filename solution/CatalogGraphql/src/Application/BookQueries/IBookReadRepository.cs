@@ -1,5 +1,4 @@
 using Application.Services;
-using Domain;
 using Domain.Books;
 
 namespace Application.BookQueries;

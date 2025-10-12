@@ -1,5 +1,4 @@
 using Application.BookQueries;
-using Domain;
 using Domain.Books;
 using MediatR;
 

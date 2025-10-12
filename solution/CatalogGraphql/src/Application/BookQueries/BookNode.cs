@@ -1,4 +1,3 @@
-using Domain;
 using Domain.Books;
 using HotChocolate;
 using System.Linq.Expressions;
@@ -37,7 +36,7 @@ public class BookNode
 public static class BookExtensions
 {
     private static readonly Lazy<Func<Book, BookNode>> _compiledProjection = new(() => ProjectToNode().Compile());
-    
+
     /// <summary>
     /// Maps a book to a book node.
     /// </summary>
@@ -45,7 +44,7 @@ public static class BookExtensions
     {
         return _compiledProjection.Value(book);
     }
-    
+
     /// <summary>
     /// Projects a book to a book node.
     /// </summary>

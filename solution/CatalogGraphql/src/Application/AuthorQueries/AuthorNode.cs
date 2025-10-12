@@ -1,4 +1,3 @@
-using Domain;
 using Domain.Authors;
 using HotChocolate;
 using System.Linq.Expressions;
@@ -40,7 +39,7 @@ public class AuthorNode
 public static class AuthorExtensions
 {
     private static readonly Lazy<Func<Author, AuthorNode>> _compiledProjection = new(() => ProjectToNode().Compile());
-    
+
     /// <summary>
     /// Maps an author to an author node.
     /// </summary>
@@ -48,7 +47,7 @@ public static class AuthorExtensions
     {
         return _compiledProjection.Value(author);
     }
-    
+
     /// <summary>
     /// Projects an author to an author node.
     /// </summary>

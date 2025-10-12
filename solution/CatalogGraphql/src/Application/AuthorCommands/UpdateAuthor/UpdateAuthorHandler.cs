@@ -1,5 +1,4 @@
 using Application.AuthorQueries;
-using Domain;
 using Domain.Authors;
 using MediatR;
 

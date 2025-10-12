@@ -1,4 +1,3 @@
-using Domain;
 using Domain.Reviews;
 using HotChocolate;
 using System.Linq.Expressions;
@@ -20,7 +19,7 @@ public class ReviewNode
 public static class ReviewExtensions
 {
     private static readonly Lazy<Func<Review, ReviewNode>> _compiledProjection = new(() => ProjectToNode().Compile());
-    
+
     /// <summary>
     /// Maps a review to a review node.
     /// </summary>
@@ -28,7 +27,7 @@ public static class ReviewExtensions
     {
         return _compiledProjection.Value(review);
     }
-    
+
     /// <summary>
     /// Projects a review to a review node.
     /// </summary>

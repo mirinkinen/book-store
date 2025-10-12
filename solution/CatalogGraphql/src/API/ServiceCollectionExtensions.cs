@@ -5,7 +5,6 @@ using Application.ReviewQueries;
 using Application.Services;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Common.Domain;
-using Domain;
 using Domain.Authors;
 using Domain.Books;
 using HotChocolate.Diagnostics;

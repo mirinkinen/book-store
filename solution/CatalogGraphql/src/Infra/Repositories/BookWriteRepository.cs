@@ -1,4 +1,3 @@
-using Domain;
 using Domain.Books;
 using Infra.Database;
 using Microsoft.EntityFrameworkCore;
