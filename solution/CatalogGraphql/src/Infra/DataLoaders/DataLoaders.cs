@@ -50,15 +50,18 @@ public static class DataLoaders
     [DataLoader]
     internal static async Task<Dictionary<Guid, AuthorNode>> GetAuthorByBookIdAsync(
         IReadOnlyList<Guid> bookIds,
-        QueryContext<AuthorNode> query,
+        QueryContext<AuthorNode> queryContext,
         CatalogDbContext dbContext,
         CancellationToken cancellationToken)
     {
+        // ID is required for the join.
+        queryContext = queryContext.Include(author => author.Id);
+        
         return await dbContext.Books
             .Where(b => bookIds.Contains(b.Id))
             .Join(dbContext.Authors
                     .Select(AuthorExtensions.ProjectToNode())
-                    .With(query),
+                    .With(queryContext),
                 book => book.AuthorId,
                 author => author.Id,
                 (book, author) => new { BookId = book.Id, Author = author })

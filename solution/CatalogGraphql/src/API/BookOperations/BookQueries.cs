@@ -27,6 +27,9 @@ public static partial class BookQueries
         ISender sender,
         CancellationToken cancellationToken)
     {
+        // Always select ID, because it might be needed by data loaders.
+        queryContext = queryContext.Include(b => b.Id);
+        
         var page = await sender.Send(new GetBooksQuery(pagingArguments, queryContext), cancellationToken);
         return new PageConnection<BookNode>(page);
     }
