@@ -40,7 +40,7 @@ public static class DataLoaders
     {
         var authors = await dbContext.Authors
             .Where(a => authorIds.Contains(a.Id))
-            .Select(a => a.ToDto())
+            .Select(AuthorExtensions.ProjectToNode())
             .Distinct()
             .ToDictionaryAsync(a => a.Id, cancellationToken);
 
@@ -58,7 +58,7 @@ public static class DataLoaders
             .Join(dbContext.Authors,
                 book => book.AuthorId,
                 author => author.Id,
-                (book, author) => new { BookId = book.Id, AuthorId = book.AuthorId, Author = author.ToDto() })
+                (book, author) => new { BookId = book.Id, AuthorId = book.AuthorId, Author = author.MapToDto() })
             .OrderBy(x => x.BookId)
             .ToDictionaryAsync(x => x.BookId, x => x.Author, cancellationToken);
     }
@@ -95,7 +95,7 @@ public static class DataLoaders
             .Join(dbContext.Books,
                 review => review.BookId,
                 book => book.Id,
-                (review, book) => new { ReviewId = review.Id, Book = book.ToDto() })
+                (review, book) => new { ReviewId = review.Id, Book = book.MapToDto() })
             .OrderBy(x => x.ReviewId)
             .ToDictionaryAsync(x => x.ReviewId, x => x.Book, cancellationToken);
     }

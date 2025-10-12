@@ -16,13 +16,11 @@ public class CreateBookHandler : IRequestHandler<CreateBookCommand, BookNode>
 {
     private readonly IAuthorWriteRepository _authorWriteRepository;
     private readonly IBookWriteRepository _bookWriteRepository;
-    private readonly Lazy<Func<Book, BookNode>> _compiledProjection;
     
     public CreateBookHandler(IAuthorWriteRepository authorWriteRepository, IBookWriteRepository bookWriteRepository)
     {
         _authorWriteRepository = authorWriteRepository;
         _bookWriteRepository = bookWriteRepository;
-        _compiledProjection = new Lazy<Func<Book, BookNode>>(() => BookExtensions.ToNode().Compile());
     }
 
     public async Task<BookNode> Handle(CreateBookCommand command, CancellationToken cancellationToken)
@@ -39,6 +37,6 @@ public class CreateBookHandler : IRequestHandler<CreateBookCommand, BookNode>
         _bookWriteRepository.Add(book);
         await _bookWriteRepository.SaveChangesAsync(cancellationToken);
 
-        return _compiledProjection.Value(book);
+        return book.MapToDto();
     }
 }

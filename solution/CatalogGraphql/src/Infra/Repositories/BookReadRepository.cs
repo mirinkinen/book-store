@@ -16,7 +16,7 @@ public class BookReadRepository : ReadRepository<Book, BookNode>, IBookReadRepos
 
     protected override Expression<Func<Book, BookNode>> GetProjection()
     {
-        return BookExtensions.ToNode();
+        return BookExtensions.ProjectToNode();
     }
 
     protected override Func<SortDefinition<BookNode>, SortDefinition<BookNode>> GetDefaultOrder()

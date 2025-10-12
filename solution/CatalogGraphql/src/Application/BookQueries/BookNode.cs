@@ -36,27 +36,20 @@ public class BookNode
 
 public static class BookExtensions
 {
-    /// <summary>
-    /// Maps a book to a book node.
-    /// </summary>
-    /// <remarks>Use when expression is not required.</remarks>
-    public static BookNode ToDto(this Book book)
-    {
-        return new BookNode
-        {
-            Id = book.Id,
-            Title = book.Title,
-            DatePublished = book.DatePublished,
-            AuthorId = book.AuthorId,
-            Price = book.Price
-        };
-    }
+    private static readonly Lazy<Func<Book, BookNode>> _compiledProjection = new(() => ProjectToNode().Compile());
     
     /// <summary>
     /// Maps a book to a book node.
     /// </summary>
-    /// <remarks>Use when expression is required, for example in EF Core queries.</remarks>
-    public static Expression<Func<Book, BookNode>> ToNode()
+    public static BookNode MapToDto(this Book book)
+    {
+        return _compiledProjection.Value(book);
+    }
+    
+    /// <summary>
+    /// Projects a book to a book node.
+    /// </summary>
+    public static Expression<Func<Book, BookNode>> ProjectToNode()
     {
         return book => new BookNode
         {

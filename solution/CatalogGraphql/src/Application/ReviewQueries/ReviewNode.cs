@@ -19,11 +19,20 @@ public class ReviewNode
 
 public static class ReviewExtensions
 {
+    private static readonly Lazy<Func<Review, ReviewNode>> _compiledProjection = new(() => ProjectToNode().Compile());
+    
     /// <summary>
     /// Maps a review to a review node.
     /// </summary>
-    /// <remarks>Use when expression is required, for example in EF Core queries.</remarks>
-    public static Expression<Func<Review, ReviewNode>> ToNode()
+    public static ReviewNode MapToDto(this Review review)
+    {
+        return _compiledProjection.Value(review);
+    }
+    
+    /// <summary>
+    /// Projects a review to a review node.
+    /// </summary>
+    public static Expression<Func<Review, ReviewNode>> ProjectToNode()
     {
         return review => new ReviewNode
         {

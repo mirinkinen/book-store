@@ -32,6 +32,6 @@ public class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand, AuthorNo
 
         await _authorWriteRepository.SaveChangesAsync(cancellationToken);
 
-        return author.ToDto();
+        return author.MapToDto();
     }
 }

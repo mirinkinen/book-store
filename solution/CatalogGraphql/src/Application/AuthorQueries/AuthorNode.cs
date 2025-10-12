@@ -39,27 +39,20 @@ public class AuthorNode
 
 public static class AuthorExtensions
 {
-    /// <summary>
-    /// Maps an author to an author node.
-    /// </summary>
-    /// <remarks>Use when expression is not required.</remarks>
-    public static AuthorNode ToDto(this Author author)
-    {
-        return new AuthorNode
-        {
-            Id = author.Id,
-            Birthdate = author.Birthdate,
-            FirstName = author.FirstName,
-            LastName = author.LastName,
-            OrganizationId = author.OrganizationId
-        };
-    }
+    private static readonly Lazy<Func<Author, AuthorNode>> _compiledProjection = new(() => ProjectToNode().Compile());
     
     /// <summary>
     /// Maps an author to an author node.
     /// </summary>
-    /// <remarks>Use when expression is required, for example in EF Core queries.</remarks>
-    public static Expression<Func<Author, AuthorNode>> ToNode()
+    public static AuthorNode MapToDto(this Author author)
+    {
+        return _compiledProjection.Value(author);
+    }
+    
+    /// <summary>
+    /// Projects an author to an author node.
+    /// </summary>
+    public static Expression<Func<Author, AuthorNode>> ProjectToNode()
     {
         return author => new AuthorNode
         {

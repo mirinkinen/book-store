@@ -16,7 +16,7 @@ public class AuthorReadRepository : ReadRepository<Author, AuthorNode>, IAuthorR
 
     protected override Expression<Func<Author, AuthorNode>> GetProjection()
     {
-        return AuthorExtensions.ToNode();
+        return AuthorExtensions.ProjectToNode();
     }
 
     protected override Func<SortDefinition<AuthorNode>, SortDefinition<AuthorNode>> GetDefaultOrder()

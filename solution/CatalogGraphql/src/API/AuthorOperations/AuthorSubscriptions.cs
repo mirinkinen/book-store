@@ -15,13 +15,13 @@ public class AuthorSubscriptions
         var sourceStream = await eventReceiver.SubscribeAsync<Author>(nameof(AuthorMutations.CreateAuthor), cancellationToken);
 
         // This simulates a scenario where we could replay missed events from the data store. 
-        yield return new Author("Some first name", "Some last name", DateOnly.FromDateTime(DateTime.UtcNow), Guid.NewGuid()).ToDto();
+        yield return new Author("Some first name", "Some last name", DateOnly.FromDateTime(DateTime.UtcNow), Guid.NewGuid()).MapToDto();
 
         await Task.Delay(5000, cancellationToken);
 
         await foreach (Author author in sourceStream.ReadEventsAsync().WithCancellation(cancellationToken))
         {
-            yield return author.ToDto();
+            yield return author.MapToDto();
         }
     }
 

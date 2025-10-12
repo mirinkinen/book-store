@@ -39,6 +39,6 @@ public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, AuthorNo
 
         await _eventSender.SendAsync(nameof(CreateAuthor), author, cancellationToken);
 
-        return author.ToDto();
+        return author.MapToDto();
     }
 }

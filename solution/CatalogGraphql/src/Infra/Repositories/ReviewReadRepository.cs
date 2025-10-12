@@ -16,23 +16,11 @@ public class ReviewReadRepository : ReadRepository<Review, ReviewNode>, IReviewR
 
     protected override Expression<Func<Review, ReviewNode>> GetProjection()
     {
-        return ReviewExtensions.ToNode();
+        return ReviewExtensions.ProjectToNode();
     }
 
     protected override Func<SortDefinition<ReviewNode>, SortDefinition<ReviewNode>> GetDefaultOrder()
     {
         return sort => sort.IfEmpty(o => o.AddDescending(t => t.Id));
-    }
-
-    public async Task<ILookup<Guid, ReviewNode>> GetReviewsByBookIds(IReadOnlyList<Guid> ids, CancellationToken cancellationToken = default)
-    {
-        await using var dbContext = await DbContextFactory.CreateDbContextAsync(cancellationToken);
-        
-        var dictionary = await dbContext.Reviews
-            .Where(r => ids.Contains(r.BookId))
-            .Select(ReviewExtensions.ToNode())
-            .ToDictionaryAsync(r => r.Id, cancellationToken);
-
-        return dictionary.ToLookup(r => r.Value.BookId, r => r.Value);
     }
 }

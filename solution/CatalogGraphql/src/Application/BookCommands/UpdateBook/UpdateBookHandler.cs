@@ -34,6 +34,6 @@ public class UpdateBookHandler : IRequestHandler<UpdateBookCommand, BookNode>
 
         await _bookWriteRepository.SaveChangesAsync(cancellationToken);
 
-        return book.ToDto();
+        return book.MapToDto();
     }
 }
