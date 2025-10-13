@@ -25,18 +25,6 @@
     <Project Path="CatalogGraphql\tests\API.IntegrationTests\API.IntegrationTests.csproj" Type="C#" />
     <Project Path="CatalogGraphql\tests\TestData\TestData.csproj" Type="Classic C#" />
   </Folder>
-  <Folder Name="/Subdomains/CatalogOData/">
-    <File Path="CatalogOData/README.md" />
-  </Folder>
-  <Folder Name="/Subdomains/CatalogOData/src/">
-    <Project Path="CatalogOData/src/Cataloging/Cataloging.csproj" />
-  </Folder>
-  <Folder Name="/Subdomains/CatalogOData/tests/">
-    <Project Path="CatalogOData/tests/Cataloging.ArchitectureTests/Cataloging.ArchitectureTests.csproj" />
-    <Project Path="CatalogOData/tests/Cataloging.IntegrationTests/Cataloging.IntegrationTests.csproj" />
-    <Project Path="CatalogOData/tests/Cataloging.UnitTests/Cataloging.UnitTests.csproj" />
-    <File Path="CatalogOData/tests/.editorconfig" />
-  </Folder>
   <Folder Name="/Subdomains/Inventory/">
     <File Path="Inventory/README.md" />
   </Folder>
