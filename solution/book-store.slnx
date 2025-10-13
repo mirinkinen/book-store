@@ -5,7 +5,7 @@
   </Folder>
   <Folder Name="/Common/tests/" />
   <Folder Name="/Doc/">
-    <File Path="Doc\GraphQL-demo.md" />
+    <File Path="Doc/GraphQL-demo.md" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
@@ -14,16 +14,16 @@
     <File Path="docker-compose.yml" />
   </Folder>
   <Folder Name="/Subdomains/" />
-  <Folder Name="/Subdomains/CatalogGraphql/" />
-  <Folder Name="/Subdomains/CatalogGraphql/src/">
-    <Project Path="CatalogGraphql/src/API/API.csproj" />
-    <Project Path="CatalogGraphql/src/Application/Application.csproj" />
-    <Project Path="CatalogGraphql/src/Domain/Domain.csproj" />
-    <Project Path="CatalogGraphql/src/Infra/Infra.csproj" />
+  <Folder Name="/Subdomains/Catalog/" />
+  <Folder Name="/Subdomains/Catalog/src/">
+    <Project Path="Catalog/src/API/API.csproj" />
+    <Project Path="Catalog/src/Application/Application.csproj" />
+    <Project Path="Catalog/src/Domain/Domain.csproj" />
+    <Project Path="Catalog/src/Infra/Infra.csproj" />
   </Folder>
-  <Folder Name="/Subdomains/CatalogGraphql/tests/">
-    <Project Path="CatalogGraphql\tests\API.IntegrationTests\API.IntegrationTests.csproj" Type="C#" />
-    <Project Path="CatalogGraphql\tests\TestData\TestData.csproj" Type="Classic C#" />
+  <Folder Name="/Subdomains/Catalog/tests/">
+    <Project Path="Catalog/tests/API.IntegrationTests/API.IntegrationTests.csproj" Type="C#" />
+    <Project Path="Catalog/tests/TestData/TestData.csproj" Type="Classic C#" />
   </Folder>
   <Folder Name="/Subdomains/Inventory/">
     <File Path="Inventory/README.md" />
