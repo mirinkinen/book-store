@@ -130,7 +130,7 @@ public class AuthorQueryTests : IClassFixture<RequestExecutorProxyFixture>
                     }
                     """;
 
-        var variables = new Dictionary<string, object?> { { "name", "ste" } };
+        var variables = new Dictionary<string, object?> { { "name", "Ste" } };
 
         var result = await _requestExecutor.ExecuteOperationAsync(query, variables);
 

@@ -4,20 +4,20 @@ using Infra.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Testcontainers.MsSql;
+using Testcontainers.PostgreSql;
 using TestData;
 
 namespace API.IntegrationTests;
 
 public class RequestExecutorProxyFixture : IAsyncLifetime
 {
-    private readonly MsSqlContainer _sqlContainer;
+    private readonly PostgreSqlContainer _sqlContainer;
 
 
     public RequestExecutorProxyFixture()
     {
-        _sqlContainer = new MsSqlBuilder()
-            .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
+        _sqlContainer = new PostgreSqlBuilder()
+            .WithImage("postgres:15")
             .WithPassword("YourStrong@Passw0rd")
             .WithCleanUp(true)
             .Build();

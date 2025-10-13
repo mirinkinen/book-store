@@ -4,16 +4,16 @@
       nodes: [
         {
           __typename: Author,
-          firstName: William,
-          lastName: Shakespeare,
-          birthdate: 1564-04-15,
+          firstName: Dan,
+          lastName: Brown,
+          birthdate: 1964-06-22,
           organizationId: Guid_1
         },
         {
           __typename: Author,
-          firstName: Stephen,
-          lastName: King,
-          birthdate: 1947-09-21,
+          firstName: Ernest.,
+          lastName: Hemingway,
+          birthdate: 1899-07-21,
           organizationId: Guid_2
         },
         {
@@ -21,21 +21,21 @@
           firstName: J.K.,
           lastName: Rowling,
           birthdate: 1965-07-31,
-          organizationId: Guid_1
-        },
-        {
-          __typename: Author,
-          firstName: Dan,
-          lastName: Brown,
-          birthdate: 1964-06-22,
-          organizationId: Guid_2
-        },
-        {
-          __typename: Author,
-          firstName: Ernest.,
-          lastName: Hemingway,
-          birthdate: 1899-07-21,
           organizationId: Guid_3
+        },
+        {
+          __typename: Author,
+          firstName: William,
+          lastName: Shakespeare,
+          birthdate: 1564-04-15,
+          organizationId: Guid_3
+        },
+        {
+          __typename: Author,
+          firstName: Stephen,
+          lastName: King,
+          birthdate: 1947-09-21,
+          organizationId: Guid_1
         }
       ]
     }

@@ -3,12 +3,12 @@
     authors: {
       nodes: [
         {
-          firstName: William,
-          lastName: Shakespeare
+          firstName: Dan,
+          lastName: Brown
         },
         {
-          firstName: Stephen,
-          lastName: King
+          firstName: Ernest.,
+          lastName: Hemingway
         }
       ]
     }

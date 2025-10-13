@@ -137,13 +137,13 @@ public static class ServiceCollectionExtensions
 
         services.AddDbContextPool<CatalogDbContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
             options.EnableDetailedErrors();
             options.EnableSensitiveDataLogging();
         });
         services.AddPooledDbContextFactory<CatalogDbContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
             options.EnableDetailedErrors();
             options.EnableSensitiveDataLogging();
         });

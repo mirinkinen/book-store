@@ -19,7 +19,7 @@ public class CatalogDbContextFactory : IDesignTimeDbContextFactory<CatalogDbCont
 
         // Create the DbContextOptions
         var optionsBuilder = new DbContextOptionsBuilder<CatalogDbContext>();
-        optionsBuilder.UseSqlServer(connectionString);
+        optionsBuilder.UseNpgsql(connectionString);
 
         return new CatalogDbContext(optionsBuilder.Options);
     }
