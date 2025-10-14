@@ -1,0 +1,20 @@
+﻿{
+  errors: [
+    {
+      message: Unknown type `OrderNode`.,
+      locations: [
+        {
+          line: 4,
+          column: 5
+        }
+      ],
+      path: [
+        orderById
+      ],
+      extensions: {
+        typeCondition: OrderNode,
+        specifiedBy: https://spec.graphql.org/October2021/#sec-Fragment-Spread-Type-Existence
+      }
+    }
+  ]
+}

@@ -11,15 +11,15 @@ docker compose up -d
 To create databases, run
 
 ```
-dotnet ef database update -s CatalogOData/src/Cataloging -c CatalogDbContext
-dotnet ef database update -s CatalogGraphql/src/API -c CatalogDbContext
+dotnet ef database update -s Catalog/src/API -c CatalogDbContext
+dotnet ef database update -s Orders/src/API -c OrdersDbContext
 ```
 
 To seed development data, run
 
 ```
-dotnet run --project CatalogOData/src/Cataloging -- seed-dev-data
-dotnet run --project CatalogGraphql/src/API -- SEED-TEST-DATA
+dotnet run --project Catalog/src/API -- SEED-TEST-DATA
+dotnet run --project Orders/src/API -- SEED-TEST-DATA
 ```
 
 ## Database migrations
@@ -27,8 +27,8 @@ dotnet run --project CatalogGraphql/src/API -- SEED-TEST-DATA
 To add new database migration, change the `<MigrationName>` and run
 
 ```
-dotnet ef migrations add <MigrationName> -s CatalogOData/src/Cataloging -c CatalogDbContext -o Database/Migrations 
-dotnet ef migrations add <MigrationName> -s CatalogGraphql/src/API -p CatalogGraphql/src/Infra -c CatalogDbContext -o Database/Migrations
+dotnet ef migrations add <MigrationName> -s Catalog/src/API -p Catalog/src/Infra -c CatalogDbContext -o Database/Migrations
+dotnet ef migrations add <MigrationName> -s Orders/src/API -p Orders/src/Infra -c OrdersDbContext -o Database/Migrations
 ```
 
 ## Cleaning up
@@ -36,6 +36,6 @@ dotnet ef migrations add <MigrationName> -s CatalogGraphql/src/API -p CatalogGra
 To drop databases, run
 
 ```
-dotnet ef database drop -s CatalogOData/src/Cataloging -c CatalogDbContext
-dotnet ef database drop -s CatalogGraphql/src/API -c CatalogDbContext
+dotnet ef database drop -s Catalog/src/API -c CatalogDbContext
+dotnet ef database drop -s Orders/src/API -c CatalogDbContext
 ```

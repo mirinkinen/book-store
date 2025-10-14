@@ -1,0 +1,18 @@
+﻿{
+  data: {
+    orderItems: {
+      nodes: [
+        {
+          productName: Product #57,
+          quantity: 8,
+          unitPrice: 62.0
+        },
+        {
+          productName: Product #78,
+          quantity: 9,
+          unitPrice: 83.0
+        }
+      ]
+    }
+  }
+}

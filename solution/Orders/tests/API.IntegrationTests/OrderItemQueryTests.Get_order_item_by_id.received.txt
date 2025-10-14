@@ -1,0 +1,20 @@
+﻿{
+  errors: [
+    {
+      message: Unknown type `OrderItemNode`.,
+      locations: [
+        {
+          line: 4,
+          column: 5
+        }
+      ],
+      path: [
+        orderItemById
+      ],
+      extensions: {
+        typeCondition: OrderItemNode,
+        specifiedBy: https://spec.graphql.org/October2021/#sec-Fragment-Spread-Type-Existence
+      }
+    }
+  ]
+}

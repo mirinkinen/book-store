@@ -1,0 +1,13 @@
+﻿{
+  data: {
+    orderItems: {
+      nodes: [
+        {
+          productName: Laptop Computer,
+          quantity: 1,
+          unitPrice: 1299.99
+        }
+      ]
+    }
+  }
+}

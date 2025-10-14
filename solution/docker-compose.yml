@@ -5,6 +5,6 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - "POSTGRES_DB=BookCatalogGraphql"
+      - "POSTGRES_DB=BookStore"
       - "POSTGRES_USER=postgres"
       - "POSTGRES_PASSWORD=P@55w0rd"

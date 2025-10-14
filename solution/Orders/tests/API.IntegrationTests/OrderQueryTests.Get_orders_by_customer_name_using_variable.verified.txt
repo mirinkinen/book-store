@@ -1,0 +1,18 @@
+﻿{
+  data: {
+    orders: {
+      nodes: [
+        {
+          customerName: Bob Johnson,
+          orderDate: 2025-10-11,
+          totalAmount: 0.0
+        },
+        {
+          customerName: John Smith,
+          orderDate: 2025-10-04,
+          totalAmount: 0.0
+        }
+      ]
+    }
+  }
+}

@@ -28,12 +28,20 @@
   <Folder Name="/Subdomains/Inventory/">
     <File Path="Inventory/README.md" />
   </Folder>
-  <Folder Name="/Subdomains/Order/">
-    <File Path="Order/README.md" />
+  <Folder Name="/Subdomains/Orders/">
+    <File Path="Orders/README.md" />
   </Folder>
-  <Folder Name="/Subdomains/Order/src/" />
-  <Folder Name="/Subdomains/Order/tests/" />
-  <Folder Name="/Subdomains/User/" />
-  <Folder Name="/Subdomains/User/src/" />
-  <Folder Name="/Subdomains/User/tests/" />
+  <Folder Name="/Subdomains/Orders/src/">
+    <Project Path="Orders/src/API/API.csproj" />
+    <Project Path="Orders/src/Application/Application.csproj" />
+    <Project Path="Orders/src/Domain/Domain.csproj" />
+    <Project Path="Orders/src/Infra/Infra.csproj" />
+  </Folder>
+  <Folder Name="/Subdomains/Orders/tests/">
+    <Project Path="Orders/tests/API.IntegrationTests/API.IntegrationTests.csproj" Type="C#" />
+    <Project Path="Orders/tests/TestData/TestData.csproj" Type="Classic C#" />
+  </Folder>
+  <Folder Name="/Subdomains/Users/" />
+  <Folder Name="/Subdomains/Users/src/" />
+  <Folder Name="/Subdomains/Users/tests/" />
 </Solution>
