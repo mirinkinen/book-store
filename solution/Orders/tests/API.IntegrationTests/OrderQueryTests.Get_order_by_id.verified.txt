@@ -1,1 +1,11 @@
-﻿
+﻿{
+  data: {
+    node: {
+      __typename: Order,
+      customerName: Bob Johnson,
+      orderDate: 2025-10-11,
+      totalAmount: 0.0,
+      organizationId: Guid_1
+    }
+  }
+}

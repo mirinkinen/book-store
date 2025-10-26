@@ -28,9 +28,9 @@ public static class TestDataContainer
     {
         var orders = new Order[]
         {
-            new Order("John Smith", DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-10)), AuthorizedOrganization1).SetId(Order1Id),
-            new Order("Jane Doe", DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-5)), AuthorizedOrganization1).SetId(Order2Id),
-            new Order("Bob Johnson", DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-3)), AuthorizedOrganization2).SetId(Order3Id),
+            new Order("John Smith", new DateOnly(2025, 10, 4), AuthorizedOrganization2).SetId(Order1Id),
+            new Order("Jane Doe", new DateOnly(2025, 10, 9), AuthorizedOrganization2).SetId(Order2Id),
+            new Order("Bob Johnson", new DateOnly(2025, 10, 11), AuthorizedOrganization1).SetId(Order3Id),
         };
 
         return orders;
@@ -41,41 +41,93 @@ public static class TestDataContainer
         var ordersList = orders.ToList();
         var orderItems = new List<OrderItem>();
 
-        // Add specific order items with known IDs for easier testing
-        orderItems.AddRange(new[]
-        {
-            new OrderItem(Order1Id, "Laptop Computer", 1, 1299.99m).SetId(OrderItem1Id),
-            new OrderItem(Order1Id, "Mouse", 2, 25.50m).SetId(OrderItem2Id),
-            new OrderItem(Order2Id, "Office Chair", 1, 450.00m).SetId(OrderItem3Id),
-        });
+        // Add specific order items with known IDs for easier testing (these will be first when sorted by ID)
+        orderItems.Add(new OrderItem(Order1Id, "The Great Gatsby", 1, 15.99m).SetId(OrderItem1Id));
+        orderItems.Add(new OrderItem(Order1Id, "To Kill a Mockingbird", 2, 12.50m).SetId(OrderItem2Id));
+        orderItems.Add(new OrderItem(Order2Id, "1984 by George Orwell", 1, 14.99m).SetId(OrderItem3Id));
 
-        // Generate deterministic order items for all orders
-        orderItems.AddRange(Enumerable
-            .Range(1, 100)
-            .Select(id => new OrderItem(
-                GetDeterministicOrder(ordersList, id).Id,
-                $"Product #{id}",
-                GetDeterministicQuantity(id),
-                GetDeterministicUnitPrice(id))));
+        // Generate deterministic order items for all orders with book titles
+        var bookTitles = GetDeterministicBookTitles();
+        for (int i = 1; i <= 100; i++)
+        {
+            var orderItem = new OrderItem(
+                GetDeterministicOrder(ordersList, i).Id,
+                bookTitles[i - 1],
+                GetDeterministicQuantity(i),
+                GetDeterministicUnitPrice(i));
+            
+            // Set deterministic ID based on the index
+            orderItem.SetId(GetDeterministicOrderItemId(i));
+            orderItems.Add(orderItem);
+        }
 
         return orderItems;
     }
 
+    private static List<string> GetDeterministicBookTitles()
+    {
+        // Generate a deterministic list of 100 book titles
+        var titles = new List<string>
+        {
+            "Pride and Prejudice", "The Catcher in the Rye", "The Hobbit", "Harry Potter and the Sorcerer's Stone",
+            "The Lord of the Rings", "The Chronicles of Narnia", "Animal Farm", "Brave New World",
+            "The Odyssey", "The Iliad", "Moby-Dick", "War and Peace",
+            "Crime and Punishment", "The Brothers Karamazov", "Jane Eyre", "Wuthering Heights",
+            "Great Expectations", "A Tale of Two Cities", "The Picture of Dorian Gray", "Dracula",
+            "Frankenstein", "Alice's Adventures in Wonderland", "The Adventures of Tom Sawyer", "The Adventures of Huckleberry Finn",
+            "Little Women", "Anne of Green Gables", "The Secret Garden", "Treasure Island",
+            "Robinson Crusoe", "Gulliver's Travels", "Don Quixote", "The Count of Monte Cristo",
+            "The Three Musketeers", "Les Misérables", "The Hunchback of Notre-Dame", "Madame Bovary",
+            "Anna Karenina", "The Metamorphosis", "The Trial", "The Stranger",
+            "The Plague", "One Hundred Years of Solitude", "Love in the Time of Cholera", "The Old Man and the Sea",
+            "For Whom the Bell Tolls", "A Farewell to Arms", "The Sun Also Rises", "The Grapes of Wrath",
+            "Of Mice and Men", "East of Eden", "Catch-22", "Slaughterhouse-Five",
+            "The Great Gatsby", "To Kill a Mockingbird", "1984", "Fahrenheit 451",
+            "Lord of the Flies", "The Hunger Games", "Divergent", "The Maze Runner",
+            "Twilight", "The Da Vinci Code", "Angels and Demons", "The Alchemist",
+            "Life of Pi", "The Kite Runner", "A Thousand Splendid Suns", "The Book Thief",
+            "The Help", "The Fault in Our Stars", "Gone Girl", "The Girl on the Train",
+            "Big Little Lies", "Where the Crawdads Sing", "Educated", "Becoming",
+            "Sapiens", "The Immortal Life of Henrietta Lacks", "Unbroken", "The Glass Castle",
+            "Wild", "Eat, Pray, Love", "The Power of Now", "Thinking, Fast and Slow",
+            "Outliers", "The Tipping Point", "Blink", "Quiet",
+            "Daring Greatly", "Atomic Habits", "The 7 Habits of Highly Effective People", "How to Win Friends and Influence People",
+            "Rich Dad Poor Dad", "The Lean Startup", "Zero to One", "Good to Great"
+        };
+
+        // Ensure we have exactly 100 titles
+        while (titles.Count < 100)
+        {
+            titles.Add($"Classic Book #{titles.Count + 1}");
+        }
+
+        return titles;
+    }
+
     private static int GetDeterministicQuantity(int orderItemId)
     {
-        // Use modulo to create deterministic quantity between 1 and 10
-        return 1 + orderItemId % 10;
+        // Use modulo to create deterministic quantity between 1 and 5 (more realistic for books)
+        return 1 + orderItemId % 5;
     }
 
     private static decimal GetDeterministicUnitPrice(int orderItemId)
     {
-        // Use modulo to create deterministic price between 5.00 and 199.99
-        return 5.00m + (orderItemId % 195);
+        // Use modulo to create deterministic price between 9.99 and 34.99 (typical book prices)
+        return 9.99m + (orderItemId % 25);
     }
 
     private static Order GetDeterministicOrder(List<Order> orders, int orderItemId)
     {
         // Use modulo to deterministically assign orders based on order item ID
         return orders[orderItemId % orders.Count];
+    }
+
+    private static Guid GetDeterministicOrderItemId(int index)
+    {
+        // Generate deterministic GUID based on index
+        var bytes = new byte[16];
+        var indexBytes = BitConverter.GetBytes(index);
+        Array.Copy(indexBytes, bytes, Math.Min(indexBytes.Length, bytes.Length));
+        return new Guid(bytes);
     }
 }

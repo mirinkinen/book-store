@@ -3,14 +3,14 @@
     orderItems: {
       nodes: [
         {
-          productName: Product #57,
-          quantity: 8,
-          unitPrice: 62.0
+          productName: Pride and Prejudice,
+          quantity: 2,
+          unitPrice: 10.99
         },
         {
-          productName: Product #78,
-          quantity: 9,
-          unitPrice: 83.0
+          productName: The Catcher in the Rye,
+          quantity: 3,
+          unitPrice: 11.99
         }
       ]
     }

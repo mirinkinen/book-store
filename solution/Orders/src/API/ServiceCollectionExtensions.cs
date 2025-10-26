@@ -1,10 +1,10 @@
 using Application.OrderCommands.CreateOrder;
-using Application.OrderQueries;
 using Application.OrderItemQueries;
+using Application.OrderQueries;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Common.Domain;
-using Domain.Orders;
 using Domain.OrderItems;
+using Domain.Orders;
 using HotChocolate.Diagnostics;
 using HotChocolate.Execution;
 using Infra.Database;

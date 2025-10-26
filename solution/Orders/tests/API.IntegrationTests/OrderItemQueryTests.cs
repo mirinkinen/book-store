@@ -42,9 +42,9 @@ public class OrderItemQueryTests : IClassFixture<RequestExecutorProxyFixture>
         // Arrange
         var query = """
                     query {
-                      orderItemById(id: "A125C5BD-4F8E-4794-9C36-76E401FB4F24") {    
+                      node(id: "T3JkZXJJdGVtOr3FJaGOT5RHnDZ25AH7TyQ=") {    
                         __typename
-                        ... on OrderItemNode {
+                        ... on OrderItem {
                           productName
                           quantity
                           unitPrice
@@ -104,7 +104,7 @@ public class OrderItemQueryTests : IClassFixture<RequestExecutorProxyFixture>
                     }
                     """;
 
-        var variables = new Dictionary<string, object?> { { "productName", "Laptop" } };
+        var variables = new Dictionary<string, object?> { { "productName", "Gatsby" } };
 
         var result = await _requestExecutor.ExecuteOperationAsync(query, variables);
 

@@ -42,9 +42,9 @@ public class OrderQueryTests : IClassFixture<RequestExecutorProxyFixture>
         // Arrange
         var query = """
                     query {
-                      orderById(id: "8E6A9434-87F5-46B2-A6C3-522DC35D8EEF") {    
+                      node(id: "T3JkZXI6EnJKbNNl8CSkoTALoTts3Q==") {    
                         __typename
-                        ... on OrderNode {
+                        ... on Order {
                           customerName
                           orderDate
                           totalAmount

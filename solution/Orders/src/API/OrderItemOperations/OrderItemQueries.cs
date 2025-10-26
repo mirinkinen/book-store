@@ -15,6 +15,7 @@ public static partial class OrderItemQueries
     /// Gets order item by ID.
     /// </summary>
     /// <param name="id">The ID of the order item</param>
+    /// <param name="sender">The mediator sender</param>
     /// <returns>Order item</returns>
     [NodeResolver]
     [Error<EntityNotFoundException>]

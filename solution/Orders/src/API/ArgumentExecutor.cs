@@ -13,10 +13,10 @@ public partial class ArgumentExecutor
             return;
         }
 
-        var command = args![0].ToUpperInvariant();
+        var command = args![0].ToLowerInvariant();
         switch (command)
         {
-            case "SEED-TEST-DATA":
+            case "seed-test-data":
                 using (var scope = app.Services.CreateScope())
                 {
                     var logger = scope.ServiceProvider.GetRequiredService<ILogger<ArgumentExecutor>>();

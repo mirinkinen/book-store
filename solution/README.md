@@ -18,8 +18,8 @@ dotnet ef database update -s Orders/src/API -c OrdersDbContext
 To seed development data, run
 
 ```
-dotnet run --project Catalog/src/API -- SEED-TEST-DATA
-dotnet run --project Orders/src/API -- SEED-TEST-DATA
+dotnet run --project Catalog/src/API -- seed-test-data
+dotnet run --project Orders/src/API -- seed-test-data
 ```
 
 ## Database migrations
@@ -37,5 +37,5 @@ To drop databases, run
 
 ```
 dotnet ef database drop -s Catalog/src/API -c CatalogDbContext
-dotnet ef database drop -s Orders/src/API -c CatalogDbContext
+dotnet ef database drop -s Orders/src/API -c OrdersDbContext
 ```

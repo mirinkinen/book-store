@@ -4,73 +4,73 @@
       nodes: [
         {
           __typename: OrderItem,
-          productName: Product #57,
-          quantity: 8,
-          unitPrice: 62.0,
+          productName: Pride and Prejudice,
+          quantity: 2,
+          unitPrice: 10.99,
           orderId: Guid_1
         },
         {
           __typename: OrderItem,
-          productName: Product #78,
-          quantity: 9,
-          unitPrice: 83.0,
-          orderId: Guid_1
-        },
-        {
-          __typename: OrderItem,
-          productName: Product #42,
+          productName: The Catcher in the Rye,
           quantity: 3,
-          unitPrice: 47.0,
-          orderId: Guid_1
-        },
-        {
-          __typename: OrderItem,
-          productName: Product #53,
-          quantity: 4,
-          unitPrice: 58.0,
+          unitPrice: 11.99,
           orderId: Guid_2
         },
         {
           __typename: OrderItem,
-          productName: Product #19,
-          quantity: 10,
-          unitPrice: 24.0,
+          productName: The Hobbit,
+          quantity: 4,
+          unitPrice: 12.99,
           orderId: Guid_3
         },
         {
           __typename: OrderItem,
-          productName: Product #16,
-          quantity: 7,
-          unitPrice: 21.0,
-          orderId: Guid_3
+          productName: Harry Potter and the Sorcerer's Stone,
+          quantity: 5,
+          unitPrice: 13.99,
+          orderId: Guid_1
         },
         {
           __typename: OrderItem,
-          productName: Product #91,
+          productName: The Lord of the Rings,
+          quantity: 1,
+          unitPrice: 14.99,
+          orderId: Guid_2
+        },
+        {
+          __typename: OrderItem,
+          productName: The Chronicles of Narnia,
           quantity: 2,
-          unitPrice: 96.0,
+          unitPrice: 15.99,
           orderId: Guid_3
         },
         {
           __typename: OrderItem,
-          productName: Product #72,
+          productName: Animal Farm,
           quantity: 3,
-          unitPrice: 77.0,
+          unitPrice: 16.99,
           orderId: Guid_1
         },
         {
           __typename: OrderItem,
-          productName: Product #87,
-          quantity: 8,
-          unitPrice: 92.0,
-          orderId: Guid_1
+          productName: Brave New World,
+          quantity: 4,
+          unitPrice: 17.99,
+          orderId: Guid_2
         },
         {
           __typename: OrderItem,
-          productName: Product #7,
-          quantity: 8,
-          unitPrice: 12.0,
+          productName: The Odyssey,
+          quantity: 5,
+          unitPrice: 18.99,
           orderId: Guid_3
+        },
+        {
+          __typename: OrderItem,
+          productName: The Iliad,
+          quantity: 1,
+          unitPrice: 19.99,
+          orderId: Guid_1
         }
       ]
     }
