@@ -41,9 +41,4 @@
     <ProjectReference Include="..\Infra\Infra.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="Operations\BookOperations.cs" />
-    <Compile Remove="Operations\AuthorOperations.cs" />
-  </ItemGroup>
-
 </Project>
